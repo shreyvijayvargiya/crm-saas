@@ -1,25 +1,18 @@
 {
 	"name": "ihatereading-mini-repo",
 	"version": "1.0.0",
-	"description": "Mini repository ",
+	"description": "CRM SAAS template ",
 	"main": "pages/index.js",
-	"repository": "https://github.com/shreyvijayvargiya/neuron-ai-saas-template",
+	"repository": "https://github.com/shreyvijayvargiya/crm-saas",
 	"author": "iHateReading",
 	"license": "MIT",
 	"private": true,
-	"engines": {
-		"node": ">=20.x"
-	},
 	"scripts": {
 		"dev": "next",
 		"clean": "yarn cache clean",
 		"build": "next build"
 	},
 	"dependencies": {
-		"@fullcalendar/core": "^6.1.15",
-		"@fullcalendar/daygrid": "^6.1.15",
-		"@fullcalendar/react": "^6.1.15",
-		"@syncfusion/ej2-react-kanban": "^28.2.3",
 		"autoprefixer": "^10.4.20",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
