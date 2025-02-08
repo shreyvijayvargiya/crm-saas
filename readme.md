@@ -1,4 +1,8 @@
-# Next.js Frontend Boilerplate for SaaS Product Template
+# Start of Selection
+
+# Next.js Frontend Boilerplate for CRM Application
+
+# End of Selection
 
 This is a Next.js frontend boilerplate designed for building responsive SaaS products. It provides a solid foundation for developers to create modern web applications with ease.
 
