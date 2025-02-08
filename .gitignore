@@ -1,1 +1,7 @@
 .vercel
+.next
+yarn.lock
+yarn-debug.log*
+node_modules
+.env
+.vercel
