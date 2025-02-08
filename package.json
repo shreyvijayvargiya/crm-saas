@@ -1,0 +1,41 @@
+{
+	"name": "ihatereading-mini-repo",
+	"version": "1.0.0",
+	"description": "Mini repository ",
+	"main": "pages/index.js",
+	"repository": "https://github.com/shreyvijayvargiya/neuron-ai-saas-template",
+	"author": "iHateReading",
+	"license": "MIT",
+	"private": true,
+	"engines": {
+		"node": ">=18.x"
+	},
+	"scripts": {
+		"dev": "next",
+		"clean": "yarn cache clean",
+		"build": "next build"
+	},
+	"dependencies": {
+		"@fullcalendar/core": "^6.1.15",
+		"@fullcalendar/daygrid": "^6.1.15",
+		"@fullcalendar/react": "^6.1.15",
+		"@syncfusion/ej2-react-kanban": "^28.2.3",
+		"autoprefixer": "^10.4.20",
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
+		"gsap": "^3.12.7",
+		"lucide-react": "^0.474.0",
+		"next": "12.0.0",
+		"postcss": "^8.5.1",
+		"react": "^17.0.0",
+		"react-dom": "^17.0.0",
+		"react-icons": "^5.4.0",
+		"react-simple-typewriter": "^3.0.1",
+		"react-toastify": "^8.0.4",
+		"recharts": "^2.15.1",
+		"tailwind-merge": "^3.0.1",
+		"tailwindcss": "^3.4.17",
+		"tailwindcss-animate": "^1.0.7"
+	},
+	"devDependencies": {}
+}
