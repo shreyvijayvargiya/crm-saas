@@ -44,13 +44,14 @@ const LayoutWrapper = ({ children }) => {
 			</main>
 			<ToastContainer position="bottom-right" />
 			<div className="w-fit h-fit fixed bottom-10 right-10 bg-white rounded-xl shadow-xl p-4 border border-zinc-200">
+				<p>Download Unlock lifetime access to entire React CRM template</p>
 				<a
 					href="https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template?layout=profile"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="p-2 rounded-xl bg-zinc-900 hover:bg-black text-white cursor-pointer"
 				>
-					Get the Template
+					Download Template
 				</a>
 			</div>
 		</div>
