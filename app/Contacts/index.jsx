@@ -408,26 +408,26 @@ const Contacts = () => {
 			<p className="mb-4">Recent contacts</p>
 			<div className="flex justify-between items-center flex-wrap">
 				<div className="flex gap-2 items-center my-2 flex-wrap">
-					<div className="flex hover:bg-gray-50 rounded px-2 py-1 items-center group border border-gray-100">
-						<Search className="text-gray-800 mx-2" size={16} />{" "}
+					<div className="flex hover:bg-zinc-50 rounded px-2 py-1 items-center group border border-zinc-100">
+						<Search className="text-zinc-800 mx-2" size={16} />{" "}
 						<input
 							type="text"
 							placeholder="Search..."
-							className="outline-none focus:outline-none group-hover:bg-gray-50"
+							className="outline-none focus:outline-none group-hover:bg-zinc-50"
 							value={searchTerm}
 							onChange={handleSearch}
 						/>
 					</div>
 					<button
 						onClick={() => setIsAddContactModalOpen(true)}
-						className="flex items-center bg-gray-800 hover:bg-black hover:px-4 transition-all duration-100 ease-in text-white px-2 py-1 rounded"
+						className="flex items-center bg-zinc-800 hover:bg-black hover:px-4 transition-all duration-100 ease-in text-white px-2 py-1 rounded"
 					>
 						<PlusCircle className="mr-1" size={16} />
 						Add Contact
 					</button>
 				</div>
 				<div className="flex items-center mb-4 gap-2">
-					<div className="flex items-center bg-white border border-gray-100 rounded-xl py-2 px-6 gap-4 hover:bg-gray-50 hover:px-8 transition-all duration-100 ease-in order-1">
+					<div className="flex items-center bg-white border border-zinc-100 rounded-xl py-2 px-6 gap-4 hover:bg-zinc-50 hover:px-8 transition-all duration-100 ease-in order-1">
 						<Users className="text-blue-500" size={20} />
 						<span className="">{contacts.length} Total Contacts</span>
 					</div>
@@ -436,7 +436,7 @@ const Contacts = () => {
 			<div className="overflow-x-auto hidescrollbar">
 				<table className="min-w-full bg-white border">
 					<thead>
-						<tr className="py-2 px-2 text-gray-800 text-sm">
+						<tr className="py-2 px-2 text-zinc-800 text-sm">
 							<th
 								className="py-2 px-2 border-b text-left cursor-pointer"
 								onClick={() => handleSort("name")}
@@ -493,7 +493,7 @@ const Contacts = () => {
 						{filteredContacts.map((contact) => (
 							<tr
 								key={contact.id}
-								className="hover:bg-gray-50 truncate text-sm"
+								className="hover:bg-zinc-50 truncate text-sm"
 								onClick={() => handleSelectContact(contact)}
 							>
 								<td className="py-2 px-2 flex items-center">
@@ -526,7 +526,7 @@ const Contacts = () => {
 							<h2 className="text-xl font-semibold">Contact Details</h2>
 							<button
 								onClick={() => setIsContactModalOpen(false)}
-								className="hover:bg-gray-50 text-gray-800 p-1 rounded"
+								className="hover:bg-zinc-50 text-zinc-800 p-1 rounded"
 							>
 								<X className="inline" size={16} />
 							</button>
@@ -566,7 +566,7 @@ const Contacts = () => {
 							<p className="flex-grow">Add New Contact</p>
 							<button
 								onClick={() => setIsAddContactModalOpen(false)}
-								className="hover:bg-gray-50 text-gray-800 p-1 rounded"
+								className="hover:bg-zinc-50 text-zinc-800 p-1 rounded"
 							>
 								<X className="inline mr-1" size={16} />
 							</button>
@@ -609,7 +609,7 @@ const Contacts = () => {
 						/>
 						<button
 							onClick={handleAddContact}
-							className="flex items-center bg-gray-800 hover:bg-black hover:px-4 transition-all duration-100 ease-in text-white px-2 py-1 rounded"
+							className="flex items-center bg-zinc-800 hover:bg-black hover:px-4 transition-all duration-100 ease-in text-white px-2 py-1 rounded"
 						>
 							<PlusCircle className="mr-1" size={16} />
 							Add Contact

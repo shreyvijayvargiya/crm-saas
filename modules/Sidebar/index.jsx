@@ -53,6 +53,18 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 		},
 		{
 			id: 9,
+			label: "Webhooks",
+			route: "/webhooks",
+			icon: "Webhook",
+		},
+		{
+			id: 10,
+			label: "Api Keys",
+			route: "/api-keys",
+			icon: "Key",
+		},
+		{
+			id: 10,
 			label: "Settings",
 			route: "/settings",
 			icon: "Settings",
@@ -61,17 +73,17 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 
 	return (
 		<div
-			className={`bg-white h-screen border-r border-gray-100 ${
+			className={`h-screen bg-zinc-50/20  ${
 				open ? "w-60 md:w-60" : "w-full"
 			} transition-all duration-300 ease-in`}
 		>
-			<div className="flex flex-col h-full justify-between pb-5">
+			<div className="flex flex-col h-full justify-between pb-5 border border-zinc-200 bg-white rounded-xl">
 				<div className="flex flex-col gap-1">
 					<div className="flex items-center justify-between px-4 py-3">
 						{open ? (
 							<p className="text-lg">CRM pages</p>
 						) : (
-							<p className="px-4 text-xl font-sans">C</p>
+							<lucideIcons.Rocket className="w-6 h-6 mt-2" />
 						)}
 						<button
 							onClick={() => setDrawerOpen(!drawerOpen)}
@@ -89,13 +101,13 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 									<a
 										key={item.id}
 										href={item.route}
-										className="p-2 hover:bg-gray-50 hover:text-gray-800 transition-all duration-100 ease-in rounded-xl hover:bg-opacity-80 flex items-center gap-2"
+										className="p-1.5 hover:bg-zinc-50 hover:text-zinc-800 transition-all duration-100 ease-in rounded-xl hover:bg-opacity-80 flex items-center gap-2 text-sm"
 									>
-										{Icon ? <Icon className="w-5 h-5 text-gray-800" /> : null}{" "}
+										{Icon ? <Icon className="w-4 h-4 text-zinc-800" /> : null}{" "}
 										{open ? item.label : null}
 									</a>
 									{!open && (
-										<div className="absolute left-full ml-2 w-max bg-gray-800 text-white text-xs rounded p-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+										<div className="absolute left-full ml-2 w-max bg-zinc-800 text-white text-xs rounded p-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
 											{item.label}
 										</div>
 									)}
@@ -104,7 +116,7 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 						})}
 					</div>
 				</div>
-				<div className="flex gap-2 items-center hover:bg-gray-50 p-2 rounded-xl mx-4">
+				<div className="flex gap-2 items-center hover:bg-zinc-50 p-2 rounded-xl mx-4">
 					<lucideIcons.LogOut size={18} />
 					{open ? "logout" : null}
 				</div>

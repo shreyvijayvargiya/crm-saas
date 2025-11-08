@@ -171,21 +171,21 @@ const Sales = () => {
 		<div className="p-4">
 			<div className="flex justify-between gap-2 items-center mb-4 flex-wrap">
 				<div className="flex justify-start items-center gap-4 flex-wrap">
-					<div className="flex items-center bg-white border border-gray-100 rounded-xl py-4 px-8 gap-4 hover:bg-gray-50 hover:px-12 transition-all duration-100 ease-in">
+					<div className="flex items-center bg-white border border-zinc-100 rounded-xl py-4 px-8 gap-4 hover:bg-zinc-50 hover:px-12 transition-all duration-100 ease-in">
 						<DollarSign size={32} className="mr-2 text-green-500" />
 						<div>
 							<p className="text-sm">Total Sales</p>
 							<p className="text-lg font-bold">{totalSales}</p>
 						</div>
 					</div>
-					<div className="flex items-center bg-white border border-gray-100 rounded-xl py-4 px-8 gap-4 hover:bg-gray-50 hover:px-12 transition-all duration-100 ease-in">
+					<div className="flex items-center bg-white border border-zinc-100 rounded-xl py-4 px-8 gap-4 hover:bg-zinc-50 hover:px-12 transition-all duration-100 ease-in">
 						<Mail size={32} className="mr-2 text-blue-500" />
 						<div>
 							<p className="text-sm">Total Revenue</p>
 							<p className="text-lg font-bold">${totalRevenue}</p>
 						</div>
 					</div>
-					<div className="flex items-center bg-white border border-gray-100 rounded-xl py-4 px-8 gap-4 hover:bg-gray-50 hover:px-12 transition-all duration-100 ease-in">
+					<div className="flex items-center bg-white border border-zinc-100 rounded-xl py-4 px-8 gap-4 hover:bg-zinc-50 hover:px-12 transition-all duration-100 ease-in">
 						<Users size={32} className="mr-2 text-purple-500" />
 						<div>
 							<p className="text-sm">Total Visitors</p>
@@ -194,13 +194,13 @@ const Sales = () => {
 					</div>
 				</div>
 				<div className="flex justify-around items-center gap-2">
-					<button className="flex items-center bg-gray-800 text-white py-2 px-4 text-xs rounded-xl hover:bg-gray-900 hover:px-6 transition-all duration-200">
+					<button className="flex items-center bg-zinc-800 text-white py-2 px-4 text-xs rounded-xl hover:bg-zinc-900 hover:px-6 transition-all duration-200">
 						<Download size={18} className="mr-2" />
 						Download Report
 					</button>
 					<button
 						onClick={() => setIsModalOpen(true)}
-						className="flex items-center bg-gray-800 text-white rounded-xl py-2 text-xs px-4 hover:px-6 hover:bg-gray-900 transition-all duration-200"
+						className="flex items-center bg-zinc-800 text-white rounded-xl py-2 text-xs px-4 hover:px-6 hover:bg-zinc-900 transition-all duration-200"
 					>
 						<PlusCircle size={18} className="mr-2" />
 						Add Product
@@ -214,7 +214,7 @@ const Sales = () => {
 						<div className="flex justify-between items-center mb-4">
 							<h2 className="text-xl">Add Product</h2>
 							<button onClick={() => setIsModalOpen(false)}>
-								<X size={20} className="text-gray-500" />
+								<X size={20} className="text-zinc-500" />
 							</button>
 						</div>
 						<form onSubmit={handleAddProduct}>
@@ -228,7 +228,7 @@ const Sales = () => {
 									onChange={(e) =>
 										setNewProduct({ ...newProduct, name: e.target.value })
 									}
-									className="border border-gray-300 rounded w-full py-1 px-2 outline-none hover:bg-gray-50"
+									className="border border-zinc-300 rounded w-full py-1 px-2 outline-none hover:bg-zinc-50"
 									placeholder="Enter product name"
 									required
 								/>
@@ -243,7 +243,7 @@ const Sales = () => {
 									onChange={(e) =>
 										setNewProduct({ ...newProduct, category: e.target.value })
 									}
-									className="border border-gray-300 rounded w-full py-1 px-2 outline-none hover:bg-gray-50"
+									className="border border-zinc-300 rounded w-full py-1 px-2 outline-none hover:bg-zinc-50"
 									placeholder="Enter product category"
 									required
 								/>
@@ -256,7 +256,7 @@ const Sales = () => {
 									onChange={(e) =>
 										setNewProduct({ ...newProduct, price: e.target.value })
 									}
-									className="border border-gray-300 rounded w-full py-1 px-2 outline-none hover:bg-gray-50"
+									className="border border-zinc-300 rounded w-full py-1 px-2 outline-none hover:bg-zinc-50"
 									placeholder="Enter product price"
 									required
 								/>
@@ -273,14 +273,14 @@ const Sales = () => {
 											description: e.target.value,
 										})
 									}
-									className="border border-gray-300 rounded w-full py-1 px-2 outline-none hover:bg-gray-50"
+									className="border border-zinc-300 rounded w-full py-1 px-2 outline-none hover:bg-zinc-50"
 									placeholder="Enter product description"
 									required
 								/>
 							</div>
 							<button
 								type="submit"
-								className="bg-gray-800 text-white py-1 px-4 rounded"
+								className="bg-zinc-800 text-white py-1 px-4 rounded"
 							>
 								Submit
 							</button>
@@ -290,7 +290,7 @@ const Sales = () => {
 			)}
 
 			<div className="flex md:flex-row flex-col justify-between items-start gap-2">
-				<div className="md:w-1/2 w-full bg-white rounded-xl border border-gray-100 p-4">
+				<div className="md:w-1/2 w-full bg-white rounded-xl border border-zinc-100 p-4">
 					<div className="flex justify-between items-center p-5">
 						<p className="text-xl">Sales Dashboard</p>
 						<div className="flex space-x-2 mb-2">
@@ -298,8 +298,8 @@ const Sales = () => {
 								onClick={() => setActiveSalesTab("daily")}
 								className={`px-2 py-1 text-sm rounded ${
 									activeSalesTab === "daily"
-										? "bg-gray-800 text-white"
-										: "bg-gray-50"
+										? "bg-zinc-800 text-white"
+										: "bg-zinc-50"
 								}`}
 							>
 								<span className="flex items-center">
@@ -310,8 +310,8 @@ const Sales = () => {
 								onClick={() => setActiveSalesTab("weekly")}
 								className={`px-2 py-1 text-sm rounded ${
 									activeSalesTab === "weekly"
-										? "bg-gray-800 text-white"
-										: "bg-gray-50"
+										? "bg-zinc-800 text-white"
+										: "bg-zinc-50"
 								}`}
 							>
 								<span className="flex items-center">
@@ -322,8 +322,8 @@ const Sales = () => {
 								onClick={() => setActiveSalesTab("monthly")}
 								className={`px-2 py-1 text-sm rounded ${
 									activeSalesTab === "monthly"
-										? "bg-gray-800 text-white"
-										: "bg-gray-50"
+										? "bg-zinc-800 text-white"
+										: "bg-zinc-50"
 								}`}
 							>
 								<span className="flex items-center">
@@ -373,8 +373,8 @@ const Sales = () => {
 								onClick={() => setActiveRevenueTab("oneMonth")}
 								className={`px-2 py-1 text-sm rounded ${
 									activeRevenueTab === "oneMonth"
-										? "bg-gray-800 text-white"
-										: "bg-gray-50"
+										? "bg-zinc-800 text-white"
+										: "bg-zinc-50"
 								}`}
 							>
 								<Mail size={16} className="inline-block mr-1" /> 1 Month
@@ -383,8 +383,8 @@ const Sales = () => {
 								onClick={() => setActiveRevenueTab("threeMonths")}
 								className={`px-2 py-1 text-sm rounded ${
 									activeRevenueTab === "threeMonths"
-										? "bg-gray-800 text-white"
-										: "bg-gray-50"
+										? "bg-zinc-800 text-white"
+										: "bg-zinc-50"
 								}`}
 							>
 								<Mail size={16} className="inline-block mr-1" /> 3 Months
@@ -393,8 +393,8 @@ const Sales = () => {
 								onClick={() => setActiveRevenueTab("sixMonths")}
 								className={`px-2 py-1 text-sm rounded ${
 									activeRevenueTab === "sixMonths"
-										? "bg-gray-800 text-white"
-										: "bg-gray-50"
+										? "bg-zinc-800 text-white"
+										: "bg-zinc-50"
 								}`}
 							>
 								<Mail size={16} className="inline-block mr-1" /> 6 Months
@@ -403,8 +403,8 @@ const Sales = () => {
 								onClick={() => setActiveRevenueTab("oneYear")}
 								className={`px-2 py-1 text-sm rounded ${
 									activeRevenueTab === "oneYear"
-										? "bg-gray-800 text-white"
-										: "bg-gray-50"
+										? "bg-zinc-800 text-white"
+										: "bg-zinc-50"
 								}`}
 							>
 								<Mail size={16} className="inline-block mr-1" /> 1 Year
@@ -460,16 +460,16 @@ const Sales = () => {
 				</div>
 			</div>
 			<div className="flex justify-start gap-2 items-start">
-				<div className="md:w-1/2 w-full my-4 bg-white border border-gray-100 rounded-xl p-4">
+				<div className="md:w-1/2 w-full my-4 bg-white border border-zinc-100 rounded-xl p-4">
 					<div className="flex justify-between items-center my-4">
 						<p className="">Recently sold products</p>
-						<button className="text-xs underline hover:text-gray-400 text-gray-300">
+						<button className="text-xs underline hover:text-zinc-400 text-zinc-300">
 							View all
 						</button>
 					</div>
-					<table className="min-w-full border-collapse border border-gray-100 ">
+					<table className="min-w-full border-collapse border border-zinc-100 ">
 						<thead>
-							<tr className="bg-gray-50 bg-opacity-80 hover:bg-gray-100">
+							<tr className="bg-zinc-50 bg-opacity-80 hover:bg-zinc-100">
 								<th className="p-2 text-left font-semibold text-sm">ID</th>
 								<th className="p-2 text-left font-semibold text-sm">Name</th>
 								<th className="p-2 text-left font-semibold text-sm">
@@ -497,7 +497,7 @@ const Sales = () => {
 							{products.map((product) => (
 								<tr
 									key={product.id}
-									className="border-b border-gray-200 hover:bg-gray-50"
+									className="border-b border-zinc-200 hover:bg-zinc-50"
 								>
 									<td className="p-2">{product.id}</td>
 									<td className="p-2">{product.name}</td>
@@ -510,10 +510,10 @@ const Sales = () => {
 						</tbody>
 					</table>
 				</div>
-				<div className="md:w-1/2 w-full p-4 bg-white border border-gray-100 rounded-xl my-4">
+				<div className="md:w-1/2 w-full p-4 bg-white border border-zinc-100 rounded-xl my-4">
 					<div className="flex justify-between items-center my-4">
 						<p className="">Top countries</p>
-						<button className="text-xs underline hover:text-gray-400 text-gray-300">
+						<button className="text-xs underline hover:text-zinc-400 text-zinc-300">
 							View all
 						</button>
 					</div>
@@ -524,7 +524,7 @@ const Sales = () => {
 									<span>{country.name}</span>
 									<span>{country.percentage}%</span>
 								</div>
-								<div className="bg-gray-50 rounded-full h-4">
+								<div className="bg-zinc-50 rounded-full h-4">
 									<div
 										className="bg-indigo-300 h-4 rounded-full"
 										style={{ width: `${country.percentage}%` }}

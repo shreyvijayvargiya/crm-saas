@@ -196,12 +196,12 @@ const Settings = () => {
 	const renderProfileSettings = () => (
 		<div className="bg-white border rounded-lg p-6">
 			<div className="flex justify-between items-center mb-6">
-				<h2 className="text-xl font-semibold text-gray-800">
+				<h2 className="text-xl font-semibold text-zinc-800">
 					Profile Information
 				</h2>
 				<button
 					onClick={() => setIsEditMode(!isEditMode)}
-					className="flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+					className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
 				>
 					<Edit size={16} />
 					{isEditMode ? "Cancel" : "Edit"}
@@ -211,17 +211,17 @@ const Settings = () => {
 				<img
 					src={profileSettings.avatar}
 					alt={profileSettings.name}
-					className="w-24 h-24 rounded-full border-2 border-gray-200"
+					className="w-24 h-24 rounded-full border-2 border-zinc-200"
 				/>
 				<div>
-					<button className="bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs px-4 py-2 rounded transition-all duration-100 ease-in">
+					<button className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs px-4 py-2 rounded transition-all duration-100 ease-in">
 						Change Avatar
 					</button>
 				</div>
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div>
-					<label className="block text-sm font-medium text-gray-700 mb-2">
+					<label className="block text-sm font-medium text-zinc-700 mb-2">
 						Full Name
 					</label>
 					<input
@@ -231,11 +231,11 @@ const Settings = () => {
 							handleInputChange("profile", "name", e.target.value)
 						}
 						disabled={!isEditMode}
-						className="w-full border rounded px-3 py-2 outline-none disabled:bg-gray-50"
+						className="w-full border rounded px-3 py-2 outline-none disabled:bg-zinc-50"
 					/>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-gray-700 mb-2">
+					<label className="block text-sm font-medium text-zinc-700 mb-2">
 						Email
 					</label>
 					<input
@@ -245,11 +245,11 @@ const Settings = () => {
 							handleInputChange("profile", "email", e.target.value)
 						}
 						disabled={!isEditMode}
-						className="w-full border rounded px-3 py-2 outline-none disabled:bg-gray-50"
+						className="w-full border rounded px-3 py-2 outline-none disabled:bg-zinc-50"
 					/>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-gray-700 mb-2">
+					<label className="block text-sm font-medium text-zinc-700 mb-2">
 						Phone
 					</label>
 					<input
@@ -259,11 +259,11 @@ const Settings = () => {
 							handleInputChange("profile", "phone", e.target.value)
 						}
 						disabled={!isEditMode}
-						className="w-full border rounded px-3 py-2 outline-none disabled:bg-gray-50"
+						className="w-full border rounded px-3 py-2 outline-none disabled:bg-zinc-50"
 					/>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-gray-700 mb-2">
+					<label className="block text-sm font-medium text-zinc-700 mb-2">
 						Company
 					</label>
 					<input
@@ -273,11 +273,11 @@ const Settings = () => {
 							handleInputChange("profile", "company", e.target.value)
 						}
 						disabled={!isEditMode}
-						className="w-full border rounded px-3 py-2 outline-none disabled:bg-gray-50"
+						className="w-full border rounded px-3 py-2 outline-none disabled:bg-zinc-50"
 					/>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-gray-700 mb-2">
+					<label className="block text-sm font-medium text-zinc-700 mb-2">
 						Role
 					</label>
 					<input
@@ -287,11 +287,11 @@ const Settings = () => {
 							handleInputChange("profile", "role", e.target.value)
 						}
 						disabled={!isEditMode}
-						className="w-full border rounded px-3 py-2 outline-none disabled:bg-gray-50"
+						className="w-full border rounded px-3 py-2 outline-none disabled:bg-zinc-50"
 					/>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-gray-700 mb-2">
+					<label className="block text-sm font-medium text-zinc-700 mb-2">
 						Bio
 					</label>
 					<textarea
@@ -301,14 +301,14 @@ const Settings = () => {
 						}
 						disabled={!isEditMode}
 						rows={3}
-						className="w-full border rounded px-3 py-2 outline-none disabled:bg-gray-50"
+						className="w-full border rounded px-3 py-2 outline-none disabled:bg-zinc-50"
 					/>
 				</div>
 			</div>
 			{isEditMode && (
 				<button
 					onClick={() => handleSave("profile")}
-					className="mt-4 flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+					className="mt-4 flex items-center gap-2 bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
 				>
 					<Save size={16} />
 					Save Changes
@@ -320,12 +320,12 @@ const Settings = () => {
 	const renderAccountSettings = () => (
 		<div className="space-y-6">
 			<div className="bg-white border rounded-lg p-6">
-				<h2 className="text-xl font-semibold text-gray-800 mb-6">
+				<h2 className="text-xl font-semibold text-zinc-800 mb-6">
 					Change Password
 				</h2>
 				<div className="space-y-4">
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-2">
+						<label className="block text-sm font-medium text-zinc-700 mb-2">
 							Current Password
 						</label>
 						<input
@@ -339,7 +339,7 @@ const Settings = () => {
 						/>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-2">
+						<label className="block text-sm font-medium text-zinc-700 mb-2">
 							New Password
 						</label>
 						<input
@@ -353,7 +353,7 @@ const Settings = () => {
 						/>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-2">
+						<label className="block text-sm font-medium text-zinc-700 mb-2">
 							Confirm New Password
 						</label>
 						<input
@@ -368,7 +368,7 @@ const Settings = () => {
 					</div>
 					<button
 						onClick={handlePasswordChange}
-						className="bg-gray-800 hover:bg-gray-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+						className="bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
 					>
 						Update Password
 					</button>
@@ -376,13 +376,13 @@ const Settings = () => {
 			</div>
 
 			<div className="bg-white border rounded-lg p-6">
-				<h2 className="text-xl font-semibold text-gray-800 mb-6">
+				<h2 className="text-xl font-semibold text-zinc-800 mb-6">
 					Two-Factor Authentication
 				</h2>
 				<div className="flex justify-between items-center">
 					<div>
-						<p className="text-sm font-medium text-gray-700">Enable 2FA</p>
-						<p className="text-xs text-gray-500">
+						<p className="text-sm font-medium text-zinc-700">Enable 2FA</p>
+						<p className="text-xs text-zinc-500">
 							Add an extra layer of security to your account
 						</p>
 					</div>
@@ -391,7 +391,7 @@ const Settings = () => {
 						className={`px-4 py-2 rounded text-xs transition-all duration-100 ease-in ${
 							accountSettings.twoFactorEnabled
 								? "bg-green-100 text-green-800 hover:bg-green-200"
-								: "bg-gray-100 text-gray-800 hover:bg-gray-200"
+								: "bg-zinc-100 text-zinc-800 hover:bg-zinc-200"
 						}`}
 					>
 						{accountSettings.twoFactorEnabled ? "Enabled" : "Disabled"}
@@ -400,10 +400,10 @@ const Settings = () => {
 			</div>
 
 			<div className="bg-white border rounded-lg p-6">
-				<h2 className="text-xl font-semibold text-gray-800 mb-6">API Key</h2>
+				<h2 className="text-xl font-semibold text-zinc-800 mb-6">API Key</h2>
 				<div className="space-y-4">
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-2">
+						<label className="block text-sm font-medium text-zinc-700 mb-2">
 							Your API Key
 						</label>
 						<div className="flex items-center gap-2">
@@ -411,11 +411,11 @@ const Settings = () => {
 								type="text"
 								value={accountSettings.apiKey}
 								readOnly
-								className="w-full border rounded px-3 py-2 outline-none bg-gray-50 font-mono text-sm"
+								className="w-full border rounded px-3 py-2 outline-none bg-zinc-50 font-mono text-sm"
 							/>
 							<button
 								onClick={handleRegenerateAPIKey}
-								className="bg-gray-800 hover:bg-gray-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6 whitespace-nowrap"
+								className="bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6 whitespace-nowrap"
 							>
 								<Key size={16} className="inline mr-1" />
 								Regenerate
@@ -429,7 +429,7 @@ const Settings = () => {
 
 	const renderNotificationSettings = () => (
 		<div className="bg-white border rounded-lg p-6">
-			<h2 className="text-xl font-semibold text-gray-800 mb-6">
+			<h2 className="text-xl font-semibold text-zinc-800 mb-6">
 				Notification Preferences
 			</h2>
 			<div className="space-y-4">
@@ -439,10 +439,10 @@ const Settings = () => {
 						className="flex justify-between items-center py-3 border-b"
 					>
 						<div>
-							<p className="text-sm font-medium text-gray-700 capitalize">
+							<p className="text-sm font-medium text-zinc-700 capitalize">
 								{key.replace(/([A-Z])/g, " $1").trim()}
 							</p>
-							<p className="text-xs text-gray-500">
+							<p className="text-xs text-zinc-500">
 								Receive notifications for{" "}
 								{key
 									.toLowerCase()
@@ -455,7 +455,7 @@ const Settings = () => {
 							className={`px-4 py-2 rounded text-xs transition-all duration-100 ease-in ${
 								value
 									? "bg-green-100 text-green-800 hover:bg-green-200"
-									: "bg-gray-100 text-gray-800 hover:bg-gray-200"
+									: "bg-zinc-100 text-zinc-800 hover:bg-zinc-200"
 							}`}
 						>
 							{value ? "On" : "Off"}
@@ -464,7 +464,7 @@ const Settings = () => {
 				))}
 				<button
 					onClick={() => handleSave("notifications")}
-					className="mt-4 flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+					className="mt-4 flex items-center gap-2 bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
 				>
 					<Save size={16} />
 					Save Preferences
@@ -475,12 +475,12 @@ const Settings = () => {
 
 	const renderPreferenceSettings = () => (
 		<div className="bg-white border rounded-lg p-6">
-			<h2 className="text-xl font-semibold text-gray-800 mb-6">
+			<h2 className="text-xl font-semibold text-zinc-800 mb-6">
 				Application Preferences
 			</h2>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div>
-					<label className="block text-sm font-medium text-gray-700 mb-2">
+					<label className="block text-sm font-medium text-zinc-700 mb-2">
 						Theme
 					</label>
 					<select
@@ -496,7 +496,7 @@ const Settings = () => {
 					</select>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-gray-700 mb-2">
+					<label className="block text-sm font-medium text-zinc-700 mb-2">
 						Language
 					</label>
 					<select
@@ -513,7 +513,7 @@ const Settings = () => {
 					</select>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-gray-700 mb-2">
+					<label className="block text-sm font-medium text-zinc-700 mb-2">
 						Timezone
 					</label>
 					<select
@@ -530,7 +530,7 @@ const Settings = () => {
 					</select>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-gray-700 mb-2">
+					<label className="block text-sm font-medium text-zinc-700 mb-2">
 						Date Format
 					</label>
 					<select
@@ -546,7 +546,7 @@ const Settings = () => {
 					</select>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-gray-700 mb-2">
+					<label className="block text-sm font-medium text-zinc-700 mb-2">
 						Currency
 					</label>
 					<select
@@ -565,7 +565,7 @@ const Settings = () => {
 			</div>
 			<button
 				onClick={() => handleSave("preferences")}
-				className="mt-4 flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+				className="mt-4 flex items-center gap-2 bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
 			>
 				<Save size={16} />
 				Save Preferences
@@ -576,46 +576,46 @@ const Settings = () => {
 	const renderBillingSettings = () => (
 		<div className="space-y-6">
 			<div className="bg-white border rounded-lg p-6">
-				<h2 className="text-xl font-semibold text-gray-800 mb-6">
+				<h2 className="text-xl font-semibold text-zinc-800 mb-6">
 					Subscription Details
 				</h2>
 				<div className="space-y-4">
 					<div className="flex justify-between items-center py-3 border-b">
-						<span className="text-sm font-medium text-gray-700">
+						<span className="text-sm font-medium text-zinc-700">
 							Current Plan
 						</span>
-						<span className="text-sm text-gray-800 font-semibold">
+						<span className="text-sm text-zinc-800 font-semibold">
 							{billingSettings.plan}
 						</span>
 					</div>
 					<div className="flex justify-between items-center py-3 border-b">
-						<span className="text-sm font-medium text-gray-700">Status</span>
+						<span className="text-sm font-medium text-zinc-700">Status</span>
 						<span className="text-sm text-green-600 font-semibold">
 							{billingSettings.status}
 						</span>
 					</div>
 					<div className="flex justify-between items-center py-3 border-b">
-						<span className="text-sm font-medium text-gray-700">
+						<span className="text-sm font-medium text-zinc-700">
 							Next Billing Date
 						</span>
-						<span className="text-sm text-gray-800">
+						<span className="text-sm text-zinc-800">
 							{billingSettings.nextBillingDate}
 						</span>
 					</div>
 					<div className="flex justify-between items-center py-3">
-						<span className="text-sm font-medium text-gray-700">
+						<span className="text-sm font-medium text-zinc-700">
 							Payment Method
 						</span>
-						<span className="text-sm text-gray-800">
+						<span className="text-sm text-zinc-800">
 							{billingSettings.paymentMethod}
 						</span>
 					</div>
 				</div>
 				<div className="mt-6 flex gap-2">
-					<button className="bg-gray-800 hover:bg-gray-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6">
+					<button className="bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6">
 						Upgrade Plan
 					</button>
-					<button className="border-gray-900 border hover:text-white hover:bg-gray-900 rounded text-gray-800 px-4 py-2 transition-all duration-100 ease-in hover:px-6 text-xs">
+					<button className="border-zinc-900 border hover:text-white hover:bg-zinc-900 rounded text-zinc-800 px-4 py-2 transition-all duration-100 ease-in hover:px-6 text-xs">
 						Manage Payment
 					</button>
 				</div>
@@ -626,17 +626,17 @@ const Settings = () => {
 	const renderTeamSettings = () => (
 		<div className="bg-white border rounded-lg p-6">
 			<div className="flex justify-between items-center mb-6">
-				<h2 className="text-xl font-semibold text-gray-800">Team Members</h2>
+				<h2 className="text-xl font-semibold text-zinc-800">Team Members</h2>
 				<button
 					onClick={() => setIsModalOpen(true)}
-					className="bg-gray-800 hover:bg-gray-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+					className="bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
 				>
 					Add Member
 				</button>
 			</div>
 			<div className="mb-4">
 				<div className="flex gap-2 items-center border rounded px-2 py-1 w-full md:w-auto">
-					<Search size={18} color={colors.gray[500]} />
+					<Search size={18} color={colors.zinc[500]} />
 					<input
 						type="text"
 						placeholder="Search team members..."
@@ -648,7 +648,7 @@ const Settings = () => {
 			</div>
 			<div className="overflow-x-auto">
 				<table className="min-w-full bg-white border">
-					<thead className="hover:bg-gray-50">
+					<thead className="hover:bg-zinc-50">
 						<tr>
 							<th className="py-2 px-4 border-b text-left">User Info</th>
 							<th
@@ -659,9 +659,9 @@ const Settings = () => {
 									<span className="ml-2">Email</span>
 									{sortConfig?.key === "email" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.gray[500]} />
+											<ChevronUp size={16} color={colors.zinc[500]} />
 										) : (
-											<ChevronDown size={16} color={colors.gray[500]} />
+											<ChevronDown size={16} color={colors.zinc[500]} />
 										))}
 								</div>
 							</th>
@@ -673,9 +673,9 @@ const Settings = () => {
 									<span className="ml-2">Role</span>
 									{sortConfig?.key === "role" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.gray[500]} />
+											<ChevronUp size={16} color={colors.zinc[500]} />
 										) : (
-											<ChevronDown size={16} color={colors.gray[500]} />
+											<ChevronDown size={16} color={colors.zinc[500]} />
 										))}
 								</div>
 							</th>
@@ -687,9 +687,9 @@ const Settings = () => {
 									<span className="ml-2">Status</span>
 									{sortConfig?.key === "status" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.gray[500]} />
+											<ChevronUp size={16} color={colors.zinc[500]} />
 										) : (
-											<ChevronDown size={16} color={colors.gray[500]} />
+											<ChevronDown size={16} color={colors.zinc[500]} />
 										))}
 								</div>
 							</th>
@@ -698,7 +698,7 @@ const Settings = () => {
 					</thead>
 					<tbody>
 						{filteredTeamMembers.map((member) => (
-							<tr key={member.id} className="hover:bg-gray-50">
+							<tr key={member.id} className="hover:bg-zinc-50">
 								<td className="py-2 px-4 flex items-center gap-2">
 									<img
 										src={member.image}
@@ -714,7 +714,7 @@ const Settings = () => {
 										className={`px-2 py-1 rounded text-xs ${
 											member.status === "Active"
 												? "bg-green-100 text-green-800"
-												: "bg-gray-100 text-gray-800"
+												: "bg-zinc-100 text-zinc-800"
 										}`}
 									>
 										{member.status}
@@ -723,12 +723,12 @@ const Settings = () => {
 								<td className="py-1 px-4 flex items-center gap-2">
 									<Edit
 										size={16}
-										color={colors.gray[700]}
+										color={colors.zinc[700]}
 										className="cursor-pointer"
 									/>
 									<X
 										size={16}
-										color={colors.gray[700]}
+										color={colors.zinc[700]}
 										className="cursor-pointer"
 									/>
 								</td>
@@ -743,16 +743,16 @@ const Settings = () => {
 	const renderSecuritySettings = () => (
 		<div className="space-y-6">
 			<div className="bg-white border rounded-lg p-6">
-				<h2 className="text-xl font-semibold text-gray-800 mb-6">
+				<h2 className="text-xl font-semibold text-zinc-800 mb-6">
 					Active Sessions
 				</h2>
 				<div className="space-y-4">
 					<div className="flex justify-between items-center py-3 border-b">
 						<div>
-							<p className="text-sm font-medium text-gray-700">
+							<p className="text-sm font-medium text-zinc-700">
 								Chrome on MacOS
 							</p>
-							<p className="text-xs text-gray-500">
+							<p className="text-xs text-zinc-500">
 								Current Session • New York, USA
 							</p>
 						</div>
@@ -762,10 +762,10 @@ const Settings = () => {
 					</div>
 					<div className="flex justify-between items-center py-3 border-b">
 						<div>
-							<p className="text-sm font-medium text-gray-700">
+							<p className="text-sm font-medium text-zinc-700">
 								Safari on iPhone
 							</p>
-							<p className="text-xs text-gray-500">
+							<p className="text-xs text-zinc-500">
 								2 hours ago • New York, USA
 							</p>
 						</div>
@@ -777,16 +777,16 @@ const Settings = () => {
 			</div>
 
 			<div className="bg-white border rounded-lg p-6">
-				<h2 className="text-xl font-semibold text-gray-800 mb-6">
+				<h2 className="text-xl font-semibold text-zinc-800 mb-6">
 					Login History
 				</h2>
 				<div className="space-y-4">
 					<div className="flex justify-between items-center py-3 border-b">
 						<div>
-							<p className="text-sm font-medium text-gray-700">
+							<p className="text-sm font-medium text-zinc-700">
 								Successful Login
 							</p>
-							<p className="text-xs text-gray-500">
+							<p className="text-xs text-zinc-500">
 								Today at 10:30 AM • Chrome on MacOS
 							</p>
 						</div>
@@ -794,10 +794,10 @@ const Settings = () => {
 					</div>
 					<div className="flex justify-between items-center py-3 border-b">
 						<div>
-							<p className="text-sm font-medium text-gray-700">
+							<p className="text-sm font-medium text-zinc-700">
 								Successful Login
 							</p>
-							<p className="text-xs text-gray-500">
+							<p className="text-xs text-zinc-500">
 								Yesterday at 3:45 PM • Safari on iPhone
 							</p>
 						</div>
@@ -826,8 +826,8 @@ const Settings = () => {
 										onClick={() => setActiveTab(tab.id)}
 										className={`w-full flex items-center gap-3 px-4 py-3 rounded transition-all duration-100 ease-in ${
 											activeTab === tab.id
-												? "bg-gray-800 text-white hover:bg-gray-900"
-												: "text-gray-700 hover:bg-gray-50"
+												? "bg-zinc-800 text-white hover:bg-zinc-900"
+												: "text-zinc-700 hover:bg-zinc-50"
 										}`}
 									>
 										<Icon size={18} />
@@ -857,7 +857,7 @@ const Settings = () => {
 							<h2 className="text-lg font-semibold">Add Team Member</h2>
 							<button
 								onClick={() => setIsModalOpen(false)}
-								className="hover:bg-gray-50 text-gray-800 p-1 rounded"
+								className="hover:bg-zinc-50 text-zinc-800 p-1 rounded"
 							>
 								<X size={16} />
 							</button>
@@ -885,13 +885,13 @@ const Settings = () => {
 										toast.success("Team member added successfully!");
 										setIsModalOpen(false);
 									}}
-									className="bg-gray-800 hover:bg-gray-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+									className="bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
 								>
 									Add Member
 								</button>
 								<button
 									onClick={() => setIsModalOpen(false)}
-									className="bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs px-4 py-2 rounded"
+									className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs px-4 py-2 rounded"
 								>
 									Cancel
 								</button>

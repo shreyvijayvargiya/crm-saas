@@ -12,7 +12,7 @@ const Pagination = () => {
 	return (
 		<div className="flex md:justify-end sm:justify-start xs:justify-start xxs:justify-start items-center my-4">
 			<button
-				className="mx-2 p-2 text-gray-800 rounded"
+				className="mx-2 p-2 text-zinc-800 rounded"
 				disabled={currentPage === 1}
 				onClick={() => onPageChange(currentPage - 1)}
 			>
@@ -23,8 +23,8 @@ const Pagination = () => {
 					key={index + 1}
 					className={`mx-1 px-3 py-1 rounded ${
 						currentPage === index + 1
-							? "bg-gray-100 text-gray-800"
-							: "border border-gray-50 text-gray-800"
+							? "bg-zinc-100 text-zinc-800"
+							: "border border-zinc-50 text-zinc-800"
 					}`}
 					onClick={() => onPageChange(index + 1)}
 				>
@@ -32,7 +32,7 @@ const Pagination = () => {
 				</button>
 			))}
 			<button
-				className="mx-2 p-2 text-gray-800 rounded"
+				className="mx-2 p-2 text-zinc-800 rounded"
 				disabled={currentPage === totalPages}
 				onClick={() => onPageChange(currentPage + 1)}
 			>

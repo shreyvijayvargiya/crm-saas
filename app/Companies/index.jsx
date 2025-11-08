@@ -154,30 +154,30 @@ const Companies = () => {
 		<div className="p-4">
 			<p className="text-xl">Companies</p>
 			<div className="flex items-center mb-4 gap-2">
-				<div className="flex gap-1 border border-gray-200 rounded items-center px-2 hover:bg-gray-50 group">
-					<Search size={18} className="text-gray-400" />
+				<div className="flex gap-1 border border-zinc-200 rounded items-center px-2 hover:bg-zinc-50 group">
+					<Search size={18} className="text-zinc-400" />
 					<input
 						type="text"
 						placeholder="Search Companies"
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
-						className="px-2 py-1 outline-none mr-2 group-hover:bg-gray-50"
+						className="px-2 py-1 outline-none mr-2 group-hover:bg-zinc-50"
 					/>
 				</div>
 				<button
 					onClick={() => setIsAddCompanyModalOpen(true)}
-					className="bg-gray-800 hover:bg-gray-900 text-white p-2 text-xs rounded flex items-center hover:px-4 transition-all ease-in duration-100"
+					className="bg-zinc-800 hover:bg-zinc-900 text-white p-2 text-xs rounded flex items-center hover:px-4 transition-all ease-in duration-100"
 				>
 					<PlusCircle className="mr-1" size={16} /> Add Company
 				</button>
 			</div>
 			<div className="overflow-x-auto">
-				<table className="min-w-full border-collapse border border-gray-200 mt-4">
+				<table className="min-w-full border-collapse border border-zinc-200 mt-4">
 					<thead>
-						<tr className="bg-gray-50 bg-opacity-80 hover:bg-gray-50 text-left text-sm text-gray-800">
-							<th className="p-2 border border-gray-300">Logo</th>
+						<tr className="bg-zinc-50 bg-opacity-80 hover:bg-zinc-50 text-left text-sm text-zinc-800">
+							<th className="p-2 border border-zinc-300">Logo</th>
 							<th
-								className="p-2 cursor-pointer border border-gray-300"
+								className="p-2 cursor-pointer border border-zinc-300"
 								onClick={() => requestSort("Name")}
 							>
 								<div className="flex justify-between items-center">
@@ -194,7 +194,7 @@ const Companies = () => {
 								</div>
 							</th>
 							<th
-								className="p-2 cursor-pointer border border-gray-300"
+								className="p-2 cursor-pointer border border-zinc-300"
 								onClick={() => requestSort("owner")}
 							>
 								<div className="flex justify-between items-center">
@@ -212,7 +212,7 @@ const Companies = () => {
 							</th>
 
 							<th
-								className="p-2 cursor-pointer border border-gray-300"
+								className="p-2 cursor-pointer border border-zinc-300"
 								onClick={() => requestSort("industry")}
 							>
 								<div className="flex justify-between items-center">
@@ -229,7 +229,7 @@ const Companies = () => {
 								</div>
 							</th>
 							<th
-								className="p-2 cursor-pointer border border-gray-300"
+								className="p-2 cursor-pointer border border-zinc-300"
 								onClick={() => requestSort("rating")}
 							>
 								<div className="flex justify-between items-center">
@@ -245,13 +245,13 @@ const Companies = () => {
 									)}
 								</div>
 							</th>
-							<th className="p-2 border border-gray-300">Location</th>
-							<th className="p-2 border border-gray-300">Actions</th>
+							<th className="p-2 border border-zinc-300">Location</th>
+							<th className="p-2 border border-zinc-300">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						{sortedCompanies.map((company, index) => (
-							<tr key={index} className="hover:bg-gray-50">
+							<tr key={index} className="hover:bg-zinc-50">
 								{[
 									<img
 										src={company.logo}
@@ -264,17 +264,17 @@ const Companies = () => {
 									company.rating,
 									company.location,
 								].map((item, idx) => (
-									<td key={idx} className="p-2 border border-gray-300">
+									<td key={idx} className="p-2 border border-zinc-300">
 										{item}
 									</td>
 								))}
-								<td className="md:py-4 py-6 px-2 flex items-center border-b border-gray-300">
+								<td className="md:py-4 py-6 px-2 flex items-center border-b border-zinc-300">
 									<FaEdit
-										className="cursor-pointer text-gray-400"
+										className="cursor-pointer text-zinc-400"
 										onClick={() => toast.info(`Edit ${company.name}`)}
 									/>
 									<FaTrash
-										className="cursor-pointer text-gray-400"
+										className="cursor-pointer text-zinc-400"
 										onClick={() => toast.info(`Delete ${company.name}`)}
 									/>
 								</td>
@@ -291,7 +291,7 @@ const Companies = () => {
 							<p className="text">Add New Company</p>
 							<button
 								onClick={() => setIsAddCompanyModalOpen(false)}
-								className="bg-gray-50 text-gray-800 p-1 rounded"
+								className="bg-zinc-50 text-zinc-800 p-1 rounded"
 							>
 								<X className="" size={16} />
 							</button>
@@ -352,7 +352,7 @@ const Companies = () => {
 						/>
 						<button
 							onClick={handleAddCompany}
-							className="mt-4 bg-gray-800 hover:bg-gray-900 text-white text-sm px-2 py-1 rounded"
+							className="mt-4 bg-zinc-800 hover:bg-zinc-900 text-white text-sm px-2 py-1 rounded"
 						>
 							Add Company
 						</button>

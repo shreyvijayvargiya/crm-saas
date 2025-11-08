@@ -363,7 +363,7 @@ const Invoices = () => {
 			case "Overdue":
 				return "bg-red-100 text-red-800";
 			default:
-				return "bg-gray-100 text-gray-800";
+				return "bg-zinc-100 text-zinc-800";
 		}
 	};
 
@@ -380,7 +380,7 @@ const Invoices = () => {
 				<p className="text-xl font-semibold">Recent Invoices</p>
 				<div className="flex md:justify-end justify-start items-center gap-2 flex-wrap">
 					<div className="flex gap-2 items-center border rounded px-2 py-1">
-						<Search size={18} color={colors.gray[500]} />
+						<Search size={18} color={colors.zinc[500]} />
 						<input
 							type="text"
 							placeholder="Search invoices..."
@@ -391,13 +391,13 @@ const Invoices = () => {
 					</div>
 					<button
 						onClick={handleAddInvoice}
-						className="bg-gray-800 hover:bg-gray-900 rounded text-white text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6"
+						className="bg-zinc-800 hover:bg-zinc-900 rounded text-white text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6"
 					>
 						Add Invoice
 					</button>
 					<button
 						onClick={handleExportCSV}
-						className="border-gray-900 border hover:text-white hover:bg-gray-900 rounded text-gray-800 px-4 py-2 transition-all duration-100 ease-in hover:px-6 text-xs flex items-center gap-1"
+						className="border-zinc-900 border hover:text-white hover:bg-zinc-900 rounded text-zinc-800 px-4 py-2 transition-all duration-100 ease-in hover:px-6 text-xs flex items-center gap-1"
 					>
 						<Download size={16} />
 						Export CSV
@@ -406,7 +406,7 @@ const Invoices = () => {
 			</div>
 			<div className="overflow-x-auto">
 				<table className="min-w-full bg-white border">
-					<thead className="hover:bg-gray-50">
+					<thead className="hover:bg-zinc-50">
 						<tr>
 							<th className="py-2 px-4 border-b text-left">
 								<input type="checkbox" />
@@ -419,9 +419,9 @@ const Invoices = () => {
 									<span className="ml-2">Invoice #</span>
 									{sortConfig?.key === "invoiceNumber" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.gray[500]} />
+											<ChevronUp size={16} color={colors.zinc[500]} />
 										) : (
-											<ChevronDown size={16} color={colors.gray[500]} />
+											<ChevronDown size={16} color={colors.zinc[500]} />
 										))}
 								</div>
 							</th>
@@ -433,9 +433,9 @@ const Invoices = () => {
 									<span className="ml-2">Client</span>
 									{sortConfig?.key === "client" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.gray[500]} />
+											<ChevronUp size={16} color={colors.zinc[500]} />
 										) : (
-											<ChevronDown size={16} color={colors.gray[500]} />
+											<ChevronDown size={16} color={colors.zinc[500]} />
 										))}
 								</div>
 							</th>
@@ -447,9 +447,9 @@ const Invoices = () => {
 									<span className="ml-2">Amount</span>
 									{sortConfig?.key === "amount" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.gray[500]} />
+											<ChevronUp size={16} color={colors.zinc[500]} />
 										) : (
-											<ChevronDown size={16} color={colors.gray[500]} />
+											<ChevronDown size={16} color={colors.zinc[500]} />
 										))}
 								</div>
 							</th>
@@ -461,9 +461,9 @@ const Invoices = () => {
 									<span className="ml-2">Status</span>
 									{sortConfig?.key === "status" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.gray[500]} />
+											<ChevronUp size={16} color={colors.zinc[500]} />
 										) : (
-											<ChevronDown size={16} color={colors.gray[500]} />
+											<ChevronDown size={16} color={colors.zinc[500]} />
 										))}
 								</div>
 							</th>
@@ -475,9 +475,9 @@ const Invoices = () => {
 									<span className="ml-2">Issue Date</span>
 									{sortConfig?.key === "issueDate" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.gray[500]} />
+											<ChevronUp size={16} color={colors.zinc[500]} />
 										) : (
-											<ChevronDown size={16} color={colors.gray[500]} />
+											<ChevronDown size={16} color={colors.zinc[500]} />
 										))}
 								</div>
 							</th>
@@ -489,9 +489,9 @@ const Invoices = () => {
 									<span className="ml-2">Due Date</span>
 									{sortConfig?.key === "dueDate" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.gray[500]} />
+											<ChevronUp size={16} color={colors.zinc[500]} />
 										) : (
-											<ChevronDown size={16} color={colors.gray[500]} />
+											<ChevronDown size={16} color={colors.zinc[500]} />
 										))}
 								</div>
 							</th>
@@ -500,20 +500,20 @@ const Invoices = () => {
 					</thead>
 					<tbody>
 						{filteredInvoices.map((invoice) => (
-							<tr key={invoice.id} className="hover:bg-gray-50">
+							<tr key={invoice.id} className="hover:bg-zinc-50">
 								<td className="py-2 px-4">
 									<input type="checkbox" className="mr-2" />
 								</td>
 								<td className="py-2 px-4">
 									<div className="flex items-center gap-2">
-										<FileText size={16} color={colors.gray[500]} />
+										<FileText size={16} color={colors.zinc[500]} />
 										<span className="font-medium">{invoice.invoiceNumber}</span>
 									</div>
 								</td>
 								<td className="py-2 px-4">
 									<div>
 										<div className="font-medium">{invoice.client}</div>
-										<div className="text-xs text-gray-500">
+										<div className="text-xs text-zinc-500">
 											{invoice.clientEmail}
 										</div>
 									</div>
@@ -535,13 +535,13 @@ const Invoices = () => {
 								<td className="py-1 px-4 flex items-center gap-2">
 									<Eye
 										size={16}
-										color={colors.gray[700]}
+										color={colors.zinc[700]}
 										className="cursor-pointer hover:text-blue-600"
 										onClick={() => handleViewInvoice(invoice)}
 									/>
 									<Pen
 										size={16}
-										color={colors.gray[700]}
+										color={colors.zinc[700]}
 										className="cursor-pointer hover:text-green-600"
 										onClick={() =>
 											toast.info(`Editing invoice ${invoice.invoiceNumber}`)
@@ -549,7 +549,7 @@ const Invoices = () => {
 									/>
 									<Download
 										size={16}
-										color={colors.gray[700]}
+										color={colors.zinc[700]}
 										className="cursor-pointer hover:text-purple-600"
 										onClick={() =>
 											toast.info(`Downloading invoice ${invoice.invoiceNumber}`)
@@ -557,7 +557,7 @@ const Invoices = () => {
 									/>
 									<Trash
 										size={16}
-										color={colors.gray[700]}
+										color={colors.zinc[700]}
 										className="cursor-pointer hover:text-red-600"
 										onClick={() => handleRemoveInvoice(invoice.id)}
 									/>
@@ -570,15 +570,15 @@ const Invoices = () => {
 			<div className="flex items-center justify-end my-4">
 				<ChevronLeft
 					size={18}
-					color={colors.gray[500]}
+					color={colors.zinc[500]}
 					className="cursor-pointer"
 					onClick={() => toast.info("Previous page")}
 				/>
 				{Array.from({ length: 5 }, (_, index) => (
 					<button
 						key={index}
-						className={`mx-1 px-3 py-1 rounded hover:bg-gray-50 ${
-							index === 0 ? "bg-gray-100 text-gray-800" : "text-gray-700"
+						className={`mx-1 px-3 py-1 rounded hover:bg-zinc-50 ${
+							index === 0 ? "bg-zinc-100 text-zinc-800" : "text-zinc-700"
 						}`}
 						onClick={() => toast.info(`Page ${index + 1}`)}
 					>
@@ -587,7 +587,7 @@ const Invoices = () => {
 				))}
 				<ChevronRight
 					size={18}
-					color={colors.gray[500]}
+					color={colors.zinc[500]}
 					className="cursor-pointer"
 					onClick={() => toast.info("Next page")}
 				/>
@@ -600,14 +600,14 @@ const Invoices = () => {
 							<h2 className="text-lg font-semibold">Add New Invoice</h2>
 							<button
 								onClick={handleModalClose}
-								className="text-gray-500 hover:text-gray-700"
+								className="text-zinc-500 hover:text-zinc-700"
 							>
 								×
 							</button>
 						</div>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 							<div>
-								<label className="block text-sm font-medium text-gray-700 mb-1">
+								<label className="block text-sm font-medium text-zinc-700 mb-1">
 									Invoice Number *
 								</label>
 								<input
@@ -616,11 +616,11 @@ const Invoices = () => {
 									placeholder="INV-2024-XXX"
 									value={newInvoice.invoiceNumber}
 									onChange={handleInputChange}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-gray-800"
+									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
 								/>
 							</div>
 							<div>
-								<label className="block text-sm font-medium text-gray-700 mb-1">
+								<label className="block text-sm font-medium text-zinc-700 mb-1">
 									Client Name *
 								</label>
 								<input
@@ -629,11 +629,11 @@ const Invoices = () => {
 									placeholder="Client Company"
 									value={newInvoice.client}
 									onChange={handleInputChange}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-gray-800"
+									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
 								/>
 							</div>
 							<div>
-								<label className="block text-sm font-medium text-gray-700 mb-1">
+								<label className="block text-sm font-medium text-zinc-700 mb-1">
 									Client Email
 								</label>
 								<input
@@ -642,18 +642,18 @@ const Invoices = () => {
 									placeholder="client@company.com"
 									value={newInvoice.clientEmail}
 									onChange={handleInputChange}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-gray-800"
+									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
 								/>
 							</div>
 							<div>
-								<label className="block text-sm font-medium text-gray-700 mb-1">
+								<label className="block text-sm font-medium text-zinc-700 mb-1">
 									Status
 								</label>
 								<select
 									name="status"
 									value={newInvoice.status}
 									onChange={handleInputChange}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-gray-800"
+									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
 								>
 									<option value="Pending">Pending</option>
 									<option value="Paid">Paid</option>
@@ -661,7 +661,7 @@ const Invoices = () => {
 								</select>
 							</div>
 							<div>
-								<label className="block text-sm font-medium text-gray-700 mb-1">
+								<label className="block text-sm font-medium text-zinc-700 mb-1">
 									Issue Date
 								</label>
 								<input
@@ -669,11 +669,11 @@ const Invoices = () => {
 									name="issueDate"
 									value={newInvoice.issueDate}
 									onChange={handleInputChange}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-gray-800"
+									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
 								/>
 							</div>
 							<div>
-								<label className="block text-sm font-medium text-gray-700 mb-1">
+								<label className="block text-sm font-medium text-zinc-700 mb-1">
 									Due Date
 								</label>
 								<input
@@ -681,11 +681,11 @@ const Invoices = () => {
 									name="dueDate"
 									value={newInvoice.dueDate}
 									onChange={handleInputChange}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-gray-800"
+									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
 								/>
 							</div>
 							<div className="md:col-span-2">
-								<label className="block text-sm font-medium text-gray-700 mb-1">
+								<label className="block text-sm font-medium text-zinc-700 mb-1">
 									Description
 								</label>
 								<textarea
@@ -694,20 +694,20 @@ const Invoices = () => {
 									value={newInvoice.description}
 									onChange={handleInputChange}
 									rows={3}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-gray-800"
+									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
 								/>
 							</div>
 						</div>
 
 						<div className="mt-6">
 							<div className="flex justify-between items-center mb-4">
-								<label className="block text-sm font-semibold text-gray-700">
+								<label className="block text-sm font-semibold text-zinc-700">
 									Invoice Items *
 								</label>
 								<button
 									type="button"
 									onClick={handleAddItem}
-									className="flex items-center gap-1 bg-gray-800 hover:bg-gray-900 text-white text-xs px-3 py-1.5 rounded transition-all duration-100 ease-in"
+									className="flex items-center gap-1 bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-3 py-1.5 rounded transition-all duration-100 ease-in"
 								>
 									<Plus size={14} />
 									Add Item
@@ -715,28 +715,28 @@ const Invoices = () => {
 							</div>
 							<div className="border rounded-lg overflow-hidden">
 								<table className="min-w-full">
-									<thead className="bg-gray-50">
+									<thead className="bg-zinc-50">
 										<tr>
-											<th className="py-2 px-3 text-left text-xs font-semibold text-gray-700 border-b">
+											<th className="py-2 px-3 text-left text-xs font-semibold text-zinc-700 border-b">
 												Item Name
 											</th>
-											<th className="py-2 px-3 text-center text-xs font-semibold text-gray-700 border-b">
+											<th className="py-2 px-3 text-center text-xs font-semibold text-zinc-700 border-b">
 												Quantity
 											</th>
-											<th className="py-2 px-3 text-right text-xs font-semibold text-gray-700 border-b">
+											<th className="py-2 px-3 text-right text-xs font-semibold text-zinc-700 border-b">
 												Price
 											</th>
-											<th className="py-2 px-3 text-right text-xs font-semibold text-gray-700 border-b">
+											<th className="py-2 px-3 text-right text-xs font-semibold text-zinc-700 border-b">
 												Total
 											</th>
-											<th className="py-2 px-3 text-center text-xs font-semibold text-gray-700 border-b">
+											<th className="py-2 px-3 text-center text-xs font-semibold text-zinc-700 border-b">
 												Action
 											</th>
 										</tr>
 									</thead>
 									<tbody>
 										{invoiceItems.map((item) => (
-											<tr key={item.id} className="border-b hover:bg-gray-50">
+											<tr key={item.id} className="border-b hover:bg-zinc-50">
 												<td className="py-2 px-3">
 													<input
 														type="text"
@@ -745,7 +745,7 @@ const Invoices = () => {
 														onChange={(e) =>
 															handleItemChange(item.id, "name", e.target.value)
 														}
-														className="border rounded px-2 py-1 w-full text-sm outline-none focus:ring-2 focus:ring-gray-800"
+														className="border rounded px-2 py-1 w-full text-sm outline-none focus:ring-2 focus:ring-zinc-800"
 													/>
 												</td>
 												<td className="py-2 px-3">
@@ -762,7 +762,7 @@ const Invoices = () => {
 														}
 														min="1"
 														step="1"
-														className="border rounded px-2 py-1 w-full text-sm outline-none focus:ring-2 focus:ring-gray-800 text-center"
+														className="border rounded px-2 py-1 w-full text-sm outline-none focus:ring-2 focus:ring-zinc-800 text-center"
 													/>
 												</td>
 												<td className="py-2 px-3">
@@ -775,10 +775,10 @@ const Invoices = () => {
 														}
 														min="0"
 														step="0.01"
-														className="border rounded px-2 py-1 w-full text-sm outline-none focus:ring-2 focus:ring-gray-800 text-right"
+														className="border rounded px-2 py-1 w-full text-sm outline-none focus:ring-2 focus:ring-zinc-800 text-right"
 													/>
 												</td>
-												<td className="py-2 px-3 text-right text-sm font-medium text-gray-800">
+												<td className="py-2 px-3 text-right text-sm font-medium text-zinc-800">
 													{formatCurrency(
 														(parseFloat(item.quantity) || 0) *
 															(parseFloat(item.price) || 0)
@@ -799,12 +799,12 @@ const Invoices = () => {
 								</table>
 							</div>
 							<div className="flex justify-end mt-4">
-								<div className="bg-gray-50 p-4 rounded-lg w-full md:w-80">
+								<div className="bg-zinc-50 p-4 rounded-lg w-full md:w-80">
 									<div className="flex justify-between items-center">
-										<span className="text-base font-semibold text-gray-800">
+										<span className="text-base font-semibold text-zinc-800">
 											Total Amount:
 										</span>
-										<span className="text-xl font-bold text-gray-800">
+										<span className="text-xl font-bold text-zinc-800">
 											{formatCurrency(calculateTotal())}
 										</span>
 									</div>
@@ -815,13 +815,13 @@ const Invoices = () => {
 						<div className="flex justify-end gap-2 mt-6">
 							<button
 								onClick={handleModalClose}
-								className="bg-gray-100 hover:bg-gray-200 text-gray-800 rounded px-4 py-2 text-sm transition-all duration-100 ease-in"
+								className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 rounded px-4 py-2 text-sm transition-all duration-100 ease-in"
 							>
 								Cancel
 							</button>
 							<button
 								onClick={handleSubmit}
-								className="bg-gray-800 hover:bg-gray-900 text-white rounded px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6"
+								className="bg-zinc-800 hover:bg-zinc-900 text-white rounded px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6"
 							>
 								Save
 							</button>
@@ -835,16 +835,16 @@ const Invoices = () => {
 					<div className="bg-white p-8 rounded shadow-lg max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
 						<div className="flex justify-between items-start mb-6">
 							<div>
-								<h2 className="text-2xl font-bold text-gray-800">
+								<h2 className="text-2xl font-bold text-zinc-800">
 									Invoice Details
 								</h2>
-								<p className="text-sm text-gray-500 mt-1">
+								<p className="text-sm text-zinc-500 mt-1">
 									{selectedInvoice.invoiceNumber}
 								</p>
 							</div>
 							<button
 								onClick={handleCloseViewModal}
-								className="text-gray-500 hover:text-gray-700 p-1 rounded hover:bg-gray-100"
+								className="text-zinc-500 hover:text-zinc-700 p-1 rounded hover:bg-zinc-100"
 							>
 								<X size={24} />
 							</button>
@@ -852,25 +852,25 @@ const Invoices = () => {
 
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 							<div>
-								<h3 className="text-sm font-semibold text-gray-700 mb-2">
+								<h3 className="text-sm font-semibold text-zinc-700 mb-2">
 									Bill To
 								</h3>
-								<div className="bg-gray-50 p-4 rounded">
-									<p className="font-medium text-gray-800">
+								<div className="bg-zinc-50 p-4 rounded">
+									<p className="font-medium text-zinc-800">
 										{selectedInvoice.client}
 									</p>
-									<p className="text-sm text-gray-600 mt-1">
+									<p className="text-sm text-zinc-600 mt-1">
 										{selectedInvoice.clientEmail}
 									</p>
 								</div>
 							</div>
 							<div>
-								<h3 className="text-sm font-semibold text-gray-700 mb-2">
+								<h3 className="text-sm font-semibold text-zinc-700 mb-2">
 									Invoice Information
 								</h3>
-								<div className="bg-gray-50 p-4 rounded space-y-2">
+								<div className="bg-zinc-50 p-4 rounded space-y-2">
 									<div className="flex justify-between">
-										<span className="text-sm text-gray-600">Status:</span>
+										<span className="text-sm text-zinc-600">Status:</span>
 										<span
 											className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(
 												selectedInvoice.status
@@ -880,14 +880,14 @@ const Invoices = () => {
 										</span>
 									</div>
 									<div className="flex justify-between">
-										<span className="text-sm text-gray-600">Issue Date:</span>
-										<span className="text-sm font-medium text-gray-800">
+										<span className="text-sm text-zinc-600">Issue Date:</span>
+										<span className="text-sm font-medium text-zinc-800">
 											{selectedInvoice.issueDate}
 										</span>
 									</div>
 									<div className="flex justify-between">
-										<span className="text-sm text-gray-600">Due Date:</span>
-										<span className="text-sm font-medium text-gray-800">
+										<span className="text-sm text-zinc-600">Due Date:</span>
+										<span className="text-sm font-medium text-zinc-800">
 											{selectedInvoice.dueDate}
 										</span>
 									</div>
@@ -897,33 +897,33 @@ const Invoices = () => {
 
 						{selectedInvoice.description && (
 							<div className="mb-6">
-								<h3 className="text-sm font-semibold text-gray-700 mb-2">
+								<h3 className="text-sm font-semibold text-zinc-700 mb-2">
 									Description
 								</h3>
-								<p className="text-sm text-gray-600 bg-gray-50 p-4 rounded">
+								<p className="text-sm text-zinc-600 bg-zinc-50 p-4 rounded">
 									{selectedInvoice.description}
 								</p>
 							</div>
 						)}
 
 						<div className="mb-6">
-							<h3 className="text-sm font-semibold text-gray-700 mb-4">
+							<h3 className="text-sm font-semibold text-zinc-700 mb-4">
 								Items
 							</h3>
 							<div className="border rounded-lg overflow-hidden">
 								<table className="min-w-full">
-									<thead className="bg-gray-50">
+									<thead className="bg-zinc-50">
 										<tr>
-											<th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">
+											<th className="py-3 px-4 text-left text-sm font-semibold text-zinc-700 border-b">
 												Item
 											</th>
-											<th className="py-3 px-4 text-center text-sm font-semibold text-gray-700 border-b">
+											<th className="py-3 px-4 text-center text-sm font-semibold text-zinc-700 border-b">
 												Quantity
 											</th>
-											<th className="py-3 px-4 text-right text-sm font-semibold text-gray-700 border-b">
+											<th className="py-3 px-4 text-right text-sm font-semibold text-zinc-700 border-b">
 												Price
 											</th>
-											<th className="py-3 px-4 text-right text-sm font-semibold text-gray-700 border-b">
+											<th className="py-3 px-4 text-right text-sm font-semibold text-zinc-700 border-b">
 												Total
 											</th>
 										</tr>
@@ -931,16 +931,16 @@ const Invoices = () => {
 									<tbody>
 										{selectedInvoice.items.map((item, index) => (
 											<tr key={index} className="border-b">
-												<td className="py-3 px-4 text-sm text-gray-800">
+												<td className="py-3 px-4 text-sm text-zinc-800">
 													{item.name}
 												</td>
-												<td className="py-3 px-4 text-sm text-gray-600 text-center">
+												<td className="py-3 px-4 text-sm text-zinc-600 text-center">
 													{item.quantity}
 												</td>
-												<td className="py-3 px-4 text-sm text-gray-600 text-right">
+												<td className="py-3 px-4 text-sm text-zinc-600 text-right">
 													{formatCurrency(item.price)}
 												</td>
-												<td className="py-3 px-4 text-sm font-semibold text-gray-800 text-right">
+												<td className="py-3 px-4 text-sm font-semibold text-zinc-800 text-right">
 													{formatCurrency(item.quantity * item.price)}
 												</td>
 											</tr>
@@ -951,12 +951,12 @@ const Invoices = () => {
 						</div>
 
 						<div className="flex justify-end">
-							<div className="bg-gray-50 p-6 rounded-lg w-full md:w-96">
+							<div className="bg-zinc-50 p-6 rounded-lg w-full md:w-96">
 								<div className="flex justify-between items-center mb-2">
-									<span className="text-lg font-semibold text-gray-800">
+									<span className="text-lg font-semibold text-zinc-800">
 										Total Amount:
 									</span>
-									<span className="text-2xl font-bold text-gray-800">
+									<span className="text-2xl font-bold text-zinc-800">
 										{formatCurrency(selectedInvoice.amount)}
 									</span>
 								</div>
@@ -966,7 +966,7 @@ const Invoices = () => {
 						<div className="flex justify-end gap-2 mt-6">
 							<button
 								onClick={handleCloseViewModal}
-								className="bg-gray-100 hover:bg-gray-200 text-gray-800 rounded px-4 py-2 text-sm transition-all duration-100 ease-in"
+								className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 rounded px-4 py-2 text-sm transition-all duration-100 ease-in"
 							>
 								Close
 							</button>
@@ -976,7 +976,7 @@ const Invoices = () => {
 										`Downloading invoice ${selectedInvoice.invoiceNumber}`
 									);
 								}}
-								className="bg-gray-800 hover:bg-gray-900 text-white rounded px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6 flex items-center gap-2"
+								className="bg-zinc-800 hover:bg-zinc-900 text-white rounded px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6 flex items-center gap-2"
 							>
 								<Download size={16} />
 								Download PDF

@@ -151,26 +151,26 @@ const Integrations = () => {
 				<p className="text-xl font-bold">Integrations</p>
 				<button
 					onClick={() => setIsModalOpen(true)}
-					className="bg-gray-800 hover:bg-gray-900 text-white p-2 text-xs rounded flex items-center"
+					className="bg-zinc-800 hover:bg-zinc-900 text-white p-2 text-xs rounded flex items-center"
 				>
 					<PlusCircle className="mr-1" size={16} /> Create Integration
 				</button>
 			</div>
 			<div className="overflow-x-auto">
-				<table className="min-w-full border-collapse border border-gray-300 mt-4">
+				<table className="min-w-full border-collapse border border-zinc-300 mt-4">
 					<thead>
-						<tr className="bg-gray-100 text-left">
-							<th className="border border-gray-300 p-2">Status</th>
-							<th className="border border-gray-300 p-2">Integration</th>
-							<th className="border border-gray-300 p-2">Tag</th>
-							<th className="border border-gray-300 p-2">Last updated</th>
-							<th className="border border-gray-300 p-2">Actions</th>
+						<tr className="bg-zinc-100 text-left">
+							<th className="border border-zinc-300 p-2">Status</th>
+							<th className="border border-zinc-300 p-2">Integration</th>
+							<th className="border border-zinc-300 p-2">Tag</th>
+							<th className="border border-zinc-300 p-2">Last updated</th>
+							<th className="border border-zinc-300 p-2">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						{sortedIntegrations.map((integration) => (
-							<tr key={integration.id} className="hover:bg-gray-50">
-								<td className="border border-gray-300 p-2">
+							<tr key={integration.id} className="hover:bg-zinc-50">
+								<td className="border border-zinc-300 p-2">
 									<input
 										type="checkbox"
 										checked={integration.enabled}
@@ -179,23 +179,23 @@ const Integrations = () => {
 										style={{ accentColor: "#4A5568" }}
 									/>
 								</td>
-								<td className="border border-gray-300 p-2">
+								<td className="border border-zinc-300 p-2">
 									{integration.name}
 								</td>
-								<td className="border border-gray-300 p-2">
+								<td className="border border-zinc-300 p-2">
 									{integration.tag}
 								</td>
-								<td className="border border-gray-300 p-2">
+								<td className="border border-zinc-300 p-2">
 									{integration.lastUpdated}
 								</td>
-								<td className="border-b border-gray-300 px-2 py-4 flex gap-2">
+								<td className="border-b border-zinc-300 px-2 py-4 flex gap-2">
 									<Pencil
-										className="cursor-pointer text-gray-800"
+										className="cursor-pointer text-zinc-800"
 										size={18}
 										onClick={() => handleEditIntegration(integration)}
 									/>
 									<Trash
-										className="cursor-pointer text-gray-800"
+										className="cursor-pointer text-zinc-800"
 										size={18}
 										onClick={() => handleDeleteIntegration(integration.id)}
 									/>
@@ -213,7 +213,7 @@ const Integrations = () => {
 							<p className="text-lg">Add New Integration</p>
 							<button
 								onClick={() => setIsModalOpen(false)}
-								className="bg-gray-50 text-gray-800 p-1 rounded"
+								className="bg-zinc-50 text-zinc-800 p-1 rounded"
 							>
 								<X size={16} />
 							</button>
@@ -261,7 +261,7 @@ const Integrations = () => {
 						</label>
 						<button
 							onClick={handleAddIntegration}
-							className="mt-4 bg-gray-800 hover:bg-gray-900 text-white text-sm px-2 py-1 rounded"
+							className="mt-4 bg-zinc-800 hover:bg-zinc-900 text-white text-sm px-2 py-1 rounded"
 						>
 							Submit
 						</button>

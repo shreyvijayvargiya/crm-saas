@@ -161,7 +161,7 @@ const Tasks = () => {
 			<div className="flex items-center justify-between my-4 px-4">
 				<p>Task Kanban board</p>
 				<button
-					className="bg-gray-800 hover:bg-gray-900 rounded text-white text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6"
+					className="bg-zinc-800 hover:bg-zinc-900 rounded text-white text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6"
 					onClick={handleAddNewTask}
 				>
 					Add new
@@ -174,7 +174,7 @@ const Tasks = () => {
 						<div className="flex justify-between items-center">
 							<p>Add new task</p>
 							<span
-								className="close cursor-pointer text-gray-500 hover:text-gray-800"
+								className="close cursor-pointer text-zinc-500 hover:text-zinc-800"
 								onClick={handleCloseModal}
 							>
 								&times;
@@ -189,7 +189,7 @@ const Tasks = () => {
 									setNewTask({ ...newTask, name: e.target.value })
 								}
 								required
-								className="border border-gray-300 rounded px-2 py-1 hover:bg-gray-50 w-full mb-4 outline-none"
+								className="border border-zinc-300 rounded px-2 py-1 hover:bg-zinc-50 w-full mb-4 outline-none"
 							/>
 							<input
 								type="text"
@@ -199,11 +199,11 @@ const Tasks = () => {
 									setNewTask({ ...newTask, icon: e.target.value })
 								}
 								required
-								className="border border-gray-300 rounded px-2 py-1 hover:bg-gray-50 w-full mb-4 outline-none"
+								className="border border-zinc-300 rounded px-2 py-1 hover:bg-zinc-50 w-full mb-4 outline-none"
 							/>
 							<button
 								type="submit"
-								className="bg-gray-800 hover:bg-gray-900 rounded text-white text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6"
+								className="bg-zinc-800 hover:bg-zinc-900 rounded text-white text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6"
 							>
 								Submit
 							</button>
@@ -220,12 +220,12 @@ const Tasks = () => {
 						onDrop={(event) => handleDrop(event, section.id)}
 						onDragOver={handleDragOver}
 					>
-						<p className="font-semibold text-lg text-gray-800 mb-4 flex justify-between items-center">
+						<p className="font-semibold text-lg text-zinc-800 mb-4 flex justify-between items-center">
 							{section.name}
-							<span className="text text-gray-600">{section.tasks.length}</span>
+							<span className="text text-zinc-600">{section.tasks.length}</span>
 						</p>
 						{section.tasks.map((task) => {
-							let bgColor = "bg-gray-50"; // Default color
+							let bgColor = "bg-zinc-50"; // Default color
 							if (section.name === "To Do") {
 								bgColor = "bg-blue-50";
 							} else if (section.name === "In Progress") {
@@ -236,7 +236,7 @@ const Tasks = () => {
 							return (
 								<div
 									key={task.id}
-									className={`border border-gray-100 rounded-xl p-3 my-2 ${bgColor} bg-opacity-50 transition-all duration-200 ease-in-out hover:shadow-xl hover:${bgColor}`}
+									className={`border border-zinc-100 rounded-xl p-3 my-2 ${bgColor} bg-opacity-50 transition-all duration-200 ease-in-out hover:shadow-xl hover:${bgColor}`}
 									draggable
 									onDragStart={(event) => handleDragStart(event, task)}
 									onDragEnd={handleDragEnd}
@@ -244,10 +244,10 @@ const Tasks = () => {
 									<div className="flex items-center">
 										<span className="mr-2">{task.icon}</span>
 										<div className="flex-1">
-											<div className="font-medium text-gray-900">
+											<div className="font-medium text-zinc-900">
 												{task.name}
 											</div>
-											<div className="text-sm text-gray-600">
+											<div className="text-sm text-zinc-600">
 												Status: {task.progress}
 											</div>
 										</div>

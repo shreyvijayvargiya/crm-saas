@@ -7,3 +7,5 @@ export { default as Integrations } from "./Integrations";
 export { default as Tasks } from "./Tasks";
 export { default as Settings } from "./Settings";
 export { default as Invoices } from "./Invoices";
+export { default as Webhooks } from "./Webhooks";
+export { default as ApiKeys } from "./ApiKeys";
