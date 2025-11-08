@@ -141,14 +141,14 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 			<div className="relative flex justify-start items-center">
 				{open ? (
 					<PanelRightClose
-						size={24}
-						className="mr-2 cursor-pointer hover:bg-zinc-50 rounded text-zinc-500"
+						size={18}
+						className="mr-2 cursor-pointer hover:bg-zinc-50 rounded text-zinc-800"
 						onClick={() => setOpen(false)}
 					/>
 				) : (
 					<PanelLeftClose
-						className="mr-2 cursor-pointer hover:bg-zinc-50 rounded text-zinc-500"
-						size={24}
+						className="mr-2 cursor-pointer hover:bg-zinc-50 rounded text-zinc-800"
+						size={18}
 						onClick={() => {
 							setOpen(true);
 							setDrawerOpen(true);
@@ -159,15 +159,15 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 					className="flex hover:bg-zinc-50 rounded-xl mx-2 items-center group border border-zinc-100 h-8 cursor-pointer"
 					onClick={handleSearchClick}
 				>
-					<Search className="text-zinc-800 mx-2" size={16} />
+					<Search className="text-zinc-400 mx-2" size={16} />
 					<input
 						ref={searchInputRef}
 						type="text"
 						placeholder="Search..."
-						className="outline-none focus:outline-none group-hover:bg-zinc-50 cursor-pointer"
+						className="outline-none text-sm focus:outline-none group-hover:bg-zinc-50 cursor-pointer"
 						readOnly
 					/>
-					<span className="text-xs text-zinc-400 italic mr-2">CMD + K</span>
+					<span className="text-xs text-zinc-200 italic mr-2">CMD + K</span>
 				</div>
 			</div>
 			<div className="flex items-center justify-between gap-2">

@@ -33,7 +33,7 @@ const LayoutWrapper = ({ children }) => {
 				/>
 			</div>
 
-			<main className="overflow-y-auto bg-white rounded-2xl mx-2 w-full max-h-screen hidescrollbar">
+			<main className="overflow-y-auto bg-white border border-zinc-200 rounded-2xl mx-2 w-full max-h-screen hidescrollbar">
 				<Navbar
 					open={open}
 					setOpen={setOpen}
@@ -43,17 +43,6 @@ const LayoutWrapper = ({ children }) => {
 				<div className="md:px-10">{children}</div>
 			</main>
 			<ToastContainer position="bottom-right" />
-			<div className="w-fit h-fit fixed bottom-10 right-10 bg-white rounded-xl shadow-xl p-4 border border-zinc-200">
-				<p>Download Unlock lifetime access to entire React CRM template</p>
-				<a
-					href="https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template?layout=profile"
-					target="_blank"
-					rel="noopener noreferrer"
-					className="p-2 rounded-xl bg-zinc-900 hover:bg-black text-white cursor-pointer"
-				>
-					Download Template
-				</a>
-			</div>
 		</div>
 	);
 };
