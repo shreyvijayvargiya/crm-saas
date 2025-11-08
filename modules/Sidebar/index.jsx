@@ -47,10 +47,16 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 		},
 		{
 			id: 8,
+			label: "Invoices",
+			route: "/invoices",
+			icon: "FileText",
+		},
+		{
+			id: 9,
 			label: "Settings",
 			route: "/settings",
 			icon: "Settings",
-		}
+		},
 	];
 
 	return (
@@ -83,7 +89,7 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 									<a
 										key={item.id}
 										href={item.route}
-										className="p-2 hover:bg-gray-50 hover:text-gray-800 transition-all duration-100 ease-in rounded-xl hover:bg-opacity-80 my-2 flex items-center gap-2"
+										className="p-2 hover:bg-gray-50 hover:text-gray-800 transition-all duration-100 ease-in rounded-xl hover:bg-opacity-80 flex items-center gap-2"
 									>
 										{Icon ? <Icon className="w-5 h-5 text-gray-800" /> : null}{" "}
 										{open ? item.label : null}
