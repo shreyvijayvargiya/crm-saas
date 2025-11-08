@@ -90,7 +90,7 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 									<lucideIcons.ChevronUp className="text-zinc-500 group-hover:rotate-180 transition-all duration-200 ease-in w-3 h-3" />
 									<lucideIcons.ChevronDown className="text-zinc-500 group-hover:rotate-180 transition-all duration-200 ease-in w-3 h-3" />
 								</div>
-								<div className="absolute top-10 left-full ml-1 w-48 h-fit bg-white text-xs rounded-xl border border-zinc-100 px-1 py-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+								<div className="absolute top-10 left-0 right-0 w-60 h-fit bg-white text-xs rounded-xl border border-zinc-100 px-1 py-2 opacity-0 transition-opacity duration-200 invisible group-hover:visible group-hover:opacity-100 z-20">
 									<p className="text-xs font-medium p-1">Projects</p>
 									<div className="flex flex-col gap-1 my-2">
 										<div className="flex items-center gap-2 hover:bg-zinc-50 cursor-pointer rounded p-1">
