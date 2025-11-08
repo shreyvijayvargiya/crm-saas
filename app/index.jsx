@@ -5,3 +5,4 @@ export { default as Sales } from "./Sales";
 export { default as Companies } from "./Companies";
 export { default as Integrations } from "./Integrations";
 export { default as Tasks } from "./Tasks";
+export { default as Settings } from "./Settings";

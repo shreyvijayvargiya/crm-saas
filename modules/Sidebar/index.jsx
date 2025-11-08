@@ -45,6 +45,12 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 			route: "/companies",
 			icon: "Users",
 		},
+		{
+			id: 8,
+			label: "Settings",
+			route: "/settings",
+			icon: "Settings",
+		}
 	];
 
 	return (
