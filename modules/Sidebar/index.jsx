@@ -64,7 +64,25 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 			icon: "Key",
 		},
 		{
-			id: 10,
+			id: 11,
+			label: "Payments",
+			route: "/payments",
+			icon: "CreditCard",
+		},
+		{
+			id: 12,
+			label: "Projects",
+			route: "/projects",
+			icon: "FolderClosed",
+		},
+		{
+			id: 13,
+			label: "CMS",
+			route: "/cms",
+			icon: "FileText",
+		},
+		{
+			id: 14,
 			label: "Settings",
 			route: "/settings",
 			icon: "Settings",
@@ -131,7 +149,7 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 									<a
 										key={item.id}
 										href={item.route}
-										className="p-1 hover:bg-zinc-50 text-zinc-600 hover:text-zinc-800 transition-all duration-100 ease-in rounded-md flex items-center gap-2 text-sm"
+										className="p-1 my-0.5 hover:bg-zinc-50 text-zinc-600 hover:text-zinc-800 transition-all duration-100 ease-in rounded-md flex items-center gap-2 text-sm"
 									>
 										{Icon ? <Icon className="w-4 h-4 text-zinc-600" /> : null}{" "}
 										{open ? item.label : null}

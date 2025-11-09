@@ -216,7 +216,7 @@ const Tasks = () => {
 				{taskSections.map((section) => (
 					<div
 						key={section.id}
-						className="py-4 w-full bg-white shadow-lg rounded-xl p-4 border hover:px-5 transition-all duration-100 ease-in"
+						className="py-4 w-full bg-white rounded-xl p-4 border hover:px-5 transition-all duration-100 ease-in"
 						onDrop={(event) => handleDrop(event, section.id)}
 						onDragOver={handleDragOver}
 					>
@@ -236,7 +236,7 @@ const Tasks = () => {
 							return (
 								<div
 									key={task.id}
-									className={`border border-zinc-100 rounded-xl p-3 my-2 ${bgColor} bg-opacity-50 transition-all duration-200 ease-in-out hover:shadow-xl hover:${bgColor}`}
+									className={`border border-zinc-100 rounded-xl p-3 my-2 ${bgColor} bg-opacity-50 transition-all duration-200 ease-in-out hover:shadow hover:${bgColor}`}
 									draggable
 									onDragStart={(event) => handleDragStart(event, task)}
 									onDragEnd={handleDragEnd}

@@ -9,3 +9,6 @@ export { default as Settings } from "./Settings";
 export { default as Invoices } from "./Invoices";
 export { default as Webhooks } from "./Webhooks";
 export { default as ApiKeys } from "./ApiKeys";
+export { default as Payments } from "./Payments";
+export { default as Projects } from "./Projects";
+export { default as ContentManagementSystem } from "./Content Management System";
