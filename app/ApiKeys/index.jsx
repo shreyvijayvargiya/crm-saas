@@ -16,9 +16,13 @@ import {
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
 import { toast } from "react-toastify";
-import colors from "tailwindcss/colors";
+import { useTheme } from "../../utils/useTheme";
+import { getFocusRingClass } from "../../utils/theme";
 
 const ApiKeys = () => {
+	// Theme hook
+	const { theme, colorScheme, colors, scheme } = useTheme();
+
 	const initialApiKeys = [
 		{
 			id: "ak_001",
@@ -176,11 +180,15 @@ const ApiKeys = () => {
 	};
 
 	return (
-		<div className="p-6 overflow-y-scroll max-h-screen hidescrollbar">
+		<div
+			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar ${colors.background} transition-colors`}
+		>
 			<div className="flex justify-between items-center flex-wrap my-4">
 				<div>
-					<h1 className="text-2xl font-semibold text-zinc-800">API Keys</h1>
-					<p className="text-sm text-zinc-600 mt-1">
+					<h1 className={`text-2xl font-semibold ${colors.foreground}`}>
+						API Keys
+					</h1>
+					<p className={`text-sm ${colors.textSecondary} mt-1`}>
 						Manage and monitor your API keys.
 					</p>
 				</div>
@@ -188,249 +196,358 @@ const ApiKeys = () => {
 
 			{/* Stats Grid */}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-				<div className="bg-white border border-zinc-100 rounded-xl p-6 hover:shadow-md transition-shadow">
-					<div className="flex items-center justify-between">
+				{/* Total Usage Card */}
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-shadow`}
+				>
+					{/* Background Gradient Shapes */}
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl"></div>
+					<div className="absolute -bottom-10 -left-10 w-24 h-24 bg-blue-400/20 rounded-full blur-2xl"></div>
+					<div className="relative z-10 flex items-center justify-between">
 						<div>
-							<p className="text-sm text-zinc-600 mb-1">Total Usage</p>
-							<p className="text-2xl font-bold text-zinc-800">
+							<p className={`text-sm ${colors.mutedForeground} mb-1`}>
+								Total Usage
+							</p>
+							<p className={`text-2xl font-bold ${colors.foreground}`}>
 								{stats.totalUsage}
 							</p>
 						</div>
-						<div className="bg-blue-100 p-3 rounded-xl">
-							<Activity size={24} color={colors.blue[600]} />
+						<div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-sm border border-blue-500/20">
+							<Activity
+								size={24}
+								className="text-blue-600 dark:text-blue-400"
+							/>
 						</div>
 					</div>
 				</div>
 
-				<div className="bg-white border border-zinc-100 rounded-xl p-6 hover:shadow-md transition-shadow">
-					<div className="flex items-center justify-between">
+				{/* Plans Card */}
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-shadow`}
+				>
+					{/* Background Gradient Shapes */}
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl"></div>
+					<div className="absolute -bottom-10 -left-10 w-24 h-24 bg-purple-400/20 rounded-full blur-2xl"></div>
+					<div className="relative z-10 flex items-center justify-between">
 						<div>
-							<p className="text-sm text-zinc-600 mb-1">Plans</p>
-							<p className="text-2xl font-bold text-zinc-800">{stats.plans}</p>
+							<p className={`text-sm ${colors.mutedForeground} mb-1`}>Plans</p>
+							<p className={`text-2xl font-bold ${colors.foreground}`}>
+								{stats.plans}
+							</p>
 						</div>
-						<div className="bg-purple-100 p-3 rounded-xl">
-							<CreditCard size={24} color={colors.purple[600]} />
+						<div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 backdrop-blur-sm border border-purple-500/20">
+							<CreditCard
+								size={24}
+								className="text-purple-600 dark:text-purple-400"
+							/>
 						</div>
 					</div>
 				</div>
 
-				<div className="bg-white border border-zinc-100 rounded-xl p-6 hover:shadow-md transition-shadow">
-					<div className="flex items-center justify-between">
+				{/* Conversions Card */}
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-shadow`}
+				>
+					{/* Background Gradient Shapes */}
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-green-500/20 rounded-full blur-3xl"></div>
+					<div className="absolute -bottom-10 -left-10 w-24 h-24 bg-green-400/20 rounded-full blur-2xl"></div>
+					<div className="relative z-10 flex items-center justify-between">
 						<div>
-							<p className="text-sm text-zinc-600 mb-1">Conversions</p>
-							<p className="text-2xl font-bold text-zinc-800">
+							<p className={`text-sm ${colors.mutedForeground} mb-1`}>
+								Conversions
+							</p>
+							<p className={`text-2xl font-bold ${colors.foreground}`}>
 								{stats.conversions}
 							</p>
 						</div>
-						<div className="bg-green-100 p-3 rounded-xl">
-							<TrendingUp size={24} color={colors.green[600]} />
+						<div className="p-3 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-sm border border-green-500/20">
+							<TrendingUp
+								size={24}
+								className="text-green-600 dark:text-green-400"
+							/>
 						</div>
 					</div>
 				</div>
 
-				<div className="bg-white border border-zinc-100 rounded-xl p-6 hover:shadow-md transition-shadow">
-					<div className="flex items-center justify-between">
+				{/* API Calls Card */}
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-shadow`}
+				>
+					{/* Background Gradient Shapes */}
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-orange-500/20 rounded-full blur-3xl"></div>
+					<div className="absolute -bottom-10 -left-10 w-24 h-24 bg-orange-400/20 rounded-full blur-2xl"></div>
+					<div className="relative z-10 flex items-center justify-between">
 						<div>
-							<p className="text-sm text-zinc-600 mb-1">API Calls</p>
-							<p className="text-2xl font-bold text-zinc-800">
+							<p className={`text-sm ${colors.mutedForeground} mb-1`}>
+								API Calls
+							</p>
+							<p className={`text-2xl font-bold ${colors.foreground}`}>
 								{stats.apiCalls}
 							</p>
 						</div>
-						<div className="bg-orange-100 p-3 rounded-xl">
-							<Zap size={24} color={colors.orange[600]} />
+						<div className="p-3 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 backdrop-blur-sm border border-orange-500/20">
+							<Zap size={24} className="text-orange-600 dark:text-orange-400" />
 						</div>
 					</div>
 				</div>
 			</div>
 
-			{/* Table Section */}
-			<div className="flex justify-between items-center flex-wrap my-4">
-				<div className="flex md:justify-start justify-start items-center gap-2 flex-wrap">
-					<div className="flex gap-2 items-center border border-zinc-100 rounded-xl px-2 py-1">
-						<Search size={18} color={colors.zinc[500]} />
-						<input
-							type="text"
-							placeholder="Search API keys..."
-							className="outline-none"
-							value={searchTerm}
-							onChange={(e) => setSearchTerm(e.target.value)}
-						/>
+			{/* API Keys Table - Improved */}
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
+			>
+				{/* Table Header */}
+				<div
+					className={`flex flex-col md:flex-row items-start md:items-center justify-between px-6 py-4 border-b ${colors.border} gap-4`}
+				>
+					<div className="flex-1">
+						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
+							API Keys
+						</h2>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							View and manage all your API keys
+						</p>
+					</div>
+					<div className="flex items-center gap-4 flex-wrap w-full md:w-auto">
+						{/* Search */}
+						<div
+							className={`relative flex gap-2 items-center border ${colors.border} rounded-xl px-3 py-2 ${colors.card} w-full md:w-auto`}
+						>
+							<Search className={colors.textSecondary} size={18} />
+							<input
+								type="text"
+								placeholder="Search API keys..."
+								className={`outline-none flex-1 ${colors.background} ${
+									colors.foreground
+								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+									colorScheme
+								)}`}
+								value={searchTerm}
+								onChange={(e) => setSearchTerm(e.target.value)}
+							/>
+						</div>
+						{/* Add API Key Button */}
+						<button
+							onClick={handleAddApiKey}
+							className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-sm px-4 py-2 transition-all duration-200 font-medium flex items-center gap-2`}
+						>
+							<Plus size={16} />
+							Add API Key
+						</button>
 					</div>
 				</div>
-				<button
-					onClick={handleAddApiKey}
-					className="bg-zinc-800 hover:bg-zinc-900 rounded-xl text-white text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6 flex items-center gap-2"
-				>
-					<Plus size={16} />
-					Add API Key
-				</button>
-			</div>
 
-			<div className="">
-				<table className="min-w-full border border-zinc-100 rounded">
-					<thead className="hover:bg-zinc-50">
-						<tr>
-							<th className="py-2 px-4 border-b text-left">
-								<input type="checkbox" />
-							</th>
-							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
-								onClick={() => requestSort("name")}
-							>
-								<div className="flex justify-between items-center">
-									<span className="ml-2">Name</span>
-									{sortConfig?.key === "name" &&
-										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
-										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
-										))}
-								</div>
-							</th>
-							<th className="py-2 px-4 border-b text-left">API Key</th>
-							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
-								onClick={() => requestSort("createdAt")}
-							>
-								<div className="flex justify-between items-center">
-									<span className="ml-2">Created At</span>
-									{sortConfig?.key === "createdAt" &&
-										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
-										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
-										))}
-								</div>
-							</th>
-							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
-								onClick={() => requestSort("updatedAt")}
-							>
-								<div className="flex justify-between items-center">
-									<span className="ml-2">Updated At</span>
-									{sortConfig?.key === "updatedAt" &&
-										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
-										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
-										))}
-								</div>
-							</th>
-							<th className="py-2 px-4 border-b text-left">Status</th>
-							<th className="py-2 px-4 border-b text-left">Revoke</th>
-						</tr>
-					</thead>
-					<tbody>
-						{filteredApiKeys.map((apiKey) => (
-							<tr key={apiKey.id} className="hover:bg-zinc-50">
-								<td className="py-2 px-4">
-									<input type="checkbox" className="mr-2" />
-								</td>
-								<td className="py-2 px-4">
+				{/* Table */}
+				<div className="overflow-x-auto">
+					<table className="w-full">
+						<thead className={`${colors.muted} border-b ${colors.border}`}>
+							<tr>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
+									<input
+										type="checkbox"
+										className={getFocusRingClass(colorScheme)}
+									/>
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
+									onClick={() => requestSort("name")}
+								>
 									<div className="flex items-center gap-2">
-										<Key size={16} color={colors.zinc[500]} />
-										<span className="font-medium text-zinc-800">
-											{apiKey.name}
-										</span>
+										Name
+										{sortConfig?.key === "name" && (
+											<>
+												{sortConfig.direction === "ascending" ? (
+													<ChevronUp className="w-4 h-4" />
+												) : (
+													<ChevronDown className="w-4 h-4" />
+												)}
+											</>
+										)}
 									</div>
-								</td>
-								<td className="py-2 px-4">
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
+									API Key
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
+									onClick={() => requestSort("createdAt")}
+								>
 									<div className="flex items-center gap-2">
-										<code className="text-xs bg-zinc-100 px-2 py-1 rounded text-zinc-800 font-mono">
-											{apiKey.key.substring(0, 20)}...
-										</code>
+										Created At
+										{sortConfig?.key === "createdAt" && (
+											<>
+												{sortConfig.direction === "ascending" ? (
+													<ChevronUp className="w-4 h-4" />
+												) : (
+													<ChevronDown className="w-4 h-4" />
+												)}
+											</>
+										)}
 									</div>
-								</td>
-								<td className="py-2 px-4">
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
+									onClick={() => requestSort("updatedAt")}
+								>
 									<div className="flex items-center gap-2">
-										<Calendar size={16} color={colors.zinc[500]} />
-										<span className="text-sm text-zinc-700">
-											{formatDate(apiKey.createdAt)}
-										</span>
+										Updated At
+										{sortConfig?.key === "updatedAt" && (
+											<>
+												{sortConfig.direction === "ascending" ? (
+													<ChevronUp className="w-4 h-4" />
+												) : (
+													<ChevronDown className="w-4 h-4" />
+												)}
+											</>
+										)}
 									</div>
-								</td>
-								<td className="py-2 px-4">
-									<div className="flex items-center gap-2">
-										<RefreshCw size={16} color={colors.zinc[500]} />
-										<span className="text-sm text-zinc-700">
-											{formatDate(apiKey.updatedAt)}
-										</span>
-									</div>
-								</td>
-								<td className="py-2 px-4">
-									<span
-										className={`px-2 py-1 rounded-xl text-xs font-medium ${
-											apiKey.status === "Active"
-												? "bg-green-100 text-green-800"
-												: "bg-red-100 text-red-800"
-										}`}
-									>
-										{apiKey.status}
-									</span>
-								</td>
-								<td className="py-1 px-4">
-									{apiKey.status === "Active" ? (
-										<button
-											onClick={(e) => handleRevokeApiKey(apiKey.id, e)}
-											className="text-red-600 hover:text-red-800 text-xs font-medium"
-										>
-											Revoke
-										</button>
-									) : (
-										<span className="text-xs text-zinc-400">Revoked</span>
-									)}
-								</td>
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
+									Status
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
+									Actions
+								</th>
 							</tr>
-						))}
-					</tbody>
-				</table>
+						</thead>
+						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+							{filteredApiKeys.length === 0 ? (
+								<tr>
+									<td colSpan="7" className="px-6 py-12 text-center">
+										<p className={colors.mutedForeground}>No API keys found</p>
+									</td>
+								</tr>
+							) : (
+								filteredApiKeys.map((apiKey) => (
+									<tr
+										key={apiKey.id}
+										className={`${colors.hover} transition-colors`}
+									>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<input
+												type="checkbox"
+												className={getFocusRingClass(colorScheme)}
+											/>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div className="flex items-center gap-2">
+												<Key size={16} className={colors.textSecondary} />
+												<span
+													className={`text-sm font-medium ${colors.foreground}`}
+												>
+													{apiKey.name}
+												</span>
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<code
+												className={`text-xs ${colors.muted} px-3 py-1.5 rounded-lg ${colors.foreground} font-mono border ${colors.border}`}
+											>
+												{apiKey.key.substring(0, 20)}...
+											</code>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div className="flex items-center gap-2">
+												<Calendar size={16} className={colors.textSecondary} />
+												<span className={`text-sm ${colors.textSecondary}`}>
+													{formatDate(apiKey.createdAt)}
+												</span>
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div className="flex items-center gap-2">
+												<RefreshCw size={16} className={colors.textSecondary} />
+												<span className={`text-sm ${colors.textSecondary}`}>
+													{formatDate(apiKey.updatedAt)}
+												</span>
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<span
+												className={`px-2.5 py-1 rounded-md text-xs font-medium border ${
+													apiKey.status === "Active"
+														? theme === "dark"
+															? "bg-green-900/30 text-green-400 border-green-800/50"
+															: "bg-green-100 text-green-800"
+														: theme === "dark"
+														? "bg-red-900/30 text-red-400 border-red-800/50"
+														: "bg-red-100 text-red-800"
+												}`}
+											>
+												{apiKey.status}
+											</span>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											{apiKey.status === "Active" ? (
+												<button
+													onClick={(e) => handleRevokeApiKey(apiKey.id, e)}
+													className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+														theme === "dark"
+															? "text-red-400 hover:bg-red-900/20"
+															: "text-red-600 hover:bg-red-50"
+													}`}
+												>
+													Revoke
+												</button>
+											) : (
+												<span className={`text-xs ${colors.textMuted}`}>
+													Revoked
+												</span>
+											)}
+										</td>
+									</tr>
+								))
+							)}
+						</tbody>
+					</table>
+				</div>
 			</div>
 
-			<div className="flex items-center justify-end my-4">
-				<ChevronLeft
-					size={18}
-					color={colors.zinc[500]}
-					className="cursor-pointer"
-					onClick={() => toast.info("Previous page")}
-				/>
-				{Array.from({ length: 5 }, (_, index) => (
-					<button
-						key={index}
-						className={`mx-1 px-3 py-1 rounded-xl hover:bg-zinc-50 ${
-							index === 0 ? "bg-zinc-100 text-zinc-800" : "text-zinc-700"
-						}`}
-						onClick={() => toast.info(`Page ${index + 1}`)}
-					>
-						{index + 1}
-					</button>
-				))}
-				<ChevronRight
-					size={18}
-					color={colors.zinc[500]}
-					className="cursor-pointer"
-					onClick={() => toast.info("Next page")}
-				/>
-			</div>
-
+			{/* Add New API Key Modal */}
 			{isModalOpen && (
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-					<div className="bg-white p-6 rounded-xl shadow-lg max-w-md w-full mx-4">
-						<div className="flex justify-between items-center mb-4">
-							<h2 className="text-lg font-semibold text-zinc-800">
-								Add New API Key
-							</h2>
+				<div
+					className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+					onClick={handleModalClose}
+				>
+					<div
+						className={`${colors.card} rounded-xl ${colors.shadow} max-w-md w-full overflow-y-auto`}
+						onClick={(e) => e.stopPropagation()}
+					>
+						{/* Modal Header */}
+						<div
+							className={`flex items-center justify-between p-6 border-b ${colors.border}`}
+						>
+							<div>
+								<h2 className={`text-xl font-semibold ${colors.foreground}`}>
+									Add New API Key
+								</h2>
+								<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+									Create a new API key for your application
+								</p>
+							</div>
 							<button
 								onClick={handleModalClose}
-								className="text-zinc-500 hover:text-zinc-700"
+								className={`p-2 ${colors.hoverSecondary} rounded-xl transition-colors`}
 							>
-								<X size={24} />
+								<X className={`w-5 h-5 ${colors.mutedForeground}`} />
 							</button>
 						</div>
 
-						<div className="space-y-4">
+						{/* Modal Body */}
+						<div className="p-6 space-y-4">
 							<div>
-								<label className="block text-sm font-medium text-zinc-700 mb-1">
-									API Key Name *
+								<label
+									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+								>
+									API Key Name <span className="text-red-500">*</span>
 								</label>
 								<input
 									type="text"
@@ -438,25 +555,37 @@ const ApiKeys = () => {
 									placeholder="e.g., Production API Key"
 									value={newApiKey.name}
 									onChange={handleInputChange}
-									className="border border-zinc-100 rounded-xl px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
+									className={`w-full px-4 py-2 ${colors.background} border ${
+										colors.border
+									} rounded-xl text-sm ${
+										colors.foreground
+									} focus:outline-none focus:ring-2 ${getFocusRingClass(
+										colorScheme
+									)} focus:border-transparent placeholder:${
+										colors.mutedForeground
+									}`}
 								/>
-								<p className="text-xs text-zinc-500 mt-1">
+								<p className={`text-xs ${colors.textMuted} mt-2`}>
 									Give your API key a descriptive name for easy identification.
 								</p>
 							</div>
 						</div>
 
-						<div className="flex justify-end gap-2 mt-6">
+						{/* Modal Footer */}
+						<div
+							className={`flex items-center justify-end gap-3 p-6 border-t ${colors.border}`}
+						>
 							<button
 								onClick={handleModalClose}
-								className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 rounded-xl px-4 py-2 text-sm transition-all duration-100 ease-in"
+								className={`px-4 py-2 text-sm font-medium ${colors.textSecondary} ${colors.secondary} ${colors.hoverSecondary} rounded-xl transition-colors`}
 							>
 								Cancel
 							</button>
 							<button
 								onClick={handleSubmit}
-								className="bg-zinc-800 hover:bg-zinc-900 text-white rounded-xl px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6"
+								className={`px-4 py-2 text-sm font-medium ${scheme.primaryForeground} ${scheme.primary} ${scheme.primaryHover} rounded-xl transition-colors flex items-center gap-2`}
 							>
+								<Plus size={16} />
 								Create API Key
 							</button>
 						</div>

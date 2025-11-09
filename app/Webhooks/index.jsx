@@ -19,9 +19,13 @@ import {
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
 import { toast } from "react-toastify";
-import colors from "tailwindcss/colors";
+import { useTheme } from "../../utils/useTheme";
+import { getFocusRingClass } from "../../utils/theme";
 
 const Webhooks = () => {
+	// Theme hook
+	const { theme, colorScheme, colors, scheme } = useTheme();
+
 	const initialWebhooks = [
 		{
 			id: "wh_001",
@@ -256,11 +260,15 @@ const Webhooks = () => {
 	};
 
 	return (
-		<div className="p-6 overflow-y-scroll max-h-screen hidescrollbar">
+		<div
+			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar ${colors.background} transition-colors`}
+		>
 			<div className="flex justify-between items-center flex-wrap my-4">
 				<div>
-					<h1 className="text-2xl font-semibold text-zinc-800">Webhooks</h1>
-					<p className="text-sm text-zinc-600 mt-1">
+					<h1 className={`text-2xl font-semibold ${colors.foreground}`}>
+						Webhooks
+					</h1>
+					<p className={`text-sm ${colors.textSecondary} mt-1`}>
 						Manage and monitor your webhook endpoints.
 					</p>
 				</div>
@@ -268,58 +276,104 @@ const Webhooks = () => {
 
 			{/* Stats Grid */}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-				<div className="bg-white border border-zinc-100 rounded-xl p-6 hover:shadow-md transition-shadow">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow} transition-shadow`}
+				>
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm text-zinc-600 mb-1">Total Webhooks</p>
-							<p className="text-2xl font-bold text-zinc-800">
+							<p className={`text-sm ${colors.textSecondary} mb-1`}>
+								Total Webhooks
+							</p>
+							<p className={`text-2xl font-bold ${colors.foreground}`}>
 								{stats.totalWebhooks}
 							</p>
 						</div>
-						<div className="bg-blue-100 p-3 rounded-xl">
-							<Webhook size={24} color={colors.blue[600]} />
+						<div
+							className={
+								theme === "dark"
+									? "bg-blue-900/30 p-3 rounded-xl"
+									: "bg-blue-100 p-3 rounded-xl"
+							}
+						>
+							<Webhook size={24} className="text-blue-600 dark:text-blue-400" />
 						</div>
 					</div>
 				</div>
 
-				<div className="bg-white border border-zinc-100 rounded-xl p-6 hover:shadow-md transition-shadow">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow} transition-shadow`}
+				>
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm text-zinc-600 mb-1">Active Webhooks</p>
-							<p className="text-2xl font-bold text-zinc-800">
+							<p className={`text-sm ${colors.textSecondary} mb-1`}>
+								Active Webhooks
+							</p>
+							<p className={`text-2xl font-bold ${colors.foreground}`}>
 								{stats.activeWebhooks}
 							</p>
 						</div>
-						<div className="bg-green-100 p-3 rounded-xl">
-							<Activity size={24} color={colors.green[600]} />
+						<div
+							className={
+								theme === "dark"
+									? "bg-green-900/30 p-3 rounded-xl"
+									: "bg-green-100 p-3 rounded-xl"
+							}
+						>
+							<Activity
+								size={24}
+								className="text-green-600 dark:text-green-400"
+							/>
 						</div>
 					</div>
 				</div>
 
-				<div className="bg-white border border-zinc-100 rounded-xl p-6 hover:shadow-md transition-shadow">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow} transition-shadow`}
+				>
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm text-zinc-600 mb-1">Total Events</p>
-							<p className="text-2xl font-bold text-zinc-800">
+							<p className={`text-sm ${colors.textSecondary} mb-1`}>
+								Total Events
+							</p>
+							<p className={`text-2xl font-bold ${colors.foreground}`}>
 								{stats.totalEvents}
 							</p>
 						</div>
-						<div className="bg-purple-100 p-3 rounded-xl">
-							<TrendingUp size={24} color={colors.purple[600]} />
+						<div
+							className={
+								theme === "dark"
+									? "bg-purple-900/30 p-3 rounded-xl"
+									: "bg-purple-100 p-3 rounded-xl"
+							}
+						>
+							<TrendingUp
+								size={24}
+								className="text-purple-600 dark:text-purple-400"
+							/>
 						</div>
 					</div>
 				</div>
 
-				<div className="bg-white border border-zinc-100 rounded-xl p-6 hover:shadow-md transition-shadow">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow} transition-shadow`}
+				>
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm text-zinc-600 mb-1">Success Rate</p>
-							<p className="text-2xl font-bold text-zinc-800">
+							<p className={`text-sm ${colors.textSecondary} mb-1`}>
+								Success Rate
+							</p>
+							<p className={`text-2xl font-bold ${colors.foreground}`}>
 								{stats.successRate}
 							</p>
 						</div>
-						<div className="bg-orange-100 p-3 rounded-xl">
-							<Zap size={24} color={colors.orange[600]} />
+						<div
+							className={
+								theme === "dark"
+									? "bg-orange-900/30 p-3 rounded-xl"
+									: "bg-orange-100 p-3 rounded-xl"
+							}
+						>
+							<Zap size={24} className="text-orange-600 dark:text-orange-400" />
 						</div>
 					</div>
 				</div>
@@ -328,12 +382,18 @@ const Webhooks = () => {
 			{/* Table Section */}
 			<div className="flex justify-between items-center flex-wrap my-4">
 				<div className="flex md:justify-start justify-start items-center gap-2 flex-wrap">
-					<div className="flex gap-2 items-center border border-zinc-100 rounded-xl px-2 py-1">
-						<Search size={18} color={colors.zinc[500]} />
+					<div
+						className={`flex gap-2 items-center border ${colors.border} rounded-xl px-2 py-1 ${colors.card}`}
+					>
+						<Search size={18} className={colors.textSecondary} />
 						<input
 							type="text"
 							placeholder="Search webhooks..."
-							className="outline-none"
+							className={`outline-none ${colors.background} ${
+								colors.foreground
+							} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+								colorScheme
+							)}`}
 							value={searchTerm}
 							onChange={(e) => setSearchTerm(e.target.value)}
 						/>
@@ -341,7 +401,7 @@ const Webhooks = () => {
 				</div>
 				<button
 					onClick={handleAddWebhook}
-					className="bg-zinc-800 hover:bg-zinc-900 rounded-xl text-white text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6 flex items-center gap-2"
+					className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6 flex items-center gap-2`}
 				>
 					<Plus size={16} />
 					Add Webhook
@@ -349,98 +409,132 @@ const Webhooks = () => {
 			</div>
 
 			<div className="overflow-x-auto">
-				<table className="min-w-full border border-zinc-100 rounded">
-					<thead className="hover:bg-zinc-50">
+				<table
+					className={`min-w-full border ${colors.border} rounded ${colors.card}`}
+				>
+					<thead className={colors.hover}>
 						<tr>
-							<th className="py-2 px-4 border-b text-left">
-								<input type="checkbox" />
+							<th className={`py-2 px-4 border-b ${colors.border} text-left`}>
+								<input
+									type="checkbox"
+									className={getFocusRingClass(colorScheme)}
+								/>
 							</th>
 							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
+								className={`py-2 px-4 border-b ${colors.border} text-left cursor-pointer ${colors.mutedForeground} transition-colors`}
 								onClick={() => requestSort("name")}
 							>
 								<div className="flex justify-between items-center">
 									<span className="ml-2">Name</span>
 									{sortConfig?.key === "name" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
+											<ChevronUp size={16} className={colors.textMuted} />
 										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
+											<ChevronDown size={16} className={colors.textMuted} />
 										))}
 								</div>
 							</th>
-							<th className="py-2 px-4 border-b text-left">URL</th>
-							<th className="py-2 px-4 border-b text-left">Events</th>
 							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
+								className={`py-2 px-4 border-b ${colors.border} text-left ${colors.mutedForeground}`}
+							>
+								URL
+							</th>
+							<th
+								className={`py-2 px-4 border-b ${colors.border} text-left ${colors.mutedForeground}`}
+							>
+								Events
+							</th>
+							<th
+								className={`py-2 px-4 border-b ${colors.border} text-left cursor-pointer ${colors.mutedForeground} transition-colors`}
 								onClick={() => requestSort("createdAt")}
 							>
 								<div className="flex justify-between items-center">
 									<span className="ml-2">Created At</span>
 									{sortConfig?.key === "createdAt" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
+											<ChevronUp size={16} className={colors.textMuted} />
 										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
+											<ChevronDown size={16} className={colors.textMuted} />
 										))}
 								</div>
 							</th>
-							<th className="py-2 px-4 border-b text-left">Status</th>
-							<th className="py-2 px-4 border-b text-left">Actions</th>
+							<th
+								className={`py-2 px-4 border-b ${colors.border} text-left ${colors.mutedForeground}`}
+							>
+								Status
+							</th>
+							<th
+								className={`py-2 px-4 border-b ${colors.border} text-left ${colors.mutedForeground}`}
+							>
+								Actions
+							</th>
 						</tr>
 					</thead>
 					<tbody>
 						{filteredWebhooks.map((webhook) => (
-							<tr key={webhook.id} className="hover:bg-zinc-50">
-								<td className="py-2 px-4">
-									<input type="checkbox" className="mr-2" />
+							<tr key={webhook.id} className={colors.hover}>
+								<td className={`py-2 px-4 ${colors.foreground}`}>
+									<input
+										type="checkbox"
+										className={`mr-2 ${getFocusRingClass(colorScheme)}`}
+									/>
 								</td>
-								<td className="py-2 px-4">
+								<td className={`py-2 px-4 ${colors.foreground}`}>
 									<div className="flex items-center gap-2">
-										<Webhook size={16} color={colors.zinc[500]} />
-										<span className="font-medium text-zinc-800">
-											{webhook.name}
-										</span>
+										<Webhook size={16} className={colors.textSecondary} />
+										<span className="font-medium">{webhook.name}</span>
 									</div>
 								</td>
-								<td className="py-2 px-4">
+								<td className={`py-2 px-4 ${colors.foreground}`}>
 									<div className="flex items-center gap-2 max-w-xs">
-										<Globe size={16} color={colors.zinc[500]} />
-										<code className="text-xs bg-zinc-100 px-2 py-1 rounded text-zinc-800 font-mono truncate">
+										<Globe size={16} className={colors.textSecondary} />
+										<code
+											className={`text-xs ${colors.muted} px-2 py-1 rounded ${colors.foreground} font-mono truncate`}
+										>
 											{webhook.url}
 										</code>
 									</div>
 								</td>
-								<td className="py-2 px-4">
+								<td className={`py-2 px-4 ${colors.foreground}`}>
 									<div className="flex flex-wrap gap-1">
 										{webhook.events.slice(0, 2).map((event) => (
 											<span
 												key={event}
-												className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded"
+												className={`text-xs px-2 py-1 rounded ${
+													theme === "dark"
+														? "bg-blue-900/30 text-blue-400 border border-blue-800/50"
+														: "bg-blue-100 text-blue-800"
+												}`}
 											>
 												{event}
 											</span>
 										))}
 										{webhook.events.length > 2 && (
-											<span className="text-xs bg-zinc-100 text-zinc-800 px-2 py-1 rounded">
+											<span
+												className={`text-xs ${scheme.chip} px-2 py-1 rounded`}
+											>
 												+{webhook.events.length - 2}
 											</span>
 										)}
 									</div>
 								</td>
-								<td className="py-2 px-4">
+								<td className={`py-2 px-4 ${colors.foreground}`}>
 									<div className="flex items-center gap-2">
-										<Calendar size={16} color={colors.zinc[500]} />
-										<span className="text-sm text-zinc-700">
+										<Calendar size={16} className={colors.textSecondary} />
+										<span className="text-sm">
 											{formatDate(webhook.createdAt)}
 										</span>
 									</div>
 								</td>
-								<td className="py-2 px-4">
+								<td className={`py-2 px-4 ${colors.foreground}`}>
 									<span
-										className={`px-2 py-1 rounded-xl text-xs font-medium ${
+										className={`px-2 py-1 rounded-xl text-xs font-medium border ${
 											webhook.status === "Active"
-												? "bg-green-100 text-green-800"
+												? theme === "dark"
+													? "bg-green-900/30 text-green-400 border-green-800/50"
+													: "bg-green-100 text-green-800"
+												: theme === "dark"
+												? "bg-red-900/30 text-red-400 border-red-800/50"
 												: "bg-red-100 text-red-800"
 										}`}
 									>
@@ -451,16 +545,24 @@ const Webhooks = () => {
 									<div className="flex items-center gap-2">
 										<button
 											onClick={(e) => handleTestWebhook(webhook, e)}
-											className="text-blue-600 hover:text-blue-800 text-xs font-medium flex items-center gap-1"
+											className={`text-blue-600 ${
+												theme === "dark"
+													? "hover:text-blue-400"
+													: "hover:text-blue-800"
+											} text-xs font-medium flex items-center gap-1 transition-colors`}
 											title="Test Webhook"
 										>
 											<Play size={14} />
 										</button>
 										<button
 											onClick={(e) => handleToggleStatus(webhook.id, e)}
-											className={`text-xs font-medium ${
+											className={`text-xs font-medium transition-colors ${
 												webhook.status === "Active"
-													? "text-orange-600 hover:text-orange-800"
+													? theme === "dark"
+														? "text-orange-400 hover:text-orange-300"
+														: "text-orange-600 hover:text-orange-800"
+													: theme === "dark"
+													? "text-green-400 hover:text-green-300"
 													: "text-green-600 hover:text-green-800"
 											}`}
 										>
@@ -468,7 +570,11 @@ const Webhooks = () => {
 										</button>
 										<button
 											onClick={(e) => handleDeleteWebhook(webhook.id, e)}
-											className="text-red-600 hover:text-red-800 text-xs font-medium"
+											className={`text-red-600 ${
+												theme === "dark"
+													? "hover:text-red-400"
+													: "hover:text-red-800"
+											} text-xs font-medium transition-colors`}
 										>
 											Delete
 										</button>
@@ -483,15 +589,18 @@ const Webhooks = () => {
 			<div className="flex items-center justify-end my-4">
 				<ChevronLeft
 					size={18}
-					color={colors.zinc[500]}
-					className="cursor-pointer"
+					className={`cursor-pointer ${colors.textSecondary} transition-colors ${colors.hoverSecondary}`}
 					onClick={() => toast.info("Previous page")}
 				/>
 				{Array.from({ length: 5 }, (_, index) => (
 					<button
 						key={index}
-						className={`mx-1 px-3 py-1 rounded-xl hover:bg-zinc-50 ${
-							index === 0 ? "bg-zinc-100 text-zinc-800" : "text-zinc-700"
+						className={`mx-1 px-3 py-1 rounded-xl ${
+							colors.hoverSecondary
+						} transition-colors ${
+							index === 0
+								? `${colors.muted} ${colors.foreground}`
+								: colors.foreground
 						}`}
 						onClick={() => toast.info(`Page ${index + 1}`)}
 					>
@@ -500,22 +609,23 @@ const Webhooks = () => {
 				))}
 				<ChevronRight
 					size={18}
-					color={colors.zinc[500]}
-					className="cursor-pointer"
+					className={`cursor-pointer ${colors.textSecondary} transition-colors ${colors.hoverSecondary}`}
 					onClick={() => toast.info("Next page")}
 				/>
 			</div>
 
 			{isModalOpen && (
 				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-					<div className="bg-white p-6 rounded-xl shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+					<div
+						className={`${colors.card} p-6 rounded-xl ${colors.shadow} max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border ${colors.border}`}
+					>
 						<div className="flex justify-between items-center mb-4">
-							<h2 className="text-lg font-semibold text-zinc-800">
+							<h2 className={`text-lg font-semibold ${colors.foreground}`}>
 								Add New Webhook
 							</h2>
 							<button
 								onClick={handleModalClose}
-								className="text-zinc-500 hover:text-zinc-700"
+								className={`${colors.textMuted} ${colors.hoverSecondary} transition-colors`}
 							>
 								<X size={24} />
 							</button>
@@ -523,7 +633,9 @@ const Webhooks = () => {
 
 						<div className="space-y-4">
 							<div>
-								<label className="block text-sm font-medium text-zinc-700 mb-1">
+								<label
+									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
+								>
 									Webhook Name *
 								</label>
 								<input
@@ -532,15 +644,23 @@ const Webhooks = () => {
 									placeholder="e.g., Order Created Webhook"
 									value={newWebhook.name}
 									onChange={handleInputChange}
-									className="border border-zinc-100 rounded-xl px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
+									className={`border ${colors.border} ${
+										colors.input
+									} rounded-xl px-3 py-2 w-full outline-none ${
+										colors.background
+									} ${colors.foreground} placeholder:${
+										colors.mutedForeground
+									} ${getFocusRingClass(colorScheme)}`}
 								/>
-								<p className="text-xs text-zinc-500 mt-1">
+								<p className={`text-xs ${colors.textMuted} mt-1`}>
 									Give your webhook a descriptive name for easy identification.
 								</p>
 							</div>
 
 							<div>
-								<label className="block text-sm font-medium text-zinc-700 mb-1">
+								<label
+									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
+								>
 									Webhook URL *
 								</label>
 								<input
@@ -549,34 +669,46 @@ const Webhooks = () => {
 									placeholder="https://api.example.com/webhooks"
 									value={newWebhook.url}
 									onChange={handleInputChange}
-									className="border border-zinc-100 rounded-xl px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
+									className={`border ${colors.border} ${
+										colors.input
+									} rounded-xl px-3 py-2 w-full outline-none ${
+										colors.background
+									} ${colors.foreground} placeholder:${
+										colors.mutedForeground
+									} ${getFocusRingClass(colorScheme)}`}
 								/>
-								<p className="text-xs text-zinc-500 mt-1">
+								<p className={`text-xs ${colors.textMuted} mt-1`}>
 									The endpoint URL where webhook events will be sent.
 								</p>
 							</div>
 
 							<div>
-								<label className="block text-sm font-medium text-zinc-700 mb-2">
+								<label
+									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+								>
 									Events *
 								</label>
-								<div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto border border-zinc-100 rounded-xl p-3">
+								<div
+									className={`grid grid-cols-2 gap-2 max-h-48 overflow-y-auto border ${colors.border} rounded-xl p-3 ${colors.muted}`}
+								>
 									{availableEvents.map((event) => (
 										<label
 											key={event}
-											className="flex items-center gap-2 cursor-pointer hover:bg-zinc-50 p-2 rounded"
+											className={`flex items-center gap-2 cursor-pointer ${colors.hoverSecondary} p-2 rounded transition-colors`}
 										>
 											<input
 												type="checkbox"
 												checked={newWebhook.events.includes(event)}
 												onChange={() => handleEventToggle(event)}
-												className="rounded"
+												className={`rounded ${getFocusRingClass(colorScheme)}`}
 											/>
-											<span className="text-sm text-zinc-700">{event}</span>
+											<span className={`text-sm ${colors.foreground}`}>
+												{event}
+											</span>
 										</label>
 									))}
 								</div>
-								<p className="text-xs text-zinc-500 mt-1">
+								<p className={`text-xs ${colors.textMuted} mt-1`}>
 									Select the events that will trigger this webhook.
 								</p>
 							</div>
@@ -585,13 +717,13 @@ const Webhooks = () => {
 						<div className="flex justify-end gap-2 mt-6">
 							<button
 								onClick={handleModalClose}
-								className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 rounded-xl px-4 py-2 text-sm transition-all duration-100 ease-in"
+								className={`${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground} rounded-xl px-4 py-2 text-sm transition-all duration-100 ease-in`}
 							>
 								Cancel
 							</button>
 							<button
 								onClick={handleSubmit}
-								className="bg-zinc-800 hover:bg-zinc-900 text-white rounded-xl px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6"
+								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6`}
 							>
 								Create Webhook
 							</button>

@@ -14,9 +14,13 @@ import {
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
 import { toast } from "react-toastify";
-import colors from "tailwindcss/colors";
+import { useTheme } from "../../utils/useTheme";
+import { getFocusRingClass } from "../../utils/theme";
 
 const Invoices = () => {
+	// Theme hook
+	const { theme, colorScheme, colors, scheme } = useTheme();
+
 	const initialInvoices = [
 		{
 			id: "INV-001",
@@ -355,15 +359,28 @@ const Invoices = () => {
 	}, [sortedInvoices, searchTerm]);
 
 	const getStatusColor = (status) => {
-		switch (status) {
-			case "Paid":
-				return "bg-green-100 text-green-800";
-			case "Pending":
-				return "bg-yellow-100 text-yellow-800";
-			case "Overdue":
-				return "bg-red-100 text-red-800";
-			default:
-				return "bg-zinc-100 text-zinc-800";
+		if (theme === "dark") {
+			switch (status) {
+				case "Paid":
+					return "bg-green-900/30 text-green-400 border border-green-800/50";
+				case "Pending":
+					return "bg-yellow-900/30 text-yellow-400 border border-yellow-800/50";
+				case "Overdue":
+					return "bg-red-900/30 text-red-400 border border-red-800/50";
+				default:
+					return scheme.chipDark;
+			}
+		} else {
+			switch (status) {
+				case "Paid":
+					return "bg-green-100 text-green-800";
+				case "Pending":
+					return "bg-yellow-100 text-yellow-800";
+				case "Overdue":
+					return "bg-red-100 text-red-800";
+				default:
+					return scheme.chip;
+			}
 		}
 	};
 
@@ -375,239 +392,323 @@ const Invoices = () => {
 	};
 
 	return (
-		<div className="p-6 overflow-y-scroll max-h-screen hidescrollbar">
-			<div className="flex justify-between items-center flex-wrap my-4">
-				<p className="text-xl font-semibold">Recent Invoices</p>
-				<div className="flex md:justify-end justify-start items-center gap-2 flex-wrap">
-					<div className="flex gap-2 items-center border rounded px-2 py-1">
-						<Search size={18} color={colors.zinc[500]} />
-						<input
-							type="text"
-							placeholder="Search invoices..."
-							className="outline-none"
-							value={searchTerm}
-							onChange={(e) => setSearchTerm(e.target.value)}
-						/>
+		<div
+			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar ${colors.background} transition-colors`}
+		>
+			{/* Invoices Table - Improved */}
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
+			>
+				{/* Table Header */}
+				<div
+					className={`flex flex-col md:flex-row items-start md:items-center justify-between px-6 py-4 border-b ${colors.border} gap-4`}
+				>
+					<div className="flex-1">
+						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
+							Recent Invoices
+						</h2>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							View and manage all your invoices
+						</p>
 					</div>
-					<button
-						onClick={handleAddInvoice}
-						className="bg-zinc-800 hover:bg-zinc-900 rounded text-white text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6"
-					>
-						Add Invoice
-					</button>
-					<button
-						onClick={handleExportCSV}
-						className="border-zinc-900 border hover:text-white hover:bg-zinc-900 rounded text-zinc-800 px-4 py-2 transition-all duration-100 ease-in hover:px-6 text-xs flex items-center gap-1"
-					>
-						<Download size={16} />
-						Export CSV
-					</button>
+					<div className="flex items-center gap-4 flex-wrap w-full md:w-auto">
+						{/* Search */}
+						<div
+							className={`relative flex gap-2 items-center border ${colors.border} rounded-xl px-3 py-2 ${colors.card} w-full md:w-auto`}
+						>
+							<Search className={colors.textSecondary} size={18} />
+							<input
+								type="text"
+								placeholder="Search invoices..."
+								className={`outline-none flex-1 ${colors.background} ${
+									colors.foreground
+								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+									colorScheme
+								)}`}
+								value={searchTerm}
+								onChange={(e) => setSearchTerm(e.target.value)}
+							/>
+						</div>
+						{/* Add Invoice Button */}
+						<button
+							onClick={handleAddInvoice}
+							className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-sm px-4 py-2 transition-all duration-200 font-medium flex items-center gap-2`}
+						>
+							<Plus size={16} />
+							Add Invoice
+						</button>
+						{/* Export CSV Button */}
+						<button
+							onClick={handleExportCSV}
+							className={`border ${colors.border} ${colors.hoverSecondary} ${colors.foreground} rounded-xl text-sm px-4 py-2 transition-all duration-200 font-medium flex items-center gap-2`}
+						>
+							<Download size={16} />
+							Export CSV
+						</button>
+					</div>
 				</div>
-			</div>
-			<div className="overflow-x-auto">
-				<table className="min-w-full bg-white border">
-					<thead className="hover:bg-zinc-50">
-						<tr>
-							<th className="py-2 px-4 border-b text-left">
-								<input type="checkbox" />
-							</th>
-							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
-								onClick={() => requestSort("invoiceNumber")}
-							>
-								<div className="flex justify-between items-center">
-									<span className="ml-2">Invoice #</span>
-									{sortConfig?.key === "invoiceNumber" &&
-										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
-										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
-										))}
-								</div>
-							</th>
-							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
-								onClick={() => requestSort("client")}
-							>
-								<div className="flex justify-between items-center">
-									<span className="ml-2">Client</span>
-									{sortConfig?.key === "client" &&
-										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
-										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
-										))}
-								</div>
-							</th>
-							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
-								onClick={() => requestSort("amount")}
-							>
-								<div className="flex justify-between items-center">
-									<span className="ml-2">Amount</span>
-									{sortConfig?.key === "amount" &&
-										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
-										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
-										))}
-								</div>
-							</th>
-							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
-								onClick={() => requestSort("status")}
-							>
-								<div className="flex justify-between items-center">
-									<span className="ml-2">Status</span>
-									{sortConfig?.key === "status" &&
-										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
-										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
-										))}
-								</div>
-							</th>
-							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
-								onClick={() => requestSort("issueDate")}
-							>
-								<div className="flex justify-between items-center">
-									<span className="ml-2">Issue Date</span>
-									{sortConfig?.key === "issueDate" &&
-										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
-										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
-										))}
-								</div>
-							</th>
-							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
-								onClick={() => requestSort("dueDate")}
-							>
-								<div className="flex justify-between items-center">
-									<span className="ml-2">Due Date</span>
-									{sortConfig?.key === "dueDate" &&
-										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
-										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
-										))}
-								</div>
-							</th>
-							<th className="py-2 px-4 border-b text-left">Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{filteredInvoices.map((invoice) => (
-							<tr key={invoice.id} className="hover:bg-zinc-50">
-								<td className="py-2 px-4">
-									<input type="checkbox" className="mr-2" />
-								</td>
-								<td className="py-2 px-4">
+
+				{/* Table */}
+				<div className="overflow-x-auto">
+					<table className="w-full">
+						<thead className={`${colors.muted} border-b ${colors.border}`}>
+							<tr>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
+									<input
+										type="checkbox"
+										className={getFocusRingClass(colorScheme)}
+									/>
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
+									onClick={() => requestSort("invoiceNumber")}
+								>
 									<div className="flex items-center gap-2">
-										<FileText size={16} color={colors.zinc[500]} />
-										<span className="font-medium">{invoice.invoiceNumber}</span>
+										Invoice #
+										{sortConfig?.key === "invoiceNumber" && (
+											<>
+												{sortConfig.direction === "ascending" ? (
+													<ChevronUp className="w-4 h-4" />
+												) : (
+													<ChevronDown className="w-4 h-4" />
+												)}
+											</>
+										)}
 									</div>
-								</td>
-								<td className="py-2 px-4">
-									<div>
-										<div className="font-medium">{invoice.client}</div>
-										<div className="text-xs text-zinc-500">
-											{invoice.clientEmail}
-										</div>
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
+									onClick={() => requestSort("client")}
+								>
+									<div className="flex items-center gap-2">
+										Client
+										{sortConfig?.key === "client" && (
+											<>
+												{sortConfig.direction === "ascending" ? (
+													<ChevronUp className="w-4 h-4" />
+												) : (
+													<ChevronDown className="w-4 h-4" />
+												)}
+											</>
+										)}
 									</div>
-								</td>
-								<td className="py-2 px-4 font-semibold">
-									{formatCurrency(invoice.amount)}
-								</td>
-								<td className="py-2 px-4">
-									<span
-										className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(
-											invoice.status
-										)}`}
-									>
-										{invoice.status}
-									</span>
-								</td>
-								<td className="py-2 px-4">{invoice.issueDate}</td>
-								<td className="py-2 px-4">{invoice.dueDate}</td>
-								<td className="py-1 px-4 flex items-center gap-2">
-									<Eye
-										size={16}
-										color={colors.zinc[700]}
-										className="cursor-pointer hover:text-blue-600"
-										onClick={() => handleViewInvoice(invoice)}
-									/>
-									<Pen
-										size={16}
-										color={colors.zinc[700]}
-										className="cursor-pointer hover:text-green-600"
-										onClick={() =>
-											toast.info(`Editing invoice ${invoice.invoiceNumber}`)
-										}
-									/>
-									<Download
-										size={16}
-										color={colors.zinc[700]}
-										className="cursor-pointer hover:text-purple-600"
-										onClick={() =>
-											toast.info(`Downloading invoice ${invoice.invoiceNumber}`)
-										}
-									/>
-									<Trash
-										size={16}
-										color={colors.zinc[700]}
-										className="cursor-pointer hover:text-red-600"
-										onClick={() => handleRemoveInvoice(invoice.id)}
-									/>
-								</td>
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
+									onClick={() => requestSort("amount")}
+								>
+									<div className="flex items-center gap-2">
+										Amount
+										{sortConfig?.key === "amount" && (
+											<>
+												{sortConfig.direction === "ascending" ? (
+													<ChevronUp className="w-4 h-4" />
+												) : (
+													<ChevronDown className="w-4 h-4" />
+												)}
+											</>
+										)}
+									</div>
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
+									onClick={() => requestSort("status")}
+								>
+									<div className="flex items-center gap-2">
+										Status
+										{sortConfig?.key === "status" && (
+											<>
+												{sortConfig.direction === "ascending" ? (
+													<ChevronUp className="w-4 h-4" />
+												) : (
+													<ChevronDown className="w-4 h-4" />
+												)}
+											</>
+										)}
+									</div>
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
+									onClick={() => requestSort("issueDate")}
+								>
+									<div className="flex items-center gap-2">
+										Issue Date
+										{sortConfig?.key === "issueDate" && (
+											<>
+												{sortConfig.direction === "ascending" ? (
+													<ChevronUp className="w-4 h-4" />
+												) : (
+													<ChevronDown className="w-4 h-4" />
+												)}
+											</>
+										)}
+									</div>
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
+									onClick={() => requestSort("dueDate")}
+								>
+									<div className="flex items-center gap-2">
+										Due Date
+										{sortConfig?.key === "dueDate" && (
+											<>
+												{sortConfig.direction === "ascending" ? (
+													<ChevronUp className="w-4 h-4" />
+												) : (
+													<ChevronDown className="w-4 h-4" />
+												)}
+											</>
+										)}
+									</div>
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
+									Actions
+								</th>
 							</tr>
-						))}
-					</tbody>
-				</table>
-			</div>
-			<div className="flex items-center justify-end my-4">
-				<ChevronLeft
-					size={18}
-					color={colors.zinc[500]}
-					className="cursor-pointer"
-					onClick={() => toast.info("Previous page")}
-				/>
-				{Array.from({ length: 5 }, (_, index) => (
-					<button
-						key={index}
-						className={`mx-1 px-3 py-1 rounded hover:bg-zinc-50 ${
-							index === 0 ? "bg-zinc-100 text-zinc-800" : "text-zinc-700"
-						}`}
-						onClick={() => toast.info(`Page ${index + 1}`)}
-					>
-						{index + 1}
-					</button>
-				))}
-				<ChevronRight
-					size={18}
-					color={colors.zinc[500]}
-					className="cursor-pointer"
-					onClick={() => toast.info("Next page")}
-				/>
+						</thead>
+						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+							{filteredInvoices.length === 0 ? (
+								<tr>
+									<td colSpan="8" className="px-6 py-12 text-center">
+										<p className={colors.mutedForeground}>No invoices found</p>
+									</td>
+								</tr>
+							) : (
+								filteredInvoices.map((invoice) => (
+									<tr
+										key={invoice.id}
+										className={`${colors.hover} transition-colors`}
+									>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<input
+												type="checkbox"
+												className={getFocusRingClass(colorScheme)}
+											/>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div className="flex items-center gap-2">
+												<FileText size={16} className={colors.textSecondary} />
+												<span
+													className={`text-sm font-medium ${colors.foreground}`}
+												>
+													{invoice.invoiceNumber}
+												</span>
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div>
+												<div
+													className={`text-sm font-medium ${colors.foreground}`}
+												>
+													{invoice.client}
+												</div>
+												<div className={`text-xs ${colors.textMuted} mt-0.5`}>
+													{invoice.clientEmail}
+												</div>
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div
+												className={`text-sm font-semibold ${colors.foreground}`}
+											>
+												{formatCurrency(invoice.amount)}
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<span
+												className={`px-2.5 py-1 rounded-md text-xs font-medium border ${getStatusColor(
+													invoice.status
+												)}`}
+											>
+												{invoice.status}
+											</span>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div className={`text-sm ${colors.textSecondary}`}>
+												{invoice.issueDate}
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div className={`text-sm ${colors.textSecondary}`}>
+												{invoice.dueDate}
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div className="flex items-center gap-2">
+												<button
+													className={`p-1.5 rounded-lg ${colors.hoverSecondary} transition-colors`}
+													title="View"
+													onClick={() => handleViewInvoice(invoice)}
+												>
+													<Eye size={16} className={colors.textSecondary} />
+												</button>
+												<button
+													className={`p-1.5 rounded-lg ${colors.hoverSecondary} transition-colors`}
+													title="Edit"
+													onClick={() =>
+														toast.info(
+															`Editing invoice ${invoice.invoiceNumber}`
+														)
+													}
+												>
+													<Pen size={16} className={colors.textSecondary} />
+												</button>
+												<button
+													className={`p-1.5 rounded-lg ${colors.hoverSecondary} transition-colors`}
+													title="Download"
+													onClick={() =>
+														toast.info(
+															`Downloading invoice ${invoice.invoiceNumber}`
+														)
+													}
+												>
+													<Download
+														size={16}
+														className={colors.textSecondary}
+													/>
+												</button>
+												<button
+													className={`p-1.5 rounded-lg ${colors.hoverSecondary} transition-colors`}
+													title="Delete"
+													onClick={() => handleRemoveInvoice(invoice.id)}
+												>
+													<Trash size={16} className={colors.textSecondary} />
+												</button>
+											</div>
+										</td>
+									</tr>
+								))
+							)}
+						</tbody>
+					</table>
+				</div>
 			</div>
 
 			{isModalOpen && (
 				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-					<div className="bg-white p-6 rounded shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+					<div
+						className={`${colors.card} p-6 rounded ${colors.shadow} max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border ${colors.border}`}
+					>
 						<div className="flex justify-between items-center mb-4">
-							<h2 className="text-lg font-semibold">Add New Invoice</h2>
+							<h2 className={`text-lg font-semibold ${colors.foreground}`}>
+								Add New Invoice
+							</h2>
 							<button
 								onClick={handleModalClose}
-								className="text-zinc-500 hover:text-zinc-700"
+								className={`${colors.textMuted} ${colors.hoverSecondary} transition-colors`}
 							>
 								×
 							</button>
 						</div>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 							<div>
-								<label className="block text-sm font-medium text-zinc-700 mb-1">
+								<label
+									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
+								>
 									Invoice Number *
 								</label>
 								<input
@@ -616,11 +717,19 @@ const Invoices = () => {
 									placeholder="INV-2024-XXX"
 									value={newInvoice.invoiceNumber}
 									onChange={handleInputChange}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
+									className={`border ${colors.border} ${
+										colors.input
+									} rounded px-3 py-2 w-full outline-none ${
+										colors.background
+									} ${colors.foreground} placeholder:${
+										colors.mutedForeground
+									} ${getFocusRingClass(colorScheme)}`}
 								/>
 							</div>
 							<div>
-								<label className="block text-sm font-medium text-zinc-700 mb-1">
+								<label
+									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
+								>
 									Client Name *
 								</label>
 								<input
@@ -629,11 +738,19 @@ const Invoices = () => {
 									placeholder="Client Company"
 									value={newInvoice.client}
 									onChange={handleInputChange}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
+									className={`border ${colors.border} ${
+										colors.input
+									} rounded px-3 py-2 w-full outline-none ${
+										colors.background
+									} ${colors.foreground} placeholder:${
+										colors.mutedForeground
+									} ${getFocusRingClass(colorScheme)}`}
 								/>
 							</div>
 							<div>
-								<label className="block text-sm font-medium text-zinc-700 mb-1">
+								<label
+									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
+								>
 									Client Email
 								</label>
 								<input
@@ -642,18 +759,30 @@ const Invoices = () => {
 									placeholder="client@company.com"
 									value={newInvoice.clientEmail}
 									onChange={handleInputChange}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
+									className={`border ${colors.border} ${
+										colors.input
+									} rounded px-3 py-2 w-full outline-none ${
+										colors.background
+									} ${colors.foreground} placeholder:${
+										colors.mutedForeground
+									} ${getFocusRingClass(colorScheme)}`}
 								/>
 							</div>
 							<div>
-								<label className="block text-sm font-medium text-zinc-700 mb-1">
+								<label
+									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
+								>
 									Status
 								</label>
 								<select
 									name="status"
 									value={newInvoice.status}
 									onChange={handleInputChange}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
+									className={`border ${colors.border} ${
+										colors.input
+									} rounded px-3 py-2 w-full outline-none ${
+										colors.background
+									} ${colors.foreground} ${getFocusRingClass(colorScheme)}`}
 								>
 									<option value="Pending">Pending</option>
 									<option value="Paid">Paid</option>
@@ -661,7 +790,9 @@ const Invoices = () => {
 								</select>
 							</div>
 							<div>
-								<label className="block text-sm font-medium text-zinc-700 mb-1">
+								<label
+									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
+								>
 									Issue Date
 								</label>
 								<input
@@ -669,11 +800,17 @@ const Invoices = () => {
 									name="issueDate"
 									value={newInvoice.issueDate}
 									onChange={handleInputChange}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
+									className={`border ${colors.border} ${
+										colors.input
+									} rounded px-3 py-2 w-full outline-none ${
+										colors.background
+									} ${colors.foreground} ${getFocusRingClass(colorScheme)}`}
 								/>
 							</div>
 							<div>
-								<label className="block text-sm font-medium text-zinc-700 mb-1">
+								<label
+									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
+								>
 									Due Date
 								</label>
 								<input
@@ -681,11 +818,17 @@ const Invoices = () => {
 									name="dueDate"
 									value={newInvoice.dueDate}
 									onChange={handleInputChange}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
+									className={`border ${colors.border} ${
+										colors.input
+									} rounded px-3 py-2 w-full outline-none ${
+										colors.background
+									} ${colors.foreground} ${getFocusRingClass(colorScheme)}`}
 								/>
 							</div>
 							<div className="md:col-span-2">
-								<label className="block text-sm font-medium text-zinc-700 mb-1">
+								<label
+									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
+								>
 									Description
 								</label>
 								<textarea
@@ -694,50 +837,73 @@ const Invoices = () => {
 									value={newInvoice.description}
 									onChange={handleInputChange}
 									rows={3}
-									className="border rounded px-3 py-2 w-full outline-none focus:ring-2 focus:ring-zinc-800"
+									className={`border ${colors.border} ${
+										colors.input
+									} rounded px-3 py-2 w-full outline-none ${
+										colors.background
+									} ${colors.foreground} placeholder:${
+										colors.mutedForeground
+									} ${getFocusRingClass(colorScheme)}`}
 								/>
 							</div>
 						</div>
 
 						<div className="mt-6">
 							<div className="flex justify-between items-center mb-4">
-								<label className="block text-sm font-semibold text-zinc-700">
+								<label
+									className={`block text-sm font-semibold ${colors.textSecondary}`}
+								>
 									Invoice Items *
 								</label>
 								<button
 									type="button"
 									onClick={handleAddItem}
-									className="flex items-center gap-1 bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-3 py-1.5 rounded transition-all duration-100 ease-in"
+									className={`flex items-center gap-1 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-3 py-1.5 rounded transition-all duration-100 ease-in`}
 								>
 									<Plus size={14} />
 									Add Item
 								</button>
 							</div>
-							<div className="border rounded-lg overflow-hidden">
-								<table className="min-w-full">
-									<thead className="bg-zinc-50">
+							<div
+								className={`border ${colors.border} rounded-lg overflow-hidden`}
+							>
+								<table className={`min-w-full ${colors.card}`}>
+									<thead className={colors.muted}>
 										<tr>
-											<th className="py-2 px-3 text-left text-xs font-semibold text-zinc-700 border-b">
+											<th
+												className={`py-2 px-3 text-left text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+											>
 												Item Name
 											</th>
-											<th className="py-2 px-3 text-center text-xs font-semibold text-zinc-700 border-b">
+											<th
+												className={`py-2 px-3 text-center text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+											>
 												Quantity
 											</th>
-											<th className="py-2 px-3 text-right text-xs font-semibold text-zinc-700 border-b">
+											<th
+												className={`py-2 px-3 text-right text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+											>
 												Price
 											</th>
-											<th className="py-2 px-3 text-right text-xs font-semibold text-zinc-700 border-b">
+											<th
+												className={`py-2 px-3 text-right text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+											>
 												Total
 											</th>
-											<th className="py-2 px-3 text-center text-xs font-semibold text-zinc-700 border-b">
+											<th
+												className={`py-2 px-3 text-center text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+											>
 												Action
 											</th>
 										</tr>
 									</thead>
 									<tbody>
 										{invoiceItems.map((item) => (
-											<tr key={item.id} className="border-b hover:bg-zinc-50">
-												<td className="py-2 px-3">
+											<tr
+												key={item.id}
+												className={`border-b ${colors.border} ${colors.hover}`}
+											>
+												<td className={`py-2 px-3 ${colors.foreground}`}>
 													<input
 														type="text"
 														placeholder="Item name"
@@ -745,10 +911,16 @@ const Invoices = () => {
 														onChange={(e) =>
 															handleItemChange(item.id, "name", e.target.value)
 														}
-														className="border rounded px-2 py-1 w-full text-sm outline-none focus:ring-2 focus:ring-zinc-800"
+														className={`border ${colors.border} ${
+															colors.input
+														} rounded px-2 py-1 w-full text-sm outline-none ${
+															colors.background
+														} ${colors.foreground} placeholder:${
+															colors.mutedForeground
+														} ${getFocusRingClass(colorScheme)}`}
 													/>
 												</td>
-												<td className="py-2 px-3">
+												<td className={`py-2 px-3 ${colors.foreground}`}>
 													<input
 														type="number"
 														placeholder="Qty"
@@ -762,10 +934,16 @@ const Invoices = () => {
 														}
 														min="1"
 														step="1"
-														className="border rounded px-2 py-1 w-full text-sm outline-none focus:ring-2 focus:ring-zinc-800 text-center"
+														className={`border ${colors.border} ${
+															colors.input
+														} rounded px-2 py-1 w-full text-sm outline-none ${
+															colors.background
+														} ${colors.foreground} placeholder:${
+															colors.mutedForeground
+														} ${getFocusRingClass(colorScheme)} text-center`}
 													/>
 												</td>
-												<td className="py-2 px-3">
+												<td className={`py-2 px-3 ${colors.foreground}`}>
 													<input
 														type="number"
 														placeholder="0.00"
@@ -775,10 +953,18 @@ const Invoices = () => {
 														}
 														min="0"
 														step="0.01"
-														className="border rounded px-2 py-1 w-full text-sm outline-none focus:ring-2 focus:ring-zinc-800 text-right"
+														className={`border ${colors.border} ${
+															colors.input
+														} rounded px-2 py-1 w-full text-sm outline-none ${
+															colors.background
+														} ${colors.foreground} placeholder:${
+															colors.mutedForeground
+														} ${getFocusRingClass(colorScheme)} text-right`}
 													/>
 												</td>
-												<td className="py-2 px-3 text-right text-sm font-medium text-zinc-800">
+												<td
+													className={`py-2 px-3 text-right text-sm font-medium ${colors.foreground}`}
+												>
 													{formatCurrency(
 														(parseFloat(item.quantity) || 0) *
 															(parseFloat(item.price) || 0)
@@ -788,7 +974,7 @@ const Invoices = () => {
 													<button
 														type="button"
 														onClick={() => handleRemoveItem(item.id)}
-														className="text-red-600 hover:text-red-800"
+														className="text-red-600 hover:text-red-800 transition-colors"
 													>
 														<Trash size={16} />
 													</button>
@@ -799,12 +985,16 @@ const Invoices = () => {
 								</table>
 							</div>
 							<div className="flex justify-end mt-4">
-								<div className="bg-zinc-50 p-4 rounded-lg w-full md:w-80">
+								<div
+									className={`${colors.muted} p-4 rounded-lg w-full md:w-80`}
+								>
 									<div className="flex justify-between items-center">
-										<span className="text-base font-semibold text-zinc-800">
+										<span
+											className={`text-base font-semibold ${colors.foreground}`}
+										>
 											Total Amount:
 										</span>
-										<span className="text-xl font-bold text-zinc-800">
+										<span className={`text-xl font-bold ${colors.foreground}`}>
 											{formatCurrency(calculateTotal())}
 										</span>
 									</div>
@@ -815,13 +1005,13 @@ const Invoices = () => {
 						<div className="flex justify-end gap-2 mt-6">
 							<button
 								onClick={handleModalClose}
-								className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 rounded px-4 py-2 text-sm transition-all duration-100 ease-in"
+								className={`${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground} rounded px-4 py-2 text-sm transition-all duration-100 ease-in`}
 							>
 								Cancel
 							</button>
 							<button
 								onClick={handleSubmit}
-								className="bg-zinc-800 hover:bg-zinc-900 text-white rounded px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6"
+								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6`}
 							>
 								Save
 							</button>
@@ -832,19 +1022,21 @@ const Invoices = () => {
 
 			{isViewModalOpen && selectedInvoice && (
 				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-					<div className="bg-white p-8 rounded shadow-lg max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+					<div
+						className={`${colors.card} p-8 rounded ${colors.shadow} max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto border ${colors.border}`}
+					>
 						<div className="flex justify-between items-start mb-6">
 							<div>
-								<h2 className="text-2xl font-bold text-zinc-800">
+								<h2 className={`text-2xl font-bold ${colors.foreground}`}>
 									Invoice Details
 								</h2>
-								<p className="text-sm text-zinc-500 mt-1">
+								<p className={`text-sm ${colors.textMuted} mt-1`}>
 									{selectedInvoice.invoiceNumber}
 								</p>
 							</div>
 							<button
 								onClick={handleCloseViewModal}
-								className="text-zinc-500 hover:text-zinc-700 p-1 rounded hover:bg-zinc-100"
+								className={`${colors.textMuted} ${colors.hoverSecondary} p-1 rounded transition-colors`}
 							>
 								<X size={24} />
 							</button>
@@ -852,27 +1044,33 @@ const Invoices = () => {
 
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 							<div>
-								<h3 className="text-sm font-semibold text-zinc-700 mb-2">
+								<h3
+									className={`text-sm font-semibold ${colors.textSecondary} mb-2`}
+								>
 									Bill To
 								</h3>
-								<div className="bg-zinc-50 p-4 rounded">
-									<p className="font-medium text-zinc-800">
+								<div className={`${colors.muted} p-4 rounded`}>
+									<p className={`font-medium ${colors.foreground}`}>
 										{selectedInvoice.client}
 									</p>
-									<p className="text-sm text-zinc-600 mt-1">
+									<p className={`text-sm ${colors.textSecondary} mt-1`}>
 										{selectedInvoice.clientEmail}
 									</p>
 								</div>
 							</div>
 							<div>
-								<h3 className="text-sm font-semibold text-zinc-700 mb-2">
+								<h3
+									className={`text-sm font-semibold ${colors.textSecondary} mb-2`}
+								>
 									Invoice Information
 								</h3>
-								<div className="bg-zinc-50 p-4 rounded space-y-2">
+								<div className={`${colors.muted} p-4 rounded space-y-2`}>
 									<div className="flex justify-between">
-										<span className="text-sm text-zinc-600">Status:</span>
+										<span className={`text-sm ${colors.textSecondary}`}>
+											Status:
+										</span>
 										<span
-											className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(
+											className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(
 												selectedInvoice.status
 											)}`}
 										>
@@ -880,14 +1078,22 @@ const Invoices = () => {
 										</span>
 									</div>
 									<div className="flex justify-between">
-										<span className="text-sm text-zinc-600">Issue Date:</span>
-										<span className="text-sm font-medium text-zinc-800">
+										<span className={`text-sm ${colors.textSecondary}`}>
+											Issue Date:
+										</span>
+										<span
+											className={`text-sm font-medium ${colors.foreground}`}
+										>
 											{selectedInvoice.issueDate}
 										</span>
 									</div>
 									<div className="flex justify-between">
-										<span className="text-sm text-zinc-600">Due Date:</span>
-										<span className="text-sm font-medium text-zinc-800">
+										<span className={`text-sm ${colors.textSecondary}`}>
+											Due Date:
+										</span>
+										<span
+											className={`text-sm font-medium ${colors.foreground}`}
+										>
 											{selectedInvoice.dueDate}
 										</span>
 									</div>
@@ -897,50 +1103,77 @@ const Invoices = () => {
 
 						{selectedInvoice.description && (
 							<div className="mb-6">
-								<h3 className="text-sm font-semibold text-zinc-700 mb-2">
+								<h3
+									className={`text-sm font-semibold ${colors.textSecondary} mb-2`}
+								>
 									Description
 								</h3>
-								<p className="text-sm text-zinc-600 bg-zinc-50 p-4 rounded">
+								<p
+									className={`text-sm ${colors.textSecondary} ${colors.muted} p-4 rounded`}
+								>
 									{selectedInvoice.description}
 								</p>
 							</div>
 						)}
 
 						<div className="mb-6">
-							<h3 className="text-sm font-semibold text-zinc-700 mb-4">
+							<h3
+								className={`text-sm font-semibold ${colors.textSecondary} mb-4`}
+							>
 								Items
 							</h3>
-							<div className="border rounded-lg overflow-hidden">
-								<table className="min-w-full">
-									<thead className="bg-zinc-50">
+							<div
+								className={`border ${colors.border} rounded-lg overflow-hidden`}
+							>
+								<table className={`min-w-full ${colors.card}`}>
+									<thead className={colors.muted}>
 										<tr>
-											<th className="py-3 px-4 text-left text-sm font-semibold text-zinc-700 border-b">
+											<th
+												className={`py-3 px-4 text-left text-sm font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+											>
 												Item
 											</th>
-											<th className="py-3 px-4 text-center text-sm font-semibold text-zinc-700 border-b">
+											<th
+												className={`py-3 px-4 text-center text-sm font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+											>
 												Quantity
 											</th>
-											<th className="py-3 px-4 text-right text-sm font-semibold text-zinc-700 border-b">
+											<th
+												className={`py-3 px-4 text-right text-sm font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+											>
 												Price
 											</th>
-											<th className="py-3 px-4 text-right text-sm font-semibold text-zinc-700 border-b">
+											<th
+												className={`py-3 px-4 text-right text-sm font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+											>
 												Total
 											</th>
 										</tr>
 									</thead>
 									<tbody>
 										{selectedInvoice.items.map((item, index) => (
-											<tr key={index} className="border-b">
-												<td className="py-3 px-4 text-sm text-zinc-800">
+											<tr
+												key={index}
+												className={`border-b ${colors.border} ${colors.hover}`}
+											>
+												<td
+													className={`py-3 px-4 text-sm ${colors.foreground}`}
+												>
 													{item.name}
 												</td>
-												<td className="py-3 px-4 text-sm text-zinc-600 text-center">
+												<td
+													className={`py-3 px-4 text-sm ${colors.textSecondary} text-center`}
+												>
 													{item.quantity}
 												</td>
-												<td className="py-3 px-4 text-sm text-zinc-600 text-right">
+												<td
+													className={`py-3 px-4 text-sm ${colors.textSecondary} text-right`}
+												>
 													{formatCurrency(item.price)}
 												</td>
-												<td className="py-3 px-4 text-sm font-semibold text-zinc-800 text-right">
+												<td
+													className={`py-3 px-4 text-sm font-semibold ${colors.foreground} text-right`}
+												>
 													{formatCurrency(item.quantity * item.price)}
 												</td>
 											</tr>
@@ -951,12 +1184,14 @@ const Invoices = () => {
 						</div>
 
 						<div className="flex justify-end">
-							<div className="bg-zinc-50 p-6 rounded-lg w-full md:w-96">
+							<div className={`${colors.muted} p-6 rounded-lg w-full md:w-96`}>
 								<div className="flex justify-between items-center mb-2">
-									<span className="text-lg font-semibold text-zinc-800">
+									<span
+										className={`text-lg font-semibold ${colors.foreground}`}
+									>
 										Total Amount:
 									</span>
-									<span className="text-2xl font-bold text-zinc-800">
+									<span className={`text-2xl font-bold ${colors.foreground}`}>
 										{formatCurrency(selectedInvoice.amount)}
 									</span>
 								</div>
@@ -966,7 +1201,7 @@ const Invoices = () => {
 						<div className="flex justify-end gap-2 mt-6">
 							<button
 								onClick={handleCloseViewModal}
-								className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 rounded px-4 py-2 text-sm transition-all duration-100 ease-in"
+								className={`${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground} rounded px-4 py-2 text-sm transition-all duration-100 ease-in`}
 							>
 								Close
 							</button>
@@ -976,7 +1211,7 @@ const Invoices = () => {
 										`Downloading invoice ${selectedInvoice.invoiceNumber}`
 									);
 								}}
-								className="bg-zinc-800 hover:bg-zinc-900 text-white rounded px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6 flex items-center gap-2"
+								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6 flex items-center gap-2`}
 							>
 								<Download size={16} />
 								Download PDF

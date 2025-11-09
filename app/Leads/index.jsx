@@ -10,12 +10,18 @@ import {
 	ChevronLeft,
 	ChevronRight,
 	Search,
+	UserPlus,
+	Download,
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
 import { toast } from "react-toastify";
-import colors from "tailwindcss/colors";
+import { useTheme } from "../../utils/useTheme";
+import { getFocusRingClass } from "../../utils/theme";
 
 const Leads = () => {
+	// Theme hook
+	const { theme, colorScheme, colors, scheme } = useTheme();
+
 	const initialPipelines = [
 		{
 			id: "new",
@@ -294,121 +300,219 @@ const Leads = () => {
 	}, [allLeads, sortConfig]);
 
 	return (
-		<div className="p-6 overflow-y-scroll max-h-screen hidescrollbar">
-			<div className="flex justify-between items-center flex-wrap my-4">
-				<p className="">Recent Leads</p>
-				<div className="flex md:justify-end justify-start items-center gap-2 flex-wrap">
-					<div className="flex gap-2 items-center border rounded px-2 py-1 ">
-						<Search size={18} color={colors.zinc[500]} />
-						<input
-							type="text"
-							placeholder="Search Leads..."
-							className="outline-none"
-							onChange={(e) => {
-								const searchTerm = e.target.value.toLowerCase();
-								const filteredLeads =
-									searchTerm === ""
-										? pipelines[0].leads
-										: pipelines[0].leads.filter(
-												(lead) =>
-													lead.name.toLowerCase().includes(searchTerm) ||
-													lead.email.toLowerCase().includes(searchTerm)
-										  );
-								setAllLeads(filteredLeads);
-							}}
-						/>
+		<div
+			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar ${colors.background} transition-colors`}
+		>
+			{/* Leads Table - Improved */}
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
+			>
+				{/* Table Header */}
+				<div
+					className={`flex flex-col md:flex-row items-start md:items-center justify-between px-6 py-4 border-b ${colors.border} gap-4`}
+				>
+					<div>
+						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
+							Recent Leads
+						</h2>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							View and manage all your leads
+						</p>
 					</div>
-					<button
-						onClick={handleAddLead}
-						className="bg-zinc-800 hover:bg-zinc-900 rounded text-white text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6"
-					>
-						Add Lead
-					</button>
-					<button
-						onClick={handleExportCSV}
-						className="border-zinc-900 border hover:text-white hover:bg-zinc-900 rounded text-zinc-800 px-4 py-2 transition-all duration-100 ease-in hover:px-6 text-xs"
-					>
-						Export CSV
-					</button>
+					<div className="flex md:justify-end justify-start items-center gap-2 flex-wrap w-full md:w-auto">
+						<div
+							className={`relative flex gap-2 items-center border ${colors.border} rounded-xl px-3 py-2 ${colors.card} w-full md:w-auto`}
+						>
+							<Search size={18} className={colors.textSecondary} />
+							<input
+								type="text"
+								placeholder="Search Leads..."
+								className={`outline-none flex-1 ${colors.background} ${
+									colors.foreground
+								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+									colorScheme
+								)}`}
+								onChange={(e) => {
+									const searchTerm = e.target.value.toLowerCase();
+									const filteredLeads =
+										searchTerm === ""
+											? pipelines[0].leads
+											: pipelines[0].leads.filter(
+													(lead) =>
+														lead.name.toLowerCase().includes(searchTerm) ||
+														lead.email.toLowerCase().includes(searchTerm)
+											  );
+									setAllLeads(filteredLeads);
+								}}
+							/>
+						</div>
+						<button
+							onClick={handleAddLead}
+							className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-sm px-4 py-2 transition-all duration-200 font-medium flex items-center gap-2`}
+						>
+							<UserPlus size={16} />
+							Add Lead
+						</button>
+						<button
+							onClick={handleExportCSV}
+							className={`border ${colors.border} ${colors.hoverSecondary} ${colors.foreground} rounded-xl px-4 py-2 transition-all duration-200 text-sm font-medium flex items-center gap-2`}
+						>
+							<Download size={16} />
+							Export CSV
+						</button>
+					</div>
 				</div>
-			</div>
-			<div className="overflow-x-auto">
-				<table className="min-w-full bg-white border">
-					<thead className="hover:bg-zinc-50">
-						<tr>
-							<th className="py-2 px-4 border-b text-left">
-								<input type="checkbox" />
-							</th>
-							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
-								onClick={() => requestSort("name")}
-							>
-								<div className="flex justify-between items-center">
-									<span className="ml-2">User Info</span>
-									{sortConfig?.direction === "ascending" ? (
-										<ChevronUp size={16} color={colors.zinc[500]} />
-									) : (
-										<ChevronDown size={16} color={colors.zinc[500]} />
-									)}
-								</div>
-							</th>
-							<th className="py-2 px-4 border-b text-left cursor-pointer">
-								<div className="flex justify-between items-center">
-									<span className="ml-2">Email</span>
-								</div>
-							</th>
-							<th className="py-2 px-4 border-b text-left cursor-pointer">
-								<div className="flex justify-between items-center">
-									<span className="ml-2">Contacted at</span>
-								</div>
-							</th>
-							<th className="py-2 px-4 border-b text-left">Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{sortedLeads.map((lead) => (
-							<tr key={lead.id} className="hover:bg-zinc-50">
-								<td className="py-2 px-4">
-									<input type="checkbox" className="mr-2" />
-								</td>
-								<td className="py-2 px-4 flex items-center gap-2">
-									<img
-										src={lead.image}
-										alt={lead.name}
-										className="w-10 h-10 rounded-full mr-2"
+
+				{/* Table */}
+				<div className="overflow-x-auto">
+					<table className="w-full">
+						<thead className={`${colors.muted} border-b ${colors.border}`}>
+							<tr>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
+									<input
+										type="checkbox"
+										className={getFocusRingClass(colorScheme)}
 									/>
-									<span>{lead.name}</span>
-								</td>
-								<td className="py-2 px-4">{lead.email}</td>
-								<td className="py-2 px-4">{lead.lastContacted}</td>
-								<td className="py-1 px-4 flex items-center gap-2">
-									<Phone size={16} color={colors.zinc[700]} />
-									<MessageCircle size={16} color={colors.zinc[700]} />
-									<Eye size={16} color={colors.zinc[700]} />
-									<Pen size={16} color={colors.zinc[700]} />
-									<Trash
-										size={16}
-										color={colors.zinc[700]}
-										onClick={() => handleRemoveLead(lead.id)}
-									/>
-								</td>
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
+									onClick={() => requestSort("name")}
+								>
+									<div className="flex items-center gap-2">
+										User Info
+										{sortConfig?.key === "name" && (
+											<>
+												{sortConfig.direction === "ascending" ? (
+													<ChevronUp className="w-4 h-4" />
+												) : (
+													<ChevronDown className="w-4 h-4" />
+												)}
+											</>
+										)}
+									</div>
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
+									Email
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
+									Contacted At
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
+									Actions
+								</th>
 							</tr>
-						))}
-					</tbody>
-				</table>
+						</thead>
+						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+							{sortedLeads.length === 0 ? (
+								<tr>
+									<td colSpan="5" className="px-6 py-12 text-center">
+										<p className={colors.mutedForeground}>No leads found</p>
+									</td>
+								</tr>
+							) : (
+								sortedLeads.map((lead) => (
+									<tr
+										key={lead.id}
+										className={`${colors.hover} transition-colors`}
+									>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<input
+												type="checkbox"
+												className={getFocusRingClass(colorScheme)}
+											/>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div className="flex items-center gap-3">
+												<img
+													src={lead.image}
+													alt={lead.name}
+													className="w-10 h-10 rounded-full border-2 border-zinc-200"
+												/>
+												<div
+													className={`text-sm font-medium ${colors.foreground}`}
+												>
+													{lead.name}
+												</div>
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div className={`text-sm ${colors.textSecondary}`}>
+												{lead.email}
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div className={`text-sm ${colors.textSecondary}`}>
+												{lead.lastContacted}
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div className="flex items-center gap-2">
+												<button
+													className={`p-1.5 rounded-lg ${colors.hoverSecondary} transition-colors`}
+													title="Call"
+												>
+													<Phone size={16} className={colors.textSecondary} />
+												</button>
+												<button
+													className={`p-1.5 rounded-lg ${colors.hoverSecondary} transition-colors`}
+													title="Message"
+												>
+													<MessageCircle
+														size={16}
+														className={colors.textSecondary}
+													/>
+												</button>
+												<button
+													className={`p-1.5 rounded-lg ${colors.hoverSecondary} transition-colors`}
+													title="View"
+												>
+													<Eye size={16} className={colors.textSecondary} />
+												</button>
+												<button
+													className={`p-1.5 rounded-lg ${colors.hoverSecondary} transition-colors`}
+													title="Edit"
+												>
+													<Pen size={16} className={colors.textSecondary} />
+												</button>
+												<button
+													className={`p-1.5 rounded-lg ${colors.hoverSecondary} transition-colors`}
+													title="Delete"
+													onClick={() => handleRemoveLead(lead.id)}
+												>
+													<Trash size={16} className={colors.textSecondary} />
+												</button>
+											</div>
+										</td>
+									</tr>
+								))
+							)}
+						</tbody>
+					</table>
+				</div>
 			</div>
 			<div className="flex items-center justify-end my-4">
 				<ChevronLeft
 					size={18}
-					color={colors.zinc[500]}
-					className="cursor-pointer"
+					className={`cursor-pointer ${colors.textSecondary} transition-colors ${colors.hoverSecondary}`}
 					onClick={() => {}}
 				/>
 				{Array.from({ length: 5 }, (_, index) => (
 					<button
 						key={index}
-						className={`mx-1 px-3 py-1 rounded hover:bg-zinc-50 ${
-							index === 0 ? "bg-zinc-100 text-zinc-800" : "text-zinc-700"
+						className={`mx-1 px-3 py-1 rounded ${
+							colors.hoverSecondary
+						} transition-colors ${
+							index === 0
+								? `${colors.muted} ${colors.foreground}`
+								: colors.foreground
 						}`}
 						onClick={() => {}}
 					>
@@ -417,21 +521,20 @@ const Leads = () => {
 				))}
 				<ChevronRight
 					size={18}
-					color={colors.zinc[500]}
-					className="cursor-pointer"
+					className={`cursor-pointer ${colors.textSecondary} transition-colors ${colors.hoverSecondary}`}
 					onClick={() => {}}
 				/>
 			</div>
-			<p className="my-4">Leads</p>
+			<p className={`my-4 ${colors.foreground}`}>Leads</p>
 			<div className="flex md:flex-row flex-col gap-2 md:w-full">
 				{pipelines.map((pipeline) => (
 					<div
 						key={pipeline.id}
-						className="py-4 md:w-3/4 w-full bg-white shadow-lg rounded-lg p-4 border hover:px-5 transition-all duration-100 ease-in"
+						className={`py-4 md:w-3/4 w-full ${colors.card} ${colors.shadow} rounded-lg p-4 border ${colors.border} ${colors.hoverSecondary} hover:px-5 transition-all duration-100 ease-in`}
 						onDragOver={(e) => e.preventDefault()}
 						onDrop={(e) => handleDrop(e, pipeline.id)}
 					>
-						<p className="font-semibold text-lg text-zinc-800">
+						<p className={`font-semibold text-lg ${colors.foreground}`}>
 							{pipeline.name}
 						</p>
 						{pipeline.leads.map((lead) => (
@@ -440,24 +543,28 @@ const Leads = () => {
 								draggable
 								onDragStart={(e) => handleDragStart(e, lead)}
 								onDragEnd={handleDragEnd}
-								className="border rounded-lg p-3 my-2 bg-zinc-50 bg-opacity-50 transition-all duration-200 ease-in-out hover:shadow-xl hover:bg-zinc-50"
+								className={`border ${colors.border} rounded-lg p-3 my-2 ${colors.muted} transition-all duration-200 ease-in-out ${colors.shadow} ${colors.hoverSecondary}`}
 							>
 								<img
 									src={lead.image}
 									alt={lead.name}
-									className="w-12 h-12 rounded-full mr-4 border-2 border-zinc-200"
+									className={`w-12 h-12 rounded-full mr-4 border-2 ${colors.border}`}
 								/>
 								<div className="flex-1">
-									<div className="font-medium text-zinc-900">{lead.name}</div>
-									<div className="text-sm text-zinc-600">{lead.email}</div>
-									<div className="text-xs text-zinc-500">
+									<div className={`font-medium ${colors.foreground}`}>
+										{lead.name}
+									</div>
+									<div className={`text-sm ${colors.textSecondary}`}>
+										{lead.email}
+									</div>
+									<div className={`text-xs ${colors.textMuted}`}>
 										Company: {lead.company}
 									</div>
 								</div>
 								<div className="text-sm flex items-center gap-2 my-2">
-									<Mail size={18} color={colors.zinc[400]} />
-									<MessageCircle size={18} color={colors.zinc[400]} />
-									<Phone size={18} color={colors.zinc[400]} />
+									<Mail size={18} className={colors.textMuted} />
+									<MessageCircle size={18} className={colors.textMuted} />
+									<Phone size={18} className={colors.textMuted} />
 								</div>
 							</div>
 						))}
@@ -466,16 +573,26 @@ const Leads = () => {
 			</div>
 
 			{isModalOpen && (
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-					<div className="bg-white p-6 rounded shadow-lg">
-						<h2 className="text-lg mb-4">Add new lead</h2>
+				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+					<div
+						className={`${colors.card} p-6 rounded ${colors.shadow} border ${colors.border}`}
+					>
+						<h2 className={`text-lg mb-4 ${colors.foreground}`}>
+							Add new lead
+						</h2>
 						<input
 							type="text"
 							name="name"
 							placeholder="Name"
 							value={newLead.name}
 							onChange={handleInputChange}
-							className="border rounded px-2 py-1 mb-2 w-full"
+							className={`border ${colors.border} ${
+								colors.input
+							} rounded px-2 py-1 mb-2 w-full outline-none ${
+								colors.background
+							} ${colors.foreground} placeholder:${
+								colors.mutedForeground
+							} ${getFocusRingClass(colorScheme)}`}
 						/>
 						<input
 							type="email"
@@ -483,7 +600,13 @@ const Leads = () => {
 							placeholder="Email"
 							value={newLead.email}
 							onChange={handleInputChange}
-							className="border rounded px-2 py-1 mb-2 w-full"
+							className={`border ${colors.border} ${
+								colors.input
+							} rounded px-2 py-1 mb-2 w-full outline-none ${
+								colors.background
+							} ${colors.foreground} placeholder:${
+								colors.mutedForeground
+							} ${getFocusRingClass(colorScheme)}`}
 						/>
 						<input
 							type="text"
@@ -491,18 +614,24 @@ const Leads = () => {
 							placeholder="Image URL"
 							value={newLead.image}
 							onChange={handleInputChange}
-							className="border rounded px-2 py-1 mb-4 w-full"
+							className={`border ${colors.border} ${
+								colors.input
+							} rounded px-2 py-1 mb-4 w-full outline-none ${
+								colors.background
+							} ${colors.foreground} placeholder:${
+								colors.mutedForeground
+							} ${getFocusRingClass(colorScheme)}`}
 						/>
 						<div className="flex justify-start">
 							<button
 								onClick={handleSubmit}
-								className="bg-zinc-800 text-white rounded px-2 py-1 mr-2 text-sm"
+								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded px-2 py-1 mr-2 text-sm transition-colors`}
 							>
 								Submit
 							</button>
 							<button
 								onClick={handleModalClose}
-								className="bg-zinc-100 rounded px-2 py-1 text-sm"
+								className={`${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground} rounded px-2 py-1 text-sm transition-colors`}
 							>
 								Cancel
 							</button>

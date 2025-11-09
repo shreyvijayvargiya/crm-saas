@@ -1,7 +1,12 @@
 import React from "react";
 import * as lucideIcons from "lucide-react";
+import { useRouter } from "next/router";
+import { useTheme } from "../../utils/useTheme";
 
 const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
+	const router = useRouter();
+	const { colors, scheme } = useTheme();
+
 	const navItems = [
 		{
 			id: 1,
@@ -91,51 +96,85 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 
 	return (
 		<div
-			className={`h-screen bg-zinc-50/20  ${
+			className={`h-screen ${
 				open ? "w-60 md:w-60" : "w-full"
 			} transition-all duration-300 ease-in`}
 		>
-			<div className="flex flex-col h-full justify-between pb-5 border border-zinc-200 bg-white rounded-xl">
+			<div
+				className={`flex flex-col h-full justify-between pb-5 transition-colors`}
+			>
 				<div className="flex flex-col gap-1">
-					<div className="flex items-center justify-between border-b border-zinc-100 ">
+					<div className={`flex items-center justify-between py-1`}>
 						{open ? (
-							<div className="relative group flex items-center p-2 justify-between hover:bg-zinc-50 rounded-t-xl cursor-pointer w-full">
+							<div
+								className={`relative group flex items-center p-2 justify-between border ${colors.border} ${colors.hoverSecondary} rounded-xl cursor-pointer w-full transition-colors`}
+							>
 								<div className="flex items-center gap-2">
-									<lucideIcons.Rocket className="w-4 h-4" />
-									<p className="text-sm">CRM pages</p>
+									<lucideIcons.Rocket
+										className={`w-4 h-4 ${colors.foreground}`}
+									/>
+									<p className={`text-sm ${colors.foreground}`}>CRM pages</p>
 								</div>
 								<div className="flex flex-col items-center justify-center">
-									<lucideIcons.ChevronUp className="text-zinc-500 group-hover:rotate-180 transition-all duration-200 ease-in w-3 h-3" />
-									<lucideIcons.ChevronDown className="text-zinc-500 group-hover:rotate-180 transition-all duration-200 ease-in w-3 h-3" />
+									<lucideIcons.ChevronUp
+										className={`${colors.mutedForeground} group-hover:rotate-180 transition-all duration-200 ease-in w-3 h-3`}
+									/>
+									<lucideIcons.ChevronDown
+										className={`${colors.mutedForeground} group-hover:rotate-180 transition-all duration-200 ease-in w-3 h-3`}
+									/>
 								</div>
-								<div className="absolute top-10 left-0 right-0 w-60 h-fit bg-white text-xs rounded-xl border border-zinc-100 px-1 py-2 opacity-0 transition-opacity duration-200 invisible group-hover:visible group-hover:opacity-100 z-20">
-									<p className="text-xs font-medium p-1">Projects</p>
+								<div
+									className={`absolute top-10 left-0 right-0 w-60 h-fit ${colors.card} text-xs rounded-xl border ${colors.border} px-1 py-2 opacity-0 transition-opacity duration-200 invisible group-hover:visible group-hover:opacity-100 z-20`}
+								>
+									<p className={`text-xs font-medium p-1 ${colors.foreground}`}>
+										Projects
+									</p>
 									<div className="flex flex-col gap-1 my-2">
-										<div className="flex items-center gap-2 hover:bg-zinc-50 cursor-pointer rounded p-1">
-											<lucideIcons.Rocket className="w-5 h-5 p-1 rounded border border-zinc-200" />
-											<p className="text-sm">CRM pages</p>
+										<div
+											className={`flex items-center gap-2 ${colors.hoverSecondary} cursor-pointer rounded p-1 transition-colors`}
+										>
+											<lucideIcons.Rocket
+												className={`w-5 h-5 p-1 rounded border ${colors.border} ${colors.foreground}`}
+											/>
+											<p className={`text-sm ${colors.foreground}`}>
+												CRM pages
+											</p>
 										</div>
-										<div className="flex items-center gap-2 hover:bg-zinc-50 cursor-pointer rounded p-1">
-											<lucideIcons.ShoppingCart className="w-5 h-5 p-1 rounded border border-zinc-200" />
-											<p className="text-sm">E-commerce</p>
+										<div
+											className={`flex items-center gap-2 ${colors.hoverSecondary} cursor-pointer rounded p-1 transition-colors`}
+										>
+											<lucideIcons.ShoppingCart
+												className={`w-5 h-5 p-1 rounded border ${colors.border} ${colors.foreground}`}
+											/>
+											<p className={`text-sm ${colors.foreground}`}>
+												E-commerce
+											</p>
 										</div>
-										<div className="flex items-center gap-2 hover:bg-zinc-50 cursor-pointer rounded p-1">
-											<lucideIcons.Book className="w-5 h-5 p-1 rounded border border-zinc-200" />
-											<p className="text-sm">Blog</p>
+										<div
+											className={`flex items-center gap-2 ${colors.hoverSecondary} cursor-pointer rounded p-1 transition-colors`}
+										>
+											<lucideIcons.Book
+												className={`w-5 h-5 p-1 rounded border ${colors.border} ${colors.foreground}`}
+											/>
+											<p className={`text-sm ${colors.foreground}`}>Blog</p>
 										</div>
-										<div className="border-t border-zinc-50" />
-										<button className="bg-zinc-800 cursor-pointer hover:shadow-zinc-200 hover:shadow-xl transition-all duration-100 ease-in hover:bg-zinc-900 text-white text-xs rounded w-full p-1">
+										<div className={`border-t ${colors.border}`} />
+										<button
+											className={`${scheme.primary} ${scheme.primaryForeground} cursor-pointer hover:shadow-xl transition-all duration-100 ease-in ${scheme.primaryHover} text-xs rounded w-full p-1`}
+										>
 											Add project
 										</button>
 									</div>
 								</div>
 							</div>
 						) : (
-							<lucideIcons.Rocket className="w-4 h-4 my-4 mx-auto" />
+							<lucideIcons.Rocket
+								className={`w-4 h-4 my-4 mx-auto ${colors.foreground}`}
+							/>
 						)}
 						<button
 							onClick={() => setDrawerOpen(!drawerOpen)}
-							className="md:hidden"
+							className={`md:hidden ${colors.foreground}`}
 						>
 							<lucideIcons.X size={24} />
 						</button>
@@ -144,18 +183,32 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 					<div className="flex flex-col px-2">
 						{navItems?.map((item) => {
 							const Icon = lucideIcons[item?.icon];
+							const isActive = router.pathname === item.route;
 							return (
-								<div className="relative">
+								<div key={item.id} className="relative group">
 									<a
-										key={item.id}
 										href={item.route}
-										className="p-1 my-0.5 hover:bg-zinc-50 text-zinc-600 hover:text-zinc-800 transition-all duration-100 ease-in rounded-md flex items-center gap-2 text-sm"
+										className={`py-1 px-3 my-0.5 transition-all duration-100 ease-in rounded flex items-center gap-2 text-sm ${
+											isActive
+												? `${scheme.primary} ${scheme.primaryForeground}`
+												: `${colors.hoverSecondary} ${colors.textSecondary}`
+										}`}
 									>
-										{Icon ? <Icon className="w-4 h-4 text-zinc-600" /> : null}{" "}
+										{Icon ? (
+											<Icon
+												className={`w-4 h-4 ${
+													isActive
+														? scheme.primaryForeground
+														: colors.textSecondary
+												}`}
+											/>
+										) : null}{" "}
 										{open ? item.label : null}
 									</a>
 									{!open && (
-										<div className="absolute left-full ml-2 w-max bg-zinc-800 text-white text-xs rounded p-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+										<div
+											className={`absolute left-full ml-2 w-max ${scheme.primary} ${scheme.primaryForeground} text-xs rounded p-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100 z-10`}
+										>
 											{item.label}
 										</div>
 									)}
@@ -166,21 +219,23 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 				</div>
 				<div className="p-2 space-y-2">
 					{open && (
-						<div className="w-full h-fit bg-white rounded-xl shadow-xl p-4 border border-zinc-200">
-							<p className="text-zinc-600 mb-2 text-sm">
+						<div
+							className={`w-full h-fit ${colors.card} rounded-xl ${colors.shadow} p-4 border ${colors.border} transition-colors`}
+						>
+							<p className={`${colors.textSecondary} mb-2 text-sm`}>
 								Download Unlock lifetime access to entire React CRM template
 							</p>
 							<a
 								href="https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template?layout=profile"
 								target="_blank"
 								rel="noopener noreferrer"
-								className="p-2 text-sm rounded-xl bg-zinc-900 hover:bg-black text-white cursor-pointer"
+								className={`p-2 text-sm rounded-xl ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} cursor-pointer transition-colors`}
 							>
 								Download Template
 							</a>
 						</div>
 					)}
-					<div className="flex gap-2 items-center bg-red-600 text-sm text-white hover:bg-red-500 cursor-pointer p-2 rounded-xl">
+					<div className="flex gap-2 items-center bg-red-600 text-sm text-white hover:bg-red-500 cursor-pointer p-2 rounded-xl transition-colors">
 						<lucideIcons.LogOut size={16} />
 						{open ? "logout" : null}
 					</div>

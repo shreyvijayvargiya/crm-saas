@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { useTheme } from "../../utils/useTheme";
+import { getFocusRingClass } from "../../utils/theme";
 
 const Tasks = () => {
+	// Theme hook
+	const { theme, colorScheme, colors, scheme } = useTheme();
+
 	const [taskSections, setTaskSections] = useState([
 		{
 			id: "to-do",
@@ -157,11 +162,11 @@ const Tasks = () => {
 	};
 
 	return (
-		<div>
+		<div className={`${colors.background} transition-colors`}>
 			<div className="flex items-center justify-between my-4 px-4">
-				<p>Task Kanban board</p>
+				<p className={colors.foreground}>Task Kanban board</p>
 				<button
-					className="bg-zinc-800 hover:bg-zinc-900 rounded text-white text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6"
+					className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6`}
 					onClick={handleAddNewTask}
 				>
 					Add new
@@ -170,11 +175,13 @@ const Tasks = () => {
 
 			{isModalOpen && (
 				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-					<div className="modal-content bg-white rounded-xl shadow-lg p-6">
+					<div
+						className={`modal-content ${colors.card} rounded-xl ${colors.shadow} p-6 border ${colors.border}`}
+					>
 						<div className="flex justify-between items-center">
-							<p>Add new task</p>
+							<p className={colors.foreground}>Add new task</p>
 							<span
-								className="close cursor-pointer text-zinc-500 hover:text-zinc-800"
+								className={`close cursor-pointer ${colors.textMuted} ${colors.hoverSecondary} transition-colors`}
 								onClick={handleCloseModal}
 							>
 								&times;
@@ -189,7 +196,15 @@ const Tasks = () => {
 									setNewTask({ ...newTask, name: e.target.value })
 								}
 								required
-								className="border border-zinc-300 rounded px-2 py-1 hover:bg-zinc-50 w-full mb-4 outline-none"
+								className={`border ${colors.border} ${
+									colors.input
+								} rounded px-2 py-1 ${
+									colors.hoverSecondary
+								} w-full mb-4 outline-none ${colors.background} ${
+									colors.foreground
+								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+									colorScheme
+								)}`}
 							/>
 							<input
 								type="text"
@@ -199,11 +214,19 @@ const Tasks = () => {
 									setNewTask({ ...newTask, icon: e.target.value })
 								}
 								required
-								className="border border-zinc-300 rounded px-2 py-1 hover:bg-zinc-50 w-full mb-4 outline-none"
+								className={`border ${colors.border} ${
+									colors.input
+								} rounded px-2 py-1 ${
+									colors.hoverSecondary
+								} w-full mb-4 outline-none ${colors.background} ${
+									colors.foreground
+								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+									colorScheme
+								)}`}
 							/>
 							<button
 								type="submit"
-								className="bg-zinc-800 hover:bg-zinc-900 rounded text-white text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6"
+								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6`}
 							>
 								Submit
 							</button>
@@ -216,27 +239,31 @@ const Tasks = () => {
 				{taskSections.map((section) => (
 					<div
 						key={section.id}
-						className="py-4 w-full bg-white rounded-xl p-4 border hover:px-5 transition-all duration-100 ease-in"
+						className={`py-4 w-full ${colors.card} rounded-xl p-4 border ${colors.border} ${colors.hover} hover:px-5 transition-all duration-100 ease-in`}
 						onDrop={(event) => handleDrop(event, section.id)}
 						onDragOver={handleDragOver}
 					>
-						<p className="font-semibold text-lg text-zinc-800 mb-4 flex justify-between items-center">
+						<p
+							className={`font-semibold text-lg ${colors.foreground} mb-4 flex justify-between items-center`}
+						>
 							{section.name}
-							<span className="text text-zinc-600">{section.tasks.length}</span>
+							<span className={`text ${colors.textSecondary}`}>
+								{section.tasks.length}
+							</span>
 						</p>
 						{section.tasks.map((task) => {
-							let bgColor = "bg-zinc-50"; // Default color
+							let bgColor = colors.muted; // Default color
 							if (section.name === "To Do") {
-								bgColor = "bg-blue-50";
+								bgColor = theme === "dark" ? "bg-blue-900/30" : "bg-blue-50";
 							} else if (section.name === "In Progress") {
-								bgColor = "bg-pink-50";
+								bgColor = theme === "dark" ? "bg-pink-900/30" : "bg-pink-50";
 							} else if (section.name === "Completed") {
-								bgColor = "bg-green-50";
+								bgColor = theme === "dark" ? "bg-green-900/30" : "bg-green-50";
 							}
 							return (
 								<div
 									key={task.id}
-									className={`border border-zinc-100 rounded-xl p-3 my-2 ${bgColor} bg-opacity-50 transition-all duration-200 ease-in-out hover:shadow hover:${bgColor}`}
+									className={`border ${colors.border} rounded-xl p-3 my-2 ${bgColor} transition-all duration-200 ease-in-out ${colors.shadow} ${colors.hoverSecondary}`}
 									draggable
 									onDragStart={(event) => handleDragStart(event, task)}
 									onDragEnd={handleDragEnd}
@@ -244,10 +271,10 @@ const Tasks = () => {
 									<div className="flex items-center">
 										<span className="mr-2">{task.icon}</span>
 										<div className="flex-1">
-											<div className="font-medium text-zinc-900">
+											<div className={`font-medium ${colors.foreground}`}>
 												{task.name}
 											</div>
-											<div className="text-sm text-zinc-600">
+											<div className={`text-sm ${colors.textSecondary}`}>
 												Status: {task.progress}
 											</div>
 										</div>

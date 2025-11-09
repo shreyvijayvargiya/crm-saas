@@ -10,37 +10,47 @@ import {
 	PlusCircle,
 	X,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { BsCalendarMonth } from "react-icons/bs";
 import {
-	BarChart,
-	LineChart,
-	Line,
-	Bar,
+	AreaChart,
+	Area,
 	XAxis,
 	YAxis,
 	CartesianGrid,
 	Tooltip,
-	Legend,
 	ResponsiveContainer,
 } from "recharts";
+import { useTheme } from "../../utils/useTheme";
+import { getFocusRingClass } from "../../utils/theme";
 
 const Sales = () => {
-	const [salesData, setSalesData] = useState({
+	// Theme hook
+	const { theme, colorScheme, colors, scheme } = useTheme();
+
+	const [salesData] = useState({
 		daily: [
-			{ name: "Day 1", sales: 30 },
-			{ name: "Day 2", sales: 45 },
-			{ name: "Day 3", sales: 20 },
+			{ date: "Mon", sales: 30, revenue: 500 },
+			{ date: "Tue", sales: 45, revenue: 700 },
+			{ date: "Wed", sales: 20, revenue: 400 },
+			{ date: "Thu", sales: 55, revenue: 900 },
+			{ date: "Fri", sales: 40, revenue: 650 },
+			{ date: "Sat", sales: 35, revenue: 580 },
+			{ date: "Sun", sales: 50, revenue: 820 },
 		],
 		weekly: [
-			{ name: "Week 1", sales: 200 },
-			{ name: "Week 2", sales: 300 },
-			{ name: "Week 3", sales: 250 },
+			{ date: "Week 1", sales: 200, revenue: 3200 },
+			{ date: "Week 2", sales: 300, revenue: 4800 },
+			{ date: "Week 3", sales: 250, revenue: 4000 },
+			{ date: "Week 4", sales: 350, revenue: 5600 },
 		],
 		monthly: [
-			{ name: "Month 1", sales: 1000 },
-			{ name: "Month 2", sales: 1200 },
-			{ name: "Month 3", sales: 1500 },
+			{ date: "Jan", sales: 1000, revenue: 16000 },
+			{ date: "Feb", sales: 1200, revenue: 19200 },
+			{ date: "Mar", sales: 1500, revenue: 24000 },
+			{ date: "Apr", sales: 1300, revenue: 20800 },
+			{ date: "May", sales: 1400, revenue: 22400 },
+			{ date: "Jun", sales: 1600, revenue: 25600 },
 		],
 	});
 	const [topCountries] = useState([
@@ -49,39 +59,7 @@ const Sales = () => {
 		{ name: "China", percentage: 20 },
 	]);
 
-	const [revenueData, setRevenueData] = useState({
-		oneMonth: [
-			{ name: "Week 1", revenue: 500 },
-			{ name: "Week 2", revenue: 700 },
-			{ name: "Week 3", revenue: 600 },
-			{ name: "Week 4", revenue: 800 },
-			{ name: "Week 5", revenue: 900 },
-		],
-		threeMonths: [
-			{ name: "Month 1", revenue: 2000 },
-			{ name: "Month 2", revenue: 2500 },
-			{ name: "Month 3", revenue: 3000 },
-			{ name: "Month 4", revenue: 3500 },
-			{ name: "Month 5", revenue: 4000 },
-		],
-		sixMonths: [
-			{ name: "Month 1", revenue: 4000 },
-			{ name: "Month 2", revenue: 4500 },
-			{ name: "Month 3", revenue: 5000 },
-			{ name: "Month 4", revenue: 5500 },
-			{ name: "Month 5", revenue: 6000 },
-		],
-		oneYear: [
-			{ name: "Year 1", revenue: 12000 },
-			{ name: "Year 2", revenue: 15000 },
-			{ name: "Year 3", revenue: 18000 },
-			{ name: "Year 4", revenue: 21000 },
-			{ name: "Year 5", revenue: 24000 },
-		],
-	});
-
-	const [activeSalesTab, setActiveSalesTab] = useState("daily");
-	const [activeRevenueTab, setActiveRevenueTab] = useState("oneMonth");
+	const [activeTab, setActiveTab] = useState("daily");
 
 	const [products, setProducts] = useState([
 		{
@@ -156,51 +134,162 @@ const Sales = () => {
 		setIsModalOpen(false);
 	};
 
+	// Get current chart data based on active tab
+	const chartData = useMemo(() => {
+		return salesData[activeTab] || salesData.daily;
+	}, [activeTab, salesData]);
+
 	// Calculate totals
-	const totalSales = salesData.daily.reduce((acc, curr) => acc + curr.sales, 0);
-	const totalRevenue = revenueData.oneMonth.reduce(
-		(acc, curr) => acc + curr.revenue,
-		0
-	);
+	const totalSales = useMemo(() => {
+		return chartData.reduce((acc, curr) => acc + curr.sales, 0);
+	}, [chartData]);
+
+	const totalRevenue = useMemo(() => {
+		return chartData.reduce((acc, curr) => acc + (curr.revenue || 0), 0);
+	}, [chartData]);
+
 	const totalVisitors = topCountries.reduce(
 		(acc, curr) => acc + curr.percentage,
 		0
 	);
 
+	// Custom Tooltip for charts
+	const CustomTooltip = ({ active, payload, label }) => {
+		if (active && payload && payload.length) {
+			return (
+				<div
+					className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} p-3`}
+				>
+					<p className={`text-sm font-medium ${colors.foreground} mb-2`}>
+						{label}
+					</p>
+					{payload.map((entry, index) => (
+						<div key={index} className="flex items-center gap-2 mb-1">
+							<div
+								className="w-3 h-3 rounded"
+								style={{
+									backgroundColor:
+										entry.dataKey === "sales"
+											? theme === "dark"
+												? "#3b82f6"
+												: "#3b82f6"
+											: theme === "dark"
+											? "#10b981"
+											: "#10b981",
+								}}
+							/>
+							<span className={`text-sm ${colors.textSecondary}`}>
+								{entry.dataKey === "sales" ? "Sales" : "Revenue"}:{" "}
+								{entry.dataKey === "sales"
+									? entry.value
+									: `$${entry.value.toLocaleString()}`}
+							</span>
+						</div>
+					))}
+				</div>
+			);
+		}
+		return null;
+	};
+
 	return (
-		<div className="p-4">
-			<div className="flex justify-between gap-2 items-center mb-4 flex-wrap">
-				<div className="flex justify-start items-center gap-4 flex-wrap">
-					<div className="flex items-center bg-white border border-zinc-100 rounded-xl py-4 px-8 gap-4 hover:bg-zinc-50 hover:px-12 transition-all duration-100 ease-in">
-						<DollarSign size={32} className="mr-2 text-green-500" />
-						<div>
-							<p className="text-sm">Total Sales</p>
-							<p className="text-lg font-bold">{totalSales}</p>
+		<div className={`p-4 ${colors.background} transition-colors`}>
+			<div className="flex justify-between gap-4 items-start mb-6 flex-wrap">
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1">
+					{/* Total Sales Card */}
+					<div
+						className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-all duration-300 group`}
+					>
+						{/* Background Gradient Shapes */}
+						<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-green-400/20 to-green-600/10 rounded-full blur-2xl"></div>
+						<div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-green-300/15 to-green-500/5 rounded-full blur-xl"></div>
+						<div className="absolute top-4 right-4 w-16 h-16 bg-green-500/10 rounded-full blur-lg"></div>
+
+						<div className="relative flex items-center justify-between">
+							<div className="flex items-center gap-4">
+								<div className="p-3 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-sm border border-green-500/20">
+									<DollarSign size={28} className="text-green-500" />
+								</div>
+								<div>
+									<p
+										className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
+									>
+										Total Sales
+									</p>
+									<p className={`text-2xl font-bold ${colors.foreground}`}>
+										{totalSales.toLocaleString()}
+									</p>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div className="flex items-center bg-white border border-zinc-100 rounded-xl py-4 px-8 gap-4 hover:bg-zinc-50 hover:px-12 transition-all duration-100 ease-in">
-						<Mail size={32} className="mr-2 text-blue-500" />
-						<div>
-							<p className="text-sm">Total Revenue</p>
-							<p className="text-lg font-bold">${totalRevenue}</p>
+
+					{/* Total Revenue Card */}
+					<div
+						className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-all duration-300 group`}
+					>
+						{/* Background Gradient Shapes */}
+						<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-blue-600/10 rounded-full blur-2xl"></div>
+						<div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-blue-300/15 to-blue-500/5 rounded-full blur-xl"></div>
+						<div className="absolute top-4 right-4 w-16 h-16 bg-blue-500/10 rounded-full blur-lg"></div>
+
+						<div className="relative flex items-center justify-between">
+							<div className="flex items-center gap-4">
+								<div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-sm border border-blue-500/20">
+									<Mail size={28} className="text-blue-500" />
+								</div>
+								<div>
+									<p
+										className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
+									>
+										Total Revenue
+									</p>
+									<p className={`text-2xl font-bold ${colors.foreground}`}>
+										${totalRevenue.toLocaleString()}
+									</p>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div className="flex items-center bg-white border border-zinc-100 rounded-xl py-4 px-8 gap-4 hover:bg-zinc-50 hover:px-12 transition-all duration-100 ease-in">
-						<Users size={32} className="mr-2 text-purple-500" />
-						<div>
-							<p className="text-sm">Total Visitors</p>
-							<p className="text-lg font-bold">{totalVisitors}</p>
+
+					{/* Total Visitors Card */}
+					<div
+						className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-all duration-300 group`}
+					>
+						{/* Background Gradient Shapes */}
+						<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-purple-600/10 rounded-full blur-2xl"></div>
+						<div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-purple-300/15 to-purple-500/5 rounded-full blur-xl"></div>
+						<div className="absolute top-4 right-4 w-16 h-16 bg-purple-500/10 rounded-full blur-lg"></div>
+
+						<div className="relative flex items-center justify-between">
+							<div className="flex items-center gap-4">
+								<div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 backdrop-blur-sm border border-purple-500/20">
+									<Users size={28} className="text-purple-500" />
+								</div>
+								<div>
+									<p
+										className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
+									>
+										Total Visitors
+									</p>
+									<p className={`text-2xl font-bold ${colors.foreground}`}>
+										{totalVisitors.toLocaleString()}
+									</p>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div className="flex justify-around items-center gap-2">
-					<button className="flex items-center bg-zinc-800 text-white py-2 px-4 text-xs rounded-xl hover:bg-zinc-900 hover:px-6 transition-all duration-200">
+					<button
+						className={`flex items-center ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} py-2 px-4 text-xs rounded-xl hover:px-6 transition-all duration-200`}
+					>
 						<Download size={18} className="mr-2" />
 						Download Report
 					</button>
 					<button
 						onClick={() => setIsModalOpen(true)}
-						className="flex items-center bg-zinc-800 text-white rounded-xl py-2 text-xs px-4 hover:px-6 hover:bg-zinc-900 transition-all duration-200"
+						className={`flex items-center ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl py-2 text-xs px-4 hover:px-6 transition-all duration-200`}
 					>
 						<PlusCircle size={18} className="mr-2" />
 						Add Product
@@ -210,16 +299,23 @@ const Sales = () => {
 
 			{isModalOpen && (
 				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-					<div className="bg-white rounded-lg p-6 w-1/3">
+					<div
+						className={`${colors.card} rounded-lg p-6 w-1/3 border ${colors.border}`}
+					>
 						<div className="flex justify-between items-center mb-4">
-							<h2 className="text-xl">Add Product</h2>
-							<button onClick={() => setIsModalOpen(false)}>
-								<X size={20} className="text-zinc-500" />
+							<h2 className={`text-xl ${colors.foreground}`}>Add Product</h2>
+							<button
+								onClick={() => setIsModalOpen(false)}
+								className={`${colors.textMuted} ${colors.hoverSecondary} transition-colors`}
+							>
+								<X size={20} />
 							</button>
 						</div>
 						<form onSubmit={handleAddProduct}>
 							<div className="mb-4">
-								<label className="block text-sm font-medium mb-1">
+								<label
+									className={`block text-sm font-medium mb-1 ${colors.textSecondary}`}
+								>
 									Product Name
 								</label>
 								<input
@@ -228,13 +324,21 @@ const Sales = () => {
 									onChange={(e) =>
 										setNewProduct({ ...newProduct, name: e.target.value })
 									}
-									className="border border-zinc-300 rounded w-full py-1 px-2 outline-none hover:bg-zinc-50"
+									className={`border ${colors.border} ${
+										colors.input
+									} rounded w-full py-1 px-2 outline-none ${
+										colors.hoverSecondary
+									} ${colors.background} ${colors.foreground} placeholder:${
+										colors.mutedForeground
+									} ${getFocusRingClass(colorScheme)}`}
 									placeholder="Enter product name"
 									required
 								/>
 							</div>
 							<div className="mb-4">
-								<label className="block text-sm font-medium mb-1">
+								<label
+									className={`block text-sm font-medium mb-1 ${colors.textSecondary}`}
+								>
 									Category
 								</label>
 								<input
@@ -243,26 +347,44 @@ const Sales = () => {
 									onChange={(e) =>
 										setNewProduct({ ...newProduct, category: e.target.value })
 									}
-									className="border border-zinc-300 rounded w-full py-1 px-2 outline-none hover:bg-zinc-50"
+									className={`border ${colors.border} ${
+										colors.input
+									} rounded w-full py-1 px-2 outline-none ${
+										colors.hoverSecondary
+									} ${colors.background} ${colors.foreground} placeholder:${
+										colors.mutedForeground
+									} ${getFocusRingClass(colorScheme)}`}
 									placeholder="Enter product category"
 									required
 								/>
 							</div>
 							<div className="mb-4">
-								<label className="block text-sm font-medium mb-1">Price</label>
+								<label
+									className={`block text-sm font-medium mb-1 ${colors.textSecondary}`}
+								>
+									Price
+								</label>
 								<input
 									type="number"
 									value={newProduct.price}
 									onChange={(e) =>
 										setNewProduct({ ...newProduct, price: e.target.value })
 									}
-									className="border border-zinc-300 rounded w-full py-1 px-2 outline-none hover:bg-zinc-50"
+									className={`border ${colors.border} ${
+										colors.input
+									} rounded w-full py-1 px-2 outline-none ${
+										colors.hoverSecondary
+									} ${colors.background} ${colors.foreground} placeholder:${
+										colors.mutedForeground
+									} ${getFocusRingClass(colorScheme)}`}
 									placeholder="Enter product price"
 									required
 								/>
 							</div>
 							<div className="mb-4">
-								<label className="block text-sm font-medium mb-1">
+								<label
+									className={`block text-sm font-medium mb-1 ${colors.textSecondary}`}
+								>
 									Description
 								</label>
 								<textarea
@@ -273,14 +395,20 @@ const Sales = () => {
 											description: e.target.value,
 										})
 									}
-									className="border border-zinc-300 rounded w-full py-1 px-2 outline-none hover:bg-zinc-50"
+									className={`border ${colors.border} ${
+										colors.input
+									} rounded w-full py-1 px-2 outline-none ${
+										colors.hoverSecondary
+									} ${colors.background} ${colors.foreground} placeholder:${
+										colors.mutedForeground
+									} ${getFocusRingClass(colorScheme)}`}
 									placeholder="Enter product description"
 									required
 								/>
 							</div>
 							<button
 								type="submit"
-								className="bg-zinc-800 text-white py-1 px-4 rounded"
+								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} py-1 px-4 rounded transition-colors`}
 							>
 								Submit
 							</button>
@@ -289,253 +417,326 @@ const Sales = () => {
 				</div>
 			)}
 
-			<div className="flex md:flex-row flex-col justify-between items-start gap-2">
-				<div className="md:w-1/2 w-full bg-white rounded-xl border border-zinc-100 p-4">
-					<div className="flex justify-between items-center p-5">
-						<p className="text-xl">Sales Dashboard</p>
-						<div className="flex space-x-2 mb-2">
-							<button
-								onClick={() => setActiveSalesTab("daily")}
-								className={`px-2 py-1 text-sm rounded ${
-									activeSalesTab === "daily"
-										? "bg-zinc-800 text-white"
-										: "bg-zinc-50"
-								}`}
-							>
-								<span className="flex items-center">
-									<Calendar size={16} className="mr-1" /> Daily
-								</span>
-							</button>
-							<button
-								onClick={() => setActiveSalesTab("weekly")}
-								className={`px-2 py-1 text-sm rounded ${
-									activeSalesTab === "weekly"
-										? "bg-zinc-800 text-white"
-										: "bg-zinc-50"
-								}`}
-							>
-								<span className="flex items-center">
-									<BarChart2 size={16} className="mr-1" /> Weekly
-								</span>
-							</button>
-							<button
-								onClick={() => setActiveSalesTab("monthly")}
-								className={`px-2 py-1 text-sm rounded ${
-									activeSalesTab === "monthly"
-										? "bg-zinc-800 text-white"
-										: "bg-zinc-50"
-								}`}
-							>
-								<span className="flex items-center">
-									<BsCalendarMonth size={16} className="mr-1" /> Monthly
-								</span>
-							</button>
-						</div>
+			{/* Sales & Revenue Overview Chart - Full Width */}
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
+			>
+				<div className="flex items-center justify-between mb-6">
+					<div>
+						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
+							Sales & Revenue Overview
+						</h2>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Track your sales performance and revenue trends
+						</p>
 					</div>
-					<ResponsiveContainer width="100%" height={300}>
-						{activeSalesTab === "daily" && (
-							<LineChart data={salesData.daily}>
-								<CartesianGrid strokeDasharray="3 3" />
-								<XAxis dataKey="name" />
-								<YAxis />
-								<Tooltip />
-								<Legend />
-								<Line type="monotone" dataKey="sales" stroke="#8884d8" />
-							</LineChart>
-						)}
-						{activeSalesTab === "weekly" && (
-							<LineChart data={salesData.weekly}>
-								<CartesianGrid strokeDasharray="3 3" />
-								<XAxis dataKey="name" />
-								<YAxis />
-								<Tooltip />
-								<Legend />
-								<Line type="monotone" dataKey="sales" stroke="#82ca9d" />
-							</LineChart>
-						)}
-						{activeSalesTab === "monthly" && (
-							<LineChart data={salesData.monthly}>
-								<CartesianGrid strokeDasharray="3 3" />
-								<XAxis dataKey="name" />
-								<YAxis />
-								<Tooltip />
-								<Legend />
-								<Line type="monotone" dataKey="sales" stroke="#ffc658" />
-							</LineChart>
-						)}
-					</ResponsiveContainer>
-				</div>
-				<div className="md:w-1/2 w-full p-2 border bg-white rounded-xl">
-					<div className="flex justify-between items-center p-5">
-						<p className="text-xl mt-4">Revenue Overview</p>
-						<div className="flex space-x-2 mb-3">
-							<button
-								onClick={() => setActiveRevenueTab("oneMonth")}
-								className={`px-2 py-1 text-sm rounded ${
-									activeRevenueTab === "oneMonth"
-										? "bg-zinc-800 text-white"
-										: "bg-zinc-50"
-								}`}
-							>
-								<Mail size={16} className="inline-block mr-1" /> 1 Month
-							</button>
-							<button
-								onClick={() => setActiveRevenueTab("threeMonths")}
-								className={`px-2 py-1 text-sm rounded ${
-									activeRevenueTab === "threeMonths"
-										? "bg-zinc-800 text-white"
-										: "bg-zinc-50"
-								}`}
-							>
-								<Mail size={16} className="inline-block mr-1" /> 3 Months
-							</button>
-							<button
-								onClick={() => setActiveRevenueTab("sixMonths")}
-								className={`px-2 py-1 text-sm rounded ${
-									activeRevenueTab === "sixMonths"
-										? "bg-zinc-800 text-white"
-										: "bg-zinc-50"
-								}`}
-							>
-								<Mail size={16} className="inline-block mr-1" /> 6 Months
-							</button>
-							<button
-								onClick={() => setActiveRevenueTab("oneYear")}
-								className={`px-2 py-1 text-sm rounded ${
-									activeRevenueTab === "oneYear"
-										? "bg-zinc-800 text-white"
-										: "bg-zinc-50"
-								}`}
-							>
-								<Mail size={16} className="inline-block mr-1" /> 1 Year
-							</button>
-						</div>
-					</div>
-					<ResponsiveContainer width="100%" height={300}>
-						{activeRevenueTab === "oneMonth" && (
-							<BarChart data={revenueData.oneMonth}>
-								<CartesianGrid strokeDasharray="1 1" />
-								<XAxis dataKey="name" />
-								<YAxis />
-								<Tooltip />
-								<Legend />
-								<Bar dataKey="revenue" fill="#8884d8" barSize={20} />{" "}
-								{/* Reduced bar width */}
-							</BarChart>
-						)}
-						{activeRevenueTab === "threeMonths" && (
-							<BarChart data={revenueData.threeMonths}>
-								<CartesianGrid strokeDasharray="1 1" />
-								<XAxis dataKey="name" />
-								<YAxis />
-								<Tooltip />
-								<Legend />
-								<Bar dataKey="revenue" fill="#82ca9d" barSize={20} />{" "}
-								{/* Reduced bar width */}
-							</BarChart>
-						)}
-						{activeRevenueTab === "sixMonths" && (
-							<BarChart data={revenueData.sixMonths}>
-								<CartesianGrid strokeDasharray="1 1" />
-								<XAxis dataKey="name" />
-								<YAxis />
-								<Tooltip />
-								<Legend />
-								<Bar dataKey="revenue" fill="#ffc658" barSize={20} />{" "}
-								{/* Reduced bar width */}
-							</BarChart>
-						)}
-						{activeRevenueTab === "oneYear" && (
-							<BarChart data={revenueData.oneYear}>
-								<CartesianGrid strokeDasharray="1 1" />
-								<XAxis dataKey="name" />
-								<YAxis />
-								<Tooltip />
-								<Legend />
-								<Bar dataKey="revenue" fill="#ff7300" barSize={20} />{" "}
-								{/* Reduced bar width */}
-							</BarChart>
-						)}
-					</ResponsiveContainer>
-				</div>
-			</div>
-			<div className="flex justify-start gap-2 items-start">
-				<div className="md:w-1/2 w-full my-4 bg-white border border-zinc-100 rounded-xl p-4">
-					<div className="flex justify-between items-center my-4">
-						<p className="">Recently sold products</p>
-						<button className="text-xs underline hover:text-zinc-400 text-zinc-300">
-							View all
+					<div className="flex gap-2">
+						<button
+							onClick={() => setActiveTab("daily")}
+							className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+								activeTab === "daily"
+									? `${scheme.primary} ${scheme.primaryForeground}`
+									: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
+							}`}
+						>
+							<span className="flex items-center gap-2">
+								<Calendar size={16} /> Daily
+							</span>
+						</button>
+						<button
+							onClick={() => setActiveTab("weekly")}
+							className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+								activeTab === "weekly"
+									? `${scheme.primary} ${scheme.primaryForeground}`
+									: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
+							}`}
+						>
+							<span className="flex items-center gap-2">
+								<BarChart2 size={16} /> Weekly
+							</span>
+						</button>
+						<button
+							onClick={() => setActiveTab("monthly")}
+							className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+								activeTab === "monthly"
+									? `${scheme.primary} ${scheme.primaryForeground}`
+									: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
+							}`}
+						>
+							<span className="flex items-center gap-2">
+								<BsCalendarMonth size={16} /> Monthly
+							</span>
 						</button>
 					</div>
-					<table className="min-w-full border-collapse border border-zinc-100 ">
-						<thead>
-							<tr className="bg-zinc-50 bg-opacity-80 hover:bg-zinc-100">
-								<th className="p-2 text-left font-semibold text-sm">ID</th>
-								<th className="p-2 text-left font-semibold text-sm">Name</th>
-								<th className="p-2 text-left font-semibold text-sm">
-									<div className="flex items-center">
-										<span>Price (USD)</span>
-										<button onClick={handleSort} className="ml-2">
-											{sortOrder === "asc" ? (
-												<ChevronUp size={16} />
-											) : (
-												<ChevronDown size={16} />
-											)}
-										</button>
+				</div>
+
+				{/* Chart */}
+				<div className="w-full h-80">
+					<ResponsiveContainer width="100%" height="100%">
+						<AreaChart
+							data={chartData}
+							margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+						>
+							<defs>
+								<linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
+									<stop
+										offset="5%"
+										stopColor={theme === "dark" ? "#3b82f6" : "#3b82f6"}
+										stopOpacity={0.8}
+									/>
+									<stop
+										offset="95%"
+										stopColor={theme === "dark" ? "#3b82f6" : "#3b82f6"}
+										stopOpacity={0.1}
+									/>
+								</linearGradient>
+								<linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+									<stop
+										offset="5%"
+										stopColor={theme === "dark" ? "#10b981" : "#10b981"}
+										stopOpacity={0.8}
+									/>
+									<stop
+										offset="95%"
+										stopColor={theme === "dark" ? "#10b981" : "#10b981"}
+										stopOpacity={0.1}
+									/>
+								</linearGradient>
+							</defs>
+							<CartesianGrid
+								strokeDasharray="3 3"
+								stroke={theme === "dark" ? "#3f3f46" : "#e4e4e7"}
+								vertical={false}
+							/>
+							<XAxis
+								dataKey="date"
+								stroke={theme === "dark" ? "#71717a" : "#71717a"}
+								fontSize={12}
+								tickLine={false}
+								axisLine={false}
+							/>
+							<YAxis
+								stroke={theme === "dark" ? "#71717a" : "#71717a"}
+								fontSize={12}
+								tickLine={false}
+								axisLine={false}
+							/>
+							<Tooltip content={<CustomTooltip />} />
+							<Area
+								type="monotone"
+								dataKey="sales"
+								stroke={theme === "dark" ? "#3b82f6" : "#3b82f6"}
+								fillOpacity={1}
+								fill="url(#colorSales)"
+								stackId="1"
+							/>
+							<Area
+								type="monotone"
+								dataKey="revenue"
+								stroke={theme === "dark" ? "#10b981" : "#10b981"}
+								fillOpacity={1}
+								fill="url(#colorRevenue)"
+								stackId="1"
+							/>
+						</AreaChart>
+					</ResponsiveContainer>
+				</div>
+
+				{/* Legend */}
+				<div className="flex items-center justify-center gap-6 mt-4">
+					<div className="flex items-center gap-2">
+						<div className="w-3 h-3 rounded bg-blue-500" />
+						<span className={`text-sm ${colors.textSecondary}`}>Sales</span>
+					</div>
+					<div className="flex items-center gap-2">
+						<div className="w-3 h-3 rounded bg-green-500" />
+						<span className={`text-sm ${colors.textSecondary}`}>Revenue</span>
+					</div>
+				</div>
+			</div>
+			{/* Products Table - Full Width */}
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
+			>
+				<div
+					className={`flex items-center justify-between px-6 py-4 border-b ${colors.border}`}
+				>
+					<div>
+						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
+							Recently Sold Products
+						</h2>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							View and manage all sold products
+						</p>
+					</div>
+					<button
+						className={`text-sm font-medium ${colors.textSecondary} ${colors.hoverSecondary} transition-colors px-3 py-1.5 rounded-xl`}
+					>
+						View all
+					</button>
+				</div>
+				<div className="overflow-x-auto">
+					<table className="w-full">
+						<thead className={`${colors.muted} border-b ${colors.border}`}>
+							<tr>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
+									ID
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
+									Name
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
+									onClick={handleSort}
+								>
+									<div className="flex items-center gap-2">
+										Price (USD)
+										{sortOrder === "asc" ? (
+											<ChevronUp className="w-4 h-4" />
+										) : (
+											<ChevronDown className="w-4 h-4" />
+										)}
 									</div>
 								</th>
-								<th className="p-2 text-left font-semibold text-sm">Sold At</th>
-								<th className="p-2 text-left font-semibold text-sm">
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
+									Sold At
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
 									Description
 								</th>
-								<th className="p-2 text-left font-semibold text-sm">
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
 									Category
 								</th>
 							</tr>
 						</thead>
-						<tbody>
-							{products.map((product) => (
-								<tr
-									key={product.id}
-									className="border-b border-zinc-200 hover:bg-zinc-50"
-								>
-									<td className="p-2">{product.id}</td>
-									<td className="p-2">{product.name}</td>
-									<td className="p-2">${product.price}</td>
-									<td className="p-2">{product.soldAt}</td>
-									<td className="p-2">{product.description}</td>
-									<td className="p-2">{product.category}</td>
+						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+							{products.length === 0 ? (
+								<tr>
+									<td colSpan="6" className="px-6 py-12 text-center">
+										<p className={colors.mutedForeground}>No products found</p>
+									</td>
 								</tr>
-							))}
+							) : (
+								products.map((product) => (
+									<tr
+										key={product.id}
+										className={`${colors.hover} transition-colors cursor-pointer`}
+									>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div
+												className={`text-sm font-medium ${colors.foreground}`}
+											>
+												#{product.id}
+											</div>
+										</td>
+										<td className="px-6 py-4">
+											<div
+												className={`text-sm font-medium ${colors.foreground}`}
+											>
+												{product.name}
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div
+												className={`text-sm font-semibold ${colors.foreground}`}
+											>
+												${product.price.toLocaleString()}
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div className={`text-sm ${colors.textSecondary}`}>
+												{product.soldAt}
+											</div>
+										</td>
+										<td className="px-6 py-4">
+											<div
+												className={`text-sm ${colors.textSecondary} max-w-md truncate`}
+											>
+												{product.description}
+											</div>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<span
+												className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+													product.category === "Electronics"
+														? "bg-blue-100 text-blue-800"
+														: product.category === "Books"
+														? "bg-purple-100 text-purple-800"
+														: product.category === "Clothing"
+														? "bg-pink-100 text-pink-800"
+														: product.category === "Home"
+														? "bg-orange-100 text-orange-800"
+														: "bg-green-100 text-green-800"
+												}`}
+											>
+												{product.category}
+											</span>
+										</td>
+									</tr>
+								))
+							)}
 						</tbody>
 					</table>
 				</div>
-				<div className="md:w-1/2 w-full p-4 bg-white border border-zinc-100 rounded-xl my-4">
-					<div className="flex justify-between items-center my-4">
-						<p className="">Top countries</p>
-						<button className="text-xs underline hover:text-zinc-400 text-zinc-300">
-							View all
-						</button>
+			</div>
+
+			{/* Top Countries Section */}
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} p-6 my-4`}
+			>
+				<div className="flex items-center justify-between mb-4">
+					<div>
+						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
+							Top Countries
+						</h2>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Sales distribution by country
+						</p>
 					</div>
-					<div className="">
-						{topCountries.map((country) => (
-							<div key={country.name} className="mb-2 relative group">
-								<div className="flex justify-between">
-									<span>{country.name}</span>
-									<span>{country.percentage}%</span>
-								</div>
-								<div className="bg-zinc-50 rounded-full h-4">
-									<div
-										className="bg-indigo-300 h-4 rounded-full"
-										style={{ width: `${country.percentage}%` }}
-									/>
-								</div>
-								<div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-full mb-1 hidden group-hover:block bg-black text-white text-xs rounded py-1 px-2">
-									{country.name}: {country.percentage}%
-								</div>
+					<button
+						className={`text-sm font-medium ${colors.textSecondary} ${colors.hoverSecondary} transition-colors px-3 py-1.5 rounded-xl`}
+					>
+						View all
+					</button>
+				</div>
+				<div className="space-y-4">
+					{topCountries.map((country) => (
+						<div key={country.name} className="relative group">
+							<div
+								className={`flex justify-between items-center mb-2 ${colors.foreground}`}
+							>
+								<span className="text-sm font-medium">{country.name}</span>
+								<span className="text-sm font-semibold">
+									{country.percentage}%
+								</span>
 							</div>
-						))}
-					</div>
+							<div
+								className={`${colors.muted} rounded-full h-2 overflow-hidden`}
+							>
+								<div
+									className={`h-full rounded-full transition-all duration-300 ${
+										theme === "dark" ? "bg-blue-500" : "bg-blue-600"
+									}`}
+									style={{ width: `${country.percentage}%` }}
+								/>
+							</div>
+							<div
+								className={`absolute left-1/2 transform -translate-x-1/2 -translate-y-full mb-2 hidden group-hover:block ${colors.card} ${colors.foreground} text-xs rounded-lg py-1.5 px-3 border ${colors.border} ${colors.shadow} z-10`}
+							>
+								{country.name}: {country.percentage}%
+							</div>
+						</div>
+					))}
 				</div>
 			</div>
 		</div>

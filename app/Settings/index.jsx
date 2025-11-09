@@ -1,6 +1,5 @@
 import {
 	User,
-	Mail,
 	Lock,
 	Bell,
 	Globe,
@@ -17,9 +16,13 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import colors from "tailwindcss/colors";
+import { useTheme } from "../../utils/useTheme";
+import { getFocusRingClass } from "../../utils/theme";
 
 const Settings = () => {
+	// Theme hook
+	const { theme, colorScheme, colors, scheme } = useTheme();
+
 	const [activeTab, setActiveTab] = useState("profile");
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -194,14 +197,14 @@ const Settings = () => {
 	];
 
 	const renderProfileSettings = () => (
-		<div className="bg-white border rounded-lg p-6">
+		<div className={`${colors.card} border ${colors.border} rounded-lg p-6`}>
 			<div className="flex justify-between items-center mb-6">
-				<h2 className="text-xl font-semibold text-zinc-800">
+				<h2 className={`text-xl font-semibold ${colors.foreground}`}>
 					Profile Information
 				</h2>
 				<button
 					onClick={() => setIsEditMode(!isEditMode)}
-					className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+					className={`flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
 				>
 					<Edit size={16} />
 					{isEditMode ? "Cancel" : "Edit"}
@@ -211,17 +214,21 @@ const Settings = () => {
 				<img
 					src={profileSettings.avatar}
 					alt={profileSettings.name}
-					className="w-24 h-24 rounded-full border-2 border-zinc-200"
+					className={`w-24 h-24 rounded-full border-2 ${colors.border}`}
 				/>
 				<div>
-					<button className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs px-4 py-2 rounded transition-all duration-100 ease-in">
+					<button
+						className={`${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in`}
+					>
 						Change Avatar
 					</button>
 				</div>
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div>
-					<label className="block text-sm font-medium text-zinc-700 mb-2">
+					<label
+						className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+					>
 						Full Name
 					</label>
 					<input
@@ -231,11 +238,19 @@ const Settings = () => {
 							handleInputChange("profile", "name", e.target.value)
 						}
 						disabled={!isEditMode}
-						className="w-full border rounded px-3 py-2 outline-none disabled:bg-zinc-50"
+						className={`w-full border ${colors.border} ${
+							colors.input
+						} rounded px-3 py-2 outline-none ${colors.background} ${
+							colors.foreground
+						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+							colorScheme
+						)} disabled:${colors.muted}`}
 					/>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-zinc-700 mb-2">
+					<label
+						className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+					>
 						Email
 					</label>
 					<input
@@ -245,11 +260,19 @@ const Settings = () => {
 							handleInputChange("profile", "email", e.target.value)
 						}
 						disabled={!isEditMode}
-						className="w-full border rounded px-3 py-2 outline-none disabled:bg-zinc-50"
+						className={`w-full border ${colors.border} ${
+							colors.input
+						} rounded px-3 py-2 outline-none ${colors.background} ${
+							colors.foreground
+						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+							colorScheme
+						)} disabled:${colors.muted}`}
 					/>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-zinc-700 mb-2">
+					<label
+						className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+					>
 						Phone
 					</label>
 					<input
@@ -259,11 +282,19 @@ const Settings = () => {
 							handleInputChange("profile", "phone", e.target.value)
 						}
 						disabled={!isEditMode}
-						className="w-full border rounded px-3 py-2 outline-none disabled:bg-zinc-50"
+						className={`w-full border ${colors.border} ${
+							colors.input
+						} rounded px-3 py-2 outline-none ${colors.background} ${
+							colors.foreground
+						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+							colorScheme
+						)} disabled:${colors.muted}`}
 					/>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-zinc-700 mb-2">
+					<label
+						className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+					>
 						Company
 					</label>
 					<input
@@ -273,11 +304,19 @@ const Settings = () => {
 							handleInputChange("profile", "company", e.target.value)
 						}
 						disabled={!isEditMode}
-						className="w-full border rounded px-3 py-2 outline-none disabled:bg-zinc-50"
+						className={`w-full border ${colors.border} ${
+							colors.input
+						} rounded px-3 py-2 outline-none ${colors.background} ${
+							colors.foreground
+						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+							colorScheme
+						)} disabled:${colors.muted}`}
 					/>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-zinc-700 mb-2">
+					<label
+						className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+					>
 						Role
 					</label>
 					<input
@@ -287,11 +326,19 @@ const Settings = () => {
 							handleInputChange("profile", "role", e.target.value)
 						}
 						disabled={!isEditMode}
-						className="w-full border rounded px-3 py-2 outline-none disabled:bg-zinc-50"
+						className={`w-full border ${colors.border} ${
+							colors.input
+						} rounded px-3 py-2 outline-none ${colors.background} ${
+							colors.foreground
+						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+							colorScheme
+						)} disabled:${colors.muted}`}
 					/>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-zinc-700 mb-2">
+					<label
+						className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+					>
 						Bio
 					</label>
 					<textarea
@@ -301,14 +348,20 @@ const Settings = () => {
 						}
 						disabled={!isEditMode}
 						rows={3}
-						className="w-full border rounded px-3 py-2 outline-none disabled:bg-zinc-50"
+						className={`w-full border ${colors.border} ${
+							colors.input
+						} rounded px-3 py-2 outline-none ${colors.background} ${
+							colors.foreground
+						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+							colorScheme
+						)} disabled:${colors.muted}`}
 					/>
 				</div>
 			</div>
 			{isEditMode && (
 				<button
 					onClick={() => handleSave("profile")}
-					className="mt-4 flex items-center gap-2 bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+					className={`mt-4 flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
 				>
 					<Save size={16} />
 					Save Changes
@@ -319,13 +372,15 @@ const Settings = () => {
 
 	const renderAccountSettings = () => (
 		<div className="space-y-6">
-			<div className="bg-white border rounded-lg p-6">
-				<h2 className="text-xl font-semibold text-zinc-800 mb-6">
+			<div className={`${colors.card} border ${colors.border} rounded-lg p-6`}>
+				<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 					Change Password
 				</h2>
 				<div className="space-y-4">
 					<div>
-						<label className="block text-sm font-medium text-zinc-700 mb-2">
+						<label
+							className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+						>
 							Current Password
 						</label>
 						<input
@@ -334,12 +389,20 @@ const Settings = () => {
 							onChange={(e) =>
 								handleInputChange("account", "currentPassword", e.target.value)
 							}
-							className="w-full border rounded px-3 py-2 outline-none"
+							className={`w-full border ${colors.border} ${
+								colors.input
+							} rounded px-3 py-2 outline-none ${colors.background} ${
+								colors.foreground
+							} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+								colorScheme
+							)}`}
 							placeholder="Enter current password"
 						/>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-zinc-700 mb-2">
+						<label
+							className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+						>
 							New Password
 						</label>
 						<input
@@ -348,12 +411,20 @@ const Settings = () => {
 							onChange={(e) =>
 								handleInputChange("account", "newPassword", e.target.value)
 							}
-							className="w-full border rounded px-3 py-2 outline-none"
+							className={`w-full border ${colors.border} ${
+								colors.input
+							} rounded px-3 py-2 outline-none ${colors.background} ${
+								colors.foreground
+							} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+								colorScheme
+							)}`}
 							placeholder="Enter new password"
 						/>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-zinc-700 mb-2">
+						<label
+							className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+						>
 							Confirm New Password
 						</label>
 						<input
@@ -362,27 +433,35 @@ const Settings = () => {
 							onChange={(e) =>
 								handleInputChange("account", "confirmPassword", e.target.value)
 							}
-							className="w-full border rounded px-3 py-2 outline-none"
+							className={`w-full border ${colors.border} ${
+								colors.input
+							} rounded px-3 py-2 outline-none ${colors.background} ${
+								colors.foreground
+							} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+								colorScheme
+							)}`}
 							placeholder="Confirm new password"
 						/>
 					</div>
 					<button
 						onClick={handlePasswordChange}
-						className="bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+						className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
 					>
 						Update Password
 					</button>
 				</div>
 			</div>
 
-			<div className="bg-white border rounded-lg p-6">
-				<h2 className="text-xl font-semibold text-zinc-800 mb-6">
+			<div className={`${colors.card} border ${colors.border} rounded-lg p-6`}>
+				<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 					Two-Factor Authentication
 				</h2>
 				<div className="flex justify-between items-center">
 					<div>
-						<p className="text-sm font-medium text-zinc-700">Enable 2FA</p>
-						<p className="text-xs text-zinc-500">
+						<p className={`text-sm font-medium ${colors.textSecondary}`}>
+							Enable 2FA
+						</p>
+						<p className={`text-xs ${colors.textMuted}`}>
 							Add an extra layer of security to your account
 						</p>
 					</div>
@@ -390,8 +469,10 @@ const Settings = () => {
 						onClick={handleToggle2FA}
 						className={`px-4 py-2 rounded text-xs transition-all duration-100 ease-in ${
 							accountSettings.twoFactorEnabled
-								? "bg-green-100 text-green-800 hover:bg-green-200"
-								: "bg-zinc-100 text-zinc-800 hover:bg-zinc-200"
+								? theme === "dark"
+									? "bg-green-900/30 text-green-400 hover:bg-green-900/40 border border-green-800/50"
+									: "bg-green-100 text-green-800 hover:bg-green-200"
+								: `${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground}`
 						}`}
 					>
 						{accountSettings.twoFactorEnabled ? "Enabled" : "Disabled"}
@@ -399,11 +480,15 @@ const Settings = () => {
 				</div>
 			</div>
 
-			<div className="bg-white border rounded-lg p-6">
-				<h2 className="text-xl font-semibold text-zinc-800 mb-6">API Key</h2>
+			<div className={`${colors.card} border ${colors.border} rounded-lg p-6`}>
+				<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
+					API Key
+				</h2>
 				<div className="space-y-4">
 					<div>
-						<label className="block text-sm font-medium text-zinc-700 mb-2">
+						<label
+							className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+						>
 							Your API Key
 						</label>
 						<div className="flex items-center gap-2">
@@ -411,11 +496,11 @@ const Settings = () => {
 								type="text"
 								value={accountSettings.apiKey}
 								readOnly
-								className="w-full border rounded px-3 py-2 outline-none bg-zinc-50 font-mono text-sm"
+								className={`w-full border ${colors.border} rounded px-3 py-2 outline-none ${colors.muted} font-mono text-sm ${colors.foreground}`}
 							/>
 							<button
 								onClick={handleRegenerateAPIKey}
-								className="bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6 whitespace-nowrap"
+								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6 whitespace-nowrap`}
 							>
 								<Key size={16} className="inline mr-1" />
 								Regenerate
@@ -428,21 +513,23 @@ const Settings = () => {
 	);
 
 	const renderNotificationSettings = () => (
-		<div className="bg-white border rounded-lg p-6">
-			<h2 className="text-xl font-semibold text-zinc-800 mb-6">
+		<div className={`${colors.card} border ${colors.border} rounded-lg p-6`}>
+			<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 				Notification Preferences
 			</h2>
 			<div className="space-y-4">
 				{Object.entries(notificationSettings).map(([key, value]) => (
 					<div
 						key={key}
-						className="flex justify-between items-center py-3 border-b"
+						className={`flex justify-between items-center py-3 border-b ${colors.border}`}
 					>
 						<div>
-							<p className="text-sm font-medium text-zinc-700 capitalize">
+							<p
+								className={`text-sm font-medium ${colors.textSecondary} capitalize`}
+							>
 								{key.replace(/([A-Z])/g, " $1").trim()}
 							</p>
-							<p className="text-xs text-zinc-500">
+							<p className={`text-xs ${colors.textMuted}`}>
 								Receive notifications for{" "}
 								{key
 									.toLowerCase()
@@ -454,8 +541,10 @@ const Settings = () => {
 							onClick={() => handleInputChange("notifications", key, !value)}
 							className={`px-4 py-2 rounded text-xs transition-all duration-100 ease-in ${
 								value
-									? "bg-green-100 text-green-800 hover:bg-green-200"
-									: "bg-zinc-100 text-zinc-800 hover:bg-zinc-200"
+									? theme === "dark"
+										? "bg-green-900/30 text-green-400 hover:bg-green-900/40 border border-green-800/50"
+										: "bg-green-100 text-green-800 hover:bg-green-200"
+									: `${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground}`
 							}`}
 						>
 							{value ? "On" : "Off"}
@@ -464,7 +553,7 @@ const Settings = () => {
 				))}
 				<button
 					onClick={() => handleSave("notifications")}
-					className="mt-4 flex items-center gap-2 bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+					className={`mt-4 flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
 				>
 					<Save size={16} />
 					Save Preferences
@@ -474,13 +563,15 @@ const Settings = () => {
 	);
 
 	const renderPreferenceSettings = () => (
-		<div className="bg-white border rounded-lg p-6">
-			<h2 className="text-xl font-semibold text-zinc-800 mb-6">
+		<div className={`${colors.card} border ${colors.border} rounded-lg p-6`}>
+			<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 				Application Preferences
 			</h2>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div>
-					<label className="block text-sm font-medium text-zinc-700 mb-2">
+					<label
+						className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+					>
 						Theme
 					</label>
 					<select
@@ -488,7 +579,11 @@ const Settings = () => {
 						onChange={(e) =>
 							handleInputChange("preferences", "theme", e.target.value)
 						}
-						className="w-full border rounded px-3 py-2 outline-none"
+						className={`w-full border ${colors.border} ${
+							colors.input
+						} rounded px-3 py-2 outline-none ${colors.background} ${
+							colors.foreground
+						} ${getFocusRingClass(colorScheme)}`}
 					>
 						<option value="light">Light</option>
 						<option value="dark">Dark</option>
@@ -496,7 +591,9 @@ const Settings = () => {
 					</select>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-zinc-700 mb-2">
+					<label
+						className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+					>
 						Language
 					</label>
 					<select
@@ -504,7 +601,11 @@ const Settings = () => {
 						onChange={(e) =>
 							handleInputChange("preferences", "language", e.target.value)
 						}
-						className="w-full border rounded px-3 py-2 outline-none"
+						className={`w-full border ${colors.border} ${
+							colors.input
+						} rounded px-3 py-2 outline-none ${colors.background} ${
+							colors.foreground
+						} ${getFocusRingClass(colorScheme)}`}
 					>
 						<option value="en">English</option>
 						<option value="es">Spanish</option>
@@ -513,7 +614,9 @@ const Settings = () => {
 					</select>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-zinc-700 mb-2">
+					<label
+						className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+					>
 						Timezone
 					</label>
 					<select
@@ -521,7 +624,11 @@ const Settings = () => {
 						onChange={(e) =>
 							handleInputChange("preferences", "timezone", e.target.value)
 						}
-						className="w-full border rounded px-3 py-2 outline-none"
+						className={`w-full border ${colors.border} ${
+							colors.input
+						} rounded px-3 py-2 outline-none ${colors.background} ${
+							colors.foreground
+						} ${getFocusRingClass(colorScheme)}`}
 					>
 						<option value="America/New_York">Eastern Time (ET)</option>
 						<option value="America/Chicago">Central Time (CT)</option>
@@ -530,7 +637,9 @@ const Settings = () => {
 					</select>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-zinc-700 mb-2">
+					<label
+						className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+					>
 						Date Format
 					</label>
 					<select
@@ -538,7 +647,11 @@ const Settings = () => {
 						onChange={(e) =>
 							handleInputChange("preferences", "dateFormat", e.target.value)
 						}
-						className="w-full border rounded px-3 py-2 outline-none"
+						className={`w-full border ${colors.border} ${
+							colors.input
+						} rounded px-3 py-2 outline-none ${colors.background} ${
+							colors.foreground
+						} ${getFocusRingClass(colorScheme)}`}
 					>
 						<option value="MM/DD/YYYY">MM/DD/YYYY</option>
 						<option value="DD/MM/YYYY">DD/MM/YYYY</option>
@@ -546,7 +659,9 @@ const Settings = () => {
 					</select>
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-zinc-700 mb-2">
+					<label
+						className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+					>
 						Currency
 					</label>
 					<select
@@ -554,7 +669,11 @@ const Settings = () => {
 						onChange={(e) =>
 							handleInputChange("preferences", "currency", e.target.value)
 						}
-						className="w-full border rounded px-3 py-2 outline-none"
+						className={`w-full border ${colors.border} ${
+							colors.input
+						} rounded px-3 py-2 outline-none ${colors.background} ${
+							colors.foreground
+						} ${getFocusRingClass(colorScheme)}`}
 					>
 						<option value="USD">USD ($)</option>
 						<option value="EUR">EUR (€)</option>
@@ -565,7 +684,7 @@ const Settings = () => {
 			</div>
 			<button
 				onClick={() => handleSave("preferences")}
-				className="mt-4 flex items-center gap-2 bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+				className={`mt-4 flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
 			>
 				<Save size={16} />
 				Save Preferences
@@ -575,47 +694,63 @@ const Settings = () => {
 
 	const renderBillingSettings = () => (
 		<div className="space-y-6">
-			<div className="bg-white border rounded-lg p-6">
-				<h2 className="text-xl font-semibold text-zinc-800 mb-6">
+			<div className={`${colors.card} border ${colors.border} rounded-lg p-6`}>
+				<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 					Subscription Details
 				</h2>
 				<div className="space-y-4">
-					<div className="flex justify-between items-center py-3 border-b">
-						<span className="text-sm font-medium text-zinc-700">
+					<div
+						className={`flex justify-between items-center py-3 border-b ${colors.border}`}
+					>
+						<span className={`text-sm font-medium ${colors.textSecondary}`}>
 							Current Plan
 						</span>
-						<span className="text-sm text-zinc-800 font-semibold">
+						<span className={`text-sm ${colors.foreground} font-semibold`}>
 							{billingSettings.plan}
 						</span>
 					</div>
-					<div className="flex justify-between items-center py-3 border-b">
-						<span className="text-sm font-medium text-zinc-700">Status</span>
-						<span className="text-sm text-green-600 font-semibold">
+					<div
+						className={`flex justify-between items-center py-3 border-b ${colors.border}`}
+					>
+						<span className={`text-sm font-medium ${colors.textSecondary}`}>
+							Status
+						</span>
+						<span
+							className={`text-sm ${
+								theme === "dark" ? "text-green-400" : "text-green-600"
+							} font-semibold`}
+						>
 							{billingSettings.status}
 						</span>
 					</div>
-					<div className="flex justify-between items-center py-3 border-b">
-						<span className="text-sm font-medium text-zinc-700">
+					<div
+						className={`flex justify-between items-center py-3 border-b ${colors.border}`}
+					>
+						<span className={`text-sm font-medium ${colors.textSecondary}`}>
 							Next Billing Date
 						</span>
-						<span className="text-sm text-zinc-800">
+						<span className={`text-sm ${colors.foreground}`}>
 							{billingSettings.nextBillingDate}
 						</span>
 					</div>
 					<div className="flex justify-between items-center py-3">
-						<span className="text-sm font-medium text-zinc-700">
+						<span className={`text-sm font-medium ${colors.textSecondary}`}>
 							Payment Method
 						</span>
-						<span className="text-sm text-zinc-800">
+						<span className={`text-sm ${colors.foreground}`}>
 							{billingSettings.paymentMethod}
 						</span>
 					</div>
 				</div>
 				<div className="mt-6 flex gap-2">
-					<button className="bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6">
+					<button
+						className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
+					>
 						Upgrade Plan
 					</button>
-					<button className="border-zinc-900 border hover:text-white hover:bg-zinc-900 rounded text-zinc-800 px-4 py-2 transition-all duration-100 ease-in hover:px-6 text-xs">
+					<button
+						className={`border ${colors.border} ${scheme.primaryHover} ${scheme.primaryForeground} ${colors.hoverSecondary} rounded ${colors.foreground} px-4 py-2 transition-all duration-100 ease-in hover:px-6 text-xs`}
+					>
 						Manage Payment
 					</button>
 				</div>
@@ -624,97 +759,121 @@ const Settings = () => {
 	);
 
 	const renderTeamSettings = () => (
-		<div className="bg-white border rounded-lg p-6">
+		<div className={`${colors.card} border ${colors.border} rounded-lg p-6`}>
 			<div className="flex justify-between items-center mb-6">
-				<h2 className="text-xl font-semibold text-zinc-800">Team Members</h2>
+				<h2 className={`text-xl font-semibold ${colors.foreground}`}>
+					Team Members
+				</h2>
 				<button
 					onClick={() => setIsModalOpen(true)}
-					className="bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+					className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
 				>
 					Add Member
 				</button>
 			</div>
 			<div className="mb-4">
-				<div className="flex gap-2 items-center border rounded px-2 py-1 w-full md:w-auto">
-					<Search size={18} color={colors.zinc[500]} />
+				<div
+					className={`flex gap-2 items-center border ${colors.border} rounded px-2 py-1 w-full md:w-auto ${colors.card}`}
+				>
+					<Search size={18} className={colors.textSecondary} />
 					<input
 						type="text"
 						placeholder="Search team members..."
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
-						className="outline-none"
+						className={`outline-none ${colors.background} ${
+							colors.foreground
+						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+							colorScheme
+						)}`}
 					/>
 				</div>
 			</div>
 			<div className="overflow-x-auto">
-				<table className="min-w-full bg-white border">
-					<thead className="hover:bg-zinc-50">
+				<table className={`min-w-full ${colors.card} border ${colors.border}`}>
+					<thead className={colors.hover}>
 						<tr>
-							<th className="py-2 px-4 border-b text-left">User Info</th>
 							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
+								className={`py-2 px-4 border-b ${colors.border} text-left ${colors.mutedForeground}`}
+							>
+								User Info
+							</th>
+							<th
+								className={`py-2 px-4 border-b ${colors.border} text-left cursor-pointer ${colors.mutedForeground} transition-colors`}
 								onClick={() => requestSort("email")}
 							>
 								<div className="flex justify-between items-center">
 									<span className="ml-2">Email</span>
 									{sortConfig?.key === "email" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
+											<ChevronUp size={16} className={colors.textMuted} />
 										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
+											<ChevronDown size={16} className={colors.textMuted} />
 										))}
 								</div>
 							</th>
 							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
+								className={`py-2 px-4 border-b ${colors.border} text-left cursor-pointer ${colors.mutedForeground} transition-colors`}
 								onClick={() => requestSort("role")}
 							>
 								<div className="flex justify-between items-center">
 									<span className="ml-2">Role</span>
 									{sortConfig?.key === "role" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
+											<ChevronUp size={16} className={colors.textMuted} />
 										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
+											<ChevronDown size={16} className={colors.textMuted} />
 										))}
 								</div>
 							</th>
 							<th
-								className="py-2 px-4 border-b text-left cursor-pointer"
+								className={`py-2 px-4 border-b ${colors.border} text-left cursor-pointer ${colors.mutedForeground} transition-colors`}
 								onClick={() => requestSort("status")}
 							>
 								<div className="flex justify-between items-center">
 									<span className="ml-2">Status</span>
 									{sortConfig?.key === "status" &&
 										(sortConfig.direction === "ascending" ? (
-											<ChevronUp size={16} color={colors.zinc[500]} />
+											<ChevronUp size={16} className={colors.textMuted} />
 										) : (
-											<ChevronDown size={16} color={colors.zinc[500]} />
+											<ChevronDown size={16} className={colors.textMuted} />
 										))}
 								</div>
 							</th>
-							<th className="py-2 px-4 border-b text-left">Actions</th>
+							<th
+								className={`py-2 px-4 border-b ${colors.border} text-left ${colors.mutedForeground}`}
+							>
+								Actions
+							</th>
 						</tr>
 					</thead>
 					<tbody>
 						{filteredTeamMembers.map((member) => (
-							<tr key={member.id} className="hover:bg-zinc-50">
-								<td className="py-2 px-4 flex items-center gap-2">
+							<tr key={member.id} className={colors.hover}>
+								<td
+									className={`py-2 px-4 flex items-center gap-2 ${colors.foreground}`}
+								>
 									<img
 										src={member.image}
 										alt={member.name}
-										className="w-10 h-10 rounded-full mr-2"
+										className={`w-10 h-10 rounded-full mr-2 border ${colors.border}`}
 									/>
 									<span>{member.name}</span>
 								</td>
-								<td className="py-2 px-4">{member.email}</td>
-								<td className="py-2 px-4">{member.role}</td>
-								<td className="py-2 px-4">
+								<td className={`py-2 px-4 ${colors.foreground}`}>
+									{member.email}
+								</td>
+								<td className={`py-2 px-4 ${colors.foreground}`}>
+									{member.role}
+								</td>
+								<td className={`py-2 px-4 ${colors.foreground}`}>
 									<span
-										className={`px-2 py-1 rounded text-xs ${
+										className={`px-2 py-1 rounded text-xs border ${
 											member.status === "Active"
-												? "bg-green-100 text-green-800"
-												: "bg-zinc-100 text-zinc-800"
+												? theme === "dark"
+													? "bg-green-900/30 text-green-400 border-green-800/50"
+													: "bg-green-100 text-green-800"
+												: scheme.chip
 										}`}
 									>
 										{member.status}
@@ -723,13 +882,11 @@ const Settings = () => {
 								<td className="py-1 px-4 flex items-center gap-2">
 									<Edit
 										size={16}
-										color={colors.zinc[700]}
-										className="cursor-pointer"
+										className={`cursor-pointer ${colors.textSecondary} transition-colors ${colors.hoverSecondary}`}
 									/>
 									<X
 										size={16}
-										color={colors.zinc[700]}
-										className="cursor-pointer"
+										className={`cursor-pointer ${colors.textSecondary} transition-colors ${colors.hoverSecondary}`}
 									/>
 								</td>
 							</tr>
@@ -742,66 +899,94 @@ const Settings = () => {
 
 	const renderSecuritySettings = () => (
 		<div className="space-y-6">
-			<div className="bg-white border rounded-lg p-6">
-				<h2 className="text-xl font-semibold text-zinc-800 mb-6">
+			<div className={`${colors.card} border ${colors.border} rounded-lg p-6`}>
+				<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 					Active Sessions
 				</h2>
 				<div className="space-y-4">
-					<div className="flex justify-between items-center py-3 border-b">
+					<div
+						className={`flex justify-between items-center py-3 border-b ${colors.border}`}
+					>
 						<div>
-							<p className="text-sm font-medium text-zinc-700">
+							<p className={`text-sm font-medium ${colors.textSecondary}`}>
 								Chrome on MacOS
 							</p>
-							<p className="text-xs text-zinc-500">
+							<p className={`text-xs ${colors.textMuted}`}>
 								Current Session • New York, USA
 							</p>
 						</div>
-						<button className="text-red-600 text-xs hover:underline">
+						<button
+							className={`text-red-600 ${
+								theme === "dark" ? "hover:text-red-400" : "hover:text-red-800"
+							} text-xs hover:underline transition-colors`}
+						>
 							Revoke
 						</button>
 					</div>
-					<div className="flex justify-between items-center py-3 border-b">
+					<div
+						className={`flex justify-between items-center py-3 border-b ${colors.border}`}
+					>
 						<div>
-							<p className="text-sm font-medium text-zinc-700">
+							<p className={`text-sm font-medium ${colors.textSecondary}`}>
 								Safari on iPhone
 							</p>
-							<p className="text-xs text-zinc-500">
+							<p className={`text-xs ${colors.textMuted}`}>
 								2 hours ago • New York, USA
 							</p>
 						</div>
-						<button className="text-red-600 text-xs hover:underline">
+						<button
+							className={`text-red-600 ${
+								theme === "dark" ? "hover:text-red-400" : "hover:text-red-800"
+							} text-xs hover:underline transition-colors`}
+						>
 							Revoke
 						</button>
 					</div>
 				</div>
 			</div>
 
-			<div className="bg-white border rounded-lg p-6">
-				<h2 className="text-xl font-semibold text-zinc-800 mb-6">
+			<div className={`${colors.card} border ${colors.border} rounded-lg p-6`}>
+				<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 					Login History
 				</h2>
 				<div className="space-y-4">
-					<div className="flex justify-between items-center py-3 border-b">
+					<div
+						className={`flex justify-between items-center py-3 border-b ${colors.border}`}
+					>
 						<div>
-							<p className="text-sm font-medium text-zinc-700">
+							<p className={`text-sm font-medium ${colors.textSecondary}`}>
 								Successful Login
 							</p>
-							<p className="text-xs text-zinc-500">
+							<p className={`text-xs ${colors.textMuted}`}>
 								Today at 10:30 AM • Chrome on MacOS
 							</p>
 						</div>
-						<span className="text-green-600 text-xs">✓</span>
+						<span
+							className={`${
+								theme === "dark" ? "text-green-400" : "text-green-600"
+							} text-xs`}
+						>
+							✓
+						</span>
 					</div>
-					<div className="flex justify-between items-center py-3 border-b">
+					<div
+						className={`flex justify-between items-center py-3 border-b ${colors.border}`}
+					>
 						<div>
-							<p className="text-sm font-medium text-zinc-700">
+							<p className={`text-sm font-medium ${colors.textSecondary}`}>
 								Successful Login
 							</p>
-							<p className="text-xs text-zinc-500">
+							<p className={`text-xs ${colors.textMuted}`}>
 								Yesterday at 3:45 PM • Safari on iPhone
 							</p>
 						</div>
-						<span className="text-green-600 text-xs">✓</span>
+						<span
+							className={`${
+								theme === "dark" ? "text-green-400" : "text-green-600"
+							} text-xs`}
+						>
+							✓
+						</span>
 					</div>
 				</div>
 			</div>
@@ -809,14 +994,18 @@ const Settings = () => {
 	);
 
 	return (
-		<div className="p-6 overflow-y-scroll max-h-screen hidescrollbar">
+		<div
+			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar ${colors.background} transition-colors`}
+		>
 			<div className="flex justify-between items-center flex-wrap my-4">
-				<p className="text-xl font-semibold">Settings</p>
+				<p className={`text-xl font-semibold ${colors.foreground}`}>Settings</p>
 			</div>
 
 			<div className="flex flex-col md:flex-row gap-6">
 				<div className="md:w-1/4 w-full">
-					<div className="bg-white border rounded-lg p-4">
+					<div
+						className={`${colors.card} border ${colors.border} rounded-lg p-4`}
+					>
 						<nav className="space-y-2">
 							{tabs.map((tab) => {
 								const Icon = tab.icon;
@@ -826,8 +1015,8 @@ const Settings = () => {
 										onClick={() => setActiveTab(tab.id)}
 										className={`w-full flex items-center gap-3 px-4 py-3 rounded transition-all duration-100 ease-in ${
 											activeTab === tab.id
-												? "bg-zinc-800 text-white hover:bg-zinc-900"
-												: "text-zinc-700 hover:bg-zinc-50"
+												? `${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`
+												: `${colors.foreground} ${colors.hoverSecondary}`
 										}`}
 									>
 										<Icon size={18} />
@@ -851,13 +1040,17 @@ const Settings = () => {
 			</div>
 
 			{isModalOpen && (
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-					<div className="bg-white p-6 rounded shadow-lg max-w-md w-full">
+				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+					<div
+						className={`${colors.card} p-6 rounded ${colors.shadow} max-w-md w-full border ${colors.border}`}
+					>
 						<div className="flex justify-between items-center mb-4">
-							<h2 className="text-lg font-semibold">Add Team Member</h2>
+							<h2 className={`text-lg font-semibold ${colors.foreground}`}>
+								Add Team Member
+							</h2>
 							<button
 								onClick={() => setIsModalOpen(false)}
-								className="hover:bg-zinc-50 text-zinc-800 p-1 rounded"
+								className={`${colors.hoverSecondary} ${colors.foreground} p-1 rounded transition-colors`}
 							>
 								<X size={16} />
 							</button>
@@ -866,14 +1059,32 @@ const Settings = () => {
 							<input
 								type="text"
 								placeholder="Name"
-								className="w-full border rounded px-3 py-2 outline-none"
+								className={`w-full border ${colors.border} ${
+									colors.input
+								} rounded px-3 py-2 outline-none ${colors.background} ${
+									colors.foreground
+								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+									colorScheme
+								)}`}
 							/>
 							<input
 								type="email"
 								placeholder="Email"
-								className="w-full border rounded px-3 py-2 outline-none"
+								className={`w-full border ${colors.border} ${
+									colors.input
+								} rounded px-3 py-2 outline-none ${colors.background} ${
+									colors.foreground
+								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+									colorScheme
+								)}`}
 							/>
-							<select className="w-full border rounded px-3 py-2 outline-none">
+							<select
+								className={`w-full border ${colors.border} ${
+									colors.input
+								} rounded px-3 py-2 outline-none ${colors.background} ${
+									colors.foreground
+								} ${getFocusRingClass(colorScheme)}`}
+							>
 								<option value="">Select Role</option>
 								<option value="Admin">Admin</option>
 								<option value="Manager">Manager</option>
@@ -885,13 +1096,13 @@ const Settings = () => {
 										toast.success("Team member added successfully!");
 										setIsModalOpen(false);
 									}}
-									className="bg-zinc-800 hover:bg-zinc-900 text-white text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6"
+									className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
 								>
 									Add Member
 								</button>
 								<button
 									onClick={() => setIsModalOpen(false)}
-									className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs px-4 py-2 rounded"
+									className={`${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground} text-xs px-4 py-2 rounded transition-colors`}
 								>
 									Cancel
 								</button>

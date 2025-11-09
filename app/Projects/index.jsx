@@ -25,8 +25,13 @@ import {
 	Tooltip,
 	ResponsiveContainer,
 } from "recharts";
+import { useTheme } from "../../utils/useTheme";
+import { getFocusRingClass } from "../../utils/theme";
 
 const Projects = () => {
+	// Theme hook
+	const { theme, colorScheme, colors, scheme } = useTheme();
+
 	const [timePeriod, setTimePeriod] = useState("3months");
 	const [searchTerm, setSearchTerm] = useState("");
 	const [statusFilter, setStatusFilter] = useState("All"); // All, Active, Cancel, Completed, Pending
@@ -413,8 +418,12 @@ const Projects = () => {
 	const CustomTooltip = ({ active, payload, label }) => {
 		if (active && payload && payload.length) {
 			return (
-				<div className="bg-white border border-zinc-200 rounded-xl shadow-lg p-3">
-					<p className="text-sm font-medium text-zinc-900 mb-2">{label}</p>
+				<div
+					className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} p-3`}
+				>
+					<p className={`text-sm font-medium ${colors.foreground} mb-2`}>
+						{label}
+					</p>
 					{payload.map((entry, index) => (
 						<div key={index} className="flex items-center gap-2 mb-1">
 							<div
@@ -440,8 +449,10 @@ const Projects = () => {
 			{/* Header */}
 			<div className="flex items-center justify-between">
 				<div>
-					<h1 className="text-2xl font-semibold text-zinc-900">Projects</h1>
-					<p className="text-sm text-zinc-500 mt-1">
+					<h1 className={`text-2xl font-semibold ${colors.foreground}`}>
+						Projects
+					</h1>
+					<p className={`text-sm ${colors.mutedForeground} mt-1`}>
 						Monitor and manage your project portfolio
 					</p>
 				</div>
@@ -450,7 +461,7 @@ const Projects = () => {
 					<div className="relative date-range-dropdown">
 						<button
 							onClick={() => setIsDateRangeOpen(!isDateRangeOpen)}
-							className="px-4 py-2 border border-zinc-200 rounded-xl text-sm font-medium text-zinc-700 hover:bg-zinc-50 transition-colors flex items-center gap-2"
+							className={`px-4 py-2 border ${colors.border} rounded-xl text-sm font-medium ${colors.textSecondary} ${colors.hoverSecondary} transition-colors flex items-center gap-2`}
 						>
 							<Calendar className="w-4 h-4" />
 							{formatDateRange(dateRange.start, dateRange.end)}
@@ -463,9 +474,11 @@ const Projects = () => {
 
 						{/* Date Range Dropdown */}
 						{isDateRangeOpen && (
-							<div className="absolute right-0 top-full mt-2 bg-white border border-zinc-200 rounded-xl shadow-xl z-50 flex date-range-dropdown">
+							<div
+								className={`absolute right-0 top-full mt-2 ${colors.card} border ${colors.border} rounded-xl ${colors.shadow} z-50 flex date-range-dropdown`}
+							>
 								{/* Left Panel - Presets */}
-								<div className="w-48 border-r border-zinc-200 p-2">
+								<div className={`w-48 border-r ${colors.border} p-2`}>
 									<div className="space-y-1">
 										{[
 											"Today",
@@ -485,8 +498,8 @@ const Projects = () => {
 												}}
 												className={`w-full text-left px-3 py-2 rounded-xl text-sm transition-colors ${
 													selectedPreset === preset
-														? "bg-zinc-100 text-zinc-900 font-medium"
-														: "text-zinc-600 hover:bg-zinc-50"
+														? `${colors.secondary} ${colors.foreground} font-medium`
+														: `${colors.textSecondary} ${colors.hoverSecondary}`
 												}`}
 											>
 												{preset}
@@ -509,11 +522,13 @@ const Projects = () => {
 													)
 												)
 											}
-											className="p-1 hover:bg-zinc-100 rounded transition-colors"
+											className={`p-1 ${colors.hoverSecondary} rounded transition-colors`}
 										>
 											<ChevronLeft className="w-4 h-4 text-zinc-600" />
 										</button>
-										<h3 className="text-sm font-semibold text-zinc-900">
+										<h3
+											className={`text-sm font-semibold ${colors.foreground}`}
+										>
 											{calendarMonth.toLocaleDateString("en-US", {
 												month: "long",
 												year: "numeric",
@@ -529,7 +544,7 @@ const Projects = () => {
 													)
 												)
 											}
-											className="p-1 hover:bg-zinc-100 rounded transition-colors"
+											className={`p-1 ${colors.hoverSecondary} rounded transition-colors`}
 										>
 											<ChevronRight className="w-4 h-4 text-zinc-600" />
 										</button>
@@ -540,7 +555,7 @@ const Projects = () => {
 										{["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
 											<div
 												key={day}
-												className="text-xs font-medium text-zinc-500 text-center py-1"
+												className={`text-xs font-medium ${colors.mutedForeground} text-center py-1`}
 											>
 												{day}
 											</div>
@@ -569,12 +584,12 @@ const Projects = () => {
 														!isCurrentMonth
 															? "text-zinc-300"
 															: isSelected
-															? "bg-zinc-900 text-white font-medium"
+															? `${scheme.primary} ${scheme.primaryForeground} font-medium`
 															: inRange
-															? "bg-zinc-100 text-zinc-900"
+															? `${colors.secondary} ${colors.foreground}`
 															: isToday
-															? "bg-zinc-50 text-zinc-900 font-medium border border-zinc-300"
-															: "text-zinc-700 hover:bg-zinc-50"
+															? `${colors.muted} ${colors.foreground} font-medium border ${colors.border}`
+															: `${colors.textSecondary} ${colors.hoverSecondary}`
 													}`}
 												>
 													{date.getDate()}
@@ -601,13 +616,17 @@ const Projects = () => {
 			{/* Metrics Cards */}
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 				{/* Active Projects Card */}
-				<div className="bg-white border border-zinc-200 rounded-xl p-6 shadow-sm">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
+				>
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm font-medium text-zinc-500 mb-1">
+							<p
+								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
+							>
 								Active Projects
 							</p>
-							<p className="text-3xl font-bold text-zinc-900">
+							<p className={`text-3xl font-bold ${colors.foreground}`}>
 								{activeProjects.toLocaleString()}
 							</p>
 							<p className="text-sm text-green-600 mt-2 flex items-center gap-1">
@@ -622,13 +641,17 @@ const Projects = () => {
 				</div>
 
 				{/* Total Revenue Card */}
-				<div className="bg-white border border-zinc-200 rounded-xl p-6 shadow-sm">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
+				>
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm font-medium text-zinc-500 mb-1">
+							<p
+								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
+							>
 								Total Revenue
 							</p>
-							<p className="text-3xl font-bold text-zinc-900">
+							<p className={`text-3xl font-bold ${colors.foreground}`}>
 								{formatCurrency(totalRevenue)}
 							</p>
 							<p className="text-sm text-green-600 mt-2 flex items-center gap-1">
@@ -643,13 +666,17 @@ const Projects = () => {
 				</div>
 
 				{/* Total Leads Card */}
-				<div className="bg-white border border-zinc-200 rounded-xl p-6 shadow-sm">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
+				>
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm font-medium text-zinc-500 mb-1">
+							<p
+								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
+							>
 								Total Leads
 							</p>
-							<p className="text-3xl font-bold text-zinc-900">
+							<p className={`text-3xl font-bold ${colors.foreground}`}>
 								{totalLeads.toLocaleString()}
 							</p>
 							<p className="text-sm text-green-600 mt-2 flex items-center gap-1">
@@ -665,13 +692,15 @@ const Projects = () => {
 			</div>
 
 			{/* Projects Overview Chart */}
-			<div className="bg-white border border-zinc-200 rounded-xl p-6 shadow-sm">
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
+			>
 				<div className="flex items-center justify-between mb-6">
 					<div>
-						<h2 className="text-lg font-semibold text-zinc-900">
+						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
 							Projects Overview
 						</h2>
-						<p className="text-sm text-zinc-500 mt-1">
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
 							Total for the last{" "}
 							{timePeriod === "3months"
 								? "3 months"
@@ -685,8 +714,8 @@ const Projects = () => {
 							onClick={() => setTimePeriod("3months")}
 							className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
 								timePeriod === "3months"
-									? "bg-zinc-900 text-white"
-									: "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+									? `${scheme.primary} ${scheme.primaryForeground}`
+									: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
 							}`}
 						>
 							Last 3 months
@@ -695,8 +724,8 @@ const Projects = () => {
 							onClick={() => setTimePeriod("30days")}
 							className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
 								timePeriod === "30days"
-									? "bg-zinc-900 text-white"
-									: "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+									? `${scheme.primary} ${scheme.primaryForeground}`
+									: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
 							}`}
 						>
 							Last 30 days
@@ -705,8 +734,8 @@ const Projects = () => {
 							onClick={() => setTimePeriod("7days")}
 							className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
 								timePeriod === "7days"
-									? "bg-zinc-900 text-white"
-									: "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+									? `${scheme.primary} ${scheme.primaryForeground}`
+									: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
 							}`}
 						>
 							Last 7 days
@@ -784,11 +813,13 @@ const Projects = () => {
 			</div>
 
 			{/* Recent Projects Table */}
-			<div className="bg-white border border-zinc-200 rounded-xl shadow-sm overflow-hidden">
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
+			>
 				{/* Table Header */}
-				<div className="p-6 border-b border-zinc-200">
+				<div className={`p-6 border-b ${colors.border}`}>
 					<div className="flex items-center justify-between mb-4">
-						<h2 className="text-lg font-semibold text-zinc-900">
+						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
 							Recent Projects
 						</h2>
 					</div>
@@ -804,7 +835,13 @@ const Projects = () => {
 									setSearchTerm(e.target.value);
 									setCurrentPage(1);
 								}}
-								className="w-full pl-10 pr-4 py-2 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
+								className={`w-full pl-10 pr-4 py-2 ${
+									colors.background
+								} border ${colors.border} rounded-xl text-sm ${
+									colors.foreground
+								} focus:outline-none focus:ring-2 ${getFocusRingClass(
+									colorScheme
+								)} focus:border-transparent placeholder:${colors.textTertiary}`}
 							/>
 						</div>
 
@@ -817,8 +854,8 @@ const Projects = () => {
 								}}
 								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
 									statusFilter === "All"
-										? "bg-zinc-900 text-white"
-										: "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+										? `${scheme.primary} ${scheme.primaryForeground}`
+										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
 								}`}
 							>
 								All ({statusCounts.All})
@@ -831,7 +868,7 @@ const Projects = () => {
 								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
 									statusFilter === "Active"
 										? "bg-green-600 text-white"
-										: "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
 								}`}
 							>
 								<CheckCircle2 className="w-4 h-4" />
@@ -845,7 +882,7 @@ const Projects = () => {
 								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
 									statusFilter === "Cancel"
 										? "bg-red-600 text-white"
-										: "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
 								}`}
 							>
 								<XCircle className="w-4 h-4" />
@@ -859,7 +896,7 @@ const Projects = () => {
 								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
 									statusFilter === "Completed"
 										? "bg-blue-600 text-white"
-										: "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
 								}`}
 							>
 								<CheckCircle2 className="w-4 h-4" />
@@ -873,7 +910,7 @@ const Projects = () => {
 								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
 									statusFilter === "Pending"
 										? "bg-yellow-600 text-white"
-										: "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
 								}`}
 							>
 								<Clock className="w-4 h-4" />
@@ -886,7 +923,7 @@ const Projects = () => {
 				{/* Table */}
 				<div className="overflow-x-auto">
 					<table className="w-full">
-						<thead className="bg-zinc-50 border-b border-zinc-200">
+						<thead className={`${colors.muted} border-b ${colors.border}`}>
 							<tr>
 								<th className="px-6 py-3 text-left">
 									<input
@@ -899,22 +936,34 @@ const Projects = () => {
 										className="w-4 h-4 text-zinc-900 border-zinc-300 rounded focus:ring-zinc-900"
 									/>
 								</th>
-								<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
 									Project Name
 								</th>
-								<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
 									Client Name
 								</th>
-								<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
 									Start Date
 								</th>
-								<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
 									Deadline
 								</th>
-								<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
 									Status
 								</th>
-								<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+								>
 									Progress
 								</th>
 								<th className="px-6 py-3 text-right text-xs font-medium text-zinc-500 uppercase tracking-wider">
@@ -922,29 +971,35 @@ const Projects = () => {
 								</th>
 							</tr>
 						</thead>
-						<tbody className="bg-white divide-y divide-zinc-200">
+						<tbody className={`${colors.card} divide-y ${colors.border}`}>
 							{paginatedProjects.length === 0 ? (
 								<tr>
 									<td colSpan="8" className="px-6 py-12 text-center">
-										<p className="text-zinc-500">No projects found</p>
+										<p className={colors.mutedForeground}>No projects found</p>
 									</td>
 								</tr>
 							) : (
 								paginatedProjects.map((project) => (
 									<tr
 										key={project.id}
-										className="hover:bg-zinc-50 transition-colors"
+										className={`${colors.hover} transition-colors`}
 									>
 										<td className="px-6 py-4">
 											<input
 												type="checkbox"
 												checked={selectedRows.includes(project.id)}
 												onChange={() => handleSelectRow(project.id)}
-												className="w-4 h-4 text-zinc-900 border-zinc-300 rounded focus:ring-zinc-900"
+												className={`w-4 h-4 ${colors.foreground} ${
+													colors.border
+												} rounded focus:ring-2 ${getFocusRingClass(
+													colorScheme
+												)}`}
 											/>
 										</td>
 										<td className="px-6 py-4">
-											<div className="text-sm font-medium text-zinc-900">
+											<div
+												className={`text-sm font-medium ${colors.foreground}`}
+											>
 												{project.projectName}
 											</div>
 										</td>
@@ -955,18 +1010,18 @@ const Projects = () => {
 												>
 													{getInitials(project.clientName)}
 												</div>
-												<span className="text-sm text-zinc-900">
+												<span className={`text-sm ${colors.foreground}`}>
 													{project.clientName}
 												</span>
 											</div>
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
-											<div className="text-sm text-zinc-700">
+											<div className={`text-sm ${colors.textSecondary}`}>
 												{project.startDate}
 											</div>
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
-											<div className="text-sm text-zinc-700">
+											<div className={`text-sm ${colors.textSecondary}`}>
 												{project.deadline}
 											</div>
 										</td>
@@ -981,13 +1036,17 @@ const Projects = () => {
 										</td>
 										<td className="px-6 py-4">
 											<div className="flex items-center gap-3">
-												<div className="flex-1 bg-zinc-200 rounded-full h-2 max-w-[100px]">
+												<div
+													className={`flex-1 ${colors.secondary} rounded-full h-2 max-w-[100px]`}
+												>
 													<div
-														className="bg-zinc-900 h-2 rounded-full transition-all"
+														className={`${scheme.primary} h-2 rounded-full transition-all`}
 														style={{ width: `${project.progress}%` }}
 													/>
 												</div>
-												<span className="text-sm text-zinc-700 min-w-[40px]">
+												<span
+													className={`text-sm ${colors.textSecondary} min-w-[40px]`}
+												>
 													{project.progress}%
 												</span>
 											</div>
@@ -1005,7 +1064,9 @@ const Projects = () => {
 				</div>
 
 				{/* Table Footer */}
-				<div className="px-6 py-4 border-t border-zinc-200 flex items-center justify-between">
+				<div
+					className={`px-6 py-4 border-t ${colors.border} flex items-center justify-between`}
+				>
 					<div className="text-sm text-zinc-500">
 						{selectedRows.length} of {filteredProjects.length} row(s) selected.
 					</div>
@@ -1013,7 +1074,7 @@ const Projects = () => {
 						<button
 							onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
 							disabled={currentPage === 1}
-							className="p-2 border border-zinc-200 rounded-xl hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+							className={`p-2 border ${colors.border} rounded-xl ${colors.hoverSecondary} disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
 						>
 							<ChevronLeft className="w-4 h-4" />
 						</button>
@@ -1022,7 +1083,7 @@ const Projects = () => {
 								setCurrentPage((prev) => Math.min(totalPages, prev + 1))
 							}
 							disabled={currentPage === totalPages}
-							className="p-2 border border-zinc-200 rounded-xl hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+							className={`p-2 border ${colors.border} rounded-xl ${colors.hoverSecondary} disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
 						>
 							<ChevronRight className="w-4 h-4" />
 						</button>

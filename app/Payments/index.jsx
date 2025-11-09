@@ -18,8 +18,13 @@ import {
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
 import { toast } from "react-toastify";
+import { useTheme } from "../../utils/useTheme";
+import { getFocusRingClass } from "../../utils/theme";
 
 const Payments = () => {
+	// Theme hook
+	const { theme, colorScheme, colors, scheme } = useTheme();
+
 	const initialPayments = [
 		{
 			id: "pay_001",
@@ -422,8 +427,10 @@ const Payments = () => {
 			{/* Header */}
 			<div className="flex items-center justify-between">
 				<div>
-					<h1 className="text-2xl font-semibold text-zinc-900">Payments</h1>
-					<p className="text-sm text-zinc-500 mt-1">
+					<h1 className={`text-2xl font-semibold ${colors.foreground}`}>
+						Payments
+					</h1>
+					<p className={`text-sm ${colors.mutedForeground} mt-1`}>
 						Manage and track all payment transactions
 					</p>
 				</div>
@@ -431,10 +438,14 @@ const Payments = () => {
 
 			{/* Total Funds Section */}
 			<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-				<div className="bg-white border border-zinc-200 rounded-xl p-6 shadow-sm">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
+				>
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm font-medium text-zinc-500 mb-1">
+							<p
+								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
+							>
 								Net Balance
 							</p>
 							<p
@@ -462,10 +473,14 @@ const Payments = () => {
 					</div>
 				</div>
 
-				<div className="bg-white border border-zinc-200 rounded-xl p-6 shadow-sm">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
+				>
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm font-medium text-zinc-500 mb-1">
+							<p
+								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
+							>
 								Total Funds
 							</p>
 							<p className="text-3xl font-bold text-green-600">
@@ -486,10 +501,14 @@ const Payments = () => {
 					</div>
 				</div>
 
-				<div className="bg-white border border-zinc-200 rounded-xl p-6 shadow-sm">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
+				>
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm font-medium text-zinc-500 mb-1">
+							<p
+								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
+							>
 								Total Deductions
 							</p>
 							<p className="text-3xl font-bold text-red-600">
@@ -510,11 +529,17 @@ const Payments = () => {
 					</div>
 				</div>
 
-				<div className="bg-white border border-zinc-200 rounded-xl p-6 shadow-sm">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
+				>
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm font-medium text-zinc-500 mb-1">Pending</p>
-							<p className="text-3xl font-bold text-zinc-900">
+							<p
+								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
+							>
+								Pending
+							</p>
+							<p className={`text-3xl font-bold ${colors.foreground}`}>
 								{formatCurrency(pendingAmount - pendingDeductions)}
 							</p>
 							<p className="text-xs text-zinc-400 mt-1">
@@ -529,17 +554,27 @@ const Payments = () => {
 			</div>
 
 			{/* Search and Filter Section */}
-			<div className="bg-white border border-zinc-200 rounded-xl p-4 shadow-sm">
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl p-4 ${colors.shadow}`}
+			>
 				<div className="flex flex-col md:flex-row gap-4 items-center justify-start">
 					{/* Search */}
 					<div className="relative max-w-sm w-full md:w-auto">
-						<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+						<Search
+							className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${colors.textMuted}`}
+						/>
 						<input
 							type="text"
 							placeholder="Search by transaction ID, customer, email, or description..."
 							value={searchTerm}
 							onChange={(e) => setSearchTerm(e.target.value)}
-							className="w-full pl-10 pr-4 py-2 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
+							className={`w-full pl-10 pr-4 py-2 ${colors.background} border ${
+								colors.border
+							} rounded-xl text-sm ${
+								colors.foreground
+							} focus:outline-none focus:ring-2 ${getFocusRingClass(
+								colorScheme
+							)} focus:border-transparent placeholder:${colors.textTertiary}`}
 						/>
 					</div>
 
@@ -554,8 +589,8 @@ const Payments = () => {
 								}}
 								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
 									filterStatus === "All"
-										? "bg-zinc-900 text-white"
-										: "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+										? `${scheme.primary} ${scheme.primaryForeground}`
+										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
 								}`}
 							>
 								All ({payments.length})
@@ -568,7 +603,7 @@ const Payments = () => {
 								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
 									filterStatus === "Completed"
 										? "bg-green-600 text-white"
-										: "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
 								}`}
 							>
 								<CheckCircle2 className="w-4 h-4" />
@@ -582,7 +617,7 @@ const Payments = () => {
 								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
 									filterStatus === "Pending"
 										? "bg-yellow-600 text-white"
-										: "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
 								}`}
 							>
 								<Clock className="w-4 h-4" />
@@ -593,7 +628,7 @@ const Payments = () => {
 						{/* Add Payment Button */}
 						<button
 							onClick={handleOpenAddModal}
-							className="px-4 py-2 rounded-xl text-sm font-medium bg-zinc-900 text-white hover:bg-zinc-800 transition-colors flex items-center gap-2"
+							className={`px-4 py-2 rounded-xl text-sm font-medium ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} transition-colors flex items-center gap-2`}
 						>
 							<Plus className="w-4 h-4" />
 							Add Payment
@@ -603,13 +638,15 @@ const Payments = () => {
 			</div>
 
 			{/* Payments Table */}
-			<div className="bg-white border border-zinc-200 rounded-xl shadow-sm overflow-hidden">
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
+			>
 				<div className="overflow-x-auto">
 					<table className="w-full">
-						<thead className="bg-zinc-50 border-b border-zinc-200">
+						<thead className={`${colors.muted} border-b ${colors.border}`}>
 							<tr>
 								<th
-									className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider cursor-pointer hover:bg-zinc-100"
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer hover:bg-zinc-100`}
 									onClick={() => requestSort("transactionId")}
 								>
 									<div className="flex items-center gap-2">
@@ -626,7 +663,7 @@ const Payments = () => {
 									</div>
 								</th>
 								<th
-									className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider cursor-pointer hover:bg-zinc-100"
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("customer")}
 								>
 									<div className="flex items-center gap-2">
@@ -643,7 +680,7 @@ const Payments = () => {
 									</div>
 								</th>
 								<th
-									className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider cursor-pointer hover:bg-zinc-100"
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer hover:bg-zinc-100`}
 									onClick={() => requestSort("amount")}
 								>
 									<div className="flex items-center gap-2">
@@ -663,7 +700,7 @@ const Payments = () => {
 									Payment Method
 								</th>
 								<th
-									className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider cursor-pointer hover:bg-zinc-100"
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("date")}
 								>
 									<div className="flex items-center gap-2">
@@ -687,11 +724,11 @@ const Payments = () => {
 								</th>
 							</tr>
 						</thead>
-						<tbody className="bg-white divide-y divide-zinc-200">
+						<tbody className={`${colors.card} divide-y ${colors.border}`}>
 							{paginatedPayments.length === 0 ? (
 								<tr>
 									<td colSpan="7" className="px-6 py-12 text-center">
-										<p className="text-zinc-500">No payments found</p>
+										<p className={colors.mutedForeground}>No payments found</p>
 									</td>
 								</tr>
 							) : (
@@ -702,15 +739,19 @@ const Payments = () => {
 										onClick={() => handlePaymentClick(payment)}
 									>
 										<td className="px-6 py-4 whitespace-nowrap">
-											<div className="text-sm font-medium text-zinc-900">
+											<div
+												className={`text-sm font-medium ${colors.foreground}`}
+											>
 												{payment.transactionId}
 											</div>
 										</td>
 										<td className="px-6 py-4">
-											<div className="text-sm font-medium text-zinc-900">
+											<div
+												className={`text-sm font-medium ${colors.foreground}`}
+											>
 												{payment.customer}
 											</div>
-											<div className="text-sm text-zinc-500">
+											<div className={`text-sm ${colors.mutedForeground}`}>
 												{payment.customerEmail}
 											</div>
 										</td>
@@ -729,16 +770,16 @@ const Payments = () => {
 										<td className="px-6 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-2">
 												<CreditCard className="w-4 h-4 text-zinc-400" />
-												<span className="text-sm text-zinc-700">
+												<span className={`text-sm ${colors.textSecondary}`}>
 													{payment.paymentMethod}
 												</span>
 											</div>
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
-											<div className="text-sm text-zinc-700">
+											<div className={`text-sm ${colors.textSecondary}`}>
 												{formatDate(payment.date)}
 											</div>
-											<div className="text-xs text-zinc-500">
+											<div className={`text-xs ${colors.textMuted}`}>
 												{payment.time}
 											</div>
 										</td>
@@ -771,7 +812,7 @@ const Payments = () => {
 													e.stopPropagation();
 													handlePaymentClick(payment);
 												}}
-												className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-zinc-700 bg-zinc-100 hover:bg-zinc-200 rounded-xl transition-colors"
+												className={`inline-flex items-center px-3 py-1.5 text-sm font-medium ${colors.secondaryForeground} ${colors.secondary} ${colors.hoverSecondary} rounded-xl transition-colors`}
 											>
 												<Eye className="w-4 h-4 mr-1" />
 												View
@@ -786,8 +827,10 @@ const Payments = () => {
 
 				{/* Pagination */}
 				{totalPages > 1 && (
-					<div className="px-6 py-4 border-t border-zinc-200 flex items-center justify-between">
-						<div className="text-sm text-zinc-500">
+					<div
+						className={`px-6 py-4 border-t ${colors.border} flex items-center justify-between`}
+					>
+						<div className={`text-sm ${colors.mutedForeground}`}>
 							Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
 							{Math.min(currentPage * itemsPerPage, filteredPayments.length)} of{" "}
 							{filteredPayments.length} payments
@@ -796,7 +839,7 @@ const Payments = () => {
 							<button
 								onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
 								disabled={currentPage === 1}
-								className="p-2 border border-zinc-200 rounded-xl hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed"
+								className={`p-2 border ${colors.border} rounded-xl ${colors.hoverSecondary} disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
 							>
 								<ChevronLeft className="w-4 h-4" />
 							</button>
@@ -809,7 +852,7 @@ const Payments = () => {
 											className={`px-3 py-1 rounded-xl text-sm ${
 												currentPage === page
 													? "bg-zinc-900 text-white"
-													: "text-zinc-700 hover:bg-zinc-100"
+													: `${colors.textSecondary} ${colors.hoverSecondary}`
 											}`}
 										>
 											{page}
@@ -822,7 +865,7 @@ const Payments = () => {
 									setCurrentPage((prev) => Math.min(totalPages, prev + 1))
 								}
 								disabled={currentPage === totalPages}
-								className="p-2 border border-zinc-200 rounded-xl hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed"
+								className={`p-2 border ${colors.border} rounded-xl ${colors.hoverSecondary} disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
 							>
 								<ChevronRight className="w-4 h-4" />
 							</button>
@@ -838,16 +881,18 @@ const Payments = () => {
 					onClick={handleCloseAddModal}
 				>
 					<div
-						className="bg-white rounded-xl shadow-xl max-w-2xl w-full overflow-y-auto"
+						className={`${colors.card} rounded-xl ${colors.shadow} max-w-2xl w-full overflow-y-auto`}
 						onClick={(e) => e.stopPropagation()}
 					>
 						{/* Modal Header */}
-						<div className="flex items-center justify-between p-6 border-b border-zinc-200">
+						<div
+							className={`flex items-center justify-between p-6 border-b ${colors.border}`}
+						>
 							<div>
-								<h2 className="text-xl font-semibold text-zinc-900">
+								<h2 className={`text-xl font-semibold ${colors.foreground}`}>
 									Add New Payment
 								</h2>
-								<p className="text-sm text-zinc-500 mt-1">
+								<p className={`text-sm ${colors.mutedForeground} mt-1`}>
 									Create a new payment transaction
 								</p>
 							</div>
@@ -855,7 +900,7 @@ const Payments = () => {
 								onClick={handleCloseAddModal}
 								className="p-2 hover:bg-zinc-100 rounded-xl transition-colors"
 							>
-								<X className="w-5 h-5 text-zinc-500" />
+								<X className={`w-5 h-5 ${colors.mutedForeground}`} />
 							</button>
 						</div>
 
@@ -864,7 +909,9 @@ const Payments = () => {
 							{/* Customer Information */}
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div>
-									<label className="block text-sm font-medium text-zinc-700 mb-2">
+									<label
+										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+									>
 										Customer Name <span className="text-red-500">*</span>
 									</label>
 									<input
@@ -873,11 +920,19 @@ const Payments = () => {
 										value={newPayment.customer}
 										onChange={handleInputChange}
 										placeholder="Enter customer name"
-										className="w-full px-4 py-2 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
+										className={`w-full px-4 py-2 ${colors.background} border ${
+											colors.border
+										} rounded-xl text-sm ${
+											colors.foreground
+										} focus:outline-none focus:ring-2 ${getFocusRingClass(
+											colorScheme
+										)} focus:border-transparent`}
 									/>
 								</div>
 								<div>
-									<label className="block text-sm font-medium text-zinc-700 mb-2">
+									<label
+										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+									>
 										Customer Email <span className="text-red-500">*</span>
 									</label>
 									<input
@@ -886,7 +941,13 @@ const Payments = () => {
 										value={newPayment.customerEmail}
 										onChange={handleInputChange}
 										placeholder="customer@example.com"
-										className="w-full px-4 py-2 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
+										className={`w-full px-4 py-2 ${colors.background} border ${
+											colors.border
+										} rounded-xl text-sm ${
+											colors.foreground
+										} focus:outline-none focus:ring-2 ${getFocusRingClass(
+											colorScheme
+										)} focus:border-transparent`}
 									/>
 								</div>
 							</div>
@@ -894,7 +955,9 @@ const Payments = () => {
 							{/* Amount and Payment Method */}
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div>
-									<label className="block text-sm font-medium text-zinc-700 mb-2">
+									<label
+										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+									>
 										Amount (USD) <span className="text-red-500">*</span>
 									</label>
 									<div className="relative">
@@ -923,7 +986,13 @@ const Payments = () => {
 											}}
 											placeholder="0.00 (use negative for deductions)"
 											step="0.01"
-											className="w-full pl-10 pr-4 py-2 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
+											className={`w-full pl-10 pr-4 py-2 ${
+												colors.background
+											} border ${colors.border} rounded-xl text-sm ${
+												colors.foreground
+											} focus:outline-none focus:ring-2 ${getFocusRingClass(
+												colorScheme
+											)} focus:border-transparent`}
 										/>
 									</div>
 									<p className="text-xs text-zinc-400 mt-1">
@@ -931,14 +1000,22 @@ const Payments = () => {
 									</p>
 								</div>
 								<div>
-									<label className="block text-sm font-medium text-zinc-700 mb-2">
+									<label
+										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+									>
 										Payment Method <span className="text-red-500">*</span>
 									</label>
 									<select
 										name="paymentMethod"
 										value={newPayment.paymentMethod}
 										onChange={handleInputChange}
-										className="w-full px-4 py-2 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
+										className={`w-full px-4 py-2 ${colors.background} border ${
+											colors.border
+										} rounded-xl text-sm ${
+											colors.foreground
+										} focus:outline-none focus:ring-2 ${getFocusRingClass(
+											colorScheme
+										)} focus:border-transparent`}
 									>
 										<option value="Credit Card">Credit Card</option>
 										<option value="Debit Card">Debit Card</option>
@@ -954,7 +1031,9 @@ const Payments = () => {
 							{/* Fee and Status */}
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div>
-									<label className="block text-sm font-medium text-zinc-700 mb-2">
+									<label
+										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+									>
 										Processing Fee (USD)
 									</label>
 									<div className="relative">
@@ -967,7 +1046,13 @@ const Payments = () => {
 											placeholder="Auto-calculated (3%)"
 											min="0"
 											step="0.01"
-											className="w-full pl-10 pr-4 py-2 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
+											className={`w-full pl-10 pr-4 py-2 ${
+												colors.background
+											} border ${colors.border} rounded-xl text-sm ${
+												colors.foreground
+											} focus:outline-none focus:ring-2 ${getFocusRingClass(
+												colorScheme
+											)} focus:border-transparent`}
 										/>
 									</div>
 									<p className="text-xs text-zinc-400 mt-1">
@@ -975,14 +1060,22 @@ const Payments = () => {
 									</p>
 								</div>
 								<div>
-									<label className="block text-sm font-medium text-zinc-700 mb-2">
+									<label
+										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+									>
 										Status <span className="text-red-500">*</span>
 									</label>
 									<select
 										name="status"
 										value={newPayment.status}
 										onChange={handleInputChange}
-										className="w-full px-4 py-2 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
+										className={`w-full px-4 py-2 ${colors.background} border ${
+											colors.border
+										} rounded-xl text-sm ${
+											colors.foreground
+										} focus:outline-none focus:ring-2 ${getFocusRingClass(
+											colorScheme
+										)} focus:border-transparent`}
 									>
 										<option value="Pending">Pending</option>
 										<option value="Completed">Completed</option>
@@ -992,7 +1085,9 @@ const Payments = () => {
 
 							{/* Invoice ID and Description */}
 							<div>
-								<label className="block text-sm font-medium text-zinc-700 mb-2">
+								<label
+									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+								>
 									Invoice ID
 								</label>
 								<input
@@ -1009,7 +1104,9 @@ const Payments = () => {
 							</div>
 
 							<div>
-								<label className="block text-sm font-medium text-zinc-700 mb-2">
+								<label
+									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
+								>
 									Description <span className="text-red-500">*</span>
 								</label>
 								<textarea
@@ -1025,7 +1122,9 @@ const Payments = () => {
 							{/* Preview */}
 							{newPayment.amount && parseFloat(newPayment.amount) !== 0 && (
 								<div className="bg-zinc-50 rounded-xl p-4 space-y-2">
-									<p className="text-sm font-medium text-zinc-700 mb-2">
+									<p
+										className={`text-sm font-medium ${colors.textSecondary} mb-2`}
+									>
 										Payment Preview
 									</p>
 									<div className="flex items-center justify-between text-sm">
@@ -1043,7 +1142,7 @@ const Payments = () => {
 									</div>
 									<div className="flex items-center justify-between text-sm">
 										<span className="text-zinc-600">Processing Fee:</span>
-										<span className="font-medium text-zinc-900">
+										<span className={`font-medium ${colors.foreground}`}>
 											-
 											{formatCurrency(
 												parseFloat(newPayment.fee) ||
@@ -1053,7 +1152,9 @@ const Payments = () => {
 									</div>
 									<div className="border-t border-zinc-200 pt-2 mt-2">
 										<div className="flex items-center justify-between">
-											<span className="text-sm font-semibold text-zinc-900">
+											<span
+												className={`text-sm font-semibold ${colors.foreground}`}
+											>
 												Net Amount:
 											</span>
 											<span
@@ -1088,13 +1189,13 @@ const Payments = () => {
 						<div className="flex items-center justify-end gap-3 p-6 border-t border-zinc-200">
 							<button
 								onClick={handleCloseAddModal}
-								className="px-4 py-2 text-sm font-medium text-zinc-700 bg-zinc-100 hover:bg-zinc-200 rounded-xl transition-colors"
+								className={`px-4 py-2 text-sm font-medium ${colors.textSecondary} ${colors.secondary} ${colors.hoverSecondary} rounded-xl transition-colors`}
 							>
 								Cancel
 							</button>
 							<button
 								onClick={handleAddPayment}
-								className="px-4 py-2 text-sm font-medium text-white bg-zinc-900 hover:bg-zinc-800 rounded-xl transition-colors"
+								className={`px-4 py-2 text-sm font-medium ${scheme.primaryForeground} ${scheme.primary} ${scheme.primaryHover} rounded-xl transition-colors`}
 							>
 								Add Payment
 							</button>
@@ -1110,16 +1211,18 @@ const Payments = () => {
 					onClick={handleCloseModal}
 				>
 					<div
-						className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+						className={`${colors.card} rounded-xl ${colors.shadow} max-w-2xl w-full max-h-[90vh] overflow-y-auto`}
 						onClick={(e) => e.stopPropagation()}
 					>
 						{/* Modal Header */}
-						<div className="flex items-center justify-between p-6 border-b border-zinc-200">
+						<div
+							className={`flex items-center justify-between p-6 border-b ${colors.border}`}
+						>
 							<div>
-								<h2 className="text-xl font-semibold text-zinc-900">
+								<h2 className={`text-xl font-semibold ${colors.foreground}`}>
 									Payment Details
 								</h2>
-								<p className="text-sm text-zinc-500 mt-1">
+								<p className={`text-sm ${colors.mutedForeground} mt-1`}>
 									{selectedPayment.transactionId}
 								</p>
 							</div>
@@ -1127,7 +1230,7 @@ const Payments = () => {
 								onClick={handleCloseModal}
 								className="p-2 hover:bg-zinc-100 rounded-xl transition-colors"
 							>
-								<X className="w-5 h-5 text-zinc-500" />
+								<X className={`w-5 h-5 ${colors.mutedForeground}`} />
 							</button>
 						</div>
 
@@ -1176,10 +1279,10 @@ const Payments = () => {
 									<p className="text-sm font-medium text-zinc-500 mb-2">
 										Customer
 									</p>
-									<p className="text-sm text-zinc-900">
+									<p className={`text-sm ${colors.foreground}`}>
 										{selectedPayment.customer}
 									</p>
-									<p className="text-sm text-zinc-500 mt-1">
+									<p className={`text-sm ${colors.mutedForeground} mt-1`}>
 										{selectedPayment.customerEmail}
 									</p>
 								</div>
@@ -1189,7 +1292,7 @@ const Payments = () => {
 									</p>
 									<div className="flex items-center gap-2">
 										<CreditCard className="w-4 h-4 text-zinc-400" />
-										<p className="text-sm text-zinc-900">
+										<p className={`text-sm ${colors.foreground}`}>
 											{selectedPayment.paymentMethod}
 										</p>
 									</div>
@@ -1200,7 +1303,7 @@ const Payments = () => {
 									</p>
 									<div className="flex items-center gap-2">
 										<Calendar className="w-4 h-4 text-zinc-400" />
-										<p className="text-sm text-zinc-900">
+										<p className={`text-sm ${colors.foreground}`}>
 											{formatDate(selectedPayment.date)} at{" "}
 											{selectedPayment.time}
 										</p>
@@ -1210,7 +1313,7 @@ const Payments = () => {
 									<p className="text-sm font-medium text-zinc-500 mb-2">
 										Invoice ID
 									</p>
-									<p className="text-sm text-zinc-900">
+									<p className={`text-sm ${colors.foreground}`}>
 										{selectedPayment.invoiceId}
 									</p>
 								</div>
@@ -1274,7 +1377,7 @@ const Payments = () => {
 						<div className="flex items-center justify-end gap-3 p-6 border-t border-zinc-200">
 							<button
 								onClick={handleCloseModal}
-								className="px-4 py-2 text-sm font-medium text-zinc-700 bg-zinc-100 hover:bg-zinc-200 rounded-xl transition-colors"
+								className={`px-4 py-2 text-sm font-medium ${colors.textSecondary} ${colors.secondary} ${colors.hoverSecondary} rounded-xl transition-colors`}
 							>
 								Close
 							</button>

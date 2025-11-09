@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import Sidebar from "../Sidebar";
 import { ToastContainer } from "react-toastify";
 import Navbar from "../Navbar";
+import { useTheme } from "../../utils/useTheme";
 
 const LayoutWrapper = ({ children }) => {
 	const [open, setOpen] = useState(true);
 	const [drawerOpen, setDrawerOpen] = useState(false);
+	const { colors } = useTheme();
 
 	return (
-		<div className="flex relative bg-zinc-100 md:p-2">
+		<div
+			className={`flex relative ${colors.mutedBackground} md:p-2 transition-colors min-h-screen`}
+		>
 			<div className="hidden md:block">
 				<Sidebar
 					open={open}
@@ -33,7 +37,9 @@ const LayoutWrapper = ({ children }) => {
 				/>
 			</div>
 
-			<main className="overflow-y-auto bg-white border border-zinc-200 rounded-2xl mx-2 w-full max-h-screen hidescrollbar">
+			<main
+				className={`overflow-y-auto ${colors.card} border ${colors.border} rounded-2xl mx-2 w-full max-h-screen hidescrollbar transition-colors`}
+			>
 				<Navbar
 					open={open}
 					setOpen={setOpen}
