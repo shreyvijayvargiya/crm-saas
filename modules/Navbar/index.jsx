@@ -161,7 +161,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 
 	return (
 		<div
-			className={`flex justify-between w-full border-b ${colors.border} py-1 md:px-10 ${colors.background} transition-colors`}
+			className={`flex justify-between w-full border-b ${colors.border} py-2 md:px-10 ${colors.background} transition-colors`}
 		>
 			<div className="relative flex justify-start items-center">
 				{open ? (
@@ -198,7 +198,6 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 				</div>
 			</div>
 			<div className="flex items-center justify-between gap-2">
-				{/* Theme and Color Controls */}
 				<div className="flex items-center gap-2 mr-2">
 					{/* Color Scheme Picker */}
 					<div className="relative color-picker-dropdown">
@@ -242,7 +241,6 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 							))}
 						</div>
 					</div>
-
 					{/* Theme Toggle */}
 					<button
 						onClick={toggleTheme}
@@ -256,6 +254,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 						)}
 					</button>
 				</div>
+				{/* Theme and Color Controls */}
 
 				<MessageSquare
 					className={`cursor-pointer ${colors.mutedForeground} transition-colors`}
@@ -282,7 +281,9 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 									Notifications
 								</p>
 								<div className="space-y-2 my-2 px-2">
-									<div className={`flex items-start ${colors.hoverSecondary} p-1.5 rounded-xl`}>
+									<div
+										className={`flex items-start ${colors.hoverSecondary} p-1.5 rounded-xl`}
+									>
 										<FiMessageSquare
 											size={20}
 											className={`mr-2 mt-1 ${colors.foreground}`}
@@ -296,7 +297,9 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 											</span>
 										</p>
 									</div>
-									<div className={`flex items-start ${colors.hoverSecondary} p-1.5 rounded-xl`}>
+									<div
+										className={`flex items-start ${colors.hoverSecondary} p-1.5 rounded-xl`}
+									>
 										<FiUser
 											size={20}
 											className={`mr-2 mt-1 ${colors.foreground}`}
@@ -310,7 +313,9 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 											</span>
 										</p>
 									</div>
-									<div className={`flex items-start ${colors.hoverSecondary} p-1.5 rounded-xl`}>
+									<div
+										className={`flex items-start ${colors.hoverSecondary} p-1.5 rounded-xl`}
+									>
 										<FiSettings
 											size={20}
 											className={`mr-2 mt-1 ${colors.foreground}`}
