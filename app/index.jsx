@@ -5,6 +5,7 @@ export { default as Sales } from "./Sales";
 export { default as Companies } from "./Companies";
 export { default as Integrations } from "./Integrations";
 export { default as Tasks } from "./Tasks";
+export { default as Calendar } from "./Calendar";
 export { default as Settings } from "./Settings";
 export { default as Invoices } from "./Invoices";
 export { default as Webhooks } from "./Webhooks";

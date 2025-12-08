@@ -71,6 +71,12 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 			icon: "ListTodo",
 		},
 		{
+			id: 15,
+			label: "Calendar",
+			route: "/calendar",
+			icon: "Calendar",
+		},
+		{
 			id: 7,
 			label: "Companies",
 			route: "/companies",
