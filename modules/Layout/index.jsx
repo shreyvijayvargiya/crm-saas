@@ -23,7 +23,7 @@ const LayoutWrapper = ({ children }) => {
 			</div>
 
 			<div
-				className={`fixed inset-0 bg-black bg-opacity-50 left-0 right-0 transition-all duration-300 ease-in-out z-50 ${
+				className={`fixed inset-0 bg-opacity-50 left-0 right-0 transition-all duration-300 ease-in-out z-50 ${
 					drawerOpen
 						? "bottom-0 h-0 opacity-100 visible"
 						: "bottom-0 h-0 opacity-0 hidden"

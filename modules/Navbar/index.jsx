@@ -395,7 +395,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 
 			{/* Search Modal */}
 			{searchModalOpen && (
-				<div className="fixed inset-0 flex items-start justify-center bg-black bg-opacity-50 z-50 pt-20">
+				<div className="fixed inset-0 flex items-start justify-center z-50 pt-20">
 					<div
 						className={`${colors.card} rounded-xl ${colors.shadow} w-full max-w-2xl mx-4 max-h-[80vh] overflow-hidden`}
 					>

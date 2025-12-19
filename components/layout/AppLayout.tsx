@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Sidebar } from "./Sidebar";
-import { Menu } from "lucide-react";
+import { Menu, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
 interface AppLayoutProps {
 	children: React.ReactNode;
@@ -47,28 +47,28 @@ export function AppLayout({ children }: AppLayoutProps) {
 	}
 
 	return (
-		<div className="flex min-h-screen bg-zinc-50">
-			{/* Desktop Sidebar */}
-			<div className="hidden md:block">
+		<div className="flex min-h-screen bg-zinc-50 relative">
+			{/* Desktop Sidebar - Fixed */}
+			<aside className="hidden md:block fixed left-0 top-0 h-screen z-30">
 				<Sidebar
 					open={sidebarOpen}
 					setOpen={setSidebarOpen}
 					drawerOpen={drawerOpen}
 					setDrawerOpen={setDrawerOpen}
 				/>
-			</div>
+			</aside>
 
 			{/* Mobile Sidebar Overlay */}
 			{drawerOpen && (
 				<div
-					className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+					className="fixed inset-0 bg-opacity-50 z-40 md:hidden transition-opacity duration-300"
 					onClick={() => setDrawerOpen(false)}
 				/>
 			)}
 
-			{/* Mobile Sidebar */}
-			<div
-				className={`fixed left-0 top-0 h-full z-50 md:hidden transition-transform duration-300 ${
+			{/* Mobile Sidebar - Drawer */}
+			<aside
+				className={`fixed left-0 top-0 h-full z-50 md:hidden transition-transform duration-300 ease-in-out ${
 					drawerOpen ? "translate-x-0" : "-translate-x-full"
 				}`}
 			>
@@ -78,20 +78,41 @@ export function AppLayout({ children }: AppLayoutProps) {
 					drawerOpen={drawerOpen}
 					setDrawerOpen={setDrawerOpen}
 				/>
-			</div>
+			</aside>
 
 			{/* Main Content */}
-			<div className="flex-1 flex flex-col min-w-0">
+			<div
+				className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
+					sidebarOpen ? "md:ml-60" : "md:ml-16"
+				}`}
+			>
+				{/* Desktop Header with Sidebar Toggle */}
+				<header className="hidden md:flex bg-transparent border-b px-4 py-3 items-center gap-3 sticky top-0 z-20 shadow-sm">
+					<button
+						onClick={() => setSidebarOpen(!sidebarOpen)}
+						className="p-2 hover:bg-gray-100 rounded transition-colors"
+						aria-label="Toggle sidebar"
+					>
+						{sidebarOpen ? (
+							<PanelLeftClose className="w-5 h-5 text-gray-600" />
+						) : (
+							<PanelLeftOpen className="w-5 h-5 text-gray-600" />
+						)}
+					</button>
+					<h1 className="text-lg font-bold text-primary">TUFF+ ERP</h1>
+				</header>
+
 				{/* Mobile Header */}
-				<div className="md:hidden bg-white border-b px-4 py-3 flex items-center gap-3">
+				<header className="md:hidden bg-white border-b px-4 py-3 flex items-center gap-3 sticky top-0 z-20 shadow-sm">
 					<button
 						onClick={() => setDrawerOpen(!drawerOpen)}
-						className="p-2 hover:bg-gray-100 rounded"
+						className="p-2 hover:bg-gray-100 rounded transition-colors"
+						aria-label="Toggle menu"
 					>
 						<Menu className="w-5 h-5" />
 					</button>
-					<h1 className="text-lg font-bold">TUFF+ INTEGRATOR</h1>
-				</div>
+					<h1 className="text-lg font-bold text-primary">TUFF+ ERP</h1>
+				</header>
 
 				{/* Page Content */}
 				<main className="flex-1 overflow-y-auto">{children}</main>

@@ -1,5 +1,7 @@
 # TUFF+ INTEGRATOR - MVP
 
+Reference - [Citiation](https://chatgpt.com/s/dr_694477541f4c8191ad108cf528f1dfe8)
+
 A basic CRM + ERP system for TUFF+ Global, built with Next.js, TypeScript, Tailwind CSS, shadcn/ui, and Supabase.
 
 ## Features (MVP)
