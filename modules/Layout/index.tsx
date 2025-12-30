@@ -1,13 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../Sidebar";
 import { ToastContainer } from "react-toastify";
 import Navbar from "../Navbar";
 import { useTheme } from "../../utils/useTheme";
 
-const LayoutWrapper = ({ children }) => {
-	const [open, setOpen] = useState(true);
-	const [drawerOpen, setDrawerOpen] = useState(false);
+interface LayoutWrapperProps {
+	children: React.ReactNode;
+}
+
+const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
+	const [open, setOpen] = useState<boolean>(true);
+	const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+	const [mounted, setMounted] = useState<boolean>(false);
 	const { colors } = useTheme();
+
+	// Prevent hydration mismatch
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	// Prevent hydration mismatch by not rendering until mounted
+	if (!mounted) {
+		return (
+			<div className="flex relative md:p-2 transition-colors min-h-screen">
+				<div className="flex-1 flex flex-col min-w-0">
+					<main className="flex-1 overflow-y-auto">{children}</main>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div

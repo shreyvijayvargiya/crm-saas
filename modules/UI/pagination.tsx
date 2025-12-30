@@ -3,14 +3,14 @@ import React, { useState } from "react";
 import { useTheme } from "../../utils/useTheme";
 import { getFocusRingClass } from "../../utils/theme";
 
-const Pagination = () => {
+const Pagination: React.FC = () => {
 	// Theme hook
 	const { theme, colorScheme, colors, scheme } = useTheme();
 
-	const [currentPage, setCurrentPage] = useState(1);
-	const [totalPages, setTotalPages] = useState(4);
+	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [totalPages, setTotalPages] = useState<number>(4);
 
-	const onPageChange = (page) => {
+	const onPageChange = (page: number): void => {
 		setCurrentPage(page);
 	};
 

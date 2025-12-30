@@ -3,11 +3,28 @@ import * as lucideIcons from "lucide-react";
 import { useRouter } from "next/router";
 import { useTheme } from "../../utils/useTheme";
 
-const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
+interface SidebarProps {
+	open: boolean;
+	drawerOpen: boolean;
+	setDrawerOpen: (open: boolean) => void;
+}
+
+interface NavItem {
+	id: number;
+	label: string;
+	route: string;
+	icon: string;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({
+	open,
+	drawerOpen,
+	setDrawerOpen,
+}) => {
 	const router = useRouter();
 	const { colors, scheme } = useTheme();
 
-	const navItems = [
+	const navItems: NavItem[] = [
 		{
 			id: 1,
 			label: "Dashboard",
@@ -188,7 +205,9 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 
 					<div className="flex flex-col px-2">
 						{navItems?.map((item) => {
-							const Icon = lucideIcons[item?.icon];
+							const Icon = lucideIcons[
+								item?.icon as keyof typeof lucideIcons
+							] as React.ComponentType<{ className?: string }> | undefined;
 							const isActive = router.pathname === item.route;
 							return (
 								<div key={item.id} className="relative group">

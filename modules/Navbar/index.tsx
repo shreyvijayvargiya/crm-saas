@@ -19,21 +19,34 @@ import { useRouter } from "next/router";
 import { useTheme } from "../../utils/useTheme";
 import { colorSchemes } from "../../utils/theme";
 
-const Navbar = ({ open, setOpen, setDrawerOpen }) => {
+interface NavbarProps {
+	open: boolean;
+	setOpen: (open: boolean) => void;
+	setDrawerOpen: (open: boolean) => void;
+}
+
+interface NavItem {
+	id: number;
+	label: string;
+	route: string;
+	icon: string;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ open, setOpen, setDrawerOpen }) => {
 	const router = useRouter();
-	const [dropdownOpen, setDropdownOpen] = useState(false);
-	const [bellDropdownOpen, setBellDropdownOpen] = useState(false);
-	const [searchModalOpen, setSearchModalOpen] = useState(false);
-	const [searchTerm, setSearchTerm] = useState("");
-	const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-	const searchInputRef = useRef(null);
-	const modalSearchInputRef = useRef(null);
+	const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+	const [bellDropdownOpen, setBellDropdownOpen] = useState<boolean>(false);
+	const [searchModalOpen, setSearchModalOpen] = useState<boolean>(false);
+	const [searchTerm, setSearchTerm] = useState<string>("");
+	const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
+	const searchInputRef = useRef<HTMLInputElement>(null);
+	const modalSearchInputRef = useRef<HTMLInputElement>(null);
 
 	// Theme hook
 	const { theme, colorScheme, setColorScheme, toggleTheme, colors, scheme } =
 		useTheme();
 
-	const navItems = [
+	const navItems: NavItem[] = [
 		{
 			id: 1,
 			label: "Dashboard",
@@ -108,7 +121,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 		},
 	];
 
-	const handleKeyDown = (event) => {
+	const handleKeyDown = (event: KeyboardEvent): void => {
 		if ((event.ctrlKey || event.metaKey) && event.key === "k") {
 			event.preventDefault();
 			setSearchModalOpen(true);
@@ -132,7 +145,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 
 	// Close color picker on outside click
 	useEffect(() => {
-		const handleClickOutside = (event) => {
+		const handleClickOutside = (event: MouseEvent): void => {
 			if (
 				isColorPickerOpen &&
 				!event.target.closest(".color-picker-dropdown")
@@ -144,16 +157,16 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, [isColorPickerOpen]);
 
-	const handleSearchClick = () => {
+	const handleSearchClick = (): void => {
 		setSearchModalOpen(true);
 	};
 
-	const handleCloseModal = () => {
+	const handleCloseModal = (): void => {
 		setSearchModalOpen(false);
 		setSearchTerm("");
 	};
 
-	const handleNavigate = (route) => {
+	const handleNavigate = (route: string): void => {
 		router.push(route);
 		handleCloseModal();
 	};
@@ -162,8 +175,9 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 		item.label.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
-	const handleDropdownToggle = () => setDropdownOpen(!dropdownOpen);
-	const handleBellDropdownToggle = () => setBellDropdownOpen(!bellDropdownOpen);
+	const handleDropdownToggle = (): void => setDropdownOpen(!dropdownOpen);
+	const handleBellDropdownToggle = (): void =>
+		setBellDropdownOpen(!bellDropdownOpen);
 
 	return (
 		<div
@@ -424,7 +438,14 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 							<div className="space-y-1">
 								{filteredNavItems.length > 0 ? (
 									filteredNavItems.map((item) => {
-										const Icon = lucideIcons[item.icon];
+										const Icon = lucideIcons[
+											item.icon as keyof typeof lucideIcons
+										] as
+											| React.ComponentType<{
+													className?: string;
+													size?: number;
+											  }>
+											| undefined;
 										return (
 											<button
 												key={item.id}
