@@ -1,0 +1,17 @@
+export { default as LandingPage } from "./Home";
+export { default as Analytics } from "./Analytics";
+export { default as Teams } from "./Teams";
+export { default as Leads } from "./Leads";
+export { default as Contacts } from "./Contacts";
+export { default as Sales } from "./Sales";
+export { default as Companies } from "./Companies";
+export { default as Integrations } from "./Integrations";
+export { default as Tasks } from "./Tasks";
+export { default as Calendar } from "./Calendar";
+export { default as Settings } from "./Settings";
+export { default as Invoices } from "./Invoices";
+export { default as Webhooks } from "./Webhooks";
+export { default as ApiKeys } from "./ApiKeys";
+export { default as Payments } from "./Payments";
+export { default as Projects } from "./Projects";
+export { default as ContentManagementSystem } from "./Content Management System";
