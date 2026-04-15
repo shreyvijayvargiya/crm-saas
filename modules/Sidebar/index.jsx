@@ -49,6 +49,12 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 					icon: "Layers",
 				},
 				{
+					id: 21,
+					label: "Deals",
+					route: "/deals",
+					icon: "CircleDollarSign",
+				},
+				{
 					id: 4,
 					label: "Contacts",
 					route: "/contacts",
@@ -255,7 +261,7 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 						{navCategories?.map((category) => (
 							<div key={category.id} className="mb-4">
 								{open && (
-									<p className={`text-xs font-medium ${colors.mutedForeground} mb-2 px-3 uppercase tracking-wide`}>
+									<p className={`text-xs font-medium ${colors.mutedForeground} mb-2 px-3 tracking-wide`}>
 										{category.label}
 									</p>
 								)}

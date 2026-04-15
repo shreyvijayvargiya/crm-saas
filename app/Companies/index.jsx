@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { PlusCircle, Search, X } from "lucide-react";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import {
+	PlusCircle,
+	Search,
+	X,
+	ChevronUp,
+	ChevronDown,
+} from "lucide-react";
+import { ExportDropdown } from "../../lib/ui/dropdown";
 import { toast } from "react-toastify";
 import { Pagination } from "../../modules";
 import { useTheme } from "../../utils/useTheme";
@@ -161,6 +167,24 @@ const Companies = () => {
 		setSortConfig({ key, direction });
 	};
 
+	const handleExportCompaniesCsv = () => {
+		const header = "name,owner,industry,rating,location";
+		const rows = sortedCompanies.map(
+			(c) =>
+				`${c.name},${c.owner},${c.industry},${c.rating},${c.location}`
+		);
+		const csvContent =
+			"data:text/csv;charset=utf-8," + [header, ...rows].join("\n");
+		const encodedUri = encodeURI(csvContent);
+		const link = document.createElement("a");
+		link.setAttribute("href", encodedUri);
+		link.setAttribute("download", "companies.csv");
+		document.body.appendChild(link);
+		link.click();
+		link.remove();
+		toast.success("Exported companies (CSV).");
+	};
+
 	return (
 		<div className={`p-6 transition-colors`}>
 			{/* Companies Table - Improved */}
@@ -202,6 +226,11 @@ const Companies = () => {
 							<PlusCircle size={16} />
 							Add Company
 						</button>
+						<ExportDropdown
+							onExportCsv={handleExportCompaniesCsv}
+							onExportPdf={handleExportCompaniesCsv}
+							onExportJson={handleExportCompaniesCsv}
+						/>
 					</div>
 				</div>
 			<div

@@ -395,13 +395,9 @@ const Invoices = () => {
 		<div
 			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar transition-all duration-100 ease-in`}
 		>
-			{/* Invoices Table - Improved */}
+			{/* Table Header */}
 			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
-			>
-				{/* Table Header */}
-				<div
-					className={`flex flex-col md:flex-row items-start md:items-center justify-between px-6 py-4 border-b ${colors.border} gap-4`}
+					className={`flex flex-col md:flex-row items-start md:items-center justify-between p-2 gap-4`}
 				>
 					<div className="flex-1">
 						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
@@ -416,13 +412,11 @@ const Invoices = () => {
 						<div
 							className={`relative flex gap-2 items-center border ${colors.border} rounded-xl px-3 py-2 ${colors.card} w-full md:w-auto`}
 						>
-							<Search className={colors.textSecondary} size={18} />
+							<Search className={colors.textSecondary} size={16} />
 							<input
 								type="text"
 								placeholder="Search invoices..."
-								className={`outline-none flex-1 ${colors.background} ${
-									colors.foreground
-								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+								className={`outline-none flex-1 placeholder:${colors.mutedForeground} ${getFocusRingClass(
 									colorScheme
 								)}`}
 								value={searchTerm}
@@ -447,6 +441,11 @@ const Invoices = () => {
 						</button>
 					</div>
 				</div>
+			{/* Invoices Table - Improved */}
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
+			>
+				
 
 				{/* Table */}
 				<div className="overflow-x-auto">

@@ -11,7 +11,6 @@ import {
 	ChevronRight,
 	Search,
 	UserPlus,
-	Download,
 	GripVertical,
 	Paperclip,
 	Plus,
@@ -21,11 +20,28 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import { useTheme } from "../../utils/useTheme";
 import { getFocusRingClass } from "../../utils/theme";
+import { ExportDropdown } from "../../lib/ui/dropdown";
 
 function initialsFromName(name) {
-	const p = String(name).trim().split(/\s+/);
+	const p = String(name ?? "").trim().split(/\s+/);
 	if (p.length >= 2) return (p[0][0] + p[1][0]).toUpperCase();
-	return name.slice(0, 2).toUpperCase();
+	return String(name ?? "??").slice(0, 2).toUpperCase();
+}
+
+/** Company label for Kanban — table rows may omit `company` after sync / drag. */
+function leadDisplayCompany(lead) {
+	const c = lead?.company;
+	if (c != null && String(c).trim() !== "") return String(c).trim();
+	const email = lead?.email;
+	if (email && String(email).includes("@")) {
+		const domain = String(email).split("@")[1];
+		if (domain) {
+			const part = domain.split(".")[0];
+			return part ? part.charAt(0).toUpperCase() + part.slice(1) : "Account";
+		}
+	}
+	const first = lead?.name?.trim()?.split(/\s+/)[0];
+	return first || "Account";
 }
 
 /** Deterministic mock metrics from lead id + column — data shape unchanged */
@@ -274,7 +290,6 @@ const Leads = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [newLead, setNewLead] = useState({ name: "", email: "", image: "" });
 	const [dragOverColumn, setDragOverColumn] = useState(null);
-
 	const handleAddLead = () => setIsModalOpen(true);
 
 	const handleModalClose = () => {
@@ -288,11 +303,17 @@ const Leads = () => {
 	};
 
 	const handleSubmit = () => {
+		const domain =
+			newLead.email?.includes("@") &&
+			newLead.email.split("@")[1]?.split(".")[0];
 		const leadToAdd = {
 			id: (Math.random() * 1000).toString(),
 			name: newLead.name,
 			email: newLead.email,
 			image: newLead.image,
+			company: domain
+				? domain.charAt(0).toUpperCase() + domain.slice(1)
+				: "",
 			lastContacted: new Date().toISOString().split("T")[0],
 		};
 		setAllLeads((prevLeads) => [...prevLeads, leadToAdd]);
@@ -343,21 +364,31 @@ const Leads = () => {
 		event.preventDefault();
 		setDragOverColumn(null);
 		const leadId = event.dataTransfer.getData("text/plain");
-		const leadToMove = allLeads.find((lead) => lead.id === leadId);
-		if (leadToMove) {
-			setPipelines((prevPipelines) =>
-				prevPipelines.map((pipeline) => {
-					if (pipeline.id === pipelineId) {
-						return { ...pipeline, leads: [...pipeline.leads, leadToMove] };
-					}
-					return {
-						...pipeline,
-						leads: pipeline.leads.filter((lead) => lead.id !== leadId),
-					};
-				})
-			);
-			toast.success(`Lead with ID: ${leadId} moved to pipeline: ${pipelineId}`);
+		let leadToMove = null;
+		for (const p of pipelines) {
+			const found = p.leads.find((l) => l.id === leadId);
+			if (found) {
+				leadToMove = found;
+				break;
+			}
 		}
+		if (!leadToMove) {
+			leadToMove = allLeads.find((lead) => lead.id === leadId);
+		}
+		if (!leadToMove) return;
+
+		setPipelines((prevPipelines) =>
+			prevPipelines.map((pipeline) => {
+				if (pipeline.id === pipelineId) {
+					return { ...pipeline, leads: [...pipeline.leads, leadToMove] };
+				}
+				return {
+					...pipeline,
+					leads: pipeline.leads.filter((lead) => lead.id !== leadId),
+				};
+			})
+		);
+		toast.success(`Lead with ID: ${leadId} moved to pipeline: ${pipelineId}`);
 	};
 
 	const requestSort = (key) => {
@@ -410,11 +441,8 @@ const Leads = () => {
 							<input
 								type="text"
 								placeholder="Search Leads..."
-								className={`outline-none flex-1 ${colors.background} ${
-									colors.foreground
-								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-									colorScheme
-								)}`}
+								name="search-leads"
+								className={`outline-none flex-1 placeholder:${colors.mutedForeground} ${getFocusRingClass(colorScheme)}`}
 								onChange={(e) => {
 									const searchTerm = e.target.value.toLowerCase();
 									const filteredLeads =
@@ -436,13 +464,11 @@ const Leads = () => {
 							<UserPlus size={16} />
 							Add Lead
 						</button>
-						<button
-							onClick={handleExportCSV}
-							className={`border ${colors.border} ${colors.hoverSecondary} ${colors.foreground} rounded-xl px-4 py-2 transition-all duration-200 text-sm font-medium flex items-center gap-2`}
-						>
-							<Download size={16} />
-							Export CSV
-						</button>
+						<ExportDropdown
+							onExportCsv={handleExportCSV}
+							onExportPdf={handleExportCSV}
+							onExportJson={handleExportCSV}
+						/>
 					</div>
 				</div>
 			{/* Leads Table - Improved */}
@@ -674,11 +700,14 @@ const Leads = () => {
 								)}
 								{pipeline.leads.map((lead) => {
 									const meta = leadKanbanMeta(lead, pipeline.id);
-									const desc = `Follow up with ${lead.company} — ${lead.email}`;
+									const companyLabel = leadDisplayCompany(lead);
+									const desc = `Follow up with ${companyLabel} — ${lead.email}`;
 									const shortDesc =
 										desc.length > 52 ? `${desc.slice(0, 50)}…` : desc;
 									const i1 = initialsFromName(lead.name);
-									const i2 = initialsFromName(lead.company.split(" ")[0] || "TM");
+									const i2 = initialsFromName(
+										companyLabel.split(/\s+/)[0] || "TM"
+									);
 									const i3 = "M";
 									return (
 										<div

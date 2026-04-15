@@ -1,0 +1,3198 @@
+{
+  "meta": {
+    "purpose": "Static snapshot of mock / hardcoded data shapes used in this CRM app. For developer reference and schema discovery only — the running app does not import this file.",
+    "summary": "22 top-level `app*` sections cover all main pages in `pages/` (see `pageRouteMap`). Detail routes `/leads/[id]` and `/contacts/[id]` share `appCrmRecordDetail`.",
+    "notes": [
+      "Paths like ./people/ and ./companies/ match public/ asset URLs in Next.js.",
+      "Some UI-only keys (e.g. React icon components) are omitted; use string ids where applicable.",
+      "Contacts in source app/Contacts/index.jsx use Math.random() for image on some rows; this JSON uses deterministic person-1..4 rotation.",
+      "appContacts: ids 205–220 use `person-${Math.floor(Math.random()*4)+1}.png` in source; JSON uses rotating person-1..4 for a stable snapshot."
+    ],
+    "pageRouteMap": {
+      "/": "appHome",
+      "/analytics": "appAnalytics",
+      "/api-keys": "appApiKeys",
+      "/calendar": "appCalendar",
+      "/cms": "appCms",
+      "/companies": "appCompanies",
+      "/contacts": "appContacts",
+      "/contacts/[id]": "appCrmRecordDetail (contact rows)",
+      "/deals": "appDeals",
+      "/email": "appEmail",
+      "/integrations": "appIntegrations",
+      "/invoices": "appInvoices",
+      "/leads": "appLeads",
+      "/leads/[id]": "appCrmRecordDetail (lead rows)",
+      "/notifications": "appNotifications",
+      "/payments": "appPayments",
+      "/pipelines": "appPipelines",
+      "/projects": "appProjects",
+      "/sales": "appSales",
+      "/settings": "appSettings",
+      "/tasks": "appTasks",
+      "/teams": "appTeams",
+      "/webhooks": "appWebhooks"
+    }
+  },
+  "appLeads": {
+    "source": "app/Leads/index.jsx",
+    "initialPipelines": [
+      {
+        "id": "new",
+        "name": "Backlog",
+        "leads": [
+          {
+            "id": "101",
+            "name": "Alice Brown",
+            "email": "alice@company.com",
+            "company": "Cloud Corp",
+            "image": "./people/person-1.png"
+          },
+          {
+            "id": "103",
+            "name": "Charlie Green",
+            "email": "charlie@company.com",
+            "company": "Tech Innovations",
+            "image": "./people/person-2.png"
+          },
+          {
+            "id": "104",
+            "name": "Diana Prince",
+            "email": "diana@company.com",
+            "company": "Amazon",
+            "image": "./people/person-3.png"
+          }
+        ]
+      },
+      {
+        "id": "contacted",
+        "name": "In Progress",
+        "leads": [
+          {
+            "id": "102",
+            "name": "Bob Wilson",
+            "email": "bob@startup.io",
+            "company": "AI Labs",
+            "image": "./people/person-4.png"
+          },
+          {
+            "id": "105",
+            "name": "Eve Adams",
+            "email": "eve@company.com",
+            "company": "Marketing Solutions",
+            "image": "./people/person-1.png"
+          },
+          {
+            "id": "106",
+            "name": "Frank Castle",
+            "email": "frank@company.com",
+            "company": "Finance Corp",
+            "image": "./people/person-2.png"
+          }
+        ]
+      },
+      {
+        "id": "rejected",
+        "name": "Done",
+        "leads": [
+          {
+            "id": "107",
+            "name": "John Doe",
+            "email": "john@company.com",
+            "company": "Failed Ventures",
+            "image": "./people/person-2.png"
+          },
+          {
+            "id": "108",
+            "name": "Jane Smith",
+            "email": "jane@company.com",
+            "company": "Unsuccessful Inc.",
+            "image": "./people/person-4.png"
+          }
+        ]
+      }
+    ],
+    "initialLeadsTable": [
+      {
+        "id": "101",
+        "name": "Alice Brown",
+        "email": "alice@company.com",
+        "lastContacted": "06/25/2024",
+        "image": "./people/person-1.png"
+      },
+      {
+        "id": "102",
+        "name": "Bob Wilson",
+        "email": "bob@startup.io",
+        "lastContacted": "06/24/2024",
+        "image": "./people/person-4.png"
+      },
+      {
+        "id": "103",
+        "name": "Charlie Green",
+        "email": "charlie@company.com",
+        "lastContacted": "06/23/2024",
+        "image": "./people/person-2.png"
+      },
+      {
+        "id": "104",
+        "name": "Diana Prince",
+        "email": "diana@company.com",
+        "lastContacted": "06/22/2024",
+        "image": "./people/person-3.png"
+      },
+      {
+        "id": "105",
+        "name": "Eve Adams",
+        "email": "eve@company.com",
+        "lastContacted": "06/21/2024",
+        "image": "./people/person-1.png"
+      },
+      {
+        "id": "106",
+        "name": "Frank Castle",
+        "email": "frank@company.com",
+        "lastContacted": "06/20/2024",
+        "image": "./people/person-2.png"
+      },
+      {
+        "id": "107",
+        "name": "Grace Hopper",
+        "email": "grace@company.com",
+        "lastContacted": "06/19/2024",
+        "image": "./people/person-3.png"
+      },
+      {
+        "id": "108",
+        "name": "Hank Pym",
+        "email": "hank@company.com",
+        "lastContacted": "06/18/2024",
+        "image": "./people/person-1.png"
+      },
+      {
+        "id": "109",
+        "name": "Irene Adler",
+        "email": "irene@company.com",
+        "lastContacted": "06/17/2024",
+        "image": "./people/person-4.png"
+      },
+      {
+        "id": "110",
+        "name": "Jack Sparrow",
+        "email": "jack@company.com",
+        "lastContacted": "06/16/2024",
+        "image": "./people/person-2.png"
+      },
+      {
+        "id": "111",
+        "name": "Lara Croft",
+        "email": "lara@company.com",
+        "lastContacted": "06/15/2024",
+        "image": "./people/person-1.png"
+      },
+      {
+        "id": "112",
+        "name": "John Doe",
+        "email": "john@company.com",
+        "lastContacted": "06/14/2024",
+        "image": "./people/person-2.png"
+      },
+      {
+        "id": "113",
+        "name": "Jane Smith",
+        "email": "jane@company.com",
+        "lastContacted": "06/13/2024",
+        "image": "./people/person-4.png"
+      }
+    ]
+  },
+  "appCrmRecordDetail": {
+    "source": "app/CRM/recordDetailData.js",
+    "defaultTimeline": [
+      {
+        "id": "t1",
+        "type": "note",
+        "title": "Record created",
+        "body": "Profile synced from CRM.",
+        "at": "Jan 8, 2026 · 9:00 AM",
+        "user": "System"
+      }
+    ],
+    "timelinesByKey": {
+      "lead:101": [
+        {
+          "id": "l1",
+          "type": "note",
+          "title": "Discovery call completed",
+          "body": "Discussed API limits and SSO. Positive signal on security review.",
+          "at": "Apr 12, 2026 · 10:20 AM",
+          "user": "Alex Chen"
+        },
+        {
+          "id": "l2",
+          "type": "email",
+          "title": "Email: Re: Pilot scope",
+          "body": "Sent revised timeline for 4-week pilot.",
+          "at": "Apr 10, 2026 · 4:05 PM",
+          "user": "You"
+        },
+        {
+          "id": "l3",
+          "type": "deal",
+          "title": "Deal updated → Qualified",
+          "body": "Stage moved from New after MQL score > 80.",
+          "at": "Apr 8, 2026 · 9:00 AM",
+          "user": "System"
+        },
+        {
+          "id": "l4",
+          "type": "call",
+          "title": "Outbound call logged",
+          "body": "Left voicemail — requested callback Thursday.",
+          "at": "Apr 7, 2026 · 11:15 AM",
+          "user": "Sam Rivera"
+        }
+      ],
+      "lead:102": [
+        {
+          "id": "b1",
+          "type": "email",
+          "title": "Intro email opened",
+          "body": "Sequence step 1 — 3 opens tracked.",
+          "at": "Apr 14, 2026 · 8:02 AM",
+          "user": "System"
+        },
+        {
+          "id": "b2",
+          "type": "note",
+          "title": "LinkedIn touch",
+          "body": "Connection accepted; DM sent with one-pager.",
+          "at": "Apr 13, 2026 · 2:40 PM",
+          "user": "Alex Chen"
+        }
+      ],
+      "contact:201": [
+        {
+          "id": "c1",
+          "type": "email",
+          "title": "Meeting request",
+          "body": "Proposed Tue 3pm for Q2 planning sync.",
+          "at": "Apr 11, 2026 · 3:20 PM",
+          "user": "You"
+        },
+        {
+          "id": "c2",
+          "type": "deal",
+          "title": "Deal linked",
+          "body": "Associated with Enterprise FY26 opportunity.",
+          "at": "Apr 9, 2026 · 10:00 AM",
+          "user": "System"
+        }
+      ],
+      "contact:202": [
+        {
+          "id": "j1",
+          "type": "note",
+          "title": "Design review",
+          "body": "Shared mockups for onboarding flow.",
+          "at": "Apr 10, 2026 · 1:00 PM",
+          "user": "Jordan Lee"
+        }
+      ]
+    },
+    "notesSeedByKey": {
+      "lead:101": [
+        {
+          "id": "n1",
+          "body": "Champion is VP Eng; cares about SSO audit trail.",
+          "at": "Apr 11, 2026",
+          "author": "Alex Chen"
+        },
+        {
+          "id": "n2",
+          "body": "Competitor evaluation ends Apr 30.",
+          "at": "Apr 5, 2026",
+          "author": "You"
+        }
+      ],
+      "lead:102": [
+        {
+          "id": "n3",
+          "body": "Warm intro via portfolio company.",
+          "at": "Apr 12, 2026",
+          "author": "Sam Rivera"
+        }
+      ],
+      "contact:201": [
+        {
+          "id": "n4",
+          "body": "Prefers email over Slack for contract threads.",
+          "at": "Mar 28, 2026",
+          "author": "You"
+        }
+      ]
+    },
+    "dealsByRecordKey": {
+      "lead:101": [
+        {
+          "id": "dh1",
+          "name": "Enterprise FY26",
+          "amount": 48000,
+          "stage": "qualified",
+          "closeDate": "Jun 30, 2026",
+          "rep": "Alex Chen"
+        },
+        {
+          "id": "dh2",
+          "name": "Pilot 2025",
+          "amount": 8000,
+          "stage": "won",
+          "closeDate": "Dec 15, 2025",
+          "rep": "Alex Chen"
+        }
+      ],
+      "lead:102": [
+        {
+          "id": "dh3",
+          "name": "Seed expansion",
+          "amount": 12000,
+          "stage": "prospect",
+          "closeDate": "May 1, 2026",
+          "rep": "Sam Rivera"
+        }
+      ],
+      "contact:201": [
+        {
+          "id": "dh4",
+          "name": "Startup Inc. renewal",
+          "amount": 24000,
+          "stage": "proposal",
+          "closeDate": "Jul 15, 2026",
+          "rep": "Jordan Lee"
+        }
+      ],
+      "contact:202": [
+        {
+          "id": "dh5",
+          "name": "Agency retainer Q3",
+          "amount": 18000,
+          "stage": "prospect",
+          "closeDate": "Aug 1, 2026",
+          "rep": "Alex Chen"
+        }
+      ]
+    },
+    "filesByRecordKey": {
+      "lead:101": [
+        {
+          "id": "f1",
+          "name": "NDA_CloudCorp.pdf",
+          "size": "240 KB",
+          "type": "pdf"
+        },
+        {
+          "id": "f2",
+          "name": "Requirements_v2.docx",
+          "size": "1.1 MB",
+          "type": "doc"
+        },
+        {
+          "id": "f3",
+          "name": "Security_questionnaire.xlsx",
+          "size": "88 KB",
+          "type": "sheet"
+        }
+      ],
+      "lead:102": [
+        {
+          "id": "f4",
+          "name": "Intro_deck.pdf",
+          "size": "2.4 MB",
+          "type": "pdf"
+        }
+      ],
+      "contact:201": [
+        {
+          "id": "f5",
+          "name": "MSA_draft.pdf",
+          "size": "420 KB",
+          "type": "pdf"
+        },
+        {
+          "id": "f6",
+          "name": "Logo_assets.zip",
+          "size": "3.2 MB",
+          "type": "zip"
+        }
+      ]
+    },
+    "leadDb": {
+      "101": {
+        "id": "101",
+        "name": "Alice Brown",
+        "email": "alice@company.com",
+        "phone": "+1 (555) 010-3200",
+        "company": "Cloud Corp",
+        "title": "VP Engineering",
+        "location": "Austin, TX",
+        "image": "./people/person-1.png",
+        "source": "Website",
+        "status": "Qualified",
+        "value": 48000,
+        "owner": "Alex Chen"
+      },
+      "102": {
+        "id": "102",
+        "name": "Bob Wilson",
+        "email": "bob@startup.io",
+        "phone": "+1 (555) 010-4401",
+        "company": "Startup.io",
+        "title": "Founder",
+        "location": "San Francisco, CA",
+        "image": "./people/person-4.png",
+        "source": "Referral",
+        "status": "New",
+        "value": 12000,
+        "owner": "Sam Rivera"
+      }
+    },
+    "contactDb": {
+      "201": {
+        "id": "201",
+        "name": "John Doe",
+        "email": "john@startup.com",
+        "phone": "123-456-7890",
+        "company": "Startup Inc.",
+        "title": "Head of Operations",
+        "location": "New York, NY",
+        "image": "./people/person-1.png",
+        "owner": "Jordan Lee",
+        "lifecycle": "Customer",
+        "createdAt": "Jun 25, 2024"
+      },
+      "202": {
+        "id": "202",
+        "name": "Jane Smith",
+        "email": "jane@agency.co",
+        "phone": "234-567-8901",
+        "company": "Agency Co.",
+        "title": "Creative Director",
+        "location": "Los Angeles, CA",
+        "image": "./people/person-2.png",
+        "owner": "Alex Chen",
+        "lifecycle": "Prospect",
+        "createdAt": "Jun 24, 2024"
+      },
+      "203": {
+        "id": "203",
+        "name": "Alice Johnson",
+        "email": "alice@company.com",
+        "phone": "345-678-9012",
+        "company": "Company LLC",
+        "title": "Procurement Lead",
+        "location": "Chicago, IL",
+        "image": "./people/person-3.png",
+        "owner": "Sam Rivera",
+        "lifecycle": "Qualified",
+        "createdAt": "Jun 23, 2024"
+      },
+      "204": {
+        "id": "204",
+        "name": "Bob Brown",
+        "email": "bob@startup.io",
+        "phone": "456-789-0123",
+        "company": "Startup LLC",
+        "title": "CEO",
+        "location": "San Francisco, CA",
+        "image": "./people/person-4.png",
+        "owner": "Alex Chen",
+        "lifecycle": "Nurture",
+        "createdAt": "Jun 22, 2024"
+      }
+    }
+  },
+  "appCompanies": {
+    "source": "app/Companies/index.jsx",
+    "companies": [
+      {
+        "name": "HubSpot",
+        "owner": "Alice Johnson",
+        "logo": "./companies/hubspot.png",
+        "industry": "Technology",
+        "rating": 4.5,
+        "location": "New York"
+      },
+      {
+        "name": "Slack",
+        "owner": "Bob Brown",
+        "logo": "./companies/slack.png",
+        "industry": "Communication",
+        "rating": 4,
+        "location": "San Francisco"
+      },
+      {
+        "name": "Stripe",
+        "owner": "Charlie Smith",
+        "logo": "./companies/stripe.png",
+        "industry": "Finance",
+        "rating": 4.8,
+        "location": "Los Angeles"
+      },
+      {
+        "name": "TikTok",
+        "owner": "David Wilson",
+        "logo": "./companies/tiktok.png",
+        "industry": "Entertainment",
+        "rating": 4.7,
+        "location": "Los Angeles"
+      },
+      {
+        "name": "Zendesk",
+        "owner": "Eve Davis",
+        "logo": "./companies/zendesk.png",
+        "industry": "Customer Service",
+        "rating": 4.6,
+        "location": "Chicago"
+      },
+      {
+        "name": "Zapier",
+        "owner": "Frank Miller",
+        "logo": "./companies/slack.png",
+        "industry": "Automation",
+        "rating": 4.9,
+        "location": "Austin"
+      },
+      {
+        "name": "Airbnb",
+        "owner": "Grace Lee",
+        "logo": "./companies/slack.png",
+        "industry": "Hospitality",
+        "rating": 4.5,
+        "location": "San Francisco"
+      },
+      {
+        "name": "Spotify",
+        "owner": "Henry Adams",
+        "logo": "./companies/hubspot.png",
+        "industry": "Music",
+        "rating": 4.8,
+        "location": "Stockholm"
+      },
+      {
+        "name": "LinkedIn",
+        "owner": "Ivy Green",
+        "logo": "./companies/zendesk.png",
+        "industry": "Social Media",
+        "rating": 4.3,
+        "location": "Sunnyvale"
+      },
+      {
+        "name": "Adobe",
+        "owner": "Jack White",
+        "logo": "./companies/stripe.png",
+        "industry": "Software",
+        "rating": 4.6,
+        "location": "San Jose"
+      },
+      {
+        "name": "Netflix",
+        "owner": "Kathy Brown",
+        "logo": "./companies/tiktok.png",
+        "industry": "Entertainment",
+        "rating": 4.7,
+        "location": "Los Gatos"
+      }
+    ]
+  },
+  "appContacts": {
+    "source": "app/Contacts/index.jsx",
+    "contacts": [
+      {
+        "id": "201",
+        "name": "John Doe",
+        "email": "john@startup.com",
+        "phone": "123-456-7890",
+        "company": "Startup Inc.",
+        "createdAt": "2024-06-25",
+        "image": "./people/person-1.png",
+        "emails": [
+          {
+            "subject": "Follow-Up",
+            "body": "Hi John, let's schedule a call!",
+            "date": "2024-06-25"
+          }
+        ]
+      },
+      {
+        "id": "202",
+        "name": "Jane Smith",
+        "email": "jane@agency.co",
+        "phone": "234-567-8901",
+        "company": "Agency Co.",
+        "createdAt": "2024-06-24",
+        "image": "./people/person-2.png",
+        "emails": [
+          {
+            "subject": "Introduction",
+            "body": "Hi Jane, I hope you are doing well!",
+            "date": "2024-06-24"
+          }
+        ]
+      },
+      {
+        "id": "203",
+        "name": "Alice Johnson",
+        "email": "alice@company.com",
+        "phone": "345-678-9012",
+        "company": "Company LLC",
+        "createdAt": "2024-06-23",
+        "image": "./people/person-3.png",
+        "emails": [
+          {
+            "subject": "Meeting Request",
+            "body": "Hi Alice, can we meet next week?",
+            "date": "2024-06-23"
+          }
+        ]
+      },
+      {
+        "id": "204",
+        "name": "Bob Brown",
+        "email": "bob@startup.io",
+        "phone": "456-789-0123",
+        "company": "Startup LLC",
+        "createdAt": "2024-06-22",
+        "image": "./people/person-4.png",
+        "emails": [
+          {
+            "subject": "Welcome",
+            "body": "Hi Bob, welcome to our platform!",
+            "date": "2024-06-22"
+          }
+        ]
+      },
+      {
+        "id": "205",
+        "name": "Tech Corp",
+        "email": "contact@techcorp.com",
+        "phone": "567-890-1234",
+        "company": "Tech Corporation",
+        "createdAt": "2024-06-21",
+        "image": "./people/person-1.png",
+        "emails": [
+          {
+            "subject": "Partnership Inquiry",
+            "body": "Hello, we are interested in a partnership.",
+            "date": "2024-06-21"
+          }
+        ]
+      },
+      {
+        "id": "206",
+        "name": "Global Solutions",
+        "email": "info@globalsolutions.com",
+        "phone": "678-901-2345",
+        "company": "Global Solutions Inc.",
+        "createdAt": "2024-06-20",
+        "image": "./people/person-2.png",
+        "emails": [
+          {
+            "subject": "Service Inquiry",
+            "body": "Hi, we would like to know more about your services.",
+            "date": "2024-06-20"
+          }
+        ]
+      },
+      {
+        "id": "207",
+        "name": "Innovatech",
+        "email": "contact@innovatech.com",
+        "phone": "789-012-3456",
+        "company": "Innovatech LLC",
+        "createdAt": "2024-06-19",
+        "image": "./people/person-3.png",
+        "emails": [
+          {
+            "subject": "Collaboration Proposal",
+            "body": "Dear Innovatech, we propose a collaboration.",
+            "date": "2024-06-19"
+          }
+        ]
+      },
+      {
+        "id": "208",
+        "name": "GreenTech",
+        "email": "info@greentech.com",
+        "phone": "890-123-4567",
+        "company": "GreenTech Innovations",
+        "createdAt": "2024-06-18",
+        "image": "./people/person-4.png",
+        "emails": [
+          {
+            "subject": "Sustainability Initiative",
+            "body": "Hello GreenTech, let's discuss sustainability initiatives.",
+            "date": "2024-06-18"
+          }
+        ]
+      },
+      {
+        "id": "209",
+        "name": "Future Solutions",
+        "email": "contact@futuresolutions.com",
+        "phone": "901-234-5678",
+        "company": "Future Solutions Inc.",
+        "createdAt": "2024-06-17",
+        "image": "./people/person-1.png",
+        "emails": [
+          {
+            "subject": "Project Collaboration",
+            "body": "Dear Future Solutions, we are interested in collaborating on a project.",
+            "date": "2024-06-17"
+          }
+        ]
+      },
+      {
+        "id": "210",
+        "name": "Tech Innovators",
+        "email": "hello@techinnovators.com",
+        "phone": "012-345-6789",
+        "company": "Tech Innovators LLC",
+        "createdAt": "2024-06-16",
+        "image": "./people/person-2.png",
+        "emails": [
+          {
+            "subject": "Innovation Summit",
+            "body": "Hi Tech Innovators, we would like to invite you to our innovation summit.",
+            "date": "2024-06-16"
+          }
+        ]
+      },
+      {
+        "id": "211",
+        "name": "NextGen Solutions",
+        "email": "info@nextgensolutions.com",
+        "phone": "123-456-7891",
+        "company": "NextGen Solutions LLC",
+        "createdAt": "2024-06-15",
+        "image": "./people/person-3.png",
+        "emails": [
+          {
+            "subject": "New Opportunities",
+            "body": "Hello, we are exploring new opportunities together.",
+            "date": "2024-06-15"
+          }
+        ]
+      },
+      {
+        "id": "212",
+        "name": "Synergy Corp",
+        "email": "contact@synergycorp.com",
+        "phone": "234-567-8902",
+        "company": "Synergy Corporation",
+        "createdAt": "2024-06-14",
+        "image": "./people/person-4.png",
+        "emails": [
+          {
+            "subject": "Partnership Discussion",
+            "body": "Hi, let's discuss a potential partnership.",
+            "date": "2024-06-14"
+          }
+        ]
+      },
+      {
+        "id": "213",
+        "name": "Visionary Tech",
+        "email": "info@visionarytech.com",
+        "phone": "345-678-9013",
+        "company": "Visionary Technologies",
+        "createdAt": "2024-06-13",
+        "image": "./people/person-1.png",
+        "emails": [
+          {
+            "subject": "Tech Innovations",
+            "body": "Dear Visionary Tech, we are interested in your innovations.",
+            "date": "2024-06-13"
+          }
+        ]
+      },
+      {
+        "id": "214",
+        "name": "Eco Solutions",
+        "email": "contact@ecosolutions.com",
+        "phone": "456-789-0124",
+        "company": "Eco Solutions LLC",
+        "createdAt": "2024-06-12",
+        "image": "./people/person-2.png",
+        "emails": [
+          {
+            "subject": "Sustainability Projects",
+            "body": "Hello, we would like to collaborate on sustainability projects.",
+            "date": "2024-06-12"
+          }
+        ]
+      },
+      {
+        "id": "215",
+        "name": "Innovative Minds",
+        "email": "info@innovativeminds.com",
+        "phone": "567-890-1235",
+        "company": "Innovative Minds LLC",
+        "createdAt": "2024-06-11",
+        "image": "./people/person-3.png",
+        "emails": [
+          {
+            "subject": "Creative Collaboration",
+            "body": "Hi, we are looking for creative collaboration opportunities.",
+            "date": "2024-06-11"
+          }
+        ]
+      },
+      {
+        "id": "216",
+        "name": "Tech Pioneers",
+        "email": "contact@techpioneers.com",
+        "phone": "678-901-2346",
+        "company": "Tech Pioneers LLC",
+        "createdAt": "2024-06-10",
+        "image": "./people/person-4.png",
+        "emails": [
+          {
+            "subject": "Future Technologies",
+            "body": "Dear Tech Pioneers, let's discuss future technologies.",
+            "date": "2024-06-10"
+          }
+        ]
+      },
+      {
+        "id": "217",
+        "name": "Global Innovators",
+        "email": "info@globalinnovators.com",
+        "phone": "789-012-3457",
+        "company": "Global Innovators LLC",
+        "createdAt": "2024-06-09",
+        "image": "./people/person-1.png",
+        "emails": [
+          {
+            "subject": "Innovation Strategies",
+            "body": "Hello, we would like to discuss innovation strategies.",
+            "date": "2024-06-09"
+          }
+        ]
+      },
+      {
+        "id": "218",
+        "name": "Future Vision",
+        "email": "contact@futurevision.com",
+        "phone": "890-123-4568",
+        "company": "Future Vision LLC",
+        "createdAt": "2024-06-08",
+        "image": "./people/person-2.png",
+        "emails": [
+          {
+            "subject": "Visionary Projects",
+            "body": "Dear Future Vision, we are interested in your projects.",
+            "date": "2024-06-08"
+          }
+        ]
+      },
+      {
+        "id": "219",
+        "name": "Next Level Tech",
+        "email": "info@nextleveltech.com",
+        "phone": "901-234-5679",
+        "company": "Next Level Technologies",
+        "createdAt": "2024-06-07",
+        "image": "./people/person-3.png",
+        "emails": [
+          {
+            "subject": "Tech Advancements",
+            "body": "Hi, we would like to discuss tech advancements.",
+            "date": "2024-06-07"
+          }
+        ]
+      },
+      {
+        "id": "220",
+        "name": "Innovative Solutions",
+        "email": "contact@innovativesolutions.com",
+        "phone": "012-345-6780",
+        "company": "Innovative Solutions LLC",
+        "createdAt": "2024-06-06",
+        "image": "./people/person-4.png",
+        "emails": [
+          {
+            "subject": "Collaboration Opportunities",
+            "body": "Hello, we are looking for collaboration opportunities.",
+            "date": "2024-06-06"
+          }
+        ]
+      }
+    ]
+  },
+  "appInvoices": {
+    "source": "app/Invoices/index.jsx",
+    "initialInvoices": [
+      {
+        "id": "INV-001",
+        "invoiceNumber": "INV-2024-001",
+        "client": "Cloud Corp",
+        "clientEmail": "contact@cloudcorp.com",
+        "amount": 5000,
+        "status": "Paid",
+        "issueDate": "06/01/2024",
+        "dueDate": "06/15/2024",
+        "description": "Monthly subscription service",
+        "items": [
+          {
+            "name": "Premium Plan",
+            "quantity": 1,
+            "price": 5000
+          }
+        ]
+      },
+      {
+        "id": "INV-002",
+        "invoiceNumber": "INV-2024-002",
+        "client": "Tech Innovations",
+        "clientEmail": "billing@techinnovations.com",
+        "amount": 12000,
+        "status": "Pending",
+        "issueDate": "06/05/2024",
+        "dueDate": "06/20/2024",
+        "description": "Q2 software license",
+        "items": [
+          {
+            "name": "Enterprise License",
+            "quantity": 3,
+            "price": 12000
+          }
+        ]
+      },
+      {
+        "id": "INV-003",
+        "invoiceNumber": "INV-2024-003",
+        "client": "AI Labs",
+        "clientEmail": "finance@ailabs.io",
+        "amount": 8500,
+        "status": "Overdue",
+        "issueDate": "05/20/2024",
+        "dueDate": "06/05/2024",
+        "description": "Custom development services",
+        "items": [
+          {
+            "name": "Development Hours",
+            "quantity": 40,
+            "price": 8500
+          }
+        ]
+      },
+      {
+        "id": "INV-004",
+        "invoiceNumber": "INV-2024-004",
+        "client": "Marketing Solutions",
+        "clientEmail": "payments@marketingsolutions.com",
+        "amount": 3200,
+        "status": "Paid",
+        "issueDate": "06/10/2024",
+        "dueDate": "06/25/2024",
+        "description": "Marketing campaign setup",
+        "items": [
+          {
+            "name": "Campaign Setup",
+            "quantity": 1,
+            "price": 3200
+          }
+        ]
+      },
+      {
+        "id": "INV-005",
+        "invoiceNumber": "INV-2024-005",
+        "client": "Finance Corp",
+        "clientEmail": "accounts@financecorp.com",
+        "amount": 15000,
+        "status": "Pending",
+        "issueDate": "06/15/2024",
+        "dueDate": "06/30/2024",
+        "description": "Annual enterprise package",
+        "items": [
+          {
+            "name": "Enterprise Package",
+            "quantity": 1,
+            "price": 15000
+          }
+        ]
+      },
+      {
+        "id": "INV-006",
+        "invoiceNumber": "INV-2024-006",
+        "client": "Amazon",
+        "clientEmail": "procurement@amazon.com",
+        "amount": 25000,
+        "status": "Paid",
+        "issueDate": "05/25/2024",
+        "dueDate": "06/10/2024",
+        "description": "Cloud infrastructure services",
+        "items": [
+          {
+            "name": "Infrastructure Services",
+            "quantity": 1,
+            "price": 25000
+          }
+        ]
+      },
+      {
+        "id": "INV-007",
+        "invoiceNumber": "INV-2024-007",
+        "client": "Startup Inc.",
+        "clientEmail": "billing@startupinc.com",
+        "amount": 1800,
+        "status": "Pending",
+        "issueDate": "06/18/2024",
+        "dueDate": "07/03/2024",
+        "description": "Basic plan subscription",
+        "items": [
+          {
+            "name": "Basic Plan",
+            "quantity": 1,
+            "price": 1800
+          }
+        ]
+      },
+      {
+        "id": "INV-008",
+        "invoiceNumber": "INV-2024-008",
+        "client": "Global Solutions",
+        "clientEmail": "finance@globalsolutions.com",
+        "amount": 9500,
+        "status": "Overdue",
+        "issueDate": "05/15/2024",
+        "dueDate": "05/30/2024",
+        "description": "Consulting services",
+        "items": [
+          {
+            "name": "Consulting Hours",
+            "quantity": 30,
+            "price": 9500
+          }
+        ]
+      },
+      {
+        "id": "INV-009",
+        "invoiceNumber": "INV-2024-009",
+        "client": "Innovatech LLC",
+        "clientEmail": "accounts@innovatech.com",
+        "amount": 4200,
+        "status": "Paid",
+        "issueDate": "06/12/2024",
+        "dueDate": "06/27/2024",
+        "description": "API integration services",
+        "items": [
+          {
+            "name": "API Integration",
+            "quantity": 1,
+            "price": 4200
+          }
+        ]
+      },
+      {
+        "id": "INV-010",
+        "invoiceNumber": "INV-2024-010",
+        "client": "GreenTech Innovations",
+        "clientEmail": "billing@greentech.com",
+        "amount": 6800,
+        "status": "Pending",
+        "issueDate": "06/20/2024",
+        "dueDate": "07/05/2024",
+        "description": "Sustainability platform license",
+        "items": [
+          {
+            "name": "Platform License",
+            "quantity": 2,
+            "price": 6800
+          }
+        ]
+      },
+      {
+        "id": "INV-011",
+        "invoiceNumber": "INV-2024-011",
+        "client": "Future Solutions",
+        "clientEmail": "payments@futuresolutions.com",
+        "amount": 11000,
+        "status": "Paid",
+        "issueDate": "06/08/2024",
+        "dueDate": "06/23/2024",
+        "description": "Custom software development",
+        "items": [
+          {
+            "name": "Development Services",
+            "quantity": 1,
+            "price": 11000
+          }
+        ]
+      },
+      {
+        "id": "INV-012",
+        "invoiceNumber": "INV-2024-012",
+        "client": "Tech Innovators",
+        "clientEmail": "finance@techinnovators.com",
+        "amount": 7500,
+        "status": "Pending",
+        "issueDate": "06/22/2024",
+        "dueDate": "07/07/2024",
+        "description": "Training and onboarding",
+        "items": [
+          {
+            "name": "Training Sessions",
+            "quantity": 5,
+            "price": 7500
+          }
+        ]
+      }
+    ]
+  },
+  "appDeals": {
+    "source": "app/Deals/index.jsx",
+    "deals": [
+      {
+        "id": "d1",
+        "name": "Northwind expansion",
+        "company": "Northwind Ltd",
+        "value": 42000,
+        "stage": "qualified",
+        "closeDate": "Apr 28, 2026",
+        "rep": "Alex Chen"
+      },
+      {
+        "id": "d2",
+        "name": "API enterprise tier",
+        "company": "Cloud Corp",
+        "value": 89000,
+        "stage": "prospect",
+        "closeDate": "May 15, 2026",
+        "rep": "Sam Rivera"
+      },
+      {
+        "id": "d3",
+        "name": "Retail rollout",
+        "company": "ShopCo",
+        "value": 120000,
+        "stage": "qualified",
+        "closeDate": "Jun 1, 2026",
+        "rep": "Jordan Lee"
+      },
+      {
+        "id": "d4",
+        "name": "Manufacturing pilot",
+        "company": "Fabrikam",
+        "value": 54000,
+        "stage": "prospect",
+        "closeDate": "Jul 10, 2026",
+        "rep": "Mia Patel"
+      },
+      {
+        "id": "d5",
+        "name": "FinTech integration",
+        "company": "Stripe-ish",
+        "value": 210000,
+        "stage": "proposal",
+        "closeDate": "May 30, 2026",
+        "rep": "Alex Chen"
+      },
+      {
+        "id": "d6",
+        "name": "Healthcare RFP",
+        "company": "Medline",
+        "value": 175000,
+        "stage": "proposal",
+        "closeDate": "Jun 20, 2026",
+        "rep": "Sam Rivera"
+      },
+      {
+        "id": "d7",
+        "name": "Logistics Q4",
+        "company": "FastShip",
+        "value": 67000,
+        "stage": "won",
+        "closeDate": "Apr 9, 2026",
+        "rep": "Jordan Lee"
+      },
+      {
+        "id": "d8",
+        "name": "Startup pilot",
+        "company": "TinyApps",
+        "value": 8000,
+        "stage": "lost",
+        "closeDate": "Apr 8, 2026",
+        "rep": "Mia Patel"
+      },
+      {
+        "id": "d9",
+        "name": "Enterprise FY26",
+        "company": "Cloud Corp",
+        "value": 48000,
+        "stage": "qualified",
+        "closeDate": "Jun 30, 2026",
+        "rep": "Alex Chen"
+      },
+      {
+        "id": "d10",
+        "name": "Agency retainer Q3",
+        "company": "Agency Co.",
+        "value": 18000,
+        "stage": "prospect",
+        "closeDate": "Aug 1, 2026",
+        "rep": "Alex Chen"
+      }
+    ]
+  },
+  "appPipelines": {
+    "source": "app/Pipelines/index.jsx",
+    "pipelineStages": [
+      {
+        "id": "prospect",
+        "label": "Prospect"
+      },
+      {
+        "id": "qualified",
+        "label": "Qualified"
+      },
+      {
+        "id": "proposal",
+        "label": "Proposal"
+      },
+      {
+        "id": "won",
+        "label": "Won"
+      },
+      {
+        "id": "lost",
+        "label": "Lost"
+      }
+    ],
+    "initialDealsKanban": [
+      {
+        "id": "d1",
+        "title": "Northwind expansion",
+        "company": "Northwind Ltd",
+        "value": 42000,
+        "owner": "AC",
+        "stage": "qualified",
+        "priority": "high",
+        "lastActivity": "Apr 14 · Call logged",
+        "daysInStage": 5,
+        "tag": "Enterprise"
+      },
+      {
+        "id": "d2",
+        "title": "API enterprise tier",
+        "company": "Cloud Corp",
+        "value": 89000,
+        "owner": "SR",
+        "stage": "prospect",
+        "priority": "high",
+        "lastActivity": "Apr 15 · Email opened",
+        "daysInStage": 2,
+        "tag": "Hot"
+      },
+      {
+        "id": "d3",
+        "title": "Retail rollout",
+        "company": "ShopCo",
+        "value": 120000,
+        "owner": "JL",
+        "stage": "qualified",
+        "priority": "medium",
+        "lastActivity": "Apr 12 · Deck sent",
+        "daysInStage": 8,
+        "tag": "Q2"
+      },
+      {
+        "id": "d4",
+        "title": "Manufacturing pilot",
+        "company": "Fabrikam",
+        "value": 54000,
+        "owner": "MP",
+        "stage": "prospect",
+        "priority": "low",
+        "lastActivity": "Apr 10 · Intro",
+        "daysInStage": 12,
+        "tag": null
+      },
+      {
+        "id": "d5",
+        "title": "FinTech integration",
+        "company": "Stripe-ish",
+        "value": 210000,
+        "owner": "AC",
+        "stage": "proposal",
+        "priority": "high",
+        "lastActivity": "Apr 15 · Legal review",
+        "daysInStage": 3,
+        "tag": "Legal"
+      },
+      {
+        "id": "d6",
+        "title": "Healthcare RFP",
+        "company": "Medline",
+        "value": 175000,
+        "owner": "SR",
+        "stage": "proposal",
+        "priority": "medium",
+        "lastActivity": "Apr 11 · RFP submitted",
+        "daysInStage": 14,
+        "tag": "RFP"
+      },
+      {
+        "id": "d7",
+        "title": "Logistics Q4",
+        "company": "FastShip",
+        "value": 67000,
+        "owner": "JL",
+        "stage": "won",
+        "priority": "medium",
+        "lastActivity": "Apr 9 · Closed won",
+        "daysInStage": 0,
+        "tag": "Closed"
+      },
+      {
+        "id": "d8",
+        "title": "Startup pilot",
+        "company": "TinyApps",
+        "value": 8000,
+        "owner": "MP",
+        "stage": "lost",
+        "priority": "low",
+        "lastActivity": "Apr 8 · No budget",
+        "daysInStage": 0,
+        "tag": "Nurture"
+      }
+    ]
+  },
+  "appAnalytics": {
+    "source": "app/Analytics/reportData.js",
+    "rangeLabels": {
+      "7d": "Last 7 days",
+      "30d": "Last 30 days",
+      "90d": "Last 90 days",
+      "qtd": "Quarter to date",
+      "ytd": "Year to date",
+      "custom": "Custom range"
+    },
+    "forecastBase": [
+      {
+        "period": "Jan",
+        "actual": 92,
+        "forecast": 88,
+        "target": 95
+      },
+      {
+        "period": "Feb",
+        "actual": 98,
+        "forecast": 96,
+        "target": 98
+      },
+      {
+        "period": "Mar",
+        "actual": 105,
+        "forecast": 102,
+        "target": 102
+      },
+      {
+        "period": "Apr",
+        "actual": 112,
+        "forecast": 110,
+        "target": 108
+      },
+      {
+        "period": "May",
+        "actual": 118,
+        "forecast": 115,
+        "target": 115
+      },
+      {
+        "period": "Jun",
+        "actual": 124,
+        "forecast": 122,
+        "target": 120
+      }
+    ],
+    "leadSourcesBase": [
+      {
+        "name": "Website / organic",
+        "value": 342
+      },
+      {
+        "name": "Paid search",
+        "value": 186
+      },
+      {
+        "name": "Referral & partner",
+        "value": 218
+      },
+      {
+        "name": "LinkedIn outbound",
+        "value": 156
+      },
+      {
+        "name": "Events & webinars",
+        "value": 124
+      },
+      {
+        "name": "Other",
+        "value": 74
+      }
+    ],
+    "repPerformanceBase": [
+      {
+        "name": "Alex Chen",
+        "deals": 14,
+        "pipeline": 420000,
+        "revenue": 380000,
+        "winRate": 34,
+        "avgDeal": 27100,
+        "activities": 128
+      },
+      {
+        "name": "Sam Rivera",
+        "deals": 11,
+        "pipeline": 310000,
+        "revenue": 298000,
+        "winRate": 29,
+        "avgDeal": 27100,
+        "activities": 102
+      },
+      {
+        "name": "Jordan Lee",
+        "deals": 9,
+        "pipeline": 265000,
+        "revenue": 241000,
+        "winRate": 27,
+        "avgDeal": 26800,
+        "activities": 96
+      },
+      {
+        "name": "Morgan Patel",
+        "deals": 12,
+        "pipeline": 355000,
+        "revenue": 312000,
+        "winRate": 31,
+        "avgDeal": 26000,
+        "activities": 115
+      },
+      {
+        "name": "Casey Kim",
+        "deals": 8,
+        "pipeline": 198000,
+        "revenue": 176000,
+        "winRate": 25,
+        "avgDeal": 22000,
+        "activities": 88
+      },
+      {
+        "name": "Riley Brooks",
+        "deals": 7,
+        "pipeline": 172000,
+        "revenue": 154000,
+        "winRate": 24,
+        "avgDeal": 22000,
+        "activities": 79
+      }
+    ],
+    "funnelBase": [
+      {
+        "label": "Inbound leads",
+        "count": 1240
+      },
+      {
+        "label": "Qualified (MQL/SQL)",
+        "count": 720
+      },
+      {
+        "label": "Opportunity created",
+        "count": 410
+      },
+      {
+        "label": "Proposal / pricing",
+        "count": 186
+      },
+      {
+        "label": "Closed won",
+        "count": 62
+      }
+    ]
+  },
+  "appNotifications": {
+    "source": "app/Notifications/index.jsx",
+    "initialNotifications": [
+      {
+        "id": "n1",
+        "type": "ticket",
+        "title": "New Ticket Assigned",
+        "body": "You have been assigned to ticket #1234 — Website Redesign",
+        "category": "Ticket",
+        "time": "5 minutes ago",
+        "unread": true
+      },
+      {
+        "id": "n2",
+        "type": "team",
+        "title": "Joaquina Weisenborn",
+        "body": "Requesting access permission",
+        "category": "Team",
+        "time": "12 pm",
+        "unread": false,
+        "avatar": "/people/person-2.png",
+        "actions": true
+      },
+      {
+        "id": "n3",
+        "type": "message",
+        "title": "New Message",
+        "body": "Sarah Johnson sent you a message about the Q2 roadmap…",
+        "category": "Message",
+        "time": "1 hour ago",
+        "unread": false
+      },
+      {
+        "id": "n4",
+        "type": "ticket",
+        "title": "Ticket updated",
+        "body": "Status changed to In Progress for ticket #1198",
+        "category": "Ticket",
+        "time": "3 hours ago",
+        "unread": true
+      },
+      {
+        "id": "n5",
+        "type": "message",
+        "title": "Mention in thread",
+        "body": "You were mentioned in #product — Design review notes",
+        "category": "Message",
+        "time": "Yesterday",
+        "unread": false
+      },
+      {
+        "id": "n6",
+        "type": "team",
+        "title": "Team invite",
+        "body": "You were added to the Sales workspace",
+        "category": "Team",
+        "time": "1 day ago",
+        "unread": true
+      }
+    ]
+  },
+  "appTeams": {
+    "source": "app/Teams/index.jsx",
+    "roleOptions": [
+      {
+        "value": "all",
+        "label": "All roles"
+      },
+      {
+        "value": "Admin",
+        "label": "Admin"
+      },
+      {
+        "value": "Member",
+        "label": "Member"
+      },
+      {
+        "value": "Viewer",
+        "label": "Viewer"
+      }
+    ],
+    "initialMembers": [
+      {
+        "id": "1",
+        "name": "John Doe",
+        "email": "john@doe.com",
+        "role": "Admin",
+        "status": "Active",
+        "joinedAt": "2024-01-10",
+        "image": "/people/person-1.png"
+      },
+      {
+        "id": "2",
+        "name": "Sarah Chen",
+        "email": "sarah.chen@company.com",
+        "role": "Member",
+        "status": "Active",
+        "joinedAt": "2024-03-22",
+        "image": "/people/person-2.png"
+      },
+      {
+        "id": "3",
+        "name": "Marcus Webb",
+        "email": "marcus@company.com",
+        "role": "Member",
+        "status": "Invited",
+        "joinedAt": "2025-11-02",
+        "image": "/people/person-3.png"
+      },
+      {
+        "id": "4",
+        "name": "Elena Rossi",
+        "email": "elena@company.com",
+        "role": "Viewer",
+        "status": "Active",
+        "joinedAt": "2025-01-15",
+        "image": "/people/person-4.png"
+      }
+    ]
+  },
+  "appTasks": {
+    "source": "app/Tasks/index.jsx",
+    "taskSections": [
+      {
+        "id": "to-do",
+        "name": "Backlog",
+        "tasks": [
+          {
+            "id": "201",
+            "name": "Prepare presentation",
+            "description": "Draft slides for Q4 review and align with stakeholders on messaging...",
+            "progress": "Not Started",
+            "icon": "📝",
+            "progressPercent": 0,
+            "priority": "High",
+            "attachments": 2,
+            "comments": 4,
+            "assignees": [
+              {
+                "initials": "JD"
+              },
+              {
+                "initials": "EC"
+              },
+              {
+                "initials": "GR"
+              }
+            ]
+          },
+          {
+            "id": "202",
+            "name": "Send email updates",
+            "description": "Weekly summary to the team including blockers and next steps...",
+            "progress": "In Progress",
+            "icon": "📧",
+            "progressPercent": 40,
+            "priority": "Medium",
+            "attachments": 1,
+            "comments": 2,
+            "assignees": [
+              {
+                "initials": "AK"
+              },
+              {
+                "initials": "LM"
+              }
+            ]
+          },
+          {
+            "id": "205",
+            "name": "Research new tools",
+            "description": "Evaluate CRM integrations and shortlist vendors for pilot...",
+            "progress": "Not Started",
+            "icon": "🔍",
+            "progressPercent": 15,
+            "priority": "Medium",
+            "attachments": 0,
+            "comments": 3,
+            "assignees": [
+              {
+                "initials": "JD"
+              }
+            ]
+          },
+          {
+            "id": "206",
+            "name": "Plan team meeting",
+            "description": "Schedule agenda, book room, and invite cross-functional owners...",
+            "progress": "Not Started",
+            "icon": "📅",
+            "progressPercent": 0,
+            "priority": "Low",
+            "attachments": 0,
+            "comments": 1,
+            "assignees": [
+              {
+                "initials": "MV"
+              },
+              {
+                "initials": "SO"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "in-progress",
+        "name": "In Progress",
+        "tasks": [
+          {
+            "id": "203",
+            "name": "Develop new feature",
+            "description": "Implement Kanban board filters and API wiring for task moves...",
+            "progress": "In Progress",
+            "icon": "💻",
+            "progressPercent": 65,
+            "priority": "High",
+            "attachments": 3,
+            "comments": 8,
+            "assignees": [
+              {
+                "initials": "EC"
+              },
+              {
+                "initials": "GR"
+              },
+              {
+                "initials": "NT"
+              }
+            ]
+          },
+          {
+            "id": "207",
+            "name": "Write documentation",
+            "description": "Developer onboarding guide and API reference for internal teams...",
+            "progress": "In Progress",
+            "icon": "📖",
+            "progressPercent": 40,
+            "priority": "Medium",
+            "attachments": 1,
+            "comments": 2,
+            "assignees": [
+              {
+                "initials": "SR"
+              }
+            ]
+          },
+          {
+            "id": "208",
+            "name": "Test application",
+            "description": "Regression pass on critical flows before the release candidate...",
+            "progress": "In Progress",
+            "icon": "🧪",
+            "progressPercent": 55,
+            "priority": "High",
+            "attachments": 2,
+            "comments": 5,
+            "assignees": [
+              {
+                "initials": "QA"
+              },
+              {
+                "initials": "PM"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "completed",
+        "name": "Done",
+        "tasks": [
+          {
+            "id": "204",
+            "name": "Fix bugs",
+            "description": "Resolved P1 issues from the last sprint and verified in staging...",
+            "progress": "Completed",
+            "icon": "✅",
+            "progressPercent": 100,
+            "priority": "High",
+            "attachments": 4,
+            "comments": 6,
+            "assignees": [
+              {
+                "initials": "EC"
+              },
+              {
+                "initials": "FB"
+              }
+            ]
+          },
+          {
+            "id": "209",
+            "name": "Deploy application",
+            "description": "Production rollout completed with monitoring and rollback plan...",
+            "progress": "Completed",
+            "icon": "🚀",
+            "progressPercent": 100,
+            "priority": "Medium",
+            "attachments": 1,
+            "comments": 3,
+            "assignees": [
+              {
+                "initials": "OP"
+              }
+            ]
+          },
+          {
+            "id": "210",
+            "name": "Conduct user training",
+            "description": "Recorded session and shared materials with the customer success team...",
+            "progress": "Completed",
+            "icon": "👩‍🏫",
+            "progressPercent": 100,
+            "priority": "Low",
+            "attachments": 0,
+            "comments": 1,
+            "assignees": [
+              {
+                "initials": "TR"
+              },
+              {
+                "initials": "CS"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "appHome": {
+    "source": "app/Home/index.jsx",
+    "dashboardData": {
+      "stats": {
+        "totalLeads": 45,
+        "conversionRate": "22%",
+        "sales": "95",
+        "revenue": "$12, 500"
+      },
+      "upcomingMeetings": [
+        {
+          "title": "Product Demo",
+          "date": "2024-06-28",
+          "contact": "John Doe",
+          "subject": "Demo of new product",
+          "iconType": "up"
+        },
+        {
+          "title": "Client Follow-up",
+          "date": "2024-06-29",
+          "contact": "Jane Smith",
+          "subject": "Follow-up on proposal",
+          "iconType": "down"
+        },
+        {
+          "title": "Team Sync",
+          "date": "2024-06-30",
+          "contact": "Alice Johnson",
+          "subject": "Weekly team sync",
+          "iconType": "up"
+        },
+        {
+          "title": "Sales Strategy",
+          "date": "2024-07-01",
+          "contact": "Bob Brown",
+          "subject": "Discuss sales strategy",
+          "iconType": "down"
+        },
+        {
+          "title": "Quarterly Review",
+          "date": "2024-07-05",
+          "contact": "Emily Davis",
+          "subject": "Review of quarterly performance",
+          "iconType": "up"
+        },
+        {
+          "title": "New Client Onboarding",
+          "date": "2024-07-10",
+          "contact": "Michael Johnson",
+          "subject": "Onboarding new client",
+          "iconType": "down"
+        },
+        {
+          "title": "Marketing Strategy Meeting",
+          "date": "2024-07-15",
+          "contact": "Sarah Connor",
+          "subject": "Planning marketing strategies",
+          "iconType": "up"
+        },
+        {
+          "title": "Product Launch",
+          "date": "2024-07-20",
+          "contact": "Chris Evans",
+          "subject": "Launch of new product line",
+          "iconType": "down"
+        }
+      ]
+    },
+    "homeLeadsTable": [
+      {
+        "id": "101",
+        "name": "Alice Brown",
+        "email": "alice@company.com",
+        "lastContacted": "06/25/2024",
+        "image": "./people/person-1.png"
+      },
+      {
+        "id": "102",
+        "name": "Bob Wilson",
+        "email": "bob@startup.io",
+        "lastContacted": "06/24/2024",
+        "image": "./people/person-4.png"
+      },
+      {
+        "id": "103",
+        "name": "Charlie Green",
+        "email": "charlie@company.com",
+        "lastContacted": "06/23/2024",
+        "image": "./people/person-2.png"
+      },
+      {
+        "id": "104",
+        "name": "Diana Prince",
+        "email": "diana@company.com",
+        "lastContacted": "06/22/2024",
+        "image": "./people/person-3.png"
+      },
+      {
+        "id": "105",
+        "name": "Eve Adams",
+        "email": "eve@company.com",
+        "lastContacted": "06/21/2024",
+        "image": "./people/person-1.png"
+      },
+      {
+        "id": "106",
+        "name": "Frank Castle",
+        "email": "frank@company.com",
+        "lastContacted": "06/20/2024",
+        "image": "./people/person-2.png"
+      }
+    ],
+    "sampleChartData": [
+      {
+        "name": "Jan",
+        "leads": 30,
+        "conversion": 20,
+        "sales": 50,
+        "revenue": 1000,
+        "companies": 5
+      },
+      {
+        "name": "Feb",
+        "leads": 40,
+        "conversion": 25,
+        "sales": 60,
+        "revenue": 1500,
+        "companies": 7
+      },
+      {
+        "name": "Mar",
+        "leads": 35,
+        "conversion": 30,
+        "sales": 70,
+        "revenue": 2000,
+        "companies": 6
+      },
+      {
+        "name": "Apr",
+        "leads": 50,
+        "conversion": 35,
+        "sales": 80,
+        "revenue": 2500,
+        "companies": 8
+      }
+    ]
+  },
+  "appSales": {
+    "source": "app/Sales/index.jsx",
+    "salesData": {
+      "daily": [
+        {
+          "date": "Mon",
+          "sales": 30,
+          "revenue": 500
+        },
+        {
+          "date": "Tue",
+          "sales": 45,
+          "revenue": 700
+        },
+        {
+          "date": "Wed",
+          "sales": 20,
+          "revenue": 400
+        },
+        {
+          "date": "Thu",
+          "sales": 55,
+          "revenue": 900
+        },
+        {
+          "date": "Fri",
+          "sales": 40,
+          "revenue": 650
+        },
+        {
+          "date": "Sat",
+          "sales": 35,
+          "revenue": 580
+        },
+        {
+          "date": "Sun",
+          "sales": 50,
+          "revenue": 820
+        }
+      ],
+      "weekly": [
+        {
+          "date": "Week 1",
+          "sales": 200,
+          "revenue": 3200
+        },
+        {
+          "date": "Week 2",
+          "sales": 300,
+          "revenue": 4800
+        },
+        {
+          "date": "Week 3",
+          "sales": 250,
+          "revenue": 4000
+        },
+        {
+          "date": "Week 4",
+          "sales": 350,
+          "revenue": 5600
+        }
+      ],
+      "monthly": [
+        {
+          "date": "Jan",
+          "sales": 1000,
+          "revenue": 16000
+        },
+        {
+          "date": "Feb",
+          "sales": 1200,
+          "revenue": 19200
+        },
+        {
+          "date": "Mar",
+          "sales": 1500,
+          "revenue": 24000
+        },
+        {
+          "date": "Apr",
+          "sales": 1300,
+          "revenue": 20800
+        },
+        {
+          "date": "May",
+          "sales": 1400,
+          "revenue": 22400
+        },
+        {
+          "date": "Jun",
+          "sales": 1600,
+          "revenue": 25600
+        }
+      ]
+    },
+    "topCountries": [
+      {
+        "name": "USA",
+        "percentage": 40
+      },
+      {
+        "name": "Germany",
+        "percentage": 30
+      },
+      {
+        "name": "China",
+        "percentage": 20
+      }
+    ],
+    "products": [
+      {
+        "id": 1,
+        "name": "Product A",
+        "soldAt": "October 1, 2023",
+        "price": 20,
+        "category": "Electronics",
+        "description": "High-quality headphones"
+      },
+      {
+        "id": 2,
+        "name": "Product B",
+        "soldAt": "October 2, 2023",
+        "price": 15,
+        "category": "Books",
+        "description": "A thrilling mystery novel"
+      },
+      {
+        "id": 3,
+        "name": "Product C",
+        "soldAt": "October 3, 2023",
+        "price": 30,
+        "category": "Clothing",
+        "description": "Stylish winter jacket"
+      },
+      {
+        "id": 4,
+        "name": "Product D",
+        "soldAt": "October 4, 2023",
+        "price": 25,
+        "category": "Home",
+        "description": "Comfortable sofa"
+      },
+      {
+        "id": 5,
+        "name": "Product E",
+        "soldAt": "October 5, 2023",
+        "price": 50,
+        "category": "Sports",
+        "description": "Durable running shoes"
+      }
+    ]
+  },
+  "appCalendar": {
+    "source": "app/Calendar/index.jsx",
+    "note": "Primary data may load from MockAPI (mockapi.io). On failure, generateDummyEvents() builds events with dates in the current calendar month (dynamic).",
+    "dummyEventsTemplate": [
+      {
+        "id": "1",
+        "title": "Team Meeting",
+        "time": "10am",
+        "color": "blue",
+        "dayOfMonth": 8
+      },
+      {
+        "id": "2",
+        "title": "Product Launch",
+        "time": "12pm",
+        "color": "purple",
+        "dayOfMonth": 11
+      },
+      {
+        "id": "3",
+        "title": "Sales Conference",
+        "time": "2:30pm",
+        "color": "green",
+        "dayOfMonth": 15
+      },
+      {
+        "id": "4",
+        "title": "Lunch with Client",
+        "time": "12pm",
+        "color": "pink",
+        "dayOfMonth": 11
+      },
+      {
+        "id": "5",
+        "title": "Marketing Strategy Session",
+        "time": "9am",
+        "color": "orange",
+        "dayOfMonth": 13
+      },
+      {
+        "id": "6",
+        "title": "Annual Shareholders Meeting",
+        "time": "3pm",
+        "color": "indigo",
+        "dayOfMonth": 20
+      },
+      {
+        "id": "7",
+        "title": "Product Development Workshop",
+        "time": "11am",
+        "color": "teal",
+        "dayOfMonth": 13
+      },
+      {
+        "id": "8",
+        "title": "Client Presentation",
+        "time": "2pm",
+        "color": "yellow",
+        "dayOfMonth": 13
+      }
+    ]
+  },
+  "appEmail": {
+    "source": "app/Email/index.jsx",
+    "threads": [
+      {
+        "id": "t1",
+        "subject": "Re: Enterprise pilot timeline",
+        "preview": "Thanks for the updated scope — we can start the week of Apr 21…",
+        "from": "Sarah Chen",
+        "fromEmail": "sarah@acme.com",
+        "time": "10:42 AM",
+        "unread": true,
+        "starred": true,
+        "messages": [
+          {
+            "id": "m1",
+            "from": "Sarah Chen",
+            "fromEmail": "sarah@acme.com",
+            "to": "you@crm.io",
+            "time": "Apr 14, 2026 · 10:42 AM",
+            "body": "Thanks for the updated scope — we can start the week of Apr 21 if legal signs by Friday. Can you confirm SSO metadata format?"
+          },
+          {
+            "id": "m2",
+            "from": "You",
+            "fromEmail": "you@crm.io",
+            "to": "sarah@acme.com",
+            "time": "Apr 14, 2026 · 11:05 AM",
+            "body": "Confirmed — we’ll send SAML metadata today EOD. I’ve attached the checklist for your IT team."
+          },
+          {
+            "id": "m3",
+            "from": "Sarah Chen",
+            "fromEmail": "sarah@acme.com",
+            "to": "you@crm.io",
+            "time": "Apr 14, 2026 · 11:18 AM",
+            "body": "Perfect. Looping in @james from IT for the firewall allowlist."
+          }
+        ]
+      },
+      {
+        "id": "t2",
+        "subject": "Invoice #INV-2408 — paid",
+        "preview": "Payment received. Receipt attached for your records.",
+        "from": "billing@northwind.io",
+        "fromEmail": "billing@northwind.io",
+        "time": "Yesterday",
+        "unread": false,
+        "starred": false,
+        "messages": [
+          {
+            "id": "m1",
+            "from": "Northwind Billing",
+            "fromEmail": "billing@northwind.io",
+            "to": "you@crm.io",
+            "time": "Apr 13, 2026 · 4:02 PM",
+            "body": "Payment received for invoice INV-2408. Receipt attached."
+          }
+        ]
+      },
+      {
+        "id": "t3",
+        "subject": "Product roadmap Q2",
+        "preview": "Sharing the deck we discussed on the call…",
+        "from": "Alex Rivera",
+        "fromEmail": "alex@startup.io",
+        "time": "Mon",
+        "unread": true,
+        "starred": false,
+        "messages": [
+          {
+            "id": "m1",
+            "from": "Alex Rivera",
+            "fromEmail": "alex@startup.io",
+            "to": "you@crm.io",
+            "time": "Apr 12, 2026 · 9:00 AM",
+            "body": "Sharing the deck we discussed on the call — focus slides 4–8 for integrations."
+          }
+        ]
+      }
+    ]
+  },
+  "appProjects": {
+    "source": "app/Projects/index.jsx",
+    "initialProjects": [
+      {
+        "id": 1,
+        "projectName": "Product Development",
+        "clientName": "Kevin Heal",
+        "clientAvatarColor": "bg-blue-500",
+        "startDate": "20/03/2024",
+        "deadline": "05/04/2024",
+        "status": "Active",
+        "progress": 30
+      },
+      {
+        "id": 2,
+        "projectName": "New Office Building",
+        "clientName": "Sarah Johnson",
+        "clientAvatarColor": "bg-purple-500",
+        "startDate": "15/03/2024",
+        "deadline": "10/04/2024",
+        "status": "Cancel",
+        "progress": 60
+      },
+      {
+        "id": 3,
+        "projectName": "Mobile app design",
+        "clientName": "Michael Chen",
+        "clientAvatarColor": "bg-orange-500",
+        "startDate": "10/03/2024",
+        "deadline": "01/04/2024",
+        "status": "Completed",
+        "progress": 100
+      },
+      {
+        "id": 4,
+        "projectName": "Website & Blog",
+        "clientName": "Emily Rodriguez",
+        "clientAvatarColor": "bg-amber-700",
+        "startDate": "05/03/2024",
+        "deadline": "20/03/2024",
+        "status": "Pending",
+        "progress": 50
+      },
+      {
+        "id": 5,
+        "projectName": "Marketing Campaign",
+        "clientName": "David Wilson",
+        "clientAvatarColor": "bg-blue-700",
+        "startDate": "01/03/2024",
+        "deadline": "15/04/2024",
+        "status": "Active",
+        "progress": 45
+      },
+      {
+        "id": 6,
+        "projectName": "E-commerce Platform",
+        "clientName": "Jessica Lee",
+        "clientAvatarColor": "bg-cyan-500",
+        "startDate": "25/02/2024",
+        "deadline": "10/05/2024",
+        "status": "Pending",
+        "progress": 20
+      }
+    ],
+    "kpiStrip": {
+      "activeProjects": 1423,
+      "changePercentage": 5.02,
+      "totalRevenue": 125000,
+      "revenueChange": 12.5,
+      "totalLeads": 2847,
+      "leadsChange": 8.3
+    },
+    "chartSeries": {
+      "3months": [
+        {
+          "date": "Aug 18",
+          "Mobile": 120,
+          "Desktop": 250
+        },
+        {
+          "date": "Aug 22",
+          "Mobile": 170,
+          "Desktop": 308
+        },
+        {
+          "date": "Aug 25",
+          "Mobile": 145,
+          "Desktop": 280
+        },
+        {
+          "date": "Sep 1",
+          "Mobile": 190,
+          "Desktop": 320
+        },
+        {
+          "date": "Sep 7",
+          "Mobile": 165,
+          "Desktop": 295
+        },
+        {
+          "date": "Sep 14",
+          "Mobile": 210,
+          "Desktop": 350
+        },
+        {
+          "date": "Sep 21",
+          "Mobile": 185,
+          "Desktop": 330
+        },
+        {
+          "date": "Sep 28",
+          "Mobile": 230,
+          "Desktop": 380
+        },
+        {
+          "date": "Oct 5",
+          "Mobile": 200,
+          "Desktop": 360
+        },
+        {
+          "date": "Oct 11",
+          "Mobile": 245,
+          "Desktop": 400
+        },
+        {
+          "date": "Oct 18",
+          "Mobile": 220,
+          "Desktop": 375
+        },
+        {
+          "date": "Oct 25",
+          "Mobile": 260,
+          "Desktop": 420
+        },
+        {
+          "date": "Nov 1",
+          "Mobile": 240,
+          "Desktop": 395
+        },
+        {
+          "date": "Nov 8",
+          "Mobile": 275,
+          "Desktop": 450
+        }
+      ],
+      "30days": [
+        {
+          "date": "Oct 9",
+          "Mobile": 200,
+          "Desktop": 360
+        },
+        {
+          "date": "Oct 11",
+          "Mobile": 245,
+          "Desktop": 400
+        },
+        {
+          "date": "Oct 14",
+          "Mobile": 210,
+          "Desktop": 370
+        },
+        {
+          "date": "Oct 18",
+          "Mobile": 220,
+          "Desktop": 375
+        },
+        {
+          "date": "Oct 21",
+          "Mobile": 235,
+          "Desktop": 390
+        },
+        {
+          "date": "Oct 25",
+          "Mobile": 260,
+          "Desktop": 420
+        },
+        {
+          "date": "Oct 28",
+          "Mobile": 250,
+          "Desktop": 410
+        },
+        {
+          "date": "Nov 1",
+          "Mobile": 240,
+          "Desktop": 395
+        },
+        {
+          "date": "Nov 4",
+          "Mobile": 265,
+          "Desktop": 435
+        },
+        {
+          "date": "Nov 8",
+          "Mobile": 275,
+          "Desktop": 450
+        }
+      ],
+      "7days": [
+        {
+          "date": "Nov 2",
+          "Mobile": 245,
+          "Desktop": 400
+        },
+        {
+          "date": "Nov 3",
+          "Mobile": 250,
+          "Desktop": 405
+        },
+        {
+          "date": "Nov 4",
+          "Mobile": 265,
+          "Desktop": 435
+        },
+        {
+          "date": "Nov 5",
+          "Mobile": 260,
+          "Desktop": 425
+        },
+        {
+          "date": "Nov 6",
+          "Mobile": 270,
+          "Desktop": 440
+        },
+        {
+          "date": "Nov 7",
+          "Mobile": 268,
+          "Desktop": 445
+        },
+        {
+          "date": "Nov 8",
+          "Mobile": 275,
+          "Desktop": 450
+        }
+      ]
+    }
+  },
+  "appPayments": {
+    "source": "app/Payments/index.jsx",
+    "initialPayments": [
+      {
+        "id": "pay_001",
+        "transactionId": "TXN-2024-001",
+        "amount": 5000,
+        "currency": "USD",
+        "status": "Completed",
+        "paymentMethod": "Credit Card",
+        "customer": "Cloud Corp",
+        "customerEmail": "contact@cloudcorp.com",
+        "description": "Monthly subscription payment",
+        "date": "2024-06-25",
+        "time": "10:30 AM",
+        "fee": 150,
+        "netAmount": 4850,
+        "invoiceId": "INV-2024-001"
+      },
+      {
+        "id": "pay_002",
+        "transactionId": "TXN-2024-002",
+        "amount": 12000,
+        "currency": "USD",
+        "status": "Pending",
+        "paymentMethod": "Bank Transfer",
+        "customer": "Tech Innovations",
+        "customerEmail": "billing@techinnovations.com",
+        "description": "Q2 software license payment",
+        "date": "2024-06-26",
+        "time": "02:15 PM",
+        "fee": 360,
+        "netAmount": 11640,
+        "invoiceId": "INV-2024-002"
+      },
+      {
+        "id": "pay_003",
+        "transactionId": "TXN-2024-003",
+        "amount": 8500,
+        "currency": "USD",
+        "status": "Completed",
+        "paymentMethod": "PayPal",
+        "customer": "AI Labs",
+        "customerEmail": "finance@ailabs.io",
+        "description": "Custom development services",
+        "date": "2024-06-24",
+        "time": "09:45 AM",
+        "fee": 255,
+        "netAmount": 8245,
+        "invoiceId": "INV-2024-003"
+      },
+      {
+        "id": "pay_004",
+        "transactionId": "TXN-2024-004",
+        "amount": 3200,
+        "currency": "USD",
+        "status": "Completed",
+        "paymentMethod": "Credit Card",
+        "customer": "Marketing Solutions",
+        "customerEmail": "payments@marketingsolutions.com",
+        "description": "Marketing campaign setup",
+        "date": "2024-06-23",
+        "time": "11:20 AM",
+        "fee": 96,
+        "netAmount": 3104,
+        "invoiceId": "INV-2024-004"
+      },
+      {
+        "id": "pay_005",
+        "transactionId": "TXN-2024-005",
+        "amount": 15000,
+        "currency": "USD",
+        "status": "Pending",
+        "paymentMethod": "Wire Transfer",
+        "customer": "Finance Corp",
+        "customerEmail": "accounts@financecorp.com",
+        "description": "Annual enterprise package",
+        "date": "2024-06-27",
+        "time": "03:00 PM",
+        "fee": 450,
+        "netAmount": 14550,
+        "invoiceId": "INV-2024-005"
+      },
+      {
+        "id": "pay_006",
+        "transactionId": "TXN-2024-006",
+        "amount": 25000,
+        "currency": "USD",
+        "status": "Completed",
+        "paymentMethod": "Credit Card",
+        "customer": "Amazon",
+        "customerEmail": "procurement@amazon.com",
+        "description": "Cloud infrastructure services",
+        "date": "2024-06-22",
+        "time": "04:30 PM",
+        "fee": 750,
+        "netAmount": 24250,
+        "invoiceId": "INV-2024-006"
+      },
+      {
+        "id": "pay_007",
+        "transactionId": "TXN-2024-007",
+        "amount": 1800,
+        "currency": "USD",
+        "status": "Pending",
+        "paymentMethod": "PayPal",
+        "customer": "Startup Inc.",
+        "customerEmail": "billing@startupinc.com",
+        "description": "Basic plan subscription",
+        "date": "2024-06-28",
+        "time": "01:15 PM",
+        "fee": 54,
+        "netAmount": 1746,
+        "invoiceId": "INV-2024-007"
+      },
+      {
+        "id": "pay_008",
+        "transactionId": "TXN-2024-008",
+        "amount": 9500,
+        "currency": "USD",
+        "status": "Completed",
+        "paymentMethod": "Bank Transfer",
+        "customer": "Global Solutions",
+        "customerEmail": "finance@globalsolutions.com",
+        "description": "Consulting services",
+        "date": "2024-06-21",
+        "time": "10:00 AM",
+        "fee": 285,
+        "netAmount": 9215,
+        "invoiceId": "INV-2024-008"
+      },
+      {
+        "id": "pay_009",
+        "transactionId": "TXN-2024-009",
+        "amount": 4200,
+        "currency": "USD",
+        "status": "Completed",
+        "paymentMethod": "Credit Card",
+        "customer": "Innovatech LLC",
+        "customerEmail": "accounts@innovatech.com",
+        "description": "API integration services",
+        "date": "2024-06-20",
+        "time": "02:45 PM",
+        "fee": 126,
+        "netAmount": 4074,
+        "invoiceId": "INV-2024-009"
+      },
+      {
+        "id": "pay_010",
+        "transactionId": "TXN-2024-010",
+        "amount": 6800,
+        "currency": "USD",
+        "status": "Pending",
+        "paymentMethod": "PayPal",
+        "customer": "GreenTech Innovations",
+        "customerEmail": "billing@greentech.com",
+        "description": "Sustainability platform license",
+        "date": "2024-06-29",
+        "time": "09:30 AM",
+        "fee": 204,
+        "netAmount": 6596,
+        "invoiceId": "INV-2024-010"
+      }
+    ]
+  },
+  "appSettings": {
+    "source": "app/Settings/index.jsx",
+    "profileSettings": {
+      "name": "John Doe",
+      "email": "john.doe@company.com",
+      "phone": "+1 (555) 123-4567",
+      "company": "Tech Corp",
+      "role": "Sales Manager",
+      "avatar": "./people/person-1.png",
+      "bio": "Experienced sales professional with a passion for building relationships."
+    },
+    "accountSettings": {
+      "currentPassword": "",
+      "newPassword": "",
+      "confirmPassword": "",
+      "twoFactorEnabled": false,
+      "apiKey": "sk_live_1234567890abcdef"
+    },
+    "notificationSettings": {
+      "emailNotifications": true,
+      "smsNotifications": false,
+      "leadAlerts": true,
+      "dealUpdates": true,
+      "weeklyReports": true,
+      "marketingEmails": false
+    },
+    "preferenceSettings": {
+      "theme": "light",
+      "language": "en",
+      "timezone": "America/New_York",
+      "dateFormat": "MM/DD/YYYY",
+      "currency": "USD"
+    },
+    "billingSettings": {
+      "plan": "Professional",
+      "status": "Active",
+      "nextBillingDate": "2024-07-25",
+      "paymentMethod": "**** **** **** 4242"
+    },
+    "teamMembers": [
+      {
+        "id": "1",
+        "name": "Alice Johnson",
+        "email": "alice@company.com",
+        "role": "Admin",
+        "status": "Active",
+        "image": "./people/person-2.png"
+      },
+      {
+        "id": "2",
+        "name": "Bob Smith",
+        "email": "bob@company.com",
+        "role": "Manager",
+        "status": "Active",
+        "image": "./people/person-3.png"
+      },
+      {
+        "id": "3",
+        "name": "Charlie Brown",
+        "email": "charlie@company.com",
+        "role": "User",
+        "status": "Inactive",
+        "image": "./people/person-4.png"
+      }
+    ],
+    "tabs": [
+      {
+        "id": "profile",
+        "label": "Profile"
+      },
+      {
+        "id": "account",
+        "label": "Account"
+      },
+      {
+        "id": "notifications",
+        "label": "Notifications"
+      },
+      {
+        "id": "preferences",
+        "label": "Preferences"
+      },
+      {
+        "id": "billing",
+        "label": "Billing"
+      },
+      {
+        "id": "team",
+        "label": "Team"
+      },
+      {
+        "id": "security",
+        "label": "Security"
+      }
+    ]
+  },
+  "appIntegrations": {
+    "source": "app/Integrations/index.jsx",
+    "integrations": [
+      {
+        "id": "1",
+        "name": "Slack",
+        "enabled": true,
+        "tag": "communication",
+        "lastUpdated": "October 1, 2023"
+      },
+      {
+        "id": "2",
+        "name": "Trello",
+        "enabled": false,
+        "tag": "project_management",
+        "lastUpdated": "September 15, 2023"
+      },
+      {
+        "id": "3",
+        "name": "Jira",
+        "enabled": true,
+        "tag": "issue_tracking",
+        "lastUpdated": "October 5, 2023"
+      },
+      {
+        "id": "4",
+        "name": "GitHub",
+        "enabled": false,
+        "tag": "version_control",
+        "lastUpdated": "August 20, 2023"
+      },
+      {
+        "id": "5",
+        "name": "Google Drive",
+        "enabled": true,
+        "tag": "cloud_storage",
+        "lastUpdated": "October 2, 2023"
+      },
+      {
+        "id": "6",
+        "name": "Asana",
+        "enabled": false,
+        "tag": "task_management",
+        "lastUpdated": "September 10, 2023"
+      },
+      {
+        "id": "7",
+        "name": "Zapier",
+        "enabled": true,
+        "tag": "automation",
+        "lastUpdated": "October 3, 2023"
+      },
+      {
+        "id": "8",
+        "name": "Salesforce",
+        "enabled": false,
+        "tag": "crm",
+        "lastUpdated": "September 25, 2023"
+      },
+      {
+        "id": "9",
+        "name": "Dropbox",
+        "enabled": true,
+        "tag": "cloud_storage",
+        "lastUpdated": "October 4, 2023"
+      },
+      {
+        "id": "10",
+        "name": "Mailchimp",
+        "enabled": false,
+        "tag": "email_marketing",
+        "lastUpdated": "September 30, 2023"
+      },
+      {
+        "id": "11",
+        "name": "Zoom",
+        "enabled": true,
+        "tag": "video_conferencing",
+        "lastUpdated": "October 6, 2023"
+      },
+      {
+        "id": "12",
+        "name": "Notion",
+        "enabled": false,
+        "tag": "productivity",
+        "lastUpdated": "September 20, 2023"
+      },
+      {
+        "id": "13",
+        "name": "Figma",
+        "enabled": true,
+        "tag": "design",
+        "lastUpdated": "October 7, 2023"
+      }
+    ]
+  },
+  "appApiKeys": {
+    "source": "app/ApiKeys/index.jsx",
+    "initialApiKeys": [
+      {
+        "id": "ak_001",
+        "name": "Production API Key",
+        "key": "sk_live_abc123xyz456def789",
+        "createdAt": "2024-01-15",
+        "updatedAt": "2024-06-20",
+        "status": "Active"
+      },
+      {
+        "id": "ak_002",
+        "name": "Development Key",
+        "key": "sk_test_def456uvw789ghi012",
+        "createdAt": "2024-02-10",
+        "updatedAt": "2024-06-18",
+        "status": "Active"
+      },
+      {
+        "id": "ak_003",
+        "name": "Staging Environment",
+        "key": "sk_staging_ghi789rst012jkl345",
+        "createdAt": "2024-03-05",
+        "updatedAt": "2024-06-15",
+        "status": "Active"
+      },
+      {
+        "id": "ak_004",
+        "name": "Mobile App Key",
+        "key": "sk_mobile_jkl012mno345pqr678",
+        "createdAt": "2024-04-12",
+        "updatedAt": "2024-06-10",
+        "status": "Revoked"
+      },
+      {
+        "id": "ak_005",
+        "name": "Third-party Integration",
+        "key": "sk_integration_pqr345stu678vwx901",
+        "createdAt": "2024-05-20",
+        "updatedAt": "2024-06-08",
+        "status": "Active"
+      }
+    ],
+    "statsDisplay": {
+      "totalUsage": "1,234,567",
+      "plans": "12",
+      "conversions": "8,945",
+      "apiCalls": "456,789"
+    }
+  },
+  "appWebhooks": {
+    "source": "app/Webhooks/index.jsx",
+    "initialWebhooks": [
+      {
+        "id": "wh_001",
+        "name": "Order Created Webhook",
+        "url": "https://api.example.com/webhooks/orders",
+        "events": [
+          "order.created",
+          "order.updated"
+        ],
+        "createdAt": "2024-01-15",
+        "updatedAt": "2024-06-20",
+        "status": "Active",
+        "secret": "whsec_abc123xyz456def789"
+      },
+      {
+        "id": "wh_002",
+        "name": "Payment Webhook",
+        "url": "https://payments.example.com/hooks",
+        "events": [
+          "payment.succeeded",
+          "payment.failed"
+        ],
+        "createdAt": "2024-02-10",
+        "updatedAt": "2024-06-18",
+        "status": "Active",
+        "secret": "whsec_def456uvw789ghi012"
+      },
+      {
+        "id": "wh_003",
+        "name": "Customer Sync",
+        "url": "https://sync.example.com/customers",
+        "events": [
+          "customer.created",
+          "customer.updated",
+          "customer.deleted"
+        ],
+        "createdAt": "2024-03-05",
+        "updatedAt": "2024-06-15",
+        "status": "Active",
+        "secret": "whsec_ghi789rst012jkl345"
+      },
+      {
+        "id": "wh_004",
+        "name": "Invoice Webhook",
+        "url": "https://invoices.example.com/webhook",
+        "events": [
+          "invoice.paid",
+          "invoice.overdue"
+        ],
+        "createdAt": "2024-04-12",
+        "updatedAt": "2024-06-10",
+        "status": "Inactive",
+        "secret": "whsec_jkl012mno345pqr678"
+      },
+      {
+        "id": "wh_005",
+        "name": "Lead Notification",
+        "url": "https://notifications.example.com/leads",
+        "events": [
+          "lead.created"
+        ],
+        "createdAt": "2024-05-20",
+        "updatedAt": "2024-06-08",
+        "status": "Active",
+        "secret": "whsec_pqr345stu678vwx901"
+      }
+    ],
+    "availableEvents": [
+      "order.created",
+      "order.updated",
+      "order.cancelled",
+      "payment.succeeded",
+      "payment.failed",
+      "customer.created",
+      "customer.updated",
+      "customer.deleted",
+      "invoice.paid",
+      "invoice.overdue",
+      "lead.created",
+      "lead.updated"
+    ]
+  },
+  "appCms": {
+    "source": "app/Content Management System/index.jsx",
+    "blogs": [
+      {
+        "id": 1,
+        "title": "Getting Started with React Hooks",
+        "author": "John Doe",
+        "authorAvatar": "bg-blue-500",
+        "category": "Technology",
+        "status": "Published",
+        "publishDate": "2024-06-25",
+        "views": 1250,
+        "likes": 45,
+        "content": "A comprehensive guide to React Hooks...",
+        "tags": [
+          "React",
+          "JavaScript",
+          "Frontend"
+        ],
+        "featuredImage": ""
+      },
+      {
+        "id": 2,
+        "title": "Building Scalable APIs with Node.js",
+        "author": "Jane Smith",
+        "authorAvatar": "bg-purple-500",
+        "category": "Backend",
+        "status": "Published",
+        "publishDate": "2024-06-24",
+        "views": 980,
+        "likes": 32,
+        "content": "Learn how to build robust APIs...",
+        "tags": [
+          "Node.js",
+          "API",
+          "Backend"
+        ],
+        "featuredImage": ""
+      },
+      {
+        "id": 3,
+        "title": "CSS Grid vs Flexbox: When to Use What",
+        "author": "Mike Johnson",
+        "authorAvatar": "bg-green-500",
+        "category": "Design",
+        "status": "Draft",
+        "publishDate": "",
+        "views": 0,
+        "likes": 0,
+        "content": "Understanding CSS layout systems...",
+        "tags": [
+          "CSS",
+          "Design",
+          "Frontend"
+        ],
+        "featuredImage": ""
+      },
+      {
+        "id": 4,
+        "title": "Introduction to TypeScript",
+        "author": "Sarah Williams",
+        "authorAvatar": "bg-orange-500",
+        "category": "Technology",
+        "status": "Published",
+        "publishDate": "2024-06-23",
+        "views": 2100,
+        "likes": 78,
+        "content": "TypeScript basics for JavaScript developers...",
+        "tags": [
+          "TypeScript",
+          "JavaScript",
+          "Programming"
+        ],
+        "featuredImage": ""
+      },
+      {
+        "id": 5,
+        "title": "Database Optimization Techniques",
+        "author": "David Brown",
+        "authorAvatar": "bg-red-500",
+        "category": "Backend",
+        "status": "Draft",
+        "publishDate": "",
+        "views": 0,
+        "likes": 0,
+        "content": "Best practices for database performance...",
+        "tags": [
+          "Database",
+          "SQL",
+          "Performance"
+        ],
+        "featuredImage": ""
+      },
+      {
+        "id": 6,
+        "title": "Modern Web Design Trends 2024",
+        "author": "Emily Davis",
+        "authorAvatar": "bg-pink-500",
+        "category": "Design",
+        "status": "Published",
+        "publishDate": "2024-06-22",
+        "views": 1750,
+        "likes": 56,
+        "content": "Exploring the latest design trends...",
+        "tags": [
+          "Design",
+          "UI/UX",
+          "Trends"
+        ],
+        "featuredImage": ""
+      }
+    ],
+    "subscribers": [
+      {
+        "id": 1,
+        "name": "Alice Cooper",
+        "email": "alice@example.com",
+        "subscribedDate": "2024-06-20",
+        "status": "Active",
+        "avatarColor": "bg-blue-500"
+      },
+      {
+        "id": 2,
+        "name": "Bob Martinez",
+        "email": "bob@example.com",
+        "subscribedDate": "2024-06-18",
+        "status": "Active",
+        "avatarColor": "bg-green-500"
+      },
+      {
+        "id": 3,
+        "name": "Carol White",
+        "email": "carol@example.com",
+        "subscribedDate": "2024-06-15",
+        "status": "Active",
+        "avatarColor": "bg-purple-500"
+      },
+      {
+        "id": 4,
+        "name": "Daniel Lee",
+        "email": "daniel@example.com",
+        "subscribedDate": "2024-06-12",
+        "status": "Active",
+        "avatarColor": "bg-orange-500"
+      },
+      {
+        "id": 5,
+        "name": "Eva Garcia",
+        "email": "eva@example.com",
+        "subscribedDate": "2024-06-10",
+        "status": "Active",
+        "avatarColor": "bg-pink-500"
+      },
+      {
+        "id": 6,
+        "name": "Frank Wilson",
+        "email": "frank@example.com",
+        "subscribedDate": "2024-06-08",
+        "status": "Active",
+        "avatarColor": "bg-indigo-500"
+      }
+    ],
+    "newBlogFormDefaults": {
+      "title": "",
+      "content": "",
+      "author": "",
+      "category": "Technology",
+      "tags": "",
+      "featuredImage": "",
+      "publishDate": "",
+      "status": "Draft",
+      "excerpt": ""
+    }
+  }
+}

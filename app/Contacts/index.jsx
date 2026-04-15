@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import {
 	Users,
 	PenIcon,
@@ -9,13 +10,12 @@ import {
 	ChevronUp,
 	ChevronDown,
 } from "lucide-react";
-import { FaFacebook } from "react-icons/fa";
-import { BsLinkedin, BsTwitterX } from "react-icons/bs";
 import { Pagination } from "../../modules";
 import { useTheme } from "../../utils/useTheme";
 import { getFocusRingClass } from "../../utils/theme";
 
 const Contacts = () => {
+	const router = useRouter();
 	// Theme hook
 	const { colorScheme, colors, scheme } = useTheme();
 
@@ -343,8 +343,6 @@ const Contacts = () => {
 	]);
 
 	const [searchTerm, setSearchTerm] = useState("");
-	const [selectedContact, setSelectedContact] = useState(null);
-	const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 	const [isAddContactModalOpen, setIsAddContactModalOpen] = useState(false);
 	const [newContact, setNewContact] = useState({
 		name: "",
@@ -359,11 +357,6 @@ const Contacts = () => {
 
 	const handleSearch = (event) => {
 		setSearchTerm(event.target.value);
-	};
-
-	const handleSelectContact = (contact) => {
-		setSelectedContact(contact);
-		setIsContactModalOpen(true);
 	};
 
 	const handleAddContact = () => {
@@ -410,13 +403,9 @@ const Contacts = () => {
 
 	return (
 		<div className={`p-6 ${colors.primaryBackground} transition-all duration-100 ease-in`}>
-			{/* Contacts Table - Improved */}
+			{/* Table Header */}
 			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
-			>
-				{/* Table Header */}
-				<div
-					className={`flex flex-col md:flex-row items-start md:items-center justify-between px-6 py-4 border-b ${colors.border} gap-4`}
+					className={`flex flex-col md:flex-row items-start md:items-center justify-between p-2 gap-4`}
 				>
 					<div className="flex-1">
 						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
@@ -447,11 +436,10 @@ const Contacts = () => {
 							<input
 								type="text"
 								placeholder="Search contacts..."
-								className={`outline-none flex-1 ${colors.background} ${
-									colors.foreground
-								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+								className={`outline-none flex-1 placeholder:${colors.mutedForeground} ${getFocusRingClass(
 									colorScheme
 								)}`}
+								name="search-contacts"
 								value={searchTerm}
 								onChange={handleSearch}
 							/>
@@ -466,6 +454,11 @@ const Contacts = () => {
 						</button>
 					</div>
 				</div>
+			{/* Contacts Table - Improved */}
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
+			>
+				
 
 				{/* Table */}
 				<div className="overflow-x-auto">
@@ -564,7 +557,7 @@ const Contacts = () => {
 									<tr
 										key={contact.id}
 										className={`${colors.hover} transition-colors cursor-pointer`}
-										onClick={() => handleSelectContact(contact)}
+										onClick={() => router.push(`/contacts/${contact.id}`)}
 									>
 										<td className="px-6 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-3">
@@ -626,130 +619,6 @@ const Contacts = () => {
 					</table>
 				</div>
 			</div>
-			{/* Contact Details Modal */}
-			{isContactModalOpen && selectedContact && (
-				<div
-					className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-					onClick={() => setIsContactModalOpen(false)}
-				>
-					<div
-						className={`${colors.card} rounded-xl ${colors.shadow} max-w-md w-full overflow-y-auto`}
-						onClick={(e) => e.stopPropagation()}
-					>
-						{/* Modal Header */}
-						<div
-							className={`flex items-center justify-between p-6 border-b ${colors.border}`}
-						>
-							<div>
-								<h2 className={`text-xl font-semibold ${colors.foreground}`}>
-									Contact Details
-								</h2>
-								<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-									View contact information and details
-								</p>
-							</div>
-							<button
-								onClick={() => setIsContactModalOpen(false)}
-								className={`p-2 ${colors.hoverSecondary} rounded-xl transition-colors`}
-							>
-								<X className={`w-5 h-5 ${colors.mutedForeground}`} />
-							</button>
-						</div>
-
-						{/* Modal Body */}
-						<div className="p-6 space-y-6">
-							<div className="flex flex-col items-center">
-								<img
-									src={selectedContact.image}
-									alt={selectedContact.name}
-									className="w-24 h-24 rounded-full border-4 border-zinc-200 mb-4"
-								/>
-								<h3 className={`text-xl font-semibold ${colors.foreground}`}>
-									{selectedContact.name}
-								</h3>
-								<p className={`text-sm ${colors.textSecondary} mt-1`}>
-									{selectedContact.company}
-								</p>
-							</div>
-
-							<div className="space-y-4">
-								<div>
-									<p
-										className={`text-xs font-medium ${colors.mutedForeground} mb-1`}
-									>
-										Email
-									</p>
-									<p className={`text-sm ${colors.foreground}`}>
-										{selectedContact.email}
-									</p>
-								</div>
-								<div>
-									<p
-										className={`text-xs font-medium ${colors.mutedForeground} mb-1`}
-									>
-										Phone
-									</p>
-									<p className={`text-sm ${colors.foreground}`}>
-										{selectedContact.phone}
-									</p>
-								</div>
-								<div>
-									<p
-										className={`text-xs font-medium ${colors.mutedForeground} mb-1`}
-									>
-										Company
-									</p>
-									<p className={`text-sm ${colors.foreground}`}>
-										{selectedContact.company}
-									</p>
-								</div>
-								<div>
-									<p
-										className={`text-xs font-medium ${colors.mutedForeground} mb-1`}
-									>
-										Created At
-									</p>
-									<p className={`text-sm ${colors.foreground}`}>
-										{formatDate(selectedContact.createdAt)}
-									</p>
-								</div>
-							</div>
-
-							<div className={`border-t ${colors.border} pt-4`}>
-								<p
-									className={`text-xs font-medium ${colors.mutedForeground} mb-3`}
-								>
-									Social Media
-								</p>
-								<div className="flex items-center gap-3">
-									<a
-										href="#"
-										className={`p-2 rounded-xl ${colors.hoverSecondary} transition-colors`}
-										title="Facebook"
-									>
-										<FaFacebook className={`w-5 h-5 ${colors.textSecondary}`} />
-									</a>
-									<a
-										href="#"
-										className={`p-2 rounded-xl ${colors.hoverSecondary} transition-colors`}
-										title="Twitter"
-									>
-										<BsTwitterX className={`w-5 h-5 ${colors.textSecondary}`} />
-									</a>
-									<a
-										href="#"
-										className={`p-2 rounded-xl ${colors.hoverSecondary} transition-colors`}
-										title="LinkedIn"
-									>
-										<BsLinkedin className={`w-5 h-5 ${colors.textSecondary}`} />
-									</a>
-								</div>
-							</div>
-						</div>
-
-					</div>
-				</div>
-			)}
 			{/* Add New Contact Modal */}
 			{isAddContactModalOpen && (
 				<div

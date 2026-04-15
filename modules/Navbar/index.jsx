@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { BsPerson } from "react-icons/bs";
 import {
 	Bell,
+	Users2,
 	LogOutIcon,
 	MessageSquare,
 	PanelLeftClose,
@@ -65,6 +65,13 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 			label: "Pipeline",
 			route: "/pipelines",
 			icon: "Layers",
+			section: "sales",
+		},
+		{
+			id: 21,
+			label: "Deals",
+			route: "/deals",
+			icon: "CircleDollarSign",
 			section: "sales",
 		},
 		{
@@ -400,7 +407,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 								<button
 									className={`flex items-center p-2 w-full text-sm ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
 								>
-									<BsPerson size={18} className="mr-2" /> Profile
+									<Users2 size={18} className="mr-2" /> Profile
 								</button>
 								<button
 									className={`flex items-center p-2 w-full text-sm ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}

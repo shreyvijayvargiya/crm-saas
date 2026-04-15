@@ -1,18 +1,18 @@
 import React, { useMemo } from "react";
 import { useRouter } from "next/router";
 import RecordProfileDetail from "../CRM/RecordProfileDetail";
-import { getLeadRecord } from "../CRM/recordDetailData";
+import { getContactRecord } from "../CRM/recordDetailData";
 
-const LeadDetail = () => {
+const ContactDetail = () => {
 	const router = useRouter();
 	const { id } = router.query;
 
-	const lead = useMemo(() => {
+	const contact = useMemo(() => {
 		if (!id) return null;
-		return getLeadRecord(id);
+		return getContactRecord(id);
 	}, [id]);
 
-	if (!router.isReady || !lead) {
+	if (!router.isReady || !contact) {
 		return (
 			<div className="p-6">
 				<p className="text-zinc-500 dark:text-zinc-400">Loading…</p>
@@ -22,12 +22,12 @@ const LeadDetail = () => {
 
 	return (
 		<RecordProfileDetail
-			kind="lead"
-			record={lead}
-			backHref="/leads"
-			backLabel="Back to leads"
+			kind="contact"
+			record={contact}
+			backHref="/contacts"
+			backLabel="Back to contacts"
 		/>
 	);
 };
 
-export default LeadDetail;
+export default ContactDetail;

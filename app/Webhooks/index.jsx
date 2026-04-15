@@ -389,9 +389,7 @@ const Webhooks = () => {
 						<input
 							type="text"
 							placeholder="Search webhooks..."
-							className={`outline-none ${colors.background} ${
-								colors.foreground
-							} placeholder:${colors.mutedForeground} ${getFocusRingClass(
+								className={`outline-none placeholder:${colors.mutedForeground} ${getFocusRingClass(
 								colorScheme
 							)}`}
 							value={searchTerm}

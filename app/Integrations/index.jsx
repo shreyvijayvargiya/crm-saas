@@ -6,6 +6,7 @@ import {
 	Trash,
 	CheckCircle2,
 	XCircle,
+	Search,
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { Pagination } from "../../modules";
@@ -110,6 +111,7 @@ const Integrations = () => {
 		},
 	]);
 
+	const [searchTerm, setSearchTerm] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [newIntegration, setNewIntegration] = useState({
 		name: "",
@@ -181,10 +183,6 @@ const Integrations = () => {
 		toast.info(`Deleted integration: ${integrationToDelete.name}`);
 	};
 
-	const sortedIntegrations = [...integrations].sort(
-		(a, b) => b.enabled - a.enabled
-	);
-
 	const formatTag = (tag) => {
 		return tag
 			.split("_")
@@ -192,15 +190,25 @@ const Integrations = () => {
 			.join(" ");
 	};
 
+	const q = searchTerm.trim().toLowerCase();
+	const filteredIntegrations = !q
+		? integrations
+		: integrations.filter(
+				(i) =>
+					i.name.toLowerCase().includes(q) ||
+					i.tag.toLowerCase().includes(q) ||
+					formatTag(i.tag).toLowerCase().includes(q)
+			);
+
+	const sortedIntegrations = [...filteredIntegrations].sort(
+		(a, b) => b.enabled - a.enabled
+	);
+
 	return (
 		<div className={`p-6 transition-all duration-100 ease-in`}>
-			{/* Integrations Table - Improved */}
+			{/* Table Header */}
 			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
-			>
-				{/* Table Header */}
-				<div
-					className={`flex flex-col md:flex-row items-start md:items-center justify-between px-6 py-4 border-b ${colors.border} gap-4`}
+					className={`flex flex-col md:flex-row items-start md:items-center justify-between p-2 gap-4`}
 				>
 					<div>
 						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
@@ -210,15 +218,34 @@ const Integrations = () => {
 							Manage your third-party integrations and connections
 						</p>
 					</div>
-					<button
-						onClick={() => setIsModalOpen(true)}
-						className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-sm px-4 py-2 transition-all duration-200 font-medium flex items-center gap-2`}
-					>
-						<PlusCircle size={16} />
-						Create Integration
-					</button>
+					<div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+						<div
+							className={`relative flex gap-2 items-center border ${colors.border} rounded-xl px-3 py-2 ${colors.card} min-w-[200px] flex-1 sm:flex-initial sm:min-w-[240px]`}
+						>
+							<Search className={colors.textSecondary} size={18} />
+							<input
+								type="search"
+								placeholder="Search integrations…"
+								value={searchTerm}
+								onChange={(e) => setSearchTerm(e.target.value)}
+								className={`outline-none flex-1 bg-transparent text-sm ${colors.foreground} placeholder:opacity-60 ${getFocusRingClass(colorScheme)}`}
+								aria-label="Search integrations"
+							/>
+						</div>
+						<button
+							type="button"
+							onClick={() => setIsModalOpen(true)}
+							className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-sm px-4 py-2 transition-all duration-200 font-medium flex items-center justify-center gap-2 shrink-0`}
+						>
+							<PlusCircle size={16} />
+							Create Integration
+						</button>
+					</div>
 				</div>
-
+			{/* Integrations Table - Improved */}
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
+			>
 				{/* Table */}
 				<div className="overflow-x-auto">
 					<table className="w-full">
@@ -256,7 +283,9 @@ const Integrations = () => {
 								<tr>
 									<td colSpan="5" className="px-6 py-12 text-center">
 										<p className={colors.mutedForeground}>
-											No integrations found
+											{integrations.length === 0
+												? "No integrations found"
+												: "No integrations match your search"}
 										</p>
 									</td>
 								</tr>
