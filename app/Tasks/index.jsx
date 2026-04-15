@@ -486,7 +486,7 @@ const Tasks = () => {
 	}, [taskSections, searchTerm, filterStatus]);
 
 	return (
-		<div className={`${colors.background} transition-colors`}>
+		<div className={`transition-all duration-100 ease-in`}>
 			<div className="flex flex-col md:flex-row items-center justify-between gap-4 my-4 px-4">
 				<p className={`${colors.foreground} text-xl font-semibold`}>
 					Task Kanban board

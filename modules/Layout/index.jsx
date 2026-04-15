@@ -11,7 +11,7 @@ const LayoutWrapper = ({ children }) => {
 
 	return (
 		<div
-			className={`flex relative ${colors.background} md:p-2 transition-colors min-h-screen`}
+			className={`flex gap-2 relative ${colors.background} md:p-2 transition-colors min-h-screen`}
 		>
 			<div className="hidden md:block">
 				<Sidebar
@@ -38,7 +38,7 @@ const LayoutWrapper = ({ children }) => {
 			</div>
 
 			<main
-				className={`overflow-y-auto ${colors.card} border ${colors.border} rounded-2xl w-full max-h-screen hidescrollbar transition-colors`}
+				className={`overflow-y-auto ${colors.primaryBackground} border ${colors.border} rounded-2xl w-full h-[98vh] hidescrollbar transition-colors`}
 			>
 				<Navbar
 					open={open}

@@ -193,7 +193,7 @@ const Integrations = () => {
 	};
 
 	return (
-		<div className={`p-6 ${colors.background} transition-colors`}>
+		<div className={`p-6 transition-all duration-100 ease-in`}>
 			{/* Integrations Table - Improved */}
 			<div
 				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}

@@ -43,6 +43,12 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 					icon: "DollarSign",
 				},
 				{
+					id: 18,
+					label: "Pipeline",
+					route: "/pipelines",
+					icon: "Layers",
+				},
+				{
 					id: 4,
 					label: "Contacts",
 					route: "/contacts",
@@ -71,6 +77,12 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 					label: "Calendar",
 					route: "/calendar",
 					icon: "Calendar",
+				},
+				{
+					id: 19,
+					label: "Email",
+					route: "/email",
+					icon: "Mail",
 				},
 				{
 					id: 12,
@@ -150,22 +162,22 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 
 	return (
 		<div
-			className={`h-screen ${
+			className={`h-[98vh] ${colors.primaryBackground} rounded-xl ${
 				open ? "w-60 md:w-60" : "w-full"
 			} transition-all duration-500 ease-in`}
 		>
 			<div
-				className={`flex flex-col h-full justify-between pb-5 transition-colors ${open ? "w-60 md:w-60" : "w-full"} transition-all duration-300 ease-in`}
+				className={`flex flex-col h-full justify-between py-1 px-2 transition-colors ${open ? "w-60 md:w-60" : "w-full"} transition-all duration-300 ease-in`}
 			>
 				<div className="flex flex-col gap-1">
 					<div className={`flex items-center justify-between py-1`}>
 						{open ? (
 							<div
-								className={`relative group flex items-center p-2 justify-between border ${colors.border} ${colors.hoverSecondary} rounded-xl cursor-pointer w-full transition-colors`}
+								className={`relative group flex items-center py-2 px-4 justify-between border ${colors.border} ${colors.hoverSecondary} rounded-xl cursor-pointer w-full transition-colors`}
 							>
 								<div className="flex items-center gap-2">
 									<lucideIcons.Rocket
-										className={`w-4 h-4 ${colors.foreground}`}
+										className={`w-3 h-3 ${colors.foreground}`}
 									/>
 									<p className={`text-sm ${colors.foreground}`}>CRM pages</p>
 								</div>
@@ -173,12 +185,10 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 									<lucideIcons.ChevronUp
 										className={`${colors.mutedForeground} group-hover:rotate-180 transition-all duration-200 ease-in w-3 h-3`}
 									/>
-									<lucideIcons.ChevronDown
-										className={`${colors.mutedForeground} group-hover:rotate-180 transition-all duration-200 ease-in w-3 h-3`}
-									/>
+									
 								</div>
 								<div
-									className={`absolute top-10 left-0 right-0 w-60 h-fit ${colors.card} text-xs rounded-xl border ${colors.border} px-1 py-2 opacity-0 transition-opacity duration-200 invisible group-hover:visible group-hover:opacity-100 z-20`}
+									className={`absolute top-10 left-0 right-0 w-54 h-fit ${colors.card} text-xs rounded-xl border ${colors.border} px-1 py-2 opacity-0 transition-opacity duration-200 invisible group-hover:visible group-hover:opacity-100 z-20`}
 								>
 									<p className={`text-xs font-medium p-1 ${colors.foreground}`}>
 										Projects
@@ -215,6 +225,7 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 										<div className={`border-t ${colors.border}`} />
 										<button
 											className={`${scheme.primary} ${scheme.primaryForeground} cursor-pointer hover:shadow-xl transition-all duration-100 ease-in ${scheme.primaryHover} text-xs rounded w-full p-1`}
+
 										>
 											Add project
 										</button>
@@ -234,7 +245,7 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 						</button>
 					</div>
 
-					<div className="flex flex-col px-2">
+					<div className="flex flex-col">
 						{navCategories?.map((category) => (
 							<div key={category.id} className="mb-4">
 								{open && (
@@ -281,25 +292,6 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 							</div>
 						))}
 					</div>
-				</div>
-				<div className="p-2 space-y-2">
-					{open && (
-						<div
-							className={`w-full h-fit ${colors.card} rounded-xl ${colors.shadow} p-4 border ${colors.border} transition-colors`}
-						>
-							<p className={`${colors.textSecondary} mb-2 text-sm`}>
-								Download Unlock lifetime access to entire React CRM template
-							</p>
-							<a
-								href="https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template?layout=profile"
-								target="_blank"
-								rel="noopener noreferrer"
-								className={`p-2 text-sm rounded-xl ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} cursor-pointer transition-colors`}
-							>
-								Download Template
-							</a>
-						</div>
-					)}
 				</div>
 			</div>
 		</div>

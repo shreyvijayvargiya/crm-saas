@@ -9,7 +9,7 @@ import { getFocusRingClass } from "../../utils/theme";
 
 const Companies = () => {
 	// Theme hook
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { colorScheme, colors, scheme } = useTheme();
 
 	const [companies, setCompanies] = useState([
 		{
@@ -162,14 +162,11 @@ const Companies = () => {
 	};
 
 	return (
-		<div className={`p-6 ${colors.background} transition-colors`}>
+		<div className={`p-6 transition-colors`}>
 			{/* Companies Table - Improved */}
+			{/* Table Header */}
 			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
-			>
-				{/* Table Header */}
-				<div
-					className={`flex flex-col md:flex-row items-start md:items-center justify-between px-6 py-4 border-b ${colors.border} gap-4`}
+					className={`flex flex-col md:flex-row items-start md:items-center justify-between p-2 gap-4`}
 				>
 					<div className="flex-1">
 						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
@@ -190,7 +187,7 @@ const Companies = () => {
 								placeholder="Search companies..."
 								value={searchTerm}
 								onChange={(e) => setSearchTerm(e.target.value)}
-								className={`outline-none flex-1 ${colors.background} ${
+								className={`outline-none flex-1 ${
 									colors.foreground
 								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
 									colorScheme
@@ -207,6 +204,10 @@ const Companies = () => {
 						</button>
 					</div>
 				</div>
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
+			>
+				
 
 				{/* Table */}
 				<div className="overflow-x-auto">

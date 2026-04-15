@@ -10,6 +10,7 @@ import {
 	ResponsiveContainer,
 } from "recharts";
 import { useTheme } from "../../../utils/useTheme";
+import { useChartTooltipProps } from "../../../utils/chartTooltip";
 
 const barData = [
 	{ day: "Mo", v: 42 },
@@ -29,6 +30,7 @@ const sideRows = [
 
 const EarningReportsCard = () => {
 	const { colors, scheme } = useTheme();
+	const tooltipProps = useChartTooltipProps();
 
 	return (
 		<div
@@ -85,10 +87,7 @@ const EarningReportsCard = () => {
 							<YAxis hide />
 							<Tooltip
 								cursor={{ fill: "transparent" }}
-								contentStyle={{
-									borderRadius: "8px",
-									border: "1px solid hsl(var(--border, 0 0% 90%))",
-								}}
+								{...tooltipProps}
 							/>
 							<Bar
 								dataKey="v"

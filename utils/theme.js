@@ -149,6 +149,7 @@ export const colorSchemes = {
 // Shadcn color theme object
 export const themeColors = {
 	light: {
+		primaryBackground: "bg-white",
 		background: "bg-zinc-50/50",
 		foreground: "text-zinc-900",
 		muted: "bg-zinc-50",
@@ -174,11 +175,12 @@ export const themeColors = {
 		textTertiary: "text-zinc-500",
 	},
 	dark: {
+		primaryBackground: "bg-zinc-950",
 		background: "bg-black",
 		foreground: "text-zinc-50",
 		muted: "bg-zinc-900",
 		mutedForeground: "text-zinc-400",
-    mutedBackground: "bg-zinc-950",
+		mutedBackground: "bg-zinc-950",
 		border: "border-zinc-800",
 		input: "border-zinc-800",
 		card: "bg-zinc-900",

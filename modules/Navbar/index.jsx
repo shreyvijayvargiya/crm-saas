@@ -63,6 +63,13 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 			section: "sales",
 		},
 		{
+			id: 18,
+			label: "Pipeline",
+			route: "/pipelines",
+			icon: "Layers",
+			section: "sales",
+		},
+		{
 			id: 4,
 			label: "Contacts",
 			route: "/contacts",
@@ -88,6 +95,13 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 			label: "Calendar",
 			route: "/calendar",
 			icon: "Calendar",
+			section: "operations",
+		},
+		{
+			id: 19,
+			label: "Email",
+			route: "/email",
+			icon: "Mail",
 			section: "operations",
 		},
 		{
@@ -232,7 +246,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 
 	return (
 		<div
-			className={`flex justify-between w-full border-b ${colors.border} p-4 ${colors.background} transition-all duration-100 ease-in`}
+			className={`flex justify-between w-full border-b ${colors.border} p-4 ${colors.primaryBackground} transition-all duration-100 ease-in`}
 		>
 			<div className="relative flex justify-start items-center">
 				{open ? (
@@ -270,6 +284,11 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 			</div>
 			<div className="flex items-center justify-between gap-2">
 				<div className="flex items-center gap-2 mr-2">
+					<div>
+						<a href="https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template" target="_blank" rel="noopener noreferrer" className={`mr-2 p-2 rounded-xl ${colors.hoverSecondary} ${colors.foreground} transition-all duration-100 ease-in`}>
+							Download template
+						</a>
+					</div>
 					{/* Color Scheme Picker */}
 					<div className="relative color-picker-dropdown">
 						<div

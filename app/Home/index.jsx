@@ -218,7 +218,7 @@ const Home = () => {
 	];
 
 	return (
-		<div className={`p-6 mx-auto ${colors.background} transition-colors`}>
+		<div className={`p-6 mx-auto transition-all duration-100 ease-in`}>
 			<h1 className={`text-xl font-semibold mb-4 ${colors.foreground}`}>
 				Welcome back, John
 			</h1>

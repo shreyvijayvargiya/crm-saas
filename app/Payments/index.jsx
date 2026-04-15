@@ -20,6 +20,7 @@ import React, { useState, useMemo } from "react";
 import { toast } from "react-toastify";
 import { useTheme } from "../../utils/useTheme";
 import { getFocusRingClass } from "../../utils/theme";
+import PaymentMethodForm from "./PaymentMethodForm";
 
 const Payments = () => {
 	// Theme hook
@@ -637,10 +638,11 @@ const Payments = () => {
 				</div>
 			</div>
 
-			{/* Payments Table */}
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
-			>
+			{/* Payment method + table */}
+			<div className="flex flex-col xl:flex-row gap-6 items-start">
+				<div
+					className={`flex-1 min-w-0 w-full ${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
+				>
 				<div className="overflow-x-auto">
 					<table className="w-full">
 						<thead className={`${colors.muted} border-b ${colors.border}`}>
@@ -872,6 +874,10 @@ const Payments = () => {
 						</div>
 					</div>
 				)}
+				</div>
+				<div className="w-full xl:w-[min(100%,26rem)] shrink-0 xl:sticky xl:top-4">
+					<PaymentMethodForm />
+				</div>
 			</div>
 
 			{/* Add Payment Modal */}

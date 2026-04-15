@@ -17,7 +17,7 @@ import { getFocusRingClass } from "../../utils/theme";
 
 const Contacts = () => {
 	// Theme hook
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { colorScheme, colors, scheme } = useTheme();
 
 	const [contacts, setContacts] = useState([
 		{
@@ -409,7 +409,7 @@ const Contacts = () => {
 	};
 
 	return (
-		<div className={`p-6 ${colors.background} transition-colors`}>
+		<div className={`p-6 ${colors.primaryBackground} transition-all duration-100 ease-in`}>
 			{/* Contacts Table - Improved */}
 			<div
 				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}

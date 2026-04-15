@@ -179,7 +179,7 @@ const ApiKeys = () => {
 
 	return (
 		<div
-			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar ${colors.background} transition-colors`}
+			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar transition-all duration-100 ease-in`}
 		>
 			<div className="flex justify-between items-center flex-wrap my-4">
 				<div>

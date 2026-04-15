@@ -10,6 +10,7 @@ import {
 	ResponsiveContainer,
 } from "recharts";
 import { useTheme } from "../../../utils/useTheme";
+import { useChartTooltipProps } from "../../../utils/chartTooltip";
 
 const areaData = [
 	{ x: "1", y: 12 },
@@ -26,6 +27,7 @@ const areaData = [
 
 const AverageDailySalesCard = () => {
 	const { colors } = useTheme();
+	const tooltipProps = useChartTooltipProps();
 
 	return (
 		<div
@@ -58,7 +60,7 @@ const AverageDailySalesCard = () => {
 						/>
 						<XAxis dataKey="x" hide />
 						<YAxis hide />
-						<Tooltip />
+						<Tooltip {...tooltipProps} />
 						<Area
 							type="monotone"
 							dataKey="y"

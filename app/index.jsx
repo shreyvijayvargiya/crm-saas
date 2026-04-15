@@ -15,3 +15,6 @@ export { default as ApiKeys } from "./ApiKeys";
 export { default as Payments } from "./Payments";
 export { default as Projects } from "./Projects";
 export { default as ContentManagementSystem } from "./Content Management System";
+export { default as Pipelines } from "./Pipelines";
+export { default as LeadDetail } from "./Leads/LeadDetail";
+export { default as Email } from "./Email";

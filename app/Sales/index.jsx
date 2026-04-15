@@ -193,7 +193,7 @@ const Sales = () => {
 	};
 
 	return (
-		<div className={`p-4 ${colors.background} transition-colors`}>
+		<div className={`p-4 transition-all duration-100 ease-in`}>
 			<div className="flex justify-between gap-4 items-start mb-6 flex-wrap">
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1">
 					{/* Total Sales Card */}

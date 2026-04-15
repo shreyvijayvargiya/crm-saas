@@ -121,7 +121,7 @@ const Teams = () => {
 		ROLE_OPTIONS.find((r) => r.value === roleFilter)?.label ?? "All roles";
 
 	return (
-		<div className={`${colors.background} min-h-screen transition-colors pb-10`}>
+		<div className={`min-h-screen transition-all duration-100 ease-in pb-10`}>
 			<div className="max-w-7xl px-4 md:px-6 pt-6 md:pt-8 space-y-6">
 				<div>
 					<h1 className={`text-2xl font-bold tracking-tight ${colors.foreground}`}>

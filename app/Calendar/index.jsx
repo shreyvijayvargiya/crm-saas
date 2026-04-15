@@ -440,7 +440,7 @@ const Calendar = () => {
 	}
 
 	return (
-		<div className={`${colors.background} transition-colors p-4`}>
+		<div className={`transition-all duration-100 ease-in p-4`}>
 			{/* Header */}
 			<div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
 				<div className="flex items-center gap-4">

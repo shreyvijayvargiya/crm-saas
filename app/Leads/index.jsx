@@ -14,6 +14,7 @@ import {
 	Download,
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
+import Link from "next/link";
 import { toast } from "react-toastify";
 import { useTheme } from "../../utils/useTheme";
 import { getFocusRingClass } from "../../utils/theme";
@@ -301,7 +302,7 @@ const Leads = () => {
 
 	return (
 		<div
-			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar ${colors.background} transition-colors`}
+			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar transition-all duration-100 ease-in`}
 		>
 			{/* Leads Table - Improved */}
 			<div
@@ -436,11 +437,13 @@ const Leads = () => {
 													alt={lead.name}
 													className="w-10 h-10 rounded-full border-2 border-zinc-200"
 												/>
-												<div
-													className={`text-sm font-medium ${colors.foreground}`}
-												>
-													{lead.name}
-												</div>
+												<Link href={`/leads/${lead.id}`} passHref>
+													<a
+														className={`text-sm font-medium ${colors.foreground} hover:underline`}
+													>
+														{lead.name}
+													</a>
+												</Link>
 											</div>
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
@@ -470,12 +473,14 @@ const Leads = () => {
 														className={colors.textSecondary}
 													/>
 												</button>
-												<button
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
-													title="View"
-												>
-													<Eye size={16} className={colors.textSecondary} />
-												</button>
+												<Link href={`/leads/${lead.id}`} passHref>
+													<a
+														className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors inline-flex`}
+														title="View profile"
+													>
+														<Eye size={16} className={colors.textSecondary} />
+													</a>
+												</Link>
 												<button
 													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
 													title="Edit"
