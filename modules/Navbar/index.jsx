@@ -13,7 +13,6 @@ import {
 	Sun,
 } from "lucide-react";
 import Image from "next/image";
-import { FiMessageSquare, FiSettings, FiUser } from "react-icons/fi";
 import * as lucideIcons from "lucide-react";
 import { useRouter } from "next/router";
 import { useTheme } from "../../utils/useTheme";
@@ -22,7 +21,6 @@ import { colorSchemes } from "../../utils/theme";
 const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 	const router = useRouter();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
-	const [bellDropdownOpen, setBellDropdownOpen] = useState(false);
 	const [searchModalOpen, setSearchModalOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
@@ -161,6 +159,13 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 			section: "system",
 		},
 		{
+			id: 20,
+			label: "Notifications",
+			route: "/notifications",
+			icon: "Bell",
+			section: "system",
+		},
+		{
 			id: 14,
 			label: "Settings",
 			route: "/settings",
@@ -242,7 +247,6 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 		.filter((section) => section.items.length > 0);
 
 	const handleDropdownToggle = () => setDropdownOpen(!dropdownOpen);
-	const handleBellDropdownToggle = () => setBellDropdownOpen(!bellDropdownOpen);
 
 	return (
 		<div
@@ -348,11 +352,11 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 
 				<MessageSquare
 					className={`cursor-pointer ${colors.mutedForeground} transition-colors`}
+					onClick={() => router.push("/email")}
 				/>
 				<div
 					className="relative"
-					onMouseEnter={handleBellDropdownToggle}
-					onMouseLeave={handleBellDropdownToggle}
+					onClick={() => router.push("/notifications")}
 				>
 					<Bell
 						className={`mr-2 cursor-pointer ${colors.mutedForeground} transition-colors`}
@@ -360,69 +364,6 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 					<span className="absolute -top-2 right-0 bg-red-500 text-white text-xs rounded-full px-1">
 						3
 					</span>
-					{bellDropdownOpen && (
-						<div
-							className={`absolute right-0 w-60 py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.shadow} z-10`}
-						>
-							<div className="p-2">
-								<p
-									className={`text-sm p-1.5 font-semibold ${colors.mutedForeground}`}
-								>
-									Notifications
-								</p>
-								<div className="space-y-2 my-2 px-2">
-									<div
-										className={`flex items-start ${colors.hoverSecondary} p-1.5 rounded-xl`}
-									>
-										<FiMessageSquare
-											size={20}
-											className={`mr-2 mt-1 ${colors.foreground}`}
-										/>
-										<p className={`text-sm ${colors.foreground}`}>
-											New message from Alice
-											<span
-												className={`${colors.mutedForeground} ml-2 text-xs`}
-											>
-												2 mins ago
-											</span>
-										</p>
-									</div>
-									<div
-										className={`flex items-start ${colors.hoverSecondary} p-1.5 rounded-xl`}
-									>
-										<FiUser
-											size={20}
-											className={`mr-2 mt-1 ${colors.foreground}`}
-										/>
-										<p className={`text-sm ${colors.foreground}`}>
-											John Doe followed you
-											<span
-												className={`${colors.mutedForeground} ml-2 text-xs`}
-											>
-												5 mins ago
-											</span>
-										</p>
-									</div>
-									<div
-										className={`flex items-start ${colors.hoverSecondary} p-1.5 rounded-xl`}
-									>
-										<FiSettings
-											size={20}
-											className={`mr-2 mt-1 ${colors.foreground}`}
-										/>
-										<p className={`text-sm ${colors.foreground}`}>
-											Your settings have been updated
-											<span
-												className={`${colors.mutedForeground} ml-2 text-xs`}
-											>
-												10 mins ago
-											</span>
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					)}
 				</div>
 				<div
 					className="relative inline-block"
@@ -481,36 +422,36 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 			{searchModalOpen && (
 				<div className="fixed inset-0 flex items-start justify-center bg-black bg-opacity-50 z-50 pt-20">
 					<div
-						className={`${colors.card} rounded-xl w-full max-w-2xl mx-4 max-h-[80vh] overflow-auto`}
+						className={`${colors.card} border-2 ${colors.border} rounded-xl w-full max-w-2xl mx-4 max-h-[80vh] overflow-auto`}
 					>
 						<div
-							className={`flex items-center justify-between p-4 border-b `}
+							className={`flex items-center justify-between p-2 border-b-2 ${colors.border}`}
 						>
 							<div className="flex items-center gap-2 flex-1">
-								<Search className={colors.mutedForeground} size={20} />
+								<Search className={colors.mutedForeground} size={18} />
 								<input
 									ref={modalSearchInputRef}
 									type="text"
 									placeholder="Search pages..."
 									value={searchTerm}
 									onChange={(e) => setSearchTerm(e.target.value)}
-									className={`outline-none flex-1 text-lg bg-transparent ${colors.foreground} placeholder:${colors.textTertiary}`}
+									className={`outline-none flex-1 bg-transparent ${colors.foreground} placeholder:${colors.textTertiary}`}
 								/>
 							</div>
 							<button
 								onClick={handleCloseModal}
 								className={`${colors.mutedForeground} ${colors.hoverSecondary} p-1 rounded-xl transition-colors`}
 							>
-								<X size={24} />
+								<X size={18} />
 							</button>
 						</div>
-						<div className="p-3 overflow-y-auto max-h-[60vh]">
-							<div className="space-y-4">
+						<div className="p-2 overflow-y-auto max-h-[60vh]">
+							<div className="space-y-2">
 								{groupedFilteredNavItems.length > 0 ? (
 									groupedFilteredNavItems.map((section) => (
-										<div key={section.key} className="space-y-1.5">
+										<div key={section.key} className="space-y-1">
 											<div
-												className={`px-2 text-xs font-semibold tracking-wide uppercase ${colors.textMuted}`}
+												className={`px-2 text-xs font-semibold tracking-wide  ${colors.textMuted}`}
 											>
 												{section.label}
 											</div>
@@ -521,17 +462,17 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 														<button
 															key={item.id}
 															onClick={() => handleNavigate(item.route)}
-															className={`w-full flex items-center justify-between gap-3 px-2 py-2 ${colors.hoverSecondary} rounded-xl transition-all duration-100 ease-in text-left`}
+															className={`w-full flex items-center justify-between gap-3 px-2 py-1 ${colors.hoverSecondary} rounded-xl transition-all duration-100 ease-in text-left`}
 														>
 															<div className="flex items-center gap-3 min-w-0">
 																{Icon && (
 																	<Icon
-																		size={18}
+																		size={16}
 																		className={colors.textSecondary}
 																	/>
 																)}
 																<span
-																	className={`${colors.textSecondary} font-medium truncate`}
+																	className={`${colors.textSecondary} text-sm truncate`}
 																>
 																	{item.label}
 																</span>

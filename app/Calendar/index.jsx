@@ -431,7 +431,7 @@ const Calendar = () => {
 
 	if (loading) {
 		return (
-			<div className={`${colors.background} p-4`}>
+			<div className={`p-4`}>
 				<div className={`${colors.foreground} text-center`}>
 					Loading calendar...
 				</div>

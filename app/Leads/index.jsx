@@ -12,6 +12,9 @@ import {
 	Search,
 	UserPlus,
 	Download,
+	GripVertical,
+	Paperclip,
+	Plus,
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
@@ -19,14 +22,85 @@ import { toast } from "react-toastify";
 import { useTheme } from "../../utils/useTheme";
 import { getFocusRingClass } from "../../utils/theme";
 
+function initialsFromName(name) {
+	const p = String(name).trim().split(/\s+/);
+	if (p.length >= 2) return (p[0][0] + p[1][0]).toUpperCase();
+	return name.slice(0, 2).toUpperCase();
+}
+
+/** Deterministic mock metrics from lead id + column — data shape unchanged */
+function leadKanbanMeta(lead, pipelineId) {
+	const n = parseInt(String(lead.id).replace(/\D/g, ""), 10) || 0;
+	const isDone = pipelineId === "rejected";
+	const progress = isDone ? 100 : Math.min(95, 22 + (n % 58));
+	const priority =
+		n % 3 === 0 ? "high" : n % 3 === 1 ? "medium" : "low";
+	const attachments = 1 + (n % 5);
+	const comments = 1 + (n % 12);
+	return { progress, priority, attachments, comments };
+}
+
+const PRIORITY_CLASS = {
+	high: "border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-800/50 dark:bg-rose-950/40 dark:text-rose-200",
+	medium:
+		"border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-800/50 dark:bg-amber-950/40 dark:text-amber-200",
+	low: "border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900/60 dark:text-zinc-300",
+};
+
+const AVATAR_STACK = [
+	"bg-violet-500 text-white",
+	"bg-amber-400 text-amber-950",
+	"bg-sky-400 text-sky-950",
+];
+
+function RingProgress({ percent, complete }) {
+	const r = 16;
+	const c = 2 * Math.PI * r;
+	const offset = c - (Math.min(100, percent) / 100) * c;
+	const stroke = complete ? "#22c55e" : "#f59e0b";
+	return (
+		<div className="flex items-center gap-2 shrink-0">
+			<svg width="40" height="40" className="shrink-0 -rotate-90">
+				<circle
+					cx="20"
+					cy="20"
+					r={r}
+					fill="none"
+					className="stroke-zinc-200 dark:stroke-zinc-700"
+					strokeWidth="3"
+				/>
+				<circle
+					cx="20"
+					cy="20"
+					r={r}
+					fill="none"
+					stroke={stroke}
+					strokeWidth="3"
+					strokeLinecap="round"
+					strokeDasharray={c}
+					strokeDashoffset={offset}
+					className="transition-all duration-300"
+				/>
+			</svg>
+			<span
+				className={`text-xs font-semibold tabular-nums ${
+					complete ? "text-emerald-600 dark:text-emerald-400" : "text-zinc-500 dark:text-zinc-400"
+				}`}
+			>
+				{Math.round(percent)}%
+			</span>
+		</div>
+	);
+}
+
 const Leads = () => {
 	// Theme hook
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { colorScheme, colors, scheme } = useTheme();
 
 	const initialPipelines = [
 		{
 			id: "new",
-			name: "New Leads",
+			name: "Backlog",
 			leads: [
 				{
 					id: "101",
@@ -53,7 +127,7 @@ const Leads = () => {
 		},
 		{
 			id: "contacted",
-			name: "Contacted",
+			name: "In Progress",
 			leads: [
 				{
 					id: "102",
@@ -80,7 +154,7 @@ const Leads = () => {
 		},
 		{
 			id: "rejected",
-			name: "Rejected",
+			name: "Done",
 			leads: [
 				{
 					id: "107",
@@ -199,6 +273,7 @@ const Leads = () => {
 	const [sortConfig, setSortConfig] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [newLead, setNewLead] = useState({ name: "", email: "", image: "" });
+	const [dragOverColumn, setDragOverColumn] = useState(null);
 
 	const handleAddLead = () => setIsModalOpen(true);
 
@@ -247,15 +322,26 @@ const Leads = () => {
 
 	const handleDragStart = (event, lead) => {
 		event.dataTransfer.setData("text/plain", lead.id);
-		event.target.style.opacity = "0.5";
+		event.dataTransfer.effectAllowed = "move";
+		const el = event.currentTarget;
+		if (el instanceof HTMLElement) el.style.opacity = "0.55";
 	};
 
 	const handleDragEnd = (event) => {
-		event.target.style.opacity = "1";
+		const el = event.currentTarget;
+		if (el instanceof HTMLElement) el.style.opacity = "1";
+		setDragOverColumn(null);
+	};
+
+	const handleColumnDragOver = (event, pipelineId) => {
+		event.preventDefault();
+		event.dataTransfer.dropEffect = "move";
+		setDragOverColumn(pipelineId);
 	};
 
 	const handleDrop = (event, pipelineId) => {
 		event.preventDefault();
+		setDragOverColumn(null);
 		const leadId = event.dataTransfer.getData("text/plain");
 		const leadToMove = allLeads.find((lead) => lead.id === leadId);
 		if (leadToMove) {
@@ -304,13 +390,9 @@ const Leads = () => {
 		<div
 			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar transition-all duration-100 ease-in`}
 		>
-			{/* Leads Table - Improved */}
+			{/* Table Header */}
 			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
-			>
-				{/* Table Header */}
-				<div
-					className={`flex flex-col md:flex-row items-start md:items-center justify-between px-6 py-4 border-b ${colors.border} gap-4`}
+					className={`flex flex-col md:flex-row items-start md:items-center justify-between p-2 gap-4`}
 				>
 					<div>
 						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
@@ -363,6 +445,11 @@ const Leads = () => {
 						</button>
 					</div>
 				</div>
+			{/* Leads Table - Improved */}
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
+			>
+				
 
 				{/* Table */}
 				<div className="overflow-x-auto">
@@ -530,51 +617,133 @@ const Leads = () => {
 					onClick={() => {}}
 				/>
 			</div>
-			<p className={`my-4 ${colors.foreground}`}>Leads</p>
-			<div className="flex md:flex-row flex-col gap-2 md:w-full">
-				{pipelines.map((pipeline) => (
-					<div
-						key={pipeline.id}
-						className={`py-4 md:w-3/4 w-full ${colors.card} ${colors.shadow} rounded-xl p-4 border ${colors.border} ${colors.hoverSecondary} hover:px-5 transition-all duration-100 ease-in`}
-						onDragOver={(e) => e.preventDefault()}
-						onDrop={(e) => handleDrop(e, pipeline.id)}
-					>
-						<p className={`font-semibold text-lg ${colors.foreground}`}>
-							{pipeline.name}
-						</p>
-						{pipeline.leads.map((lead) => (
-							<div
-								key={lead.id}
-								draggable
-								onDragStart={(e) => handleDragStart(e, lead)}
-								onDragEnd={handleDragEnd}
-								className={`border ${colors.border} rounded-xl p-3 my-2 ${colors.muted} transition-all duration-200 ease-in-out ${colors.shadow} ${colors.hoverSecondary}`}
-							>
-								<img
-									src={lead.image}
-									alt={lead.name}
-									className={`w-12 h-12 rounded-full mr-4 border-2 ${colors.border}`}
-								/>
-								<div className="flex-1">
-									<div className={`font-medium ${colors.foreground}`}>
-										{lead.name}
-									</div>
-									<div className={`text-sm ${colors.textSecondary}`}>
-										{lead.email}
-									</div>
-									<div className={`text-xs ${colors.textMuted}`}>
-										Company: {lead.company}
-									</div>
+			<div className="mt-10 mb-3">
+				<h2 className={`text-lg font-semibold ${colors.foreground}`}>Lead board</h2>
+				<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+					Drag cards between Backlog, In Progress, and Done
+				</p>
+			</div>
+			<div className="flex flex-col lg:flex-row gap-4 lg:items-start overflow-x-auto pb-2">
+				{pipelines.map((pipeline) => {
+					const isOver = dragOverColumn === pipeline.id;
+					return (
+						<div
+							key={pipeline.id}
+							className="w-full lg:w-[min(100%,320px)] shrink-0 rounded-2xl bg-zinc-100/90 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 p-3 shadow-sm"
+						>
+							<div className="flex items-center justify-between gap-2 mb-3 px-0.5">
+								<div className="flex items-center gap-2 min-w-0">
+									<h3 className={`font-bold text-[15px] ${colors.foreground} truncate`}>
+										{pipeline.name}
+									</h3>
+									<span
+										className={`flex h-7 min-w-[1.75rem] px-1.5 items-center justify-center rounded-full text-xs font-semibold bg-zinc-200/90 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200`}
+									>
+										{pipeline.leads.length}
+									</span>
 								</div>
-								<div className="text-sm flex items-center gap-2 my-2">
-									<Mail size={18} className={colors.textMuted} />
-									<MessageCircle size={18} className={colors.textMuted} />
-									<Phone size={18} className={colors.textMuted} />
+								<div className="flex items-center gap-1 shrink-0">
+									<span
+										className={`p-1.5 rounded-xl text-zinc-400 ${colors.hoverSecondary}`}
+										aria-hidden
+									>
+										<GripVertical className="w-4 h-4" />
+									</span>
+									<button
+										type="button"
+										className={`p-1.5 rounded-full border ${colors.border} ${colors.card} ${colors.hoverSecondary} ${colors.foreground}`}
+										title="Add card"
+									>
+										<Plus className="w-4 h-4" />
+									</button>
 								</div>
 							</div>
-						))}
-					</div>
-				))}
+							<div
+								onDragOver={(e) => handleColumnDragOver(e, pipeline.id)}
+								onDrop={(e) => handleDrop(e, pipeline.id)}
+								className={`min-h-[200px] space-y-3 rounded-xl p-1 transition-colors ${
+									isOver
+										? "bg-zinc-200/50 dark:bg-zinc-800/80 ring-2 ring-zinc-300 dark:ring-zinc-600"
+										: ""
+								}`}
+							>
+								{pipeline.leads.length === 0 && (
+									<p className={`text-center text-xs py-8 ${colors.textMuted}`}>
+										Drop leads here
+									</p>
+								)}
+								{pipeline.leads.map((lead) => {
+									const meta = leadKanbanMeta(lead, pipeline.id);
+									const desc = `Follow up with ${lead.company} — ${lead.email}`;
+									const shortDesc =
+										desc.length > 52 ? `${desc.slice(0, 50)}…` : desc;
+									const i1 = initialsFromName(lead.name);
+									const i2 = initialsFromName(lead.company.split(" ")[0] || "TM");
+									const i3 = "M";
+									return (
+										<div
+											key={lead.id}
+											draggable
+											onDragStart={(e) => handleDragStart(e, lead)}
+											onDragEnd={handleDragEnd}
+											className="rounded-2xl border border-zinc-200/90 dark:border-zinc-700 bg-white dark:bg-zinc-950 p-4 shadow-sm hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing"
+										>
+											<Link href={`/leads/${lead.id}`} passHref>
+												<a
+													className={`block font-semibold text-[15px] leading-snug ${colors.foreground} hover:underline`}
+													onClick={(e) => e.stopPropagation()}
+													onMouseDown={(e) => e.stopPropagation()}
+												>
+													{lead.name}
+												</a>
+											</Link>
+											<p className={`text-xs mt-1.5 leading-relaxed ${colors.textSecondary} line-clamp-2`}>
+												{shortDesc}
+											</p>
+											<div className="flex items-center justify-between gap-3 mt-4">
+												<div className="flex -space-x-2">
+													{[i1, i2, i3].map((ini, idx) => (
+														<span
+															key={`${lead.id}-av-${idx}`}
+															className={`inline-flex h-8 w-8 items-center justify-center rounded-full text-[10px] font-bold border-2 border-white dark:border-zinc-950 ${AVATAR_STACK[idx % AVATAR_STACK.length]}`}
+														>
+															{ini}
+														</span>
+													))}
+												</div>
+												<RingProgress
+													percent={meta.progress}
+													complete={pipeline.id === "rejected"}
+												/>
+											</div>
+											<div className="flex items-center justify-between mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+												<span
+													className={`text-[11px] font-medium px-2 py-0.5 rounded-full border ${PRIORITY_CLASS[meta.priority]}`}
+												>
+													{meta.priority === "high"
+														? "High"
+														: meta.priority === "medium"
+														? "Medium"
+														: "Low"}
+												</span>
+												<div className={`flex items-center gap-3 text-xs ${colors.textMuted}`}>
+													<span className="inline-flex items-center gap-1">
+														<Paperclip className="w-3.5 h-3.5" />
+														{meta.attachments}
+													</span>
+													<span className="inline-flex items-center gap-1">
+														<MessageCircle className="w-3.5 h-3.5" />
+														{meta.comments}
+													</span>
+												</div>
+											</div>
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					);
+				})}
 			</div>
 
 			{isModalOpen && (

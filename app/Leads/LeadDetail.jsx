@@ -88,7 +88,7 @@ const LeadDetail = () => {
 
 	if (!router.isReady || !lead) {
 		return (
-			<div className={`p-6 ${colors.background}`}>
+			<div className={`p-6`}>
 				<p className={colors.mutedForeground}>Loading…</p>
 			</div>
 		);

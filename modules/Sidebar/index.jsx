@@ -151,6 +151,12 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 					icon: "UsersRound",
 				},
 				{
+					id: 20,
+					label: "Notifications",
+					route: "/notifications",
+					icon: "Bell",
+				},
+				{
 					id: 14,
 					label: "Settings",
 					route: "/settings",
@@ -162,7 +168,7 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 
 	return (
 		<div
-			className={`h-[98vh] ${colors.primaryBackground} rounded-xl ${
+			className={`h-[98vh] border ${colors.border} ${colors.primaryBackground} rounded-xl ${
 				open ? "w-60 md:w-60" : "w-full"
 			} transition-all duration-500 ease-in`}
 		>

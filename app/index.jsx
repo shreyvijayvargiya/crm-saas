@@ -18,3 +18,4 @@ export { default as ContentManagementSystem } from "./Content Management System"
 export { default as Pipelines } from "./Pipelines";
 export { default as LeadDetail } from "./Leads/LeadDetail";
 export { default as Email } from "./Email";
+export { default as Notifications } from "./Notifications";
