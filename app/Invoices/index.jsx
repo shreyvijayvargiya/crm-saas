@@ -11,15 +11,29 @@ import {
 	FileText,
 	X,
 	Plus,
+	CheckCircle2,
+	DollarSign,
+	Wallet,
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
 import { toast } from "react-toastify";
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from "recharts";
 import { useTheme } from "../../utils/useTheme";
+import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { getFocusRingClass } from "../../utils/theme";
 
 const Invoices = () => {
 	// Theme hook
 	const { theme, colorScheme, colors, scheme } = useTheme();
+	const chartTooltipProps = useChartTooltipProps();
 
 	const initialInvoices = [
 		{
@@ -391,10 +405,216 @@ const Invoices = () => {
 		}).format(amount);
 	};
 
+	const invoiceStats = useMemo(() => {
+		const total = invoices.length;
+		const totalValue = invoices.reduce((s, i) => s + i.amount, 0);
+		const paidValue = invoices
+			.filter((i) => i.status === "Paid")
+			.reduce((s, i) => s + i.amount, 0);
+		const outstanding = invoices
+			.filter((i) => i.status !== "Paid")
+			.reduce((s, i) => s + i.amount, 0);
+		return { total, totalValue, paidValue, outstanding };
+	}, [invoices]);
+
+	const statusCountData = useMemo(() => {
+		const paid = invoices.filter((i) => i.status === "Paid").length;
+		const pending = invoices.filter((i) => i.status === "Pending").length;
+		const overdue = invoices.filter((i) => i.status === "Overdue").length;
+		return [
+			{ name: "Paid", count: paid },
+			{ name: "Pending", count: pending },
+			{ name: "Overdue", count: overdue },
+		];
+	}, [invoices]);
+
+	const amountByStatusData = useMemo(() => {
+		return ["Paid", "Pending", "Overdue"].map((status) => ({
+			name: status,
+			amount: invoices
+				.filter((i) => i.status === status)
+				.reduce((s, i) => s + i.amount, 0),
+		}));
+	}, [invoices]);
+
+	const gridStroke = theme === "dark" ? "#3f3f46" : "#e4e4e7";
+	const axisStroke = theme === "dark" ? "#71717a" : "#71717a";
+
 	return (
 		<div
 			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar transition-all duration-100 ease-in`}
 		>
+			{/* Stats + charts */}
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-blue-600/10 rounded-full blur-2xl" />
+					<div className="relative">
+						<div className="flex items-center justify-between mb-2">
+							<div className="p-2 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-sm border border-blue-500/20">
+								<FileText className="text-blue-500" size={20} />
+							</div>
+						</div>
+						<p className={`text-2xl font-bold ${colors.foreground}`}>
+							{invoiceStats.total}
+						</p>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Total invoices
+						</p>
+					</div>
+				</div>
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-purple-600/10 rounded-full blur-2xl" />
+					<div className="relative">
+						<div className="flex items-center justify-between mb-2">
+							<div className="p-2 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 backdrop-blur-sm border border-purple-500/20">
+								<DollarSign className="text-purple-500" size={20} />
+							</div>
+						</div>
+						<p className={`text-2xl font-bold ${colors.foreground}`}>
+							{formatCurrency(invoiceStats.totalValue)}
+						</p>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Total billed
+						</p>
+					</div>
+				</div>
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-green-400/20 to-green-600/10 rounded-full blur-2xl" />
+					<div className="relative">
+						<div className="flex items-center justify-between mb-2">
+							<div className="p-2 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-sm border border-green-500/20">
+								<CheckCircle2 className="text-green-500" size={20} />
+							</div>
+						</div>
+						<p className={`text-2xl font-bold ${colors.foreground}`}>
+							{formatCurrency(invoiceStats.paidValue)}
+						</p>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Collected (paid)
+						</p>
+					</div>
+				</div>
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-orange-400/20 to-orange-600/10 rounded-full blur-2xl" />
+					<div className="relative">
+						<div className="flex items-center justify-between mb-2">
+							<div className="p-2 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 backdrop-blur-sm border border-orange-500/20">
+								<Wallet className="text-orange-500" size={20} />
+							</div>
+						</div>
+						<p className={`text-2xl font-bold ${colors.foreground}`}>
+							{formatCurrency(invoiceStats.outstanding)}
+						</p>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Outstanding
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<p className={`text-sm font-medium ${colors.foreground} mb-1`}>
+						Invoices by status
+					</p>
+					<p className={`text-xs ${colors.mutedForeground} mb-4`}>
+						Count breakdown (matches totals above)
+					</p>
+					<ResponsiveContainer width="100%" height={220}>
+						<BarChart
+							data={statusCountData}
+							margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
+						>
+							<CartesianGrid
+								strokeDasharray="3 3"
+								stroke={gridStroke}
+								vertical={false}
+							/>
+							<XAxis
+								dataKey="name"
+								stroke={axisStroke}
+								fontSize={11}
+								tickLine={false}
+								axisLine={false}
+							/>
+							<YAxis
+								stroke={axisStroke}
+								fontSize={11}
+								tickLine={false}
+								axisLine={false}
+								allowDecimals={false}
+							/>
+							<Tooltip
+								{...chartTooltipProps}
+								formatter={(value) => [value, "Invoices"]}
+							/>
+							<Bar
+								dataKey="count"
+								fill={theme === "dark" ? "#3b82f6" : "#2563eb"}
+								radius={[8, 8, 0, 0]}
+							/>
+						</BarChart>
+					</ResponsiveContainer>
+				</div>
+				<div
+					className={`${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<p className={`text-sm font-medium ${colors.foreground} mb-1`}>
+						Amount by status
+					</p>
+					<p className={`text-xs ${colors.mutedForeground} mb-4`}>
+						USD split across paid, pending, and overdue
+					</p>
+					<ResponsiveContainer width="100%" height={220}>
+						<BarChart
+							data={amountByStatusData}
+							margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
+						>
+							<CartesianGrid
+								strokeDasharray="3 3"
+								stroke={gridStroke}
+								vertical={false}
+							/>
+							<XAxis
+								dataKey="name"
+								stroke={axisStroke}
+								fontSize={11}
+								tickLine={false}
+								axisLine={false}
+							/>
+							<YAxis
+								stroke={axisStroke}
+								fontSize={11}
+								tickLine={false}
+								axisLine={false}
+								tickFormatter={(v) =>
+									v >= 1000 ? `$${(v / 1000).toFixed(0)}k` : `$${v}`
+								}
+							/>
+							<Tooltip
+								{...chartTooltipProps}
+								formatter={(value) => formatCurrency(value)}
+							/>
+							<Bar
+								dataKey="amount"
+								fill={theme === "dark" ? "#22c55e" : "#16a34a"}
+								radius={[8, 8, 0, 0]}
+							/>
+						</BarChart>
+					</ResponsiveContainer>
+				</div>
+			</div>
+
 			{/* Table Header */}
 			<div
 					className={`flex flex-col md:flex-row items-start md:items-center justify-between p-2 gap-4`}

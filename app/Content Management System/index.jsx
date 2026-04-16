@@ -461,7 +461,7 @@ const ContentManagementSystem = () => {
 				</div>
 			</div>
 {/* Table Header */}
-<div className={`p-2 flex gap-2 justify-between`}>
+<div className={`p-2`}>
 					<div className="flex items-center justify-between mb-4">
 						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
 							Recent Blogs
@@ -474,26 +474,28 @@ const ContentManagementSystem = () => {
 							Add New Blog
 						</button>
 					</div>
-					<div className="flex items-center justify-end  gap-4 relative flex-1 max-w-sm">
-						<Search
-							className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${colors.mutedForeground}`}
-						/>
-						<input
-							type="text"
-							placeholder="Search blogs..."
-							value={searchTerm}
-							onChange={(e) => {
-								setSearchTerm(e.target.value);
-								setCurrentPage(1);
-							}}
-							className={`w-full pl-10 pr-4 py-2 ${
-								colors.background
-							} border ${colors.border} rounded-xl text-sm ${
-								colors.foreground
-							} focus:outline-none focus:ring-2 ${getFocusRingClass(
-								colorScheme
-							)} focus:border-transparent placeholder:${colors.textTertiary}`}
-						/>
+					<div className="flex items-center gap-4">
+						<div className="relative flex-1 max-w-sm">
+							<Search
+								className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${colors.mutedForeground}`}
+							/>
+							<input
+								type="text"
+								placeholder="Search blogs..."
+								value={searchTerm}
+								onChange={(e) => {
+									setSearchTerm(e.target.value);
+									setCurrentPage(1);
+								}}
+								className={`w-full pl-10 pr-4 py-2 ${
+									colors.background
+								} border ${colors.border} rounded-xl text-sm ${
+									colors.foreground
+								} focus:outline-none focus:ring-2 ${getFocusRingClass(
+									colorScheme
+								)} focus:border-transparent placeholder:${colors.textTertiary}`}
+							/>
+						</div>
 					</div>
 				</div>
 			{/* Recent Blogs Table */}

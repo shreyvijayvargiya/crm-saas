@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import {
 	PlusCircle,
@@ -6,16 +6,31 @@ import {
 	X,
 	ChevronUp,
 	ChevronDown,
+	Building2,
+	Star,
+	Layers,
+	MapPin,
 } from "lucide-react";
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from "recharts";
 import { ExportDropdown } from "../../lib/ui/dropdown";
 import { toast } from "react-toastify";
 import { Pagination } from "../../modules";
 import { useTheme } from "../../utils/useTheme";
+import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { getFocusRingClass } from "../../utils/theme";
 
 const Companies = () => {
 	// Theme hook
-	const { colorScheme, colors, scheme } = useTheme();
+	const { theme, colorScheme, colors, scheme } = useTheme();
+	const chartTooltipProps = useChartTooltipProps();
 
 	const [companies, setCompanies] = useState([
 		{
@@ -185,8 +200,222 @@ const Companies = () => {
 		toast.success("Exported companies (CSV).");
 	};
 
+	const companyStats = useMemo(() => {
+		const total = companies.length;
+		const avgRating =
+			total > 0
+				? Math.round(
+						(companies.reduce((s, c) => s + c.rating, 0) / total) * 10
+				  ) / 10
+				: 0;
+		const industries = new Set(companies.map((c) => c.industry)).size;
+		const locations = new Set(companies.map((c) => c.location)).size;
+		return { total, avgRating, industries, locations };
+	}, [companies]);
+
+	const industryChartData = useMemo(() => {
+		const m = {};
+		companies.forEach((c) => {
+			m[c.industry] = (m[c.industry] || 0) + 1;
+		});
+		return Object.entries(m)
+			.map(([name, count]) => ({ name, count }))
+			.sort((a, b) => b.count - a.count);
+	}, [companies]);
+
+	const locationChartData = useMemo(() => {
+		const m = {};
+		companies.forEach((c) => {
+			m[c.location] = (m[c.location] || 0) + 1;
+		});
+		return Object.entries(m)
+			.map(([name, count]) => ({ name, count }))
+			.sort((a, b) => b.count - a.count)
+			.slice(0, 10);
+	}, [companies]);
+
+	const gridStroke = theme === "dark" ? "#3f3f46" : "#e4e4e7";
+	const axisStroke = theme === "dark" ? "#71717a" : "#71717a";
+
 	return (
 		<div className={`p-6 transition-colors`}>
+			{/* Stats + charts */}
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-blue-600/10 rounded-full blur-2xl" />
+					<div className="relative">
+						<div className="flex items-center justify-between mb-2">
+							<div className="p-2 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-sm border border-blue-500/20">
+								<Building2 className="text-blue-500" size={20} />
+							</div>
+						</div>
+						<p className={`text-2xl font-bold ${colors.foreground}`}>
+							{companyStats.total}
+						</p>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Total companies
+						</p>
+					</div>
+				</div>
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-amber-400/20 to-amber-600/10 rounded-full blur-2xl" />
+					<div className="relative">
+						<div className="flex items-center justify-between mb-2">
+							<div className="p-2 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 backdrop-blur-sm border border-amber-500/20">
+								<Star className="text-amber-500" size={20} />
+							</div>
+						</div>
+						<p className={`text-2xl font-bold ${colors.foreground}`}>
+							{companyStats.avgRating}
+						</p>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Average rating
+						</p>
+					</div>
+				</div>
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-purple-600/10 rounded-full blur-2xl" />
+					<div className="relative">
+						<div className="flex items-center justify-between mb-2">
+							<div className="p-2 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 backdrop-blur-sm border border-purple-500/20">
+								<Layers className="text-purple-500" size={20} />
+							</div>
+						</div>
+						<p className={`text-2xl font-bold ${colors.foreground}`}>
+							{companyStats.industries}
+						</p>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Unique industries
+						</p>
+					</div>
+				</div>
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-teal-400/20 to-teal-600/10 rounded-full blur-2xl" />
+					<div className="relative">
+						<div className="flex items-center justify-between mb-2">
+							<div className="p-2 rounded-xl bg-gradient-to-br from-teal-500/20 to-teal-600/10 backdrop-blur-sm border border-teal-500/20">
+								<MapPin className="text-teal-500" size={20} />
+							</div>
+						</div>
+						<p className={`text-2xl font-bold ${colors.foreground}`}>
+							{companyStats.locations}
+						</p>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Unique locations
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<p className={`text-sm font-medium ${colors.foreground} mb-1`}>
+						Companies by industry
+					</p>
+					<p className={`text-xs ${colors.mutedForeground} mb-4`}>
+						Matches unique industries and totals
+					</p>
+					<ResponsiveContainer width="100%" height={240}>
+						<BarChart
+							data={industryChartData}
+							margin={{ top: 8, right: 8, left: 0, bottom: 32 }}
+						>
+							<CartesianGrid
+								strokeDasharray="3 3"
+								stroke={gridStroke}
+								vertical={false}
+							/>
+							<XAxis
+								dataKey="name"
+								stroke={axisStroke}
+								fontSize={10}
+								tickLine={false}
+								axisLine={false}
+								interval={0}
+								angle={-25}
+								textAnchor="end"
+								height={48}
+							/>
+							<YAxis
+								stroke={axisStroke}
+								fontSize={11}
+								tickLine={false}
+								axisLine={false}
+								allowDecimals={false}
+							/>
+							<Tooltip
+								{...chartTooltipProps}
+								formatter={(value) => [value, "Companies"]}
+							/>
+							<Bar
+								dataKey="count"
+								fill={theme === "dark" ? "#a855f7" : "#9333ea"}
+								radius={[8, 8, 0, 0]}
+							/>
+						</BarChart>
+					</ResponsiveContainer>
+				</div>
+				<div
+					className={`${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<p className={`text-sm font-medium ${colors.foreground} mb-1`}>
+						Companies by location
+					</p>
+					<p className={`text-xs ${colors.mutedForeground} mb-4`}>
+						Top cities (unique location count: {companyStats.locations})
+					</p>
+					<ResponsiveContainer width="100%" height={240}>
+						<BarChart
+							data={locationChartData}
+							margin={{ top: 8, right: 8, left: 0, bottom: 32 }}
+						>
+							<CartesianGrid
+								strokeDasharray="3 3"
+								stroke={gridStroke}
+								vertical={false}
+							/>
+							<XAxis
+								dataKey="name"
+								stroke={axisStroke}
+								fontSize={10}
+								tickLine={false}
+								axisLine={false}
+								interval={0}
+								angle={-25}
+								textAnchor="end"
+								height={48}
+							/>
+							<YAxis
+								stroke={axisStroke}
+								fontSize={11}
+								tickLine={false}
+								axisLine={false}
+								allowDecimals={false}
+							/>
+							<Tooltip
+								{...chartTooltipProps}
+								formatter={(value) => [value, "Companies"]}
+							/>
+							<Bar
+								dataKey="count"
+								fill={theme === "dark" ? "#14b8a6" : "#0d9488"}
+								radius={[8, 8, 0, 0]}
+							/>
+						</BarChart>
+					</ResponsiveContainer>
+				</div>
+			</div>
+
 			{/* Companies Table - Improved */}
 			{/* Table Header */}
 			<div

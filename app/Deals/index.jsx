@@ -183,10 +183,7 @@ const Deals = () => {
 			className={`p-6 ${colors.primaryBackground} transition-colors min-h-screen`}
 		>
 			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
-			>
-				<div
-					className={`flex flex-col lg:flex-row items-start lg:items-center justify-between px-6 py-5 border-b ${colors.border} gap-4`}
+					className={`flex flex-col lg:flex-row items-start lg:items-center justify-between p-2 gap-4`}
 				>
 					<div>
 						<h1 className={`text-lg font-semibold ${colors.foreground}`}>
@@ -233,6 +230,10 @@ const Deals = () => {
 						</div>
 					</div>
 				</div>
+			<div
+				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
+			>
+				
 
 				<div className="overflow-x-auto">
 					<table className="w-full text-sm">

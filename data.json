@@ -1,7 +1,7 @@
 {
   "meta": {
     "purpose": "Static snapshot of mock / hardcoded data shapes used in this CRM app. For developer reference and schema discovery only — the running app does not import this file.",
-    "summary": "22 top-level `app*` sections cover all main pages in `pages/` (see `pageRouteMap`). Detail routes `/leads/[id]` and `/contacts/[id]` share `appCrmRecordDetail`.",
+    "summary": "22 top-level `app*` sections cover all main pages in `pages/` (see `pageRouteMap`). Detail routes `/leads/[id]` and `/contacts/[id]` share `appCrmRecordDetail`. Sections `appLeads`, `appCompanies`, and `appInvoices` include `dashboardStats` and `chartSeries` snapshots matching the stats grids and Recharts data derived in those pages.",
     "notes": [
       "Paths like ./people/ and ./companies/ match public/ asset URLs in Next.js.",
       "Some UI-only keys (e.g. React icon components) are omitted; use string ids where applicable.",
@@ -204,7 +204,26 @@
         "lastContacted": "06/13/2024",
         "image": "./people/person-4.png"
       }
-    ]
+    ],
+    "dashboardStats": {
+      "description": "Same derivation as app/Leads/index.jsx useMemo (allLeads + pipelines): totalLeads from initialLeadsTable length; uniqueAccounts from leadDisplayCompany(lead) Set; activeInPipeline = Backlog + In Progress column sizes; closedDone = Done column size.",
+      "totalLeads": 13,
+      "uniqueAccounts": 2,
+      "activeInPipeline": 6,
+      "closedDone": 2
+    },
+    "chartSeries": {
+      "description": "Bar chart inputs: leadsByPipelineStage from pipeline column names and lead counts; leadsByAccountTop from aggregating leadDisplayCompany on initialLeadsTable (top 10, table rows lack company so most map to email domain segment).",
+      "leadsByPipelineStage": [
+        { "name": "Backlog", "count": 3 },
+        { "name": "In Progress", "count": 3 },
+        { "name": "Done", "count": 2 }
+      ],
+      "leadsByAccountTop": [
+        { "name": "Company", "count": 12 },
+        { "name": "Startup", "count": 1 }
+      ]
+    }
   },
   "appCrmRecordDetail": {
     "source": "app/CRM/recordDetailData.js",
@@ -602,7 +621,40 @@
         "rating": 4.7,
         "location": "Los Gatos"
       }
-    ]
+    ],
+    "dashboardStats": {
+      "description": "Same derivation as app/Companies/index.jsx useMemo on companies[]: averageRating = round(sum(rating)/n, 1); uniqueIndustries and uniqueLocations are Set sizes.",
+      "totalCompanies": 11,
+      "averageRating": 4.6,
+      "uniqueIndustries": 10,
+      "uniqueLocations": 9
+    },
+    "chartSeries": {
+      "description": "Bar chart inputs for Companies page: companiesByIndustry sorted by count desc; companiesByLocationTop top 10 cities by count.",
+      "companiesByIndustry": [
+        { "name": "Entertainment", "count": 2 },
+        { "name": "Automation", "count": 1 },
+        { "name": "Communication", "count": 1 },
+        { "name": "Customer Service", "count": 1 },
+        { "name": "Finance", "count": 1 },
+        { "name": "Hospitality", "count": 1 },
+        { "name": "Music", "count": 1 },
+        { "name": "Social Media", "count": 1 },
+        { "name": "Software", "count": 1 },
+        { "name": "Technology", "count": 1 }
+      ],
+      "companiesByLocationTop": [
+        { "name": "Los Angeles", "count": 2 },
+        { "name": "San Francisco", "count": 2 },
+        { "name": "Austin", "count": 1 },
+        { "name": "Chicago", "count": 1 },
+        { "name": "Los Gatos", "count": 1 },
+        { "name": "New York", "count": 1 },
+        { "name": "San Jose", "count": 1 },
+        { "name": "Stockholm", "count": 1 },
+        { "name": "Sunnyvale", "count": 1 }
+      ]
+    }
   },
   "appContacts": {
     "source": "app/Contacts/index.jsx",
@@ -1148,7 +1200,27 @@
           }
         ]
       }
-    ]
+    ],
+    "dashboardStats": {
+      "description": "Same derivation as app/Invoices/index.jsx useMemo on invoices[]: totalBilledUsd = sum(amount); collectedPaidUsd = sum where status Paid; outstandingUsd = sum where status is not Paid.",
+      "totalInvoices": 12,
+      "totalBilledUsd": 109500,
+      "collectedPaidUsd": 48400,
+      "outstandingUsd": 61100
+    },
+    "chartSeries": {
+      "description": "Bar chart inputs: invoiceCountByStatus and amountUsdByStatus from initialInvoices grouped by Paid | Pending | Overdue.",
+      "invoiceCountByStatus": [
+        { "name": "Paid", "count": 5 },
+        { "name": "Pending", "count": 5 },
+        { "name": "Overdue", "count": 2 }
+      ],
+      "amountUsdByStatus": [
+        { "name": "Paid", "amount": 48400 },
+        { "name": "Pending", "amount": 43100 },
+        { "name": "Overdue", "amount": 18000 }
+      ]
+    }
   },
   "appDeals": {
     "source": "app/Deals/index.jsx",

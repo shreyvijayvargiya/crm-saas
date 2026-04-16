@@ -14,11 +14,25 @@ import {
 	GripVertical,
 	Paperclip,
 	Plus,
+	Users,
+	Layers,
+	Kanban,
+	CheckCircle2,
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from "recharts";
 import { useTheme } from "../../utils/useTheme";
+import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { getFocusRingClass } from "../../utils/theme";
 import { ExportDropdown } from "../../lib/ui/dropdown";
 
@@ -111,7 +125,8 @@ function RingProgress({ percent, complete }) {
 
 const Leads = () => {
 	// Theme hook
-	const { colorScheme, colors, scheme } = useTheme();
+	const { theme, colorScheme, colors, scheme } = useTheme();
+	const chartTooltipProps = useChartTooltipProps();
 
 	const initialPipelines = [
 		{
@@ -417,10 +432,220 @@ const Leads = () => {
 		return sortableLeads;
 	}, [allLeads, sortConfig]);
 
+	const leadStats = useMemo(() => {
+		const total = allLeads.length;
+		const uniqueAccounts = new Set(
+			allLeads.map((l) => leadDisplayCompany(l))
+		).size;
+		const backlog = pipelines.find((p) => p.id === "new")?.leads.length ?? 0;
+		const inProgress =
+			pipelines.find((p) => p.id === "contacted")?.leads.length ?? 0;
+		const done = pipelines.find((p) => p.id === "rejected")?.leads.length ?? 0;
+		const activeInPipeline = backlog + inProgress;
+		return { total, uniqueAccounts, activeInPipeline, done };
+	}, [allLeads, pipelines]);
+
+	const pipelineStageData = useMemo(
+		() =>
+			pipelines.map((p) => ({
+				name: p.name,
+				count: p.leads.length,
+			})),
+		[pipelines]
+	);
+
+	const companyLeadCounts = useMemo(() => {
+		const m = {};
+		allLeads.forEach((lead) => {
+			const label = leadDisplayCompany(lead);
+			m[label] = (m[label] || 0) + 1;
+		});
+		return Object.entries(m)
+			.map(([name, count]) => ({ name, count }))
+			.sort((a, b) => b.count - a.count)
+			.slice(0, 10);
+	}, [allLeads]);
+
+	const gridStroke = theme === "dark" ? "#3f3f46" : "#e4e4e7";
+	const axisStroke = theme === "dark" ? "#71717a" : "#71717a";
+
 	return (
 		<div
 			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar transition-all duration-100 ease-in`}
 		>
+			{/* Stats + charts */}
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-blue-600/10 rounded-full blur-2xl" />
+					<div className="relative">
+						<div className="flex items-center justify-between mb-2">
+							<div className="p-2 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-sm border border-blue-500/20">
+								<Users className="text-blue-500" size={20} />
+							</div>
+						</div>
+						<p className={`text-2xl font-bold ${colors.foreground}`}>
+							{leadStats.total}
+						</p>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Total leads
+						</p>
+					</div>
+				</div>
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-purple-600/10 rounded-full blur-2xl" />
+					<div className="relative">
+						<div className="flex items-center justify-between mb-2">
+							<div className="p-2 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 backdrop-blur-sm border border-purple-500/20">
+								<Layers className="text-purple-500" size={20} />
+							</div>
+						</div>
+						<p className={`text-2xl font-bold ${colors.foreground}`}>
+							{leadStats.uniqueAccounts}
+						</p>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Unique accounts
+						</p>
+					</div>
+				</div>
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-amber-400/20 to-amber-600/10 rounded-full blur-2xl" />
+					<div className="relative">
+						<div className="flex items-center justify-between mb-2">
+							<div className="p-2 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 backdrop-blur-sm border border-amber-500/20">
+								<Kanban className="text-amber-500" size={20} />
+							</div>
+						</div>
+						<p className={`text-2xl font-bold ${colors.foreground}`}>
+							{leadStats.activeInPipeline}
+						</p>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Active in pipeline
+						</p>
+					</div>
+				</div>
+				<div
+					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-green-400/20 to-green-600/10 rounded-full blur-2xl" />
+					<div className="relative">
+						<div className="flex items-center justify-between mb-2">
+							<div className="p-2 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-sm border border-green-500/20">
+								<CheckCircle2 className="text-green-500" size={20} />
+							</div>
+						</div>
+						<p className={`text-2xl font-bold ${colors.foreground}`}>
+							{leadStats.done}
+						</p>
+						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							Closed (Done)
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+				<div
+					className={`${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<p className={`text-sm font-medium ${colors.foreground} mb-1`}>
+						Leads by pipeline stage
+					</p>
+					<p className={`text-xs ${colors.mutedForeground} mb-4`}>
+						Kanban columns (Backlog, In Progress, Done)
+					</p>
+					<ResponsiveContainer width="100%" height={220}>
+						<BarChart
+							data={pipelineStageData}
+							margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
+						>
+							<CartesianGrid
+								strokeDasharray="3 3"
+								stroke={gridStroke}
+								vertical={false}
+							/>
+							<XAxis
+								dataKey="name"
+								stroke={axisStroke}
+								fontSize={11}
+								tickLine={false}
+								axisLine={false}
+							/>
+							<YAxis
+								stroke={axisStroke}
+								fontSize={11}
+								tickLine={false}
+								axisLine={false}
+								allowDecimals={false}
+							/>
+							<Tooltip
+								{...chartTooltipProps}
+								formatter={(value) => [value, "Leads"]}
+							/>
+							<Bar
+								dataKey="count"
+								fill={theme === "dark" ? "#3b82f6" : "#2563eb"}
+								radius={[8, 8, 0, 0]}
+							/>
+						</BarChart>
+					</ResponsiveContainer>
+				</div>
+				<div
+					className={`${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
+				>
+					<p className={`text-sm font-medium ${colors.foreground} mb-1`}>
+						Leads by account
+					</p>
+					<p className={`text-xs ${colors.mutedForeground} mb-4`}>
+						Top companies (from company or email domain)
+					</p>
+					<ResponsiveContainer width="100%" height={240}>
+						<BarChart
+							data={companyLeadCounts}
+							margin={{ top: 8, right: 8, left: 0, bottom: 32 }}
+						>
+							<CartesianGrid
+								strokeDasharray="3 3"
+								stroke={gridStroke}
+								vertical={false}
+							/>
+							<XAxis
+								dataKey="name"
+								stroke={axisStroke}
+								fontSize={10}
+								tickLine={false}
+								axisLine={false}
+								interval={0}
+								angle={-25}
+								textAnchor="end"
+								height={48}
+							/>
+							<YAxis
+								stroke={axisStroke}
+								fontSize={11}
+								tickLine={false}
+								axisLine={false}
+								allowDecimals={false}
+							/>
+							<Tooltip
+								{...chartTooltipProps}
+								formatter={(value) => [value, "Leads"]}
+							/>
+							<Bar
+								dataKey="count"
+								fill={theme === "dark" ? "#a855f7" : "#9333ea"}
+								radius={[8, 8, 0, 0]}
+							/>
+						</BarChart>
+					</ResponsiveContainer>
+				</div>
+			</div>
+
 			{/* Table Header */}
 			<div
 					className={`flex flex-col md:flex-row items-start md:items-center justify-between p-2 gap-4`}
