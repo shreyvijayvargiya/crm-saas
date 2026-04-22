@@ -179,13 +179,13 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 			} transition-all duration-500 ease-in`}
 		>
 			<div
-				className={`flex flex-col h-full justify-between py-1 px-2 transition-colors ${open ? "w-60 md:w-60" : "w-full"} transition-all duration-300 ease-in`}
+				className={`flex flex-col h-full overflow-scroll hidescrollbar justify-between py-1 px-2 transition-colors ${open ? "w-60 md:w-60" : "w-full"} transition-all duration-300 ease-in`}
 			>
 				<div className="flex flex-col gap-1">
-					<div className={`flex items-center justify-between py-1`}>
+					<div className={`flex items-center justify-between gap-2 p-1`}>
 						{open ? (
 							<div
-								className={`relative group flex items-center py-2 px-4 justify-between border ${colors.border} ${colors.hoverSecondary} rounded-xl cursor-pointer w-full transition-colors`}
+								className={`relative group flex items-center p-2 justify-between border ${colors.border} ${colors.hoverSecondary} rounded-xl cursor-pointer w-full transition-colors`}
 							>
 								<div className="flex items-center gap-2">
 									<lucideIcons.Rocket
@@ -197,7 +197,6 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 									<lucideIcons.ChevronUp
 										className={`${colors.mutedForeground} group-hover:rotate-180 transition-all duration-200 ease-in w-3 h-3`}
 									/>
-									
 								</div>
 								<div
 									className={`absolute top-10 left-0 right-0 w-54 h-fit ${colors.card} text-xs rounded-xl border ${colors.border} px-1 py-2 opacity-0 transition-opacity duration-200 invisible group-hover:visible group-hover:opacity-100 z-20`}
@@ -253,10 +252,9 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 							onClick={() => setDrawerOpen(!drawerOpen)}
 							className={`md:hidden ${colors.foreground}`}
 						>
-							<lucideIcons.X size={24} />
+							<lucideIcons.X size={18} />
 						</button>
 					</div>
-
 					<div className="flex flex-col">
 						{navCategories?.map((category) => (
 							<div key={category.id} className="mb-4">
@@ -304,6 +302,24 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 							</div>
 						))}
 					</div>
+					<div className={`w-fit p-1 flex p-1 border ${colors.border} gap-1 rounded-xl`}>
+					<a
+						href="https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX"
+						target="_blank"
+						rel="noopener noreferrer"
+						className={`w-fit rounded bg-orange-100 text-zinc-600 dark:text-zinc-800 hover:bg-orange-200 dark:hover:bg-orange-900 p-1 text-center text-xs font-semibold text-white transition-all duration-100 ease-in`}
+					>
+						🇮🇳 
+						INR
+					</a>
+					<div>
+						<a href="https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template" target="_blank" rel="noopener noreferrer" 
+						className={`w-fit rounded text-zinc-600 dark:text-zinc-200 ${colors.hoverSecondary} px-1 py-1.5 text-center text-xs font-semibold text-white transition-all duration-100 ease-in`}>
+						🇺🇸
+							USD
+						</a>
+					</div>
+				</div>
 				</div>
 			</div>
 		</div>

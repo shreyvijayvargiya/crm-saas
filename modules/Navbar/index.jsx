@@ -257,7 +257,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 
 	return (
 		<div
-			className={`flex justify-between w-full border-b ${colors.border} p-4 ${colors.primaryBackground} transition-all duration-100 ease-in`}
+			className={`flex justify-between md:overflow-hidden overflow-x-scroll hidescrollbar w-full border-b ${colors.border} px-2 py-1 ${colors.primaryBackground} transition-all duration-100 ease-in`}
 		>
 			<div className="relative flex justify-start items-center">
 				{open ? (
@@ -285,25 +285,37 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 						ref={searchInputRef}
 						type="text"
 						placeholder="Search..."
-						className={`outline-none text-sm bg-transparent focus:outline-none ${colors.hoverSecondary} cursor-pointer ${colors.foreground}`}
+						className={`outline-none md:block hidden text-sm bg-transparent focus:outline-none ${colors.hoverSecondary} cursor-pointer ${colors.foreground}`}
 						readOnly
 					/>
-					<span className={`text-xs ${colors.textMuted} italic mr-2`}>
+					<span className={`text-[10px] hidden md:block ${colors.textMuted} italic mr-2`}>
 						CMD + K
 					</span>
 				</div>
 			</div>
 			<div className="flex items-center justify-between gap-2">
-				<div className="flex items-center gap-2 mr-2">
+				<div className={`p-1 md:flex hidden flex p-1 border ${colors.border} gap-1 rounded-xl`}>
+					<a
+						href="https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX"
+						target="_blank"
+						rel="noopener noreferrer"
+						className={`w-fit rounded bg-orange-100 text-zinc-600 dark:text-zinc-800 hover:bg-orange-200 dark:hover:bg-orange-900 p-1 text-center text-xs font-semibold text-white transition-all duration-100 ease-in`}
+					>
+						🇮🇳 
+						INR
+					</a>
 					<div>
-						<a href="https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template" target="_blank" rel="noopener noreferrer" className={`mr-2 p-2 rounded-xl ${colors.hoverSecondary} ${colors.foreground} transition-all duration-100 ease-in`}>
-							Download template
+						<a href="https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template" target="_blank" rel="noopener noreferrer" 
+						className={`w-fit rounded text-zinc-600 dark:text-zinc-200 ${colors.hoverSecondary} px-1 py-1.5 text-center text-xs font-semibold text-white transition-all duration-100 ease-in`}>
+						🇺🇸
+							USD
 						</a>
 					</div>
+				</div>
 					{/* Color Scheme Picker */}
-					<div className="relative color-picker-dropdown">
+					<div className="relative color-picker-dropdown md:block hidden">
 						<div
-							className={`flex flex-wrap gap-1 p-1 rounded-xl border transition-all ${colors.border} ${colors.secondary} ${colors.secondaryForeground} border-current`}
+							className={`flex w-20 md:w-fit overflow-scroll hidescrollbar gap-1 p-1 rounded-xl border transition-all ${colors.border} ${colors.secondary} ${colors.secondaryForeground} border-current`}
 						>
 							{Object.keys(colorSchemes).map((schemeName) => (
 								<button
@@ -345,7 +357,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 					{/* Theme Toggle */}
 					<button
 						onClick={toggleTheme}
-						className={`p-2 rounded-xl ${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary} transition-colors`}
+						className={`p-2 rounded-xl ${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary} transition-all duration-100 ease-in`}
 						aria-label="Toggle theme"
 					>
 						{theme === "light" ? (
@@ -354,21 +366,20 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 							<Sun className="w-4 h-4" />
 						)}
 					</button>
-				</div>
-				{/* Theme and Color Controls */}
-
-				<MessageSquare
-					className={`cursor-pointer ${colors.mutedForeground} transition-colors`}
-					onClick={() => router.push("/email")}
-				/>
+					<MessageSquare
+						className={`cursor-pointer ${colors.mutedForeground} transition-all duration-100 ease-in`}
+						onClick={() => router.push("/email")}
+						size={18}
+					/>
 				<div
 					className="relative"
 					onClick={() => router.push("/notifications")}
 				>
 					<Bell
-						className={`mr-2 cursor-pointer ${colors.mutedForeground} transition-colors`}
+					size={18}
+						className={`cursor-pointer ${colors.mutedForeground} transition-all duration-100 ease-in`}
 					/>
-					<span className="absolute -top-2 right-0 bg-red-500 text-white text-xs rounded-full px-1">
+					<span className="absolute -top-2 right-0 bg-red-500 text-white text-[8px] rounded-full px-1">
 						3
 					</span>
 				</div>
@@ -386,7 +397,8 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 					/>
 					{dropdownOpen && (
 						<div
-							className={`absolute right-0 w-48 py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.shadow} z-10`}
+							className={`absolute right-0 w-48 py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.shadow}`}
+							style={{ zIndex: 1000 }}
 						>
 							<div className="p-2 flex justify-start">
 								<Image

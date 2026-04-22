@@ -15,7 +15,7 @@ const DateRangeFilter = ({ value, onChange, showCustom, onToggleCustom, customFr
 
 	return (
 		<div
-			className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border ${colors.border} ${colors.card} p-4 shadow-sm`}
+			className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl ${colors.card}`}
 		>
 			<div className="flex items-center gap-2 text-sm font-medium">
 				<CalendarRange className={`w-4 h-4 ${colors.textMuted}`} />
