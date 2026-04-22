@@ -179,6 +179,13 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 			icon: "Settings",
 			section: "system",
 		},
+		{
+			id: 22,
+			label: "About",
+			route: "/about",
+			icon: "Info",
+			section: "system",
+		},
 	];
 
 	const handleKeyDown = (event) => {
@@ -277,7 +284,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 					/>
 				)}
 				<div
-					className={`flex ${colors.hoverSecondary} rounded-xl mx-2 items-center group border ${colors.border} h-8 cursor-pointer transition-colors`}
+					className={`flex ${colors.hoverSecondary} rounded-[10px] mx-2 items-center group border ${colors.border} h-7 cursor-pointer transition-colors`}
 					onClick={handleSearchClick}
 				>
 					<Search className={`${colors.textMuted} mx-2`} size={16} />

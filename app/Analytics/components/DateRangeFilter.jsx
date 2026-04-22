@@ -15,13 +15,13 @@ const DateRangeFilter = ({ value, onChange, showCustom, onToggleCustom, customFr
 
 	return (
 		<div
-			className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl ${colors.card}`}
+			className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl`}
 		>
 			<div className="flex items-center gap-2 text-sm font-medium">
 				<CalendarRange className={`w-4 h-4 ${colors.textMuted}`} />
 				<span className={colors.foreground}>Reporting period</span>
 			</div>
-			<div className="flex flex-wrap items-center gap-2">
+			<div className="flex flex-wrap items-center gap-1">
 				{PRESETS.map((p) => (
 					<button
 						key={p.id}

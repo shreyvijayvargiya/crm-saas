@@ -1,4 +1,5 @@
 import React from "react";
+import { Analytics } from "@vercel/analytics/react";
 import LayoutWrapper from "../modules/Layout";
 import { ThemeProvider } from "../utils/ThemeContext";
 import "tailwindcss/tailwind.css";
@@ -10,6 +11,7 @@ function MyApp({ Component, pageProps }) {
 		<ThemeProvider>
 			<LayoutWrapper>
 				<Component {...pageProps} />
+				<Analytics />
 			</LayoutWrapper>
 		</ThemeProvider>
 	);

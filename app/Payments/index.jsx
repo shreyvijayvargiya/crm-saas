@@ -556,11 +556,11 @@ const Payments = () => {
 
 			{/* Search and Filter Section */}
 			<div
-				className={`${colors.card} border ${colors.border} rounded-xl p-4 ${colors.shadow}`}
+				
 			>
-				<div className="flex flex-col md:flex-row gap-4 items-center justify-start">
+				<div className="flex flex-col md:flex-row gap-4 items-center justify-between">
 					{/* Search */}
-					<div className="relative max-w-sm w-full md:w-auto">
+					<div className="relative w-fit md:w-auto">
 						<Search
 							className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${colors.textMuted}`}
 						/>

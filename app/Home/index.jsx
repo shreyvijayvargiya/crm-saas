@@ -19,6 +19,7 @@ import {
 	CheckCircle2,
 	Clock,
 	AlertCircle,
+	ArrowRight,
 } from "lucide-react";
 import router from "next/router";
 import { toast } from "react-toastify";
@@ -107,6 +108,64 @@ const Home = () => {
 				contact: "Chris Evans",
 				subject: "Launch of new product line",
 				iconType: "down",
+			},
+		],
+		moduleStats: [
+			{
+				title: "Tasks",
+				value: "10",
+				description: "Backlog + In Progress + Done",
+				icon: "calendar",
+				route: "/tasks",
+			},
+			{
+				title: "API Keys",
+				value: "5",
+				description: "Active and revoked keys",
+				icon: "activity",
+				route: "/api-keys",
+			},
+			{
+				title: "Invoices",
+				value: "12",
+				description: "Total invoices in snapshot",
+				icon: "file",
+				route: "/invoices",
+			},
+			{
+				title: "Payments",
+				value: "10",
+				description: "Payment transactions",
+				icon: "dollar",
+				route: "/payments",
+			},
+			{
+				title: "Webhooks",
+				value: "5",
+				description: "Configured endpoints",
+				icon: "target",
+				route: "/webhooks",
+			},
+			{
+				title: "Notifications",
+				value: "6",
+				description: "Unread and read alerts",
+				icon: "bell",
+				route: "/notifications",
+			},
+			{
+				title: "Teams",
+				value: "4",
+				description: "Members in roster",
+				icon: "user",
+				route: "/teams",
+			},
+			{
+				title: "Integrations",
+				value: "13",
+				description: "Connected services",
+				icon: "check",
+				route: "/integrations",
 			},
 		],
 	};
@@ -946,36 +1005,56 @@ const Home = () => {
 				</div>
 			</div>
 
-			{/* Tasks Section */}
-			<div
-				className={`flex items-center gap-1 hover:underline cursor-pointer ${colors.foreground} my-4`}
-				onClick={() => router.push("/tasks")}
-			>
-				<p>Tasks</p>
-				<ExternalLink size={18} className={colors.textSecondary} />
-			</div>
+			
 			<div className="flex items-start justify-start">
 				<div
-					className={`flex flex-col w-full md:w-1/2 gap-2 p-5 my-4 border ${colors.border} rounded-xl ${colors.hoverSecondary} ${colors.card} transition-colors`}
+					className="grid w-full md:w-full grid-cols-1 md:grid-cols-4 gap-4 my-4"
 				>
-					{dashboardData.upcomingMeetings.map((meeting, index) => (
-						<div className="flex items-center justify-between mb-2" key={index}>
-							<span
-								className={`${colors.textSecondary} w-1/3 text-left flex items-center gap-2`}
+					{dashboardData.moduleStats.map((item, index) => {
+						const iconMap = {
+							calendar: Calendar,
+							activity: Activity,
+							file: FileText,
+							dollar: DollarSign,
+							target: Target,
+							bell: Bell,
+							user: UserPlus,
+							check: CheckCircle2,
+						};
+						const Icon = iconMap[item.icon] || Activity;
+
+						return (
+							<div
+								className={`p-4 border ${colors.border} rounded-xl ${colors.card} ${colors.shadow} transition-all`}
+								key={index}
 							>
-								{meeting.iconType === "up" ? (
-									<ChevronUp size={16} className={colors.textSecondary} />
-								) : (
-									<ChevronDown size={16} className={colors.textSecondary} />
-								)}
-								{meeting.title}:
-							</span>
-							<span className={`${colors.textSecondary} w-1/3 text-left`}>
-								{meeting.date}
-							</span>
+								<div className="flex items-start justify-between">
+									<div>
+										<p className={`text-sm ${colors.textSecondary}`}>{item.title}</p>
+										<p className={`text-2xl font-semibold ${colors.foreground} mt-1`}>
+											{item.value}
+										</p>
+										<p className={`text-xs ${colors.textMuted} mt-1`}>
+											{item.description}
+										</p>
+									</div>
+									<div
+										className={`h-10 w-10 rounded-xl border ${colors.border} flex items-center justify-center`}
+									>
+										<Icon size={18} className={colors.foreground} />
+									</div>
+								</div>
+								<button
+									onClick={() => router.push(item.route)}
+									className={`mt-4 w-fit inline-flex items-center justify-center gap-2 p-2 rounded-xl text-xs font-medium ${colors.hoverSecondary} ${colors.foreground} transition-colors`}
+								>
+									View details
+									<ArrowRight size={14} />
+								</button>
+							</div>
+						);
+					})}
 						</div>
-					))}
-				</div>
 			</div>
 		</div>
 	);

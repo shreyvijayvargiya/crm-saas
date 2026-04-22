@@ -385,9 +385,10 @@ const Calendar = () => {
 				{...listeners}
 				className={`${getColorClasses(
 					event.color
-				)} text-xs px-2 py-1 rounded-xl mb-1 cursor-move hover:opacity-80 transition-opacity`}
+				)} text-xs px-2 py-1 rounded-xl mb-1 cursor-move hover:opacity-80 transition-opacity leading-tight`}
 			>
-				<span className="font-medium">{event.time}</span> {event.title}
+				<span className="font-medium">{event.time}</span>{" "}
+				<span className="line-clamp-2 break-words">{event.title}</span>
 			</div>
 		);
 	};
@@ -402,14 +403,14 @@ const Calendar = () => {
 		return (
 			<div
 				ref={setNodeRef}
-				className={`min-h-[100px] border ${colors.border} p-2 rounded-xl ${
+				className={`min-h-[84px] sm:min-h-[100px] border ${colors.border} p-1.5 sm:p-2 rounded-xl ${
 					day.isCurrentMonth ? colors.background : colors.muted
 				} ${isCurrentDay ? "ring-2 ring-black dark:ring-white" : ""} ${
 					isOver ? "bg-opacity-50 " + scheme.primary : ""
 				} transition-colors duration-100 ease-in`}
 			>
 				<div
-					className={`text-sm font-medium mb-1 ${
+					className={`text-xs sm:text-sm font-medium mb-1 ${
 						day.isCurrentMonth ? colors.foreground : colors.mutedForeground
 					} ${isCurrentDay ? "font-bold" : ""}`}
 				>
@@ -440,39 +441,40 @@ const Calendar = () => {
 	}
 
 	return (
-		<div className={`transition-all duration-100 ease-in p-4`}>
+		<div className={`transition-all duration-100 ease-in p-2 sm:p-4`}>
 			{/* Header */}
-			<div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
-				<div className="flex items-center gap-4">
-					<button
-						onClick={goToToday}
-						className={`px-4 py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.foreground} hover:${colors.hoverSecondary} transition-colors text-sm font-medium`}
-					>
-						Today
-					</button>
-					<div className="flex items-center gap-2">
+			<div className="mb-4 sm:mb-6 flex justify-between flex-wrap gap-3">
+				<div className="flex items-center justify-start gap-2">
+					<h2 className={`text-lg sm:text-xl font-semibold ${colors.foreground}`}>
+						{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
+					</h2>
+					<div className="flex items-center gap-1.5 sm:gap-2">
 						<button
 							onClick={goToPreviousMonth}
-							className={`p-2 ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
+							className={`p-1.5 sm:p-2 ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
 						>
-							<ChevronLeft className="w-5 h-5" />
+							<ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
 						</button>
 						<button
 							onClick={goToNextMonth}
-							className={`p-2 ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
+							className={`p-1.5 sm:p-2 ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
 						>
-							<ChevronRight className="w-5 h-5" />
+							<ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
 						</button>
 					</div>
-					<h2 className={`text-xl font-semibold ${colors.foreground}`}>
-						{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
-					</h2>
 				</div>
-				<div className="flex items-center gap-3">
+
+				<div className="flex flex-wrap items-center gap-2 sm:gap-3">
+					<button
+						onClick={goToToday}
+						className={`px-3 sm:px-4 py-1.5 sm:py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.foreground} hover:${colors.hoverSecondary} transition-colors text-sm font-medium`}
+					>
+						Today
+					</button>
 					<div className="relative">
 						<button
 							onClick={() => setIsViewDropdownOpen(!isViewDropdownOpen)}
-							className={`flex items-center gap-2 px-4 py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.foreground} hover:${colors.hoverSecondary} transition-colors text-sm`}
+							className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.foreground} hover:${colors.hoverSecondary} transition-colors text-sm`}
 						>
 							{viewMode}
 							<ChevronDown className="w-4 h-4" />
@@ -510,7 +512,7 @@ const Calendar = () => {
 					</div>
 					<button
 						onClick={() => setIsNewEventModalOpen(true)}
-						className={`flex items-center gap-2 px-4 py-2 ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} rounded-xl text-sm font-medium transition-colors`}
+						className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} rounded-xl text-sm font-medium transition-colors`}
 					>
 						<Plus className="w-4 h-4" />
 						New event
@@ -525,15 +527,16 @@ const Calendar = () => {
 				onDragStart={handleDragStart}
 				onDragEnd={handleDragEnd}
 			>
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl overflow-hidden`}
-				>
+				<div className="-mx-1 overflow-x-auto px-1">
+					<div
+						className={`${colors.card} border ${colors.border} rounded-xl overflow-hidden min-w-[680px] sm:min-w-0`}
+					>
 					{/* Day Headers */}
 					<div className={`grid grid-cols-7 border-b ${colors.border}`}>
 						{dayNames.map((day) => (
 							<div
 								key={day}
-								className={`p-3 text-center text-sm font-semibold ${colors.foreground} border-r ${colors.border} last:border-r-0`}
+								className={`p-2 sm:p-3 text-center text-xs sm:text-sm font-semibold ${colors.foreground} border-r ${colors.border} last:border-r-0`}
 							>
 								{day}
 							</div>
@@ -541,7 +544,7 @@ const Calendar = () => {
 					</div>
 
 					{/* Calendar Days */}
-					<div className="grid grid-cols-7 py-2 gap-1">
+					<div className="grid grid-cols-7 py-1 sm:py-2 gap-0.5 sm:gap-1">
 						{calendarDays.map((day, index) => {
 							const dateEvents = getEventsForDate(day.date);
 							return (
@@ -549,6 +552,7 @@ const Calendar = () => {
 							);
 						})}
 					</div>
+				</div>
 				</div>
 
 				<DragOverlay>
@@ -566,9 +570,9 @@ const Calendar = () => {
 
 			{/* New Event Modal */}
 			{isNewEventModalOpen && (
-				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3">
 					<div
-						className={`${colors.card} rounded-xl ${colors.shadow} p-6 border ${colors.border} w-full max-w-md`}
+						className={`${colors.card} rounded-xl ${colors.shadow} p-4 sm:p-6 border ${colors.border} w-full max-w-md max-h-[90vh] overflow-y-auto`}
 					>
 						<div className="flex justify-between items-center mb-4">
 							<h3 className={`text-lg font-semibold ${colors.foreground}`}>

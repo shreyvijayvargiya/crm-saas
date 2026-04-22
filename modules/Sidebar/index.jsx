@@ -103,6 +103,12 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 			label: "Finance",
 			items: [
 				{
+					id: 23,
+					label: "Products",
+					route: "/products",
+					icon: "Package",
+				},
+				{
 					id: 8,
 					label: "Invoices",
 					route: "/invoices",
@@ -168,6 +174,12 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 					route: "/settings",
 					icon: "Settings",
 				},
+				{
+					id: 22,
+					label: "About",
+					route: "/about",
+					icon: "Info",
+				},
 			],
 		},
 	];
@@ -185,7 +197,7 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 					<div className={`flex items-center justify-between gap-2 p-1`}>
 						{open ? (
 							<div
-								className={`relative group flex items-center p-2 justify-between border ${colors.border} ${colors.hoverSecondary} rounded-xl cursor-pointer w-full transition-colors`}
+								className={`relative group flex items-center px-2 py-1 justify-between border ${colors.border} ${colors.hoverSecondary} rounded-xl cursor-pointer w-full transition-colors`}
 							>
 								<div className="flex items-center gap-2">
 									<lucideIcons.Rocket
@@ -199,7 +211,7 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 									/>
 								</div>
 								<div
-									className={`absolute top-10 left-0 right-0 w-54 h-fit ${colors.card} text-xs rounded-xl border ${colors.border} px-1 py-2 opacity-0 transition-opacity duration-200 invisible group-hover:visible group-hover:opacity-100 z-20`}
+									className={`absolute top-8 left-0 right-0 w-54 h-fit ${colors.card} text-xs rounded-xl border ${colors.border} px-1 py-2 opacity-0 transition-opacity duration-200 invisible group-hover:visible group-hover:opacity-100 z-20`}
 								>
 									<p className={`text-xs font-medium p-1 ${colors.foreground}`}>
 										Projects
@@ -235,7 +247,7 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 										</div>
 										<div className={`border-t ${colors.border}`} />
 										<button
-											className={`${scheme.primary} ${scheme.primaryForeground} cursor-pointer hover:shadow-xl transition-all duration-100 ease-in ${scheme.primaryHover} text-xs rounded w-full p-1`}
+											className={`${scheme.primary} ${scheme.primaryForeground} mt-2 cursor-pointer hover:shadow-xl transition-all duration-100 ease-in ${scheme.primaryHover} text-xs rounded w-full p-1`}
 
 										>
 											Add project
@@ -302,24 +314,50 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 							</div>
 						))}
 					</div>
-					<div className={`w-fit p-1 flex p-1 border ${colors.border} gap-1 rounded-xl`}>
-					<a
-						href="https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX"
-						target="_blank"
-						rel="noopener noreferrer"
-						className={`w-fit rounded bg-orange-100 text-zinc-600 dark:text-zinc-800 hover:bg-orange-200 dark:hover:bg-orange-900 p-1 text-center text-xs font-semibold text-white transition-all duration-100 ease-in`}
-					>
-						🇮🇳 
-						INR
-					</a>
-					<div>
-						<a href="https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template" target="_blank" rel="noopener noreferrer" 
-						className={`w-fit rounded text-zinc-600 dark:text-zinc-200 ${colors.hoverSecondary} px-1 py-1.5 text-center text-xs font-semibold text-white transition-all duration-100 ease-in`}>
-						🇺🇸
-							USD
-						</a>
-					</div>
-				</div>
+					{open && (
+						<>
+							<p className={`text-xs font-medium ${colors.mutedForeground} mb-2 px-3 tracking-wide`}>
+								Buy Template
+							</p>
+							<div className={`w-fit p-1 flex p-1 mx-3 border ${colors.border} gap-1 rounded-xl`}>
+								<a
+									href="https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX"
+									target="_blank"
+									rel="noopener noreferrer"
+									className={`w-fit rounded bg-orange-100 text-zinc-600 dark:text-zinc-800 hover:bg-orange-200 dark:hover:bg-orange-900 p-1 text-center text-xs font-semibold text-white transition-all duration-100 ease-in`}
+								>
+									🇮🇳 INR
+								</a>
+								<a
+									href="https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template"
+									target="_blank"
+									rel="noopener noreferrer"
+									className={`w-fit rounded text-zinc-600 dark:text-zinc-200 ${colors.hoverSecondary} px-1 py-1.5 text-center text-xs font-semibold text-white transition-all duration-100 ease-in`}
+								>
+									🇺🇸 USD
+								</a>
+							</div>
+							<p className={`text-xs font-medium ${colors.mutedForeground} mt-2 px-3 tracking-wide`}>
+								Contact
+							</p>
+							<div className="flex flex-col p-2 mx-3 gap-3 text-sm">
+								<a
+									href="https://x.com/treyvijay"
+									target="_blank"
+									rel="noopener noreferrer"
+									className={`${colors.mutedForeground} hover:underline`}
+								>
+									X
+								</a>
+								<a
+									href="mailto:shreyvijayvargiya26@gmail.com"
+									className={`${colors.mutedForeground} hover:underline break-all`}
+								>
+									Email
+								</a>
+							</div>
+						</>
+					)}
 				</div>
 			</div>
 		</div>
