@@ -282,14 +282,14 @@ const Sales = () => {
 				</div>
 				<div className="flex justify-around items-center gap-2">
 					<button
-						className={`flex items-center ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} py-2 px-4 text-xs rounded-xl hover:px-6 transition-all duration-200`}
+						className={`flex items-center ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} py-2 px-4 text-xs rounded-xl  transition-all duration-200`}
 					>
 						<Download size={18} className="mr-2" />
 						Download Report
 					</button>
 					<button
 						onClick={() => setIsModalOpen(true)}
-						className={`flex items-center ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl py-2 text-xs px-4 hover:px-6 transition-all duration-200`}
+						className={`flex items-center ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl py-2 text-xs px-4  transition-all duration-200`}
 					>
 						<PlusCircle size={18} className="mr-2" />
 						Add Product

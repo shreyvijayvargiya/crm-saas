@@ -43,7 +43,7 @@ const LayoutWrapper = ({ children }) => {
 			</div>
 
 			<main
-				className={`overflow-y-auto ${colors.primaryBackground} border ${colors.border} rounded-2xl w-full h-[98vh] hidescrollbar transition-colors`}
+				className={`overflow-y-auto ${colors.primaryBackground} border ${colors.border} rounded-2xl w-full h-[98vh] hidescrollbar transition-all duration-100 ease-in`}
 			>
 				<Navbar
 					open={open}

@@ -3,7 +3,7 @@ import * as lucideIcons from "lucide-react";
 import { useRouter } from "next/router";
 import { useTheme } from "../../utils/useTheme";
 
-const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
+const Sidebar = ({ open, setDrawerOpen }) => {
 	const router = useRouter();
 	const { colors, scheme } = useTheme();
 
@@ -188,7 +188,7 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 		<div
 			className={`h-[98vh] border ${colors.border} ${colors.primaryBackground} rounded-xl ${
 				open ? "w-60 md:w-60" : "w-full"
-			} transition-all duration-500 ease-in`}
+			} transition-all duration-100 ease-in`}
 		>
 			<div
 				className={`flex flex-col h-full overflow-scroll hidescrollbar justify-between py-1 px-2 transition-colors ${open ? "w-60 md:w-60" : "w-full"} transition-all duration-300 ease-in`}
@@ -261,7 +261,7 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 							/>
 						)}
 						<button
-							onClick={() => setDrawerOpen(!drawerOpen)}
+							onClick={() => setDrawerOpen(!open)}
 							className={`md:hidden ${colors.foreground}`}
 						>
 							<lucideIcons.X size={18} />
@@ -283,11 +283,13 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 											<div key={item.id} className="relative group">
 												<a
 													href={item.route}
-													className={`py-1 px-3 my-0.5 transition-all duration-100 ease-in rounded flex items-center gap-2 text-sm ${
+													className={`${open ? "py-1": "py-1.5"} px-3 my-0.5 transition-all duration-100 ease-in rounded flex items-center gap-2 text-sm ${
 														isActive
 															? `${scheme.primary} ${scheme.primaryForeground}`
 															: `${colors.hoverSecondary} ${colors.textSecondary}`
 													}`}
+													onMouseEnter={() => setDrawerOpen(!open)}
+													onMouseLeave={() => setDrawerOpen(!open)}
 												>
 													{Icon ? (
 														<Icon
@@ -296,13 +298,14 @@ const Sidebar = ({ open, drawerOpen, setDrawerOpen }) => {
 																	? scheme.primaryForeground
 																	: colors.textSecondary
 															}`}
+															
 														/>
 													) : null}{" "}
 													{open ? item.label : null}
 												</a>
 												{!open && (
 													<div
-														className={`absolute left-full ml-2 w-max ${scheme.primary} ${scheme.primaryForeground} text-xs rounded p-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100 z-10`}
+														className={`fixed left-14 mb-2 w-max ${scheme.primary} ${scheme.primaryForeground} text-xs rounded p-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100 z-10`}
 													>
 														{item.label}
 													</div>

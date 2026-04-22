@@ -1230,7 +1230,7 @@ const Invoices = () => {
 							</button>
 							<button
 								onClick={handleSubmit}
-								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6`}
+								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded px-4 py-2 text-sm transition-all duration-100 ease-in `}
 							>
 								Save
 							</button>
@@ -1424,7 +1424,7 @@ const Invoices = () => {
 										`Downloading invoice ${selectedInvoice.invoiceNumber}`
 									);
 								}}
-								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6 flex items-center gap-2`}
+								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded px-4 py-2 text-sm transition-all duration-100 ease-in  flex items-center gap-2`}
 							>
 								<Download size={16} />
 								Download PDF

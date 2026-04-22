@@ -373,11 +373,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 							<Sun className="w-4 h-4" />
 						)}
 					</button>
-					<MessageSquare
-						className={`cursor-pointer ${colors.mutedForeground} transition-all duration-100 ease-in`}
-						onClick={() => router.push("/email")}
-						size={18}
-					/>
+					
 				<div
 					className="relative"
 					onClick={() => router.push("/notifications")}
@@ -391,7 +387,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 					</span>
 				</div>
 				<div
-					className="relative inline-block"
+					className="relative inline-block relative"
 					onMouseEnter={handleDropdownToggle}
 					onMouseLeave={handleDropdownToggle}
 				>
@@ -400,43 +396,47 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 						alt="User Avatar"
 						width={32}
 						height={32}
+						onClick={handleDropdownToggle}
 						className="rounded-full cursor-pointer"
 					/>
 					{dropdownOpen && (
 						<div
-							className={`absolute right-0 w-48 py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.shadow}`}
-							style={{ zIndex: 1000 }}
+							className={`fixed md:right-5 space-y-2 right-0 w-48 right-0 py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.shadow}`}
 						>
-							<div className="p-2 flex justify-start">
-								<Image
-									src="/people/person-1.png"
-									alt="User Avatar"
-									width={40}
-									height={40}
-									className="rounded-full mr-2"
-								/>
-							</div>
-							<div className={`text-left mb-2 px-2 ${colors.foreground}`}>
-								<p className="font-bold">John Doe</p>
-								<p className={`text-sm ${colors.mutedForeground}`}>
-									john@doe.com
-								</p>
+							<div className="border-b border-zinc-200 dark:border-zinc-800">
+								<div className="p-2 flex justify-start">
+									<Image
+										src="/people/person-1.png"
+										alt="User Avatar"
+										width={40}
+										height={40}
+										className="rounded-full mr-2"
+									/>
+								</div>
+								<div className={`text-left mb-2 px-2 ${colors.foreground}`}>
+									<p className="font-bold">John Doe</p>
+									<p className={`text-sm ${colors.mutedForeground}`}>
+										john@doe.com
+									</p>
+								</div>
 							</div>
 							<div className={`px-2`}>
 								<button
-									className={`flex items-center p-2 w-full text-sm ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
+									className={`flex items-center gap-2 p-2 w-full text-sm ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
+									onClick={() => router.push("/settings")}
 								>
-									<Users2 size={18} className="mr-2" /> Profile
+									<Users2 size={14} className="text-sm" /> Profile
 								</button>
 								<button
-									className={`flex items-center p-2 w-full text-sm ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
+									className={`flex items-center gap-2 p-2 w-full text-sm ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
+									onClick={() => router.push("/settings")}
 								>
-									<SettingsIcon size={18} className="mr-2" /> Settings
+									<SettingsIcon size={14} className="text-sm" /> Settings
 								</button>
 								<button
-									className={`flex items-center p-2 w-full text-sm ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
+									className={`flex items-center p-2 gap-2 w-full text-sm ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
 								>
-									<LogOutIcon size={18} className="mr-2" /> Logout
+									<LogOutIcon size={14} className="text-sm" /> Logout
 								</button>
 							</div>
 						</div>

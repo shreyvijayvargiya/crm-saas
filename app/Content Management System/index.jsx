@@ -807,7 +807,7 @@ const ContentManagementSystem = () => {
 					onClick={handleCloseModal}
 				>
 					<div
-						className={`${colors.card} rounded-xl ${colors.shadow} max-w-4xl w-full max-h-[90vh] overflow-y-auto`}
+						className={`${colors.card} rounded-xl ${colors.shadow} max-w-4xl w-full max-h-[90vh] overflow-y-auto hidescrollbar`}
 						onClick={(e) => e.stopPropagation()}
 					>
 						{/* Modal Header */}

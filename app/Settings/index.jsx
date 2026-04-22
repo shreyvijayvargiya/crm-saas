@@ -204,7 +204,7 @@ const Settings = () => {
 				</h2>
 				<button
 					onClick={() => setIsEditMode(!isEditMode)}
-					className={`flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
+					className={`flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
 				>
 					<Edit size={16} />
 					{isEditMode ? "Cancel" : "Edit"}
@@ -361,7 +361,7 @@ const Settings = () => {
 			{isEditMode && (
 				<button
 					onClick={() => handleSave("profile")}
-					className={`mt-4 flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
+					className={`mt-4 flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
 				>
 					<Save size={16} />
 					Save Changes
@@ -445,7 +445,7 @@ const Settings = () => {
 					</div>
 					<button
 						onClick={handlePasswordChange}
-						className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
+						className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
 					>
 						Update Password
 					</button>
@@ -500,7 +500,7 @@ const Settings = () => {
 							/>
 							<button
 								onClick={handleRegenerateAPIKey}
-								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6 whitespace-nowrap`}
+								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in  whitespace-nowrap`}
 							>
 								<Key size={16} className="inline mr-1" />
 								Regenerate
@@ -553,7 +553,7 @@ const Settings = () => {
 				))}
 				<button
 					onClick={() => handleSave("notifications")}
-					className={`mt-4 flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
+					className={`mt-4 flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
 				>
 					<Save size={16} />
 					Save Preferences
@@ -684,7 +684,7 @@ const Settings = () => {
 			</div>
 			<button
 				onClick={() => handleSave("preferences")}
-				className={`mt-4 flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
+				className={`mt-4 flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
 			>
 				<Save size={16} />
 				Save Preferences
@@ -744,12 +744,12 @@ const Settings = () => {
 				</div>
 				<div className="mt-6 flex gap-2">
 					<button
-						className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
+						className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
 					>
 						Upgrade Plan
 					</button>
 					<button
-						className={`border ${colors.border} ${scheme.primaryHover} ${scheme.primaryForeground} ${colors.hoverSecondary} rounded ${colors.foreground} px-4 py-2 transition-all duration-100 ease-in hover:px-6 text-xs`}
+						className={`border ${colors.border} ${scheme.primaryHover} ${scheme.primaryForeground} ${colors.hoverSecondary} rounded ${colors.foreground} px-4 py-2 transition-all duration-100 ease-in  text-xs`}
 					>
 						Manage Payment
 					</button>
@@ -766,7 +766,7 @@ const Settings = () => {
 				</h2>
 				<button
 					onClick={() => setIsModalOpen(true)}
-					className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
+					className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
 				>
 					Add Member
 				</button>
@@ -995,25 +995,25 @@ const Settings = () => {
 
 	return (
 		<div
-			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar ${colors.background} transition-colors`}
+			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar ${colors.card} transition-all duration-100 ease-in`}
 		>
 			<div className="flex justify-between items-center flex-wrap my-4">
 				<p className={`text-xl font-semibold ${colors.foreground}`}>Settings</p>
 			</div>
 
 			<div className="flex flex-col md:flex-row gap-6">
-				<div className="md:w-1/4 w-full">
+				<div className="md:w-60 w-full">
 					<div
 						className={`${colors.card} border ${colors.border} rounded-xl p-4`}
 					>
-						<nav className="space-y-2">
+						<nav className="space-y-1">
 							{tabs.map((tab) => {
 								const Icon = tab.icon;
 								return (
 									<button
 										key={tab.id}
 										onClick={() => setActiveTab(tab.id)}
-										className={`w-full flex items-center gap-3 px-4 py-3 rounded transition-all duration-100 ease-in ${
+										className={`w-full flex items-center gap-3 p-2 rounded transition-all duration-100 ease-in ${
 											activeTab === tab.id
 												? `${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`
 												: `${colors.foreground} ${colors.hoverSecondary}`
@@ -1096,7 +1096,7 @@ const Settings = () => {
 										toast.success("Team member added successfully!");
 										setIsModalOpen(false);
 									}}
-									className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in hover:px-6`}
+									className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
 								>
 									Add Member
 								</button>

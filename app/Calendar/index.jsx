@@ -29,6 +29,15 @@ const Calendar = () => {
 	const [viewMode, setViewMode] = useState("Month");
 	const [isViewDropdownOpen, setIsViewDropdownOpen] = useState(false);
 	const [isNewEventModalOpen, setIsNewEventModalOpen] = useState(false);
+	const [isEventDetailsModalOpen, setIsEventDetailsModalOpen] = useState(false);
+	const [selectedEvent, setSelectedEvent] = useState(null);
+	const [isEditingEvent, setIsEditingEvent] = useState(false);
+	const [editEvent, setEditEvent] = useState({
+		title: "",
+		time: "",
+		date: "",
+		color: "blue",
+	});
 	const [newEvent, setNewEvent] = useState({
 		title: "",
 		time: "",
@@ -39,7 +48,11 @@ const Calendar = () => {
 	const [loading, setLoading] = useState(true);
 
 	const sensors = useSensors(
-		useSensor(PointerSensor),
+		useSensor(PointerSensor, {
+			activationConstraint: {
+				distance: 8,
+			},
+		}),
 		useSensor(KeyboardSensor)
 	);
 
@@ -354,6 +367,73 @@ const Calendar = () => {
 		}
 	};
 
+	const openEventDetails = (event) => {
+		setSelectedEvent(event);
+		setEditEvent({
+			title: event.title,
+			time: event.time,
+			date: event.date,
+			color: event.color,
+		});
+		setIsEditingEvent(false);
+		setIsEventDetailsModalOpen(true);
+	};
+
+	const closeEventDetails = () => {
+		setIsEventDetailsModalOpen(false);
+		setSelectedEvent(null);
+		setIsEditingEvent(false);
+		setEditEvent({ title: "", time: "", date: "", color: "blue" });
+	};
+
+	const startEditingEvent = () => {
+		if (!selectedEvent) return;
+		setEditEvent({
+			title: selectedEvent.title,
+			time: selectedEvent.time,
+			date: selectedEvent.date,
+			color: selectedEvent.color,
+		});
+		setIsEditingEvent(true);
+	};
+
+	const cancelEditingEvent = () => {
+		setIsEditingEvent(false);
+		if (selectedEvent) {
+			setEditEvent({
+				title: selectedEvent.title,
+				time: selectedEvent.time,
+				date: selectedEvent.date,
+				color: selectedEvent.color,
+			});
+		}
+	};
+
+	const handleSaveEventDetails = () => {
+		if (!selectedEvent) return;
+		if (!editEvent.title || !editEvent.time || !editEvent.date) {
+			toast.error("Please fill title, time, and date.");
+			return;
+		}
+
+		const updatedEvent = {
+			...selectedEvent,
+			title: editEvent.title,
+			time: editEvent.time,
+			date: editEvent.date,
+			color: editEvent.color,
+		};
+
+		setEvents((prevEvents) =>
+			prevEvents.map((event) =>
+				event.id === selectedEvent.id ? updatedEvent : event
+			)
+		);
+		setSelectedEvent(updatedEvent);
+		setIsEditingEvent(false);
+		toast.success("Event updated successfully!");
+	};
+
 	const EventItem = ({ event, dateString }) => {
 		const {
 			attributes,
@@ -383,9 +463,18 @@ const Calendar = () => {
 				style={style}
 				{...attributes}
 				{...listeners}
+				onClick={() => openEventDetails(event)}
 				className={`${getColorClasses(
 					event.color
-				)} text-xs px-2 py-1 rounded-xl mb-1 cursor-move hover:opacity-80 transition-opacity leading-tight`}
+				)} text-xs px-2 py-1 rounded-xl mb-1 cursor-pointer hover:opacity-80 transition-opacity leading-tight`}
+				role="button"
+				tabIndex={0}
+				onKeyDown={(e) => {
+					if (e.key === "Enter" || e.key === " ") {
+						e.preventDefault();
+						openEventDetails(event);
+					}
+				}}
 			>
 				<span className="font-medium">{event.time}</span>{" "}
 				<span className="line-clamp-2 break-words">{event.title}</span>
@@ -697,6 +786,173 @@ const Calendar = () => {
 								</button>
 							</div>
 						</form>
+					</div>
+				</div>
+			)}
+
+			{/* Event Details Modal */}
+			{isEventDetailsModalOpen && selectedEvent && (
+				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3">
+					<div
+						className={`${colors.card} rounded-xl ${colors.shadow} p-4 sm:p-6 border ${colors.border} w-full max-w-md`}
+					>
+						<div className="flex justify-between items-center mb-4">
+							<h3 className={`text-lg font-semibold ${colors.foreground}`}>
+								Event Details
+							</h3>
+							<button
+								onClick={closeEventDetails}
+								className={`${colors.mutedForeground} hover:${colors.hoverSecondary} transition-colors text-2xl`}
+							>
+								&times;
+							</button>
+						</div>
+
+						{isEditingEvent ? (
+							<div className="space-y-3">
+								<div>
+									<label
+										className={`block text-xs font-medium ${colors.mutedForeground} mb-1`}
+									>
+										Title
+									</label>
+									<input
+										type="text"
+										value={editEvent.title}
+										onChange={(e) =>
+											setEditEvent((prev) => ({ ...prev, title: e.target.value }))
+										}
+										className={`w-full px-3 py-2 border ${colors.border} ${colors.input} rounded-xl ${colors.foreground} focus:outline-none ${getFocusRingClass(colorScheme)}`}
+									/>
+								</div>
+								<div className="grid grid-cols-2 gap-3">
+									<div>
+										<label
+											className={`block text-xs font-medium ${colors.mutedForeground} mb-1`}
+										>
+											Time
+										</label>
+										<input
+											type="text"
+											value={editEvent.time}
+											onChange={(e) =>
+												setEditEvent((prev) => ({ ...prev, time: e.target.value }))
+											}
+											className={`w-full px-3 py-2 border ${colors.border} ${colors.input} rounded-xl ${colors.foreground} focus:outline-none ${getFocusRingClass(colorScheme)}`}
+										/>
+									</div>
+									<div>
+										<label
+											className={`block text-xs font-medium ${colors.mutedForeground} mb-1`}
+										>
+											Date
+										</label>
+										<input
+											type="date"
+											value={editEvent.date}
+											onChange={(e) =>
+												setEditEvent((prev) => ({ ...prev, date: e.target.value }))
+											}
+											className={`w-full px-3 py-2 border ${colors.border} ${colors.input} rounded-xl ${colors.foreground} focus:outline-none ${getFocusRingClass(colorScheme)}`}
+										/>
+									</div>
+								</div>
+								<div>
+									<label
+										className={`block text-xs font-medium ${colors.mutedForeground} mb-1`}
+									>
+										Color
+									</label>
+									<select
+										value={editEvent.color}
+										onChange={(e) =>
+											setEditEvent((prev) => ({ ...prev, color: e.target.value }))
+										}
+										className={`w-full px-3 py-2 border ${colors.border} ${colors.input} rounded-xl ${colors.foreground} focus:outline-none ${getFocusRingClass(colorScheme)}`}
+									>
+										<option value="blue">Blue</option>
+										<option value="green">Green</option>
+										<option value="purple">Purple</option>
+										<option value="pink">Pink</option>
+										<option value="orange">Orange</option>
+										<option value="indigo">Indigo</option>
+										<option value="teal">Teal</option>
+										<option value="yellow">Yellow</option>
+									</select>
+								</div>
+							</div>
+						) : (
+							<div className="space-y-3">
+								<div>
+									<p className={`text-xs ${colors.mutedForeground}`}>Title</p>
+									<p className={`text-sm font-medium ${colors.foreground}`}>
+										{selectedEvent.title}
+									</p>
+								</div>
+								<div className="grid grid-cols-2 gap-3">
+									<div>
+										<p className={`text-xs ${colors.mutedForeground}`}>Time</p>
+										<p className={`text-sm ${colors.foreground}`}>{selectedEvent.time}</p>
+									</div>
+									<div>
+										<p className={`text-xs ${colors.mutedForeground}`}>Date</p>
+										<p className={`text-sm ${colors.foreground}`}>
+											{formatDisplayDate(selectedEvent.date)}
+										</p>
+									</div>
+								</div>
+								<div>
+									<p className={`text-xs ${colors.mutedForeground}`}>Color Label</p>
+									<div className="mt-1">
+										<span
+											className={`${getColorClasses(
+												selectedEvent.color
+											)} inline-flex rounded-xl px-2.5 py-1 text-xs capitalize`}
+										>
+											{selectedEvent.color}
+										</span>
+									</div>
+								</div>
+							</div>
+						)}
+
+						<div className="mt-5 flex justify-end gap-2">
+							{isEditingEvent ? (
+								<>
+									<button
+										type="button"
+										onClick={cancelEditingEvent}
+										className={`p-1 rounded text-xs ${colors.card} border ${colors.border} ${colors.foreground} hover:${colors.hoverSecondary} transition-all duration-100 ease-in`}
+									>
+										Cancel
+									</button>
+									<button
+										type="button"
+										onClick={handleSaveEventDetails}
+										className={`p-1 rounded text-xs ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} transition-all duration-100 ease-in`}
+									>
+										Save
+									</button>
+								</>
+							) : (
+								<>
+									<button
+										type="button"
+										onClick={startEditingEvent}
+										className={`p-1 rounded text-xs ${colors.card} border ${colors.border} ${colors.foreground} hover:${colors.hoverSecondary} transition-all duration-100 ease-in`}
+									>
+										Edit
+									</button>
+									<button
+										type="button"
+										onClick={closeEventDetails}
+										className={`p-1 rounded text-xs ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} transition-all duration-100 ease-in`}
+									>
+										Close
+									</button>
+								</>
+							)}
+						</div>
 					</div>
 				</div>
 			)}

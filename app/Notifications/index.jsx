@@ -126,7 +126,7 @@ const Notifications = () => {
 		setItems((prev) => prev.filter((n) => n.id !== id));
 	};
 
-	const selectClass = `rounded-xl border ${colors.border} ${colors.foreground} text-sm px-3 py-2 pr-8 focus:outline-none focus:ring-2 ${getFocusRingClass(colorScheme)}`;
+	const selectClass = `rounded-xl border ${colors.border} text-zinc-800 dark:text-zinc-200 bg-zinc-50/50 dark:bg-transparent text-sm px-3 py-2 pr-8 focus:outline-none focus:ring-2 ${getFocusRingClass(colorScheme)}`;
 
 	return (
 		<div className={`min-h-screen transition-all duration-100 ease-in pb-12`}>

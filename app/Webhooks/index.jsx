@@ -399,7 +399,7 @@ const Webhooks = () => {
 				</div>
 				<button
 					onClick={handleAddWebhook}
-					className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6 flex items-center gap-2`}
+					className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-xs px-4 py-2 transition-all duration-100 ease-in  flex items-center gap-2`}
 				>
 					<Plus size={16} />
 					Add Webhook
@@ -721,7 +721,7 @@ const Webhooks = () => {
 							</button>
 							<button
 								onClick={handleSubmit}
-								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl px-4 py-2 text-sm transition-all duration-100 ease-in hover:px-6`}
+								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl px-4 py-2 text-sm transition-all duration-100 ease-in `}
 							>
 								Create Webhook
 							</button>

@@ -8,6 +8,7 @@ import {
 	Trash2,
 	Paperclip,
 	MessageCircle,
+	PlusIcon,
 } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
 import { getFocusRingClass } from "../../utils/theme";
@@ -601,9 +602,10 @@ const Tasks = () => {
 
 					{/* Add New Button */}
 					<button
-						className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-xs px-4 py-2.5 transition-all duration-100 ease-in hover:px-6 whitespace-nowrap`}
+						className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} flex gap-1 items-center rounded-xl text-xs px-4 py-2.5 transition-all duration-100 ease-in whitespace-nowrap`}
 						onClick={handleAddNewTask}
 					>
+						<PlusIcon className="w-4 h-4" />
 						Add new
 					</button>
 				</div>
@@ -625,7 +627,7 @@ const Tasks = () => {
 								)}
 							</p>
 							<span
-								className={`close cursor-pointer px-2 rounded-xl ${colors.textMuted} ${colors.hoverSecondary} transition-colors`}
+								className={`close cursor-pointer px-2.5 py-1 rounded-xl ${colors.textMuted} ${colors.hoverSecondary} transition-colors`}
 								onClick={handleCloseModal}
 							>
 								&times;
@@ -685,10 +687,10 @@ const Tasks = () => {
 								<option value="In Progress">In Progress</option>
 								<option value="Completed">Completed</option>
 							</select>
-							<div className="flex items-center gap-3">
+							<div className="flex items-center justify-end gap-3">
 								<button
 									type="submit"
-									className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded text-xs px-4 py-2 transition-all duration-100 ease-in hover:px-6`}
+									className={`border ${colors.border} rounded text-xs px-4 py-2 transition-all duration-100 ease-in`}
 								>
 									{isEditMode ? "Update" : "Submit"}
 								</button>
