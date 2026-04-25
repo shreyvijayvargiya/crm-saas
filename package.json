@@ -1,10 +1,10 @@
 {
-	"name": "ihatereading-mini-repo",
+	"name": "CRM-SaaS-Template",
 	"version": "1.0.0",
-	"description": "CRM SAAS template ",
+	"description": "CRM SAAS template for your business",
 	"main": "pages/index.js",
 	"repository": "https://github.com/shreyvijayvargiya/crm-saas",
-	"author": "iHateReading",
+	"author": "Shrey Vijayvargiya",
 	"license": "MIT",
 	"private": true,
 	"engines": {
