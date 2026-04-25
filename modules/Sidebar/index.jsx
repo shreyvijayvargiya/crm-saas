@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import * as lucideIcons from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 import { useTheme } from "../../utils/useTheme";
 
 const Sidebar = ({ open, setDrawerOpen }) => {
 	const router = useRouter();
 	const { colors, scheme } = useTheme();
+	const { i18n } = useTranslation();
+	const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+
+	const languageOptions = [
+		{ code: "en", label: "English", flag: "🇺🇸" },
+		{ code: "hi", label: "Hindi", flag: "🇮🇳" },
+		{ code: "es", label: "Spanish", flag: "🇪🇸" },
+	];
+
+	const selectedLanguage =
+		languageOptions.find((lang) => lang.code === i18n.language) || languageOptions[0];
 
 	const navCategories = [
 		{
@@ -319,6 +332,50 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					</div>
 					{open && (
 						<>
+							<div className="px-3 mb-2 relative">
+								<p className={`text-xs font-medium ${colors.mutedForeground} mb-2 tracking-wide`}>
+									Language
+								</p>
+								<button
+									onClick={() => setIsLanguageOpen((prev) => !prev)}
+									className={`w-full flex items-center justify-between rounded-xl border ${colors.border} ${colors.hoverSecondary} px-2.5 py-2 text-xs ${colors.foreground} transition-colors`}
+								>
+									<span className="inline-flex items-center gap-2">
+										<span>{selectedLanguage.flag}</span>
+										<span>{selectedLanguage.label}</span>
+									</span>
+									<lucideIcons.ChevronDown className={`w-3.5 h-3.5 ${colors.mutedForeground}`} />
+								</button>
+								<AnimatePresence>
+									{isLanguageOpen && (
+										<motion.div
+											initial={{ opacity: 0, y: -6 }}
+											animate={{ opacity: 1, y: 0 }}
+											exit={{ opacity: 0, y: -6 }}
+											transition={{ duration: 0.2 }}
+											className={`absolute left-3 right-3 mt-1 rounded-xl border ${colors.border} ${colors.card} p-1 z-20`}
+										>
+											{languageOptions.map((lang) => (
+												<button
+													key={lang.code}
+													onClick={() => {
+														i18n.changeLanguage(lang.code);
+														setIsLanguageOpen(false);
+													}}
+													className={`w-full text-left rounded-lg px-2 py-1.5 text-xs inline-flex items-center gap-2 transition-colors ${
+														i18n.language === lang.code
+															? `${scheme.primary} ${scheme.primaryForeground}`
+															: `${colors.hoverSecondary} ${colors.foreground}`
+													}`}
+												>
+													<span>{lang.flag}</span>
+													<span>{lang.label}</span>
+												</button>
+											))}
+										</motion.div>
+									)}
+								</AnimatePresence>
+							</div>
 							<p className={`text-xs font-medium ${colors.mutedForeground} mb-2 px-3 tracking-wide`}>
 								Buy Template
 							</p>
