@@ -47,6 +47,20 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 			section: "main",
 		},
 		{
+			id: 24,
+			label: "My work",
+			route: "/my-work",
+			icon: "ClipboardList",
+			section: "main",
+		},
+		{
+			id: 25,
+			label: "Reports",
+			route: "/reports",
+			icon: "Library",
+			section: "main",
+		},
+		{
 			id: 2,
 			label: "Leads",
 			route: "/leads",
@@ -89,6 +103,13 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 			section: "sales",
 		},
 		{
+			id: 26,
+			label: "Campaigns",
+			route: "/campaigns",
+			icon: "Megaphone",
+			section: "sales",
+		},
+		{
 			id: 6,
 			label: "Tasks",
 			route: "/tasks",
@@ -121,6 +142,13 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 			label: "Invoices",
 			route: "/invoices",
 			icon: "FileText",
+			section: "finance",
+		},
+		{
+			id: 27,
+			label: "Quotes",
+			route: "/quotes",
+			icon: "FileSignature",
 			section: "finance",
 		},
 		{
@@ -198,6 +226,13 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 			label: "Notifications",
 			route: "/notifications",
 			icon: "Bell",
+			section: "system",
+		},
+		{
+			id: 28,
+			label: "Import data",
+			route: "/import-data",
+			icon: "Upload",
 			section: "system",
 		},
 		{

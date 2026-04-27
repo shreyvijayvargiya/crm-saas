@@ -39,10 +39,22 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					icon: "Home",
 				},
 				{
+					id: 24,
+					label: "My work",
+					route: "/my-work",
+					icon: "ClipboardList",
+				},
+				{
 					id: 16,
 					label: "Analytics",
 					route: "/analytics",
 					icon: "BarChart3",
+				},
+				{
+					id: 25,
+					label: "Reports",
+					route: "/reports",
+					icon: "Library",
 				},
 			],
 		},
@@ -86,6 +98,12 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					route: "/companies",
 					icon: "Users",
 				},
+				{
+					id: 26,
+					label: "Campaigns",
+					route: "/campaigns",
+					icon: "Megaphone",
+				},
 			],
 		},
 		{
@@ -127,6 +145,12 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					label: "Products",
 					route: "/products",
 					icon: "Package",
+				},
+				{
+					id: 27,
+					label: "Quotes",
+					route: "/quotes",
+					icon: "FileSignature",
 				},
 				{
 					id: 8,
@@ -217,6 +241,12 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					label: "Notifications",
 					route: "/notifications",
 					icon: "Bell",
+				},
+				{
+					id: 28,
+					label: "Import data",
+					route: "/import-data",
+					icon: "Upload",
 				},
 				{
 					id: 14,
