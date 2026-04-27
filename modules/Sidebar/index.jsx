@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import * as lucideIcons from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 import { useTheme } from "../../utils/useTheme";
 
 const Sidebar = ({ open, setDrawerOpen }) => {
 	const router = useRouter();
 	const { colors, scheme } = useTheme();
+	const { i18n, t } = useTranslation();
+	const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+
+	/* Native endonyms — not passed through locale JSON / AutoTranslate (picker uses data-no-translate). */
+	const languageOptions = [
+		{ code: "en", label: "English", flag: "🇺🇸" },
+		{ code: "hi", label: "हिन्दी", flag: "🇮🇳" },
+		{ code: "es", label: "Español", flag: "🇪🇸" },
+		{ code: "it", label: "Italiano", flag: "🇮🇹" },
+		{ code: "fr", label: "Français", flag: "🇫🇷" },
+		{ code: "de", label: "Deutsch", flag: "🇩🇪" },
+		{ code: "zh", label: "中文", flag: "🇨🇳" },
+		{ code: "ja", label: "日本語", flag: "🇯🇵" },
+	];
+
+	const langPrefix = (i18n.language || "en").split("-")[0];
+	const selectedLanguage =
+		languageOptions.find((lang) => lang.code === langPrefix) || languageOptions[0];
 
 	const navCategories = [
 		{
@@ -149,6 +169,36 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					label: "CMS",
 					route: "/cms",
 					icon: "FileText",
+				},
+			],
+		},
+		{
+			id: "authentication",
+			label: "Authentication",
+			items: [
+				{
+					id: 101,
+					label: "Login",
+					route: "/login",
+					icon: "LogIn",
+				},
+				{
+					id: 102,
+					label: "Sign up",
+					route: "/signup",
+					icon: "UserPlus",
+				},
+				{
+					id: 103,
+					label: "Forgot password",
+					route: "/forgot-password",
+					icon: "KeyRound",
+				},
+				{
+					id: 104,
+					label: "Change password",
+					route: "/change-password",
+					icon: "Lock",
 				},
 			],
 		},
@@ -319,6 +369,54 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					</div>
 					{open && (
 						<>
+							<div className="px-3 mb-2 relative">
+								<p className={`text-xs font-medium ${colors.mutedForeground} mb-2 tracking-wide`}>
+									{t("Language")}
+								</p>
+								<div data-no-translate translate="no">
+									<button
+										type="button"
+										onClick={() => setIsLanguageOpen((prev) => !prev)}
+										className={`w-full flex items-center justify-between rounded-xl border ${colors.border} ${colors.hoverSecondary} px-2.5 py-2 text-xs ${colors.foreground} transition-colors`}
+									>
+										<span className="inline-flex min-w-0 items-center gap-2">
+											<span aria-hidden>{selectedLanguage.flag}</span>
+											<span className="truncate">{selectedLanguage.label}</span>
+										</span>
+										<lucideIcons.ChevronDown className={`w-3.5 h-3.5 shrink-0 ${colors.mutedForeground}`} />
+									</button>
+									<AnimatePresence>
+										{isLanguageOpen && (
+											<motion.div
+												initial={{ opacity: 0, y: -6 }}
+												animate={{ opacity: 1, y: 0 }}
+												exit={{ opacity: 0, y: -6 }}
+												transition={{ duration: 0.2 }}
+												className={`absolute left-3 right-3 mt-1 rounded-xl border ${colors.border} ${colors.card} p-1 z-20`}
+											>
+												{languageOptions.map((lang) => (
+													<button
+														type="button"
+														key={lang.code}
+														onClick={() => {
+															i18n.changeLanguage(lang.code);
+															setIsLanguageOpen(false);
+														}}
+														className={`w-full text-left rounded-xl px-2 py-1.5 text-xs inline-flex items-center gap-2 transition-colors ${
+															langPrefix === lang.code
+																? `${scheme.primary} ${scheme.primaryForeground}`
+																: `${colors.hoverSecondary} ${colors.foreground}`
+														}`}
+													>
+														<span aria-hidden>{lang.flag}</span>
+														<span>{lang.label}</span>
+													</button>
+												))}
+											</motion.div>
+										)}
+									</AnimatePresence>
+								</div>
+							</div>
 							<p className={`text-xs font-medium ${colors.mutedForeground} mb-2 px-3 tracking-wide`}>
 								Buy Template
 							</p>
