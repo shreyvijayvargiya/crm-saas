@@ -23,3 +23,7 @@ export { default as ContactDetail } from "./Contacts/ContactDetail";
 export { default as Email } from "./Email";
 export { default as Notifications } from "./Notifications";
 export { default as About } from "./About";
+export { default as Login } from "./Authentication/Login";
+export { default as Signup } from "./Authentication/Signup";
+export { default as ForgotPassword } from "./Authentication/ForgotPassword";
+export { default as ChangePassword } from "./Authentication/ChangePassword";

@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
 	Bell,
+	Bot,
 	Users2,
 	LogOutIcon,
-	MessageSquare,
 	PanelLeftClose,
 	PanelRightClose,
 	Search,
@@ -18,7 +18,7 @@ import { useRouter } from "next/router";
 import { useTheme } from "../../utils/useTheme";
 import { colorSchemes } from "../../utils/theme";
 
-const Navbar = ({ open, setOpen, setDrawerOpen }) => {
+const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) => {
 	const router = useRouter();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [searchModalOpen, setSearchModalOpen] = useState(false);
@@ -159,6 +159,34 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 			section: "developer",
 		},
 		{
+			id: 101,
+			label: "Login",
+			route: "/login",
+			icon: "LogIn",
+			section: "authentication",
+		},
+		{
+			id: 102,
+			label: "Sign up",
+			route: "/signup",
+			icon: "UserPlus",
+			section: "authentication",
+		},
+		{
+			id: 103,
+			label: "Forgot password",
+			route: "/forgot-password",
+			icon: "KeyRound",
+			section: "authentication",
+		},
+		{
+			id: 104,
+			label: "Change password",
+			route: "/change-password",
+			icon: "Lock",
+			section: "authentication",
+		},
+		{
 			id: 17,
 			label: "Teams",
 			route: "/teams",
@@ -252,6 +280,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 		{ key: "operations", label: "Operations" },
 		{ key: "finance", label: "Finance" },
 		{ key: "developer", label: "Developer" },
+		{ key: "authentication", label: "Authentication" },
 		{ key: "system", label: "System" },
 	];
 	const groupedFilteredNavItems = navSections.map((section) => ({
@@ -319,6 +348,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 						</a>
 					</div>
 				</div>
+				
 					{/* Color Scheme Picker */}
 					<div className="relative color-picker-dropdown md:block hidden">
 						<div
@@ -386,6 +416,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 						3
 					</span>
 				</div>
+				
 				<div
 					className="relative inline-block relative"
 					onMouseEnter={handleDropdownToggle}
@@ -401,7 +432,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 					/>
 					{dropdownOpen && (
 						<div
-							className={`fixed md:right-5 space-y-2 right-0 w-48 right-0 py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.shadow}`}
+							className={`absolute right-0 top-full z-[100] mt-1 w-48 space-y-2 py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.shadow}`}
 						>
 							<div className="border-b border-zinc-200 dark:border-zinc-800">
 								<div className="p-2 flex justify-start">
@@ -442,6 +473,19 @@ const Navbar = ({ open, setOpen, setDrawerOpen }) => {
 						</div>
 					)}
 				</div>
+				<button
+					type="button"
+					onClick={onToggleAiChat}
+					className={`ml-1 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[10px] border ${colors.border} ${aiChatOpen ? scheme.primary + " " + scheme.primaryForeground : colors.hoverSecondary + " " + colors.mutedForeground} transition-all duration-200`}
+					aria-label={aiChatOpen ? "Close AI assistant" : "Open AI assistant"}
+					aria-pressed={aiChatOpen}
+				>
+					{aiChatOpen ? (
+						<PanelRightClose className="h-3.5 w-3.5" />
+					) : (
+						<Bot className="h-3.5 w-3.5" />
+					)}
+				</button>
 			</div>
 
 			{/* Search Modal */}

@@ -17,8 +17,6 @@ import {
 	Activity,
 	Target,
 	CheckCircle2,
-	Clock,
-	AlertCircle,
 	ArrowRight,
 } from "lucide-react";
 import router from "next/router";
@@ -39,7 +37,6 @@ import {
 	ResponsiveContainer,
 } from "recharts";
 import { useTheme } from "../../utils/useTheme";
-import { getFocusRingClass } from "../../utils/theme";
 
 const Home = () => {
 	// Theme hook
