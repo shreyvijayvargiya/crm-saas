@@ -1,2 +1,2 @@
-import { LandingPage } from "../app";
-export default () => <LandingPage />;
+import MarketingLanding from "../app/LandingPage";
+export default () => <MarketingLanding />;
