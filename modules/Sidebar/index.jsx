@@ -35,7 +35,7 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 				{
 					id: 1,
 					label: "Dashboard",
-					route: "/",
+					route: "/demo",
 					icon: "Home",
 				},
 				{

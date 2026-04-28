@@ -35,7 +35,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 		{
 			id: 1,
 			label: "Dashboard",
-			route: "/",
+			route: "/demo",
 			icon: "Home",
 			section: "main",
 		},

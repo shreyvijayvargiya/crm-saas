@@ -7,12 +7,15 @@ import "../globals.css";
 import "react-toastify/dist/ReactToastify.css";
 
 function MyApp({ Component, pageProps }) {
+	const page = (
+		<>
+			<Component {...pageProps} />
+			<Analytics />
+		</>
+	);
 	return (
 		<ThemeProvider>
-			<LayoutWrapper>
-				<Component {...pageProps} />
-				<Analytics />
-			</LayoutWrapper>
+			{Component.disableLayout ? page : <LayoutWrapper>{page}</LayoutWrapper>}
 		</ThemeProvider>
 	);
 }

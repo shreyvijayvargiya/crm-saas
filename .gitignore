@@ -4,4 +4,5 @@ yarn.lock
 yarn-debug.log*
 node_modules
 .env
+.env.local
 .vercel
