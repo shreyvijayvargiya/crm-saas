@@ -110,6 +110,115 @@ User-switchable accents (Navbar color picker). Each scheme supplies **primary bu
 
 ---
 
+## Component recipes
+
+Copy-paste these patterns inside the **CRM shell** (any page under layout with `ThemeProvider`). Adjust paths to `useTheme` / `getFocusRingClass` from your file depth (`../../utils/...`, `../../../utils/...`, etc.).
+
+### Primary button
+
+```jsx
+import { useTheme } from "../../utils/useTheme"; // adjust relative path
+
+const { scheme } = useTheme();
+
+<button
+	type="button"
+	className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`}
+>
+	Save changes
+</button>
+```
+
+### Secondary / outline button
+
+```jsx
+import { useTheme } from "../../utils/useTheme";
+
+const { colors } = useTheme();
+
+<button
+	type="button"
+	className={`inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors ${colors.border} ${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`}
+>
+	Cancel
+</button>
+```
+
+### Module shell (rounded-2xl container)
+
+Matches the bordered, elevated card idioms inside the main column.
+
+```jsx
+import { useTheme } from "../../utils/useTheme";
+
+const { colors } = useTheme();
+
+<div className={`rounded-2xl border p-4 sm:p-6 ${colors.border} ${colors.card} ${colors.shadow}`}>
+	<h2 className={`text-base font-semibold ${colors.cardForeground}`}>Module title</h2>
+	<p className={`mt-1 text-sm ${colors.mutedForeground}`}>Description or helper text.</p>
+	<div className="mt-4">{/* table, form, or list */}</div>
+</div>
+```
+
+### Accent chip / tag
+
+`scheme.chip` already matches the current light/dark mode + color picker.
+
+```jsx
+import { useTheme } from "../../utils/useTheme";
+
+const { scheme } = useTheme();
+
+<span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${scheme.chip}`}>
+	Qualified
+</span>
+```
+
+### Text input
+
+Same pattern as `app/Leads/index.jsx` and other forms: `outline-none`, `placeholder:${colors.mutedForeground}`, and `getFocusRingClass(colorScheme)`.
+
+```jsx
+import { useTheme } from "../../utils/useTheme";
+import { getFocusRingClass } from "../../utils/theme";
+
+const { colors, colorScheme } = useTheme();
+
+<input
+	type="text"
+	className={`w-full rounded-xl border px-3 py-2.5 text-sm outline-none transition-colors ${colors.border} ${colors.input} ${colors.background} ${colors.foreground} placeholder:${colors.mutedForeground} ${getFocusRingClass(colorScheme)}`}
+	placeholder="Search…"
+/>
+```
+
+### Muted inset panel (lists / side details)
+
+```jsx
+import { useTheme } from "../../utils/useTheme";
+
+const { colors } = useTheme();
+
+<div className={`rounded-xl border p-3 ${colors.border} ${colors.muted}`}>
+	<p className={`text-xs ${colors.mutedForeground}`}>Supporting content</p>
+</div>
+```
+
+---
+
+## When creating a new module
+
+Use this as a **build checklist** so new pages stay consistent with the shell and color picker.
+
+1. **Use colors from `useTheme()`** — Destructure `colors` and `scheme` at the top of the module. Put surfaces, borders, and text on `${colors.*}`; primary actions and accent chips on `${scheme.*}`. Don’t introduce a new brand hex unless it is landing-only.
+2. **Wrap the page body in a `rounded-2xl` container** — Match the main column: `border`, `${colors.border}`, `${colors.card}` (or `primaryBackground` + `border` if you need a full-bleed inner page—follow neighboring modules in `app/`).
+3. **Use Lucide icons only** — `import { IconName } from "lucide-react"`; size with `className="h-4 w-4"` (or `h-5 w-5` for hero-style rows). No `react-icons` in new CRM UI unless you are extending an existing screen that already uses them.
+4. **Keep spacing on the 4px grid** — Prefer `px-4 py-3` or `p-4 sm:p-6` for section padding; use `gap-3` or `gap-4` between blocks; dense tables can use `py-2 px-3` on rows like existing list pages.
+5. **Wire focus states** — For inputs, use `outline-none` plus `${getFocusRingClass(colorScheme)}` from `utils/theme.js`, copied from a sibling screen (e.g. `app/Leads/index.jsx`).
+6. **Respect i18n** — Add copy through the same `react-i18next` / `AutoTranslate` patterns as other `app/*` modules so strings stay translatable.
+7. **Optional motion** — If you add Framer Motion, keep durations ~0.2–0.45s and prefer `whileInView` with `viewport={{ once: true }}` for list sections, consistent with the landing page and layout.
+
+---
+
 ## Spacing
 
 - **Base**: Tailwind 4px grid (`1` = 4px). Prefer **2, 3, 4, 5, 6, 8, 12, 16** for gaps and padding.
