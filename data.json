@@ -6,7 +6,8 @@
       "Paths like ./people/ and ./companies/ match public/ asset URLs in Next.js.",
       "Some UI-only keys (e.g. React icon components) are omitted; use string ids where applicable.",
       "Contacts in source app/Contacts/index.jsx use Math.random() for image on some rows; this JSON uses deterministic person-1..4 rotation.",
-      "appContacts: ids 205–220 use `person-${Math.floor(Math.random()*4)+1}.png` in source; JSON uses rotating person-1..4 for a stable snapshot."
+      "appContacts: ids 205–220 use `person-${Math.floor(Math.random()*4)+1}.png` in source; JSON uses rotating person-1..4 for a stable snapshot.",
+      "Entity shapes have matching Zod definitions in schemas/ — import from schemas/index.js for API parsing and validation."
     ],
     "pageRouteMap": {
       "/": "appHome",

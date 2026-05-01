@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import {
 	PlayCircle,
 	X,
-	Info,
 	ShoppingCart,
 	Download,
 	Wrench,
 	CheckCircle2,
 	Bot,
 	PanelRightClose,
+	Sparkles,
+	LayoutGrid,
+	ExternalLink,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { I18nextProvider } from "react-i18next";
@@ -37,11 +39,53 @@ function useMediaQueryMd() {
 const ABOUT_VIDEO_URL =
 	"https://ovevcjixqq.ufs.sh/f/9pIU2Of3sxTfUpCNWfb7rxhdGYe1SLHVu92gAbfPX6ytMjcp";
 
+const TEMPLATE_GUMROAD_USD =
+	"https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template";
+
+const TEMPLATE_CHECKOUT_INR =
+	"https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX";
+
+const OTHER_PRODUCTS_LINKS = [
+	{
+		label: "FreelanceCRM — Client & Project Hub",
+		href: "https://shreyvijayvargiya.gumroad.com/l/freelancer-crm-template",
+	},
+	{
+		label: "Indie Hacker SaaS (InkGest Admin)",
+		href: "https://shreyvijayvargiya.gumroad.com/l/inkgest-saas-admin-template",
+	},
+	{
+		label: "Estate OS — Real Estate CRM",
+		href: "https://shreyvijayvargiya.gumroad.com/l/estate-os-real-estate-crm-template",
+	},
+];
+
+const GUIDE_STEPS = [
+	{
+		icon: ShoppingCart,
+		title: "Buy template",
+		desc: "Choose INR or USD checkout and complete your purchase.",
+		accent: "bg-orange-500/15 text-orange-500",
+	},
+	{
+		icon: Download,
+		title: "Download ZIP",
+		desc: "Get the source ZIP from your purchase confirmation page.",
+		accent: "bg-indigo-500/15 text-indigo-500",
+	},
+	{
+		icon: Wrench,
+		title: "Customize & deploy",
+		desc: "Connect APIs, edit modules, then deploy your CRM app.",
+		accent: "bg-emerald-500/15 text-emerald-500",
+	},
+];
+
 const LayoutWrapper = ({ children }) => {
 	const [open, setOpen] = useState(true);
 	const [drawerOpen, setDrawerOpen] = useState(false);
-	const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-	const [isHowToUseModalOpen, setIsHowToUseModalOpen] = useState(false);
+	const [isGuideModalOpen, setIsGuideModalOpen] = useState(false);
+	const [isOtherProductsModalOpen, setIsOtherProductsModalOpen] = useState(false);
 	const [aiChatOpen, setAiChatOpen] = useState(false);
 	const isMd = useMediaQueryMd();
 	const { colors } = useTheme();
@@ -141,169 +185,229 @@ const LayoutWrapper = ({ children }) => {
 					</AnimatePresence>
 
 					<div className="fixed bottom-2 right-2 z-40 flex flex-col items-end gap-2">
-				<button
-					type="button"
-					onClick={toggleAiChat}
-					className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:shadow-xl ${
-						aiChatOpen
-							? "bg-violet-700 hover:bg-violet-600"
-							: "bg-violet-600 hover:bg-violet-500"
-					}`}
-					aria-label={aiChatOpen ? "Close AI assistant" : "Open AI assistant"}
-					aria-pressed={aiChatOpen}
-				>
-					{aiChatOpen ? (
-						<PanelRightClose size={18} className="shrink-0" />
-					) : (
-						<Bot size={18} className="shrink-0" />
-					)}
-					<span className="hidden md:inline">
-						{aiChatOpen ? "Close AI" : "AI Assistant"}
-					</span>
-				</button>
-				<button
-					onClick={() => setIsHowToUseModalOpen(true)}
-					className="inline-flex items-center gap-2 rounded-full bg-orange-500 px-4 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:bg-orange-400 hover:shadow-xl"
-				>
-					<Info size={18} />
-					<span className="hidden md:block">How to Use</span>
-				</button>
-				<button
-					onClick={() => setIsVideoModalOpen(true)}
-					className="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:bg-indigo-500 hover:shadow-xl"
-				>
-					<PlayCircle size={18} />
-					<span className="hidden md:block">Watch Demo</span>
-				</button>
+						<button
+							type="button"
+							onClick={toggleAiChat}
+							className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:shadow-xl ${
+								aiChatOpen
+									? "bg-violet-700 hover:bg-violet-600"
+									: "bg-violet-600 hover:bg-violet-500"
+							}`}
+							aria-label={aiChatOpen ? "Close AI assistant" : "Open AI assistant"}
+							aria-pressed={aiChatOpen}
+						>
+							{aiChatOpen ? (
+								<PanelRightClose size={18} className="shrink-0" />
+							) : (
+								<Bot size={18} className="shrink-0" />
+							)}
+							<span className="hidden md:inline">
+								{aiChatOpen ? "Close AI" : "AI Assistant"}
+							</span>
+						</button>
+						<button
+							type="button"
+							onClick={() => setIsGuideModalOpen(true)}
+							className="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:bg-indigo-500 hover:shadow-xl"
+							aria-label="Open guide, demo video, and purchasing details"
+						>
+							<Sparkles size={18} className="shrink-0" />
+							<span className="hidden md:inline">Guide & demo</span>
+						</button>
+						<button
+							type="button"
+							onClick={() => setIsOtherProductsModalOpen(true)}
+							className={`inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium shadow-md transition-all duration-200 hover:shadow-lg ${colors.border} ${colors.card} ${colors.foreground}`}
+							aria-label="Browse other CRM templates"
+						>
+							<LayoutGrid size={18} className="shrink-0" />
+							<span className="hidden md:inline">Other CRM templates</span>
+						</button>
 					</div>
 
-					{isVideoModalOpen && (
-				<div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 p-2">
-					<div
-						className={`relative w-full max-w-4xl rounded-2xl border ${colors.border} ${colors.card} p-4 shadow-2xl`}
-					>
-						<div className="mb-3 flex items-start justify-between">
-							<div>
-								<h3 className={`text-base font-semibold ${colors.foreground}`}>
-									CRM SaaS Template Demo
-								</h3>
-								
-							</div>
-							<button
-								onClick={() => setIsVideoModalOpen(false)}
-								className={`rounded-xl p-2 ${colors.hoverSecondary}`}
-								aria-label="Close video modal"
+					{isGuideModalOpen && (
+						<div
+							role="presentation"
+							className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 p-3"
+							onClick={() => setIsGuideModalOpen(false)}
+						>
+							<div
+								role="dialog"
+								aria-modal="true"
+								aria-labelledby="guide-modal-title"
+								className={`relative max-h-[min(92vh,900px)] w-full max-w-4xl overflow-y-auto hidescrollbar rounded-2xl border ${colors.border} ${colors.card} p-5 shadow-2xl`}
+								onClick={(e) => e.stopPropagation()}
 							>
-								<X size={14} className={colors.foreground} />
-							</button>
-						</div>
-						<p className={`mt-1 text-xs ${colors.mutedForeground}`}>
-							Quick walkthrough of the template pages and workflows.
-						</p>
-						
-						<div className={`mt-3 w-full overflow-hidden rounded-xl border ${colors.border} bg-black`}>
-							<div className="aspect-video w-full">
-								<video
-									className="h-full w-full object-contain"
-									src={ABOUT_VIDEO_URL}
-									controls
-									autoPlay
-									playsInline
-									preload="metadata"
-								>
-									Your browser does not support the video tag.
-								</video>
-							</div>
-						</div>
-
-					</div>
-				</div>
-					)}
-
-					{isHowToUseModalOpen && (
-				<div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70">
-					<div
-						className={`relative w-full max-w-2xl rounded-2xl border ${colors.border} ${colors.card} shadow-2xl`}
-					>
-						<div className={`mb-3 p-4 flex items-start justify-between border-b ${colors.border}`}>
-							<div>
-								<h3 className={`text-base font-semibold ${colors.foreground}`}>
-									How to Use CRM SaaS Template
-								</h3>
-								<p className={`mt-1 text-xs ${colors.mutedForeground}`}>
-									Go from purchase to deployment in 3 simple steps.
-								</p>
-							</div>
-							<button
-								onClick={() => setIsHowToUseModalOpen(false)}
-								className={`rounded-xl p-2 ${colors.hoverSecondary}`}
-								aria-label="Close how to use modal"
-							>
-								<X size={14} className={colors.foreground} />
-							</button>
-						</div>
-
-						<div className="grid gap-3 md:grid-cols-3 p-4">
-							{[
-								{
-									icon: ShoppingCart,
-									title: "Buy Template",
-									desc: "Choose INR or USD checkout and complete your purchase.",
-									accent: "bg-orange-500/15 text-orange-500",
-								},
-								{
-									icon: Download,
-									title: "Download ZIP",
-									desc: "Get the source ZIP from your purchase confirmation page.",
-									accent: "bg-indigo-500/15 text-indigo-500",
-								},
-								{
-									icon: Wrench,
-									title: "Customize & Deploy",
-									desc: "Connect APIs, edit modules, then deploy your CRM app.",
-									accent: "bg-emerald-500/15 text-emerald-500",
-								},
-							].map((step, idx) => {
-								const Icon = step.icon;
-								return (
-									<motion.div
-										key={step.title}
-										initial={{ opacity: 0, y: 12 }}
-										animate={{ opacity: 1, y: 0 }}
-										transition={{ delay: idx * 0.12, duration: 0.3 }}
-										className={`rounded-xl border ${colors.border} p-4`}
+								<div className="flex items-start justify-between gap-4">
+									<div>
+										<h2 id="guide-modal-title" className={`text-xl font-bold ${colors.foreground}`}>
+											CRM SaaS template — guide, demo & how to purchase
+										</h2>
+										<p className={`mt-2 text-sm ${colors.mutedForeground}`}>
+											How this template ships, watch the demo, get the codebase, then wire your API.
+										</p>
+									</div>
+									<button
+										type="button"
+										onClick={() => setIsGuideModalOpen(false)}
+										className={`shrink-0 rounded-xl p-2 ${colors.hoverSecondary}`}
+										aria-label="Close guide"
 									>
-										<div className={`rounded-xl p-2 w-fit ${step.accent}`}>
-											<Icon size={16} />
-										</div>
-										<p className={`mt-2 text-sm font-semibold ${colors.foreground}`}>
-											{step.title}
-										</p>
-										<p className={`text-xs leading-relaxed ${colors.mutedForeground}`}>
-											{step.desc}
-										</p>
-									</motion.div>
-								);
-							})}
-						</div>
+										<X size={14} className={colors.foreground} />
+									</button>
+								</div>
 
-						<div className={`m-4 rounded-xl  p-4`}>
-							<div className="mb-2 flex items-center gap-2">
-								<CheckCircle2 size={16} className={colors.foreground} />
-								<p className={`text-sm font-semibold ${colors.foreground}`}>
-									Tech Stack
-								</p>
+								<section className="mt-8">
+									<h3 className={`text-base font-semibold ${colors.foreground}`}>
+										How it works after purchase
+									</h3>
+									<p className={`mt-1 text-xs ${colors.mutedForeground}`}>
+										Typical path from Gumroad checkout to deployed app.
+									</p>
+									<div className="mt-4 grid gap-3 sm:grid-cols-3">
+										{GUIDE_STEPS.map((step, idx) => {
+											const Icon = step.icon;
+											return (
+												<motion.div
+													key={step.title}
+													initial={{ opacity: 0, y: 12 }}
+													animate={{ opacity: 1, y: 0 }}
+													transition={{ delay: idx * 0.08, duration: 0.3 }}
+													className={`rounded-xl border ${colors.border} p-4`}
+												>
+													<div className={`rounded-xl p-2 w-fit ${step.accent}`}>
+														<Icon size={16} />
+													</div>
+													<p className={`mt-2 text-sm font-semibold ${colors.foreground}`}>
+														{step.title}
+													</p>
+													<p className={`text-xs leading-relaxed ${colors.mutedForeground}`}>
+														{step.desc}
+													</p>
+												</motion.div>
+											);
+										})}
+									</div>
+								</section>
+
+								<section className="mt-10">
+									<h3 className={`flex items-center gap-2 text-base font-semibold ${colors.foreground}`}>
+										<PlayCircle size={18} className="text-indigo-500" aria-hidden />
+										Demo video
+									</h3>
+									<p className={`mt-1 text-xs ${colors.mutedForeground}`}>
+										Walkthrough of main pages and flows in this template.
+									</p>
+									<div className={`mt-3 overflow-hidden rounded-xl border ${colors.border} bg-black`}>
+										<div className="aspect-video w-full">
+											<video
+												className="h-full w-full object-contain"
+												src={ABOUT_VIDEO_URL}
+												controls
+												autoPlay
+												playsInline
+												preload="metadata"
+											>
+												Your browser does not support the video tag.
+											</video>
+										</div>
+									</div>
+								</section>
+
+								<section className="mt-8">
+									<h3 className={`text-base font-semibold ${colors.foreground}`}>Get this template</h3>
+									<p className={`mt-1 text-xs ${colors.mutedForeground}`}>
+										Use the checkout that suits you — both include the ZIP and updates per your
+										platform terms.
+									</p>
+									<div className="mt-3 flex flex-wrap gap-2">
+										<a
+											href={TEMPLATE_GUMROAD_USD}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="inline-flex items-center gap-1.5 rounded-full bg-orange-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-orange-400"
+										>
+											Gumroad (USD)
+											<ExternalLink className="h-3.5 w-3.5" />
+										</a>
+										<a
+											href={TEMPLATE_CHECKOUT_INR}
+											target="_blank"
+											rel="noopener noreferrer"
+											className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-xs font-semibold transition hover:opacity-90 ${colors.border} ${colors.secondary} ${colors.secondaryForeground}`}
+										>
+											Dodo checkout (INR)
+											<ExternalLink className="h-3.5 w-3.5" />
+										</a>
+									</div>
+								</section>
+
+								<section className={`mt-8 rounded-xl p-4 ${colors.muted}`}>
+									<div className="mb-2 flex items-center gap-2">
+										<CheckCircle2 size={16} className={colors.foreground} />
+										<p className={`text-sm font-semibold ${colors.foreground}`}>Tech stack</p>
+									</div>
+									<ul className={`list-disc space-y-1 pl-5 text-xs ${colors.mutedForeground}`}>
+										<li>Next.js</li>
+										<li>React</li>
+										<li>Lucide Icons</li>
+										<li>Tailwind CSS</li>
+										<li>Framer Motion</li>
+									</ul>
+								</section>
 							</div>
-							<ul className={`list-disc space-y-1 pl-5 text-xs ${colors.mutedForeground}`}>
-								<li>Next.js</li>
-								<li>React</li>
-								<li>Lucide Icons</li>
-								<li>Tailwind CSS</li>
-								<li>Framer Motion</li>
-							</ul>
 						</div>
-					</div>
-				</div>
+					)}
+
+					{isOtherProductsModalOpen && (
+						<div
+							role="presentation"
+							className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 p-3"
+							onClick={() => setIsOtherProductsModalOpen(false)}
+						>
+							<div
+								role="dialog"
+								aria-modal="true"
+								aria-labelledby="other-products-title"
+								className={`relative w-full max-w-md rounded-2xl border ${colors.border} ${colors.card} p-6 shadow-2xl`}
+								onClick={(e) => e.stopPropagation()}
+							>
+								<div className="flex items-start justify-between gap-4">
+									<div>
+										<h2 id="other-products-title" className={`text-lg font-bold ${colors.foreground}`}>
+											More CRM templates from our shop
+										</h2>
+										<p className={`mt-2 text-xs ${colors.mutedForeground}`}>
+											Pick a vertical or stack variant — same quality bar, shipped on Gumroad.
+										</p>
+									</div>
+									<button
+										type="button"
+										onClick={() => setIsOtherProductsModalOpen(false)}
+										className={`shrink-0 rounded-xl p-2 ${colors.hoverSecondary}`}
+										aria-label="Close"
+									>
+										<X size={14} className={colors.foreground} />
+									</button>
+								</div>
+								<ul className="mt-6 space-y-3">
+									{OTHER_PRODUCTS_LINKS.map((link) => (
+										<li key={link.href}>
+											<a
+												href={link.href}
+												target="_blank"
+												rel="noopener noreferrer"
+												className={`group flex items-center justify-between gap-3 rounded-xl border ${colors.border} px-4 py-3 text-sm font-medium transition ${colors.hoverSecondary} ${colors.foreground}`}
+												onClick={() => setIsOtherProductsModalOpen(false)}
+											>
+												<span className="min-w-0 flex-1 leading-snug">{link.label}</span>
+												<ExternalLink className="h-4 w-4 shrink-0 opacity-70 group-hover:opacity-100" />
+											</a>
+										</li>
+									))}
+								</ul>
+							</div>
+						</div>
 					)}
 					<ToastContainer position="bottom-right" />
 				</div>

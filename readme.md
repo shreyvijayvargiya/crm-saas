@@ -9,6 +9,8 @@ This is a Next.js frontend boilerplate designed for building responsive SaaS pro
 - **Smooth Animations**: Integrate GSAP for smooth animations and transitions throughout your application.
 - **Typewriter Effect**: Add engaging text animations with the `react-simple-typewriter` library.
 - **Customizable Workflows**: Tailor the application to fit your specific needs with a flexible structure.
+- **Design system (`Design.md`)**: Documented visuals, tokens, recipe snippets, and a module checklist suitable for designers and AI coding agents.
+- **API contracts**: Zod schemas under `schemas/` plus `npm run verify:schemas`; optional PostgreSQL layouts under `schemas/sql-schemas/` (Prisma and Drizzle).
 
 ## How to Run the Repository
 
@@ -29,6 +31,50 @@ This is a Next.js frontend boilerplate designed for building responsive SaaS pro
 
 ---
 
+## Design, schemas, and database reference
+
+This repository ships three layers that work together when you connect a real backend or extend the UI with **AI agents** (Cursor, Copilot, and so on).
+
+### [`Design.md`](./Design.md) — product UI for humans and AI
+
+`Design.md` is the **design system and execution guide** for this template: dual surface (marketing landing vs CRM shell), colors and `useTheme()` tokens, typography, spacing, elevation, and **copy-paste component recipes** (primary button, inputs, module shell). It includes a **checklist for new modules** so new screens stay consistent. Point agents and designers at this file before large UI changes.
+
+### Zod schemas, data.json, and API shapes
+
+- **`data.json`** — A **read-only reference** snapshot: one top-level block per main route (`appLeads`, `appContacts`, `appInvoices`, …). The app does **not** import this file at runtime; use it to see example payloads and the `meta.pageRouteMap` from route → section name.
+- **`schemas/`** — **[Zod](https://zod.dev)** schemas derived from those same shapes. Import from [`schemas/index.js`](./schemas/index.js) to validate HTTP responses or request bodies, generate fixtures, or keep API contracts explicit next to [`Design.md`](./Design.md) conventions.
+
+```javascript
+import { InvoiceSchema } from "../schemas";
+
+const body = InvoiceSchema.parse(await response.json());
+```
+
+- **Consistency check** — After you change Zod definitions or `data.json`, run:
+
+```bash
+npm run verify:schemas
+```
+
+That executes [`scripts/verify-schemas.mjs`](./scripts/verify-schemas.mjs), which parses every `app*` section of `data.json` against its matching **`App…DataSchema`**.
+
+See the **🔌 API Integration Guide** below for wiring `lib/api/*`; combine that with Zod **`parse` / `safeParse`** at service boundaries.
+
+### SQL reference — [`schemas/sql-schemas/`](./schemas/sql-schemas/)
+
+When you pivot to **PostgreSQL** with migrations and a relational story, start from:
+
+| Artifact | Role |
+|---------|------|
+| [`schemas/sql-schemas/schema.prisma`](./schemas/sql-schemas/schema.prisma) | **Prisma** reference model (organizations of users, companies, leads, pipeline stages, deals, invoices line items, payments, tasks, CMS, webhooks, and so on) |
+| [`schemas/sql-schemas/drizzle/schema.ts`](./schemas/sql-schemas/drizzle/schema.ts) | **Drizzle** tables mirroring the same intent — point `drizzle.config.ts` here after installing `drizzle-orm` / `drizzle-kit` |
+
+These files are **not** connected to Next.js until you adopt them (for example copy the Prisma schema to `prisma/schema.prisma`, set `DATABASE_URL`, run `prisma migrate`). Inline comments mention **Prisma 5 vs 7** datasource URL behaviour.
+
+**Suggested flow:** implement REST (or RPC) payloads that align with **`schemas/` (Zod)**, persist with **Prisma or Drizzle** from **`sql-schemas`**, and keep **`data.json`** in sync only as illustrative docs if you still maintain it.
+
+---
+
 ## 📚 Documentation
 
 ### 🔌 API Integration Guide (For Customers/Users)
@@ -37,7 +83,7 @@ This section is for customers who want to integrate this admin template with the
 
 #### Overview
 
-This CRM admin template is designed to work with any REST API backend. Currently, the application uses mock data, but you can easily connect it to your backend by implementing API service functions.
+This CRM admin template is designed to work with any REST API backend. Currently, the application uses mock data, but you can easily connect it to your backend by implementing API service functions. **Field-level contracts** for JSON payloads live in **`schemas/` (Zod)** — see [Zod schemas, data.json, and API shapes](#zod-schemas-datajson-and-api-shapes) above; align your responses with those definitions (and optionally validate with `parse` / `safeParse`).
 
 #### Base API Configuration
 
@@ -408,6 +454,8 @@ This project follows a modular, component-based architecture using Next.js 12 wi
 
 ```
 crm-saas/
+├── Design.md               # Design system + AI/dev execution guide (useTheme, recipes, checklist)
+├── data.json               # Mock shape reference only (not imported by the app)
 ├── app/                    # Page Components (Business Logic)
 │   ├── Home/              # Landing/Dashboard page
 │   ├── Leads/             # Leads management page
@@ -421,6 +469,17 @@ crm-saas/
 │   ├── ApiKeys/           # API keys management page
 │   ├── Settings/          # Settings page
 │   └── index.jsx          # Component exports
+│
+├── schemas/                # Zod contracts (API / fixtures) + SQL reference
+│   ├── index.js             # Barrel export
+│   ├── *.js                 # Per-domain Zod (leads, finance, …)
+│   └── sql-schemas/
+│       ├── schema.prisma    # Prisma reference (PostgreSQL)
+│       └── drizzle/
+│           └── schema.ts    # Drizzle reference
+│
+├── scripts/
+│   └── verify-schemas.mjs   # Validates data.json app* sections vs Zod
 │
 ├── modules/                # Reusable UI Components
 │   ├── Layout/            # Main layout wrapper
@@ -445,7 +504,7 @@ crm-saas/
 │
 ├── globals.css             # Global styles
 ├── tailwind.config.js     # Tailwind CSS configuration
-└── package.json           # Dependencies and scripts
+└── package.json           # Dependencies and scripts (includes verify:schemas)
 ```
 
 #### Code Flow Architecture
@@ -555,7 +614,7 @@ The project uses Tailwind CSS for styling:
 
 ##### **Color Scheme**
 
-The template uses a zinc/gray color palette:
+The template uses a zinc-based shell with a user-selectable accent (`utils/theme.js`) and a separate violet/indigo story on the marketing landing. For the full palette, tokens, radii, and **copy-paste patterns**, use **[`Design.md`](./Design.md)**. Quick reference:
 
 - Background: `bg-zinc-100`, `bg-white`
 - Borders: `border-zinc-200`
