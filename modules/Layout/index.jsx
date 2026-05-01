@@ -291,6 +291,76 @@ const LayoutWrapper = ({ children }) => {
 								</section>
 
 								<section className="mt-10">
+									<h3 className={`text-base font-semibold ${colors.foreground}`}>
+										What you get in this repository
+									</h3>
+									<p className={`mt-1 text-xs ${colors.mutedForeground}`}>
+										Everything shipped with the template codebase and docs.
+									</p>
+									<ul
+										className={`mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed ${colors.textSecondary}`}
+									>
+										<li>
+											<span className={`font-medium ${colors.foreground}`}>
+												Full Next.js CRM codebase
+											</span>{" "}
+											— 20+ pages (leads, contacts, deals, pipelines, finance, settings, CMS, and
+											more) ready to customize.
+										</li>
+										<li>
+											<span className={`font-medium ${colors.foreground}`}>Responsive UI</span>{" "}
+											— layout, sidebar, tables, and modals built for mobile through desktop.
+										</li>
+										<li>
+											<span className={`font-medium ${colors.foreground}`}>
+												Light &amp; dark theme
+											</span>{" "}
+											— user-toggleable mode plus accent color schemes in the shell.
+										</li>
+										<li>
+											<span className={`font-medium ${colors.foreground}`}>Zod schemas</span> —{" "}
+											<code className="rounded bg-black/10 px-1 text-[11px] dark:bg-white/10">
+												schemas/zod-schemas/
+											</code>{" "}
+											for API and{" "}
+											<code className="rounded bg-black/10 px-1 text-[11px] dark:bg-white/10">
+												data.json
+											</code>{" "}
+											shape validation.
+										</li>
+										<li>
+											<span className={`font-medium ${colors.foreground}`}>
+												Design.md for AI agents &amp; designers
+											</span>{" "}
+											— colors, typography, components, and UI patterns documented at the repo root.
+										</li>
+										<li>
+											<span className={`font-medium ${colors.foreground}`}>Figma file</span> — link
+											or kit access via your purchase receipt; request at{" "}
+											<a
+												href="mailto:shreyvijayvargiya26@gmail.com"
+												className={`font-medium underline ${colors.foreground}`}
+											>
+												shreyvijayvargiya26@gmail.com
+											</a>{" "}
+											if you need the latest file.
+										</li>
+										<li>
+											<span className={`font-medium ${colors.foreground}`}>README &amp; sample data</span>{" "}
+											—{" "}
+											<code className="rounded bg-black/10 px-1 text-[11px] dark:bg-white/10">
+												readme.md
+											</code>{" "}
+											explains setup,{" "}
+											<code className="rounded bg-black/10 px-1 text-[11px] dark:bg-white/10">
+												data.json
+											</code>{" "}
+											and SQL/Firestore schema folders document payloads and persistence models.
+										</li>
+									</ul>
+								</section>
+
+								<section className="mt-10">
 									<h3 className={`flex items-center gap-2 text-base font-semibold ${colors.foreground}`}>
 										<PlayCircle size={18} className="text-indigo-500" aria-hidden />
 										Demo video

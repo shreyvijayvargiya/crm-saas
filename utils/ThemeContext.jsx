@@ -1,7 +1,18 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { colorSchemes, themeColors } from "./theme";
 
-const ThemeContext = createContext();
+/** Used when no Provider is above (e.g. Fast Refresh / duplicate context module in dev). Avoids crashes. */
+const fallbackThemeContext = {
+	theme: "light",
+	setTheme: () => {},
+	colorScheme: "blue",
+	setColorScheme: () => {},
+	toggleTheme: () => {},
+	colors: themeColors.light,
+	scheme: colorSchemes.blue.light,
+};
+
+const ThemeContext = createContext(fallbackThemeContext);
 
 export const ThemeProvider = ({ children }) => {
 	// Theme state
@@ -70,10 +81,4 @@ export const ThemeProvider = ({ children }) => {
 	);
 };
 
-export const useTheme = () => {
-	const context = useContext(ThemeContext);
-	if (!context) {
-		throw new Error("useTheme must be used within a ThemeProvider");
-	}
-	return context;
-};
+export const useTheme = () => useContext(ThemeContext);

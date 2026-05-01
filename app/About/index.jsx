@@ -1,6 +1,65 @@
 import React from "react";
-import { ExternalLink } from "lucide-react";
+import { Check, Copy, ExternalLink } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
+
+const CopyButton = ({ text, colors }) => {
+	const [copied, setCopied] = React.useState(false);
+	const canCopy = Boolean(text);
+
+	const handleCopy = () => {
+		if (!canCopy || typeof navigator === "undefined" || !navigator.clipboard) return;
+		navigator.clipboard.writeText(text).then(() => {
+			setCopied(true);
+			window.setTimeout(() => setCopied(false), 2000);
+		});
+	};
+
+	return (
+		<button
+			type="button"
+			onClick={handleCopy}
+			disabled={!canCopy}
+			className={`inline-flex items-center gap-1.5 rounded-xl border px-2.5 py-1 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${colors.border} ${colors.muted} ${colors.foreground} ${colors.hoverSecondary}`}
+		>
+			{copied ? <Check className="h-3.5 w-3.5 shrink-0" /> : <Copy className="h-3.5 w-3.5 shrink-0" />}
+			{copied ? "Copied" : "Copy"}
+		</button>
+	);
+};
+
+const SourcePanel = ({ colors, subtitle, raw }) => (
+	<div className="mt-2">
+		{subtitle ? <p className={`text-xs ${colors.mutedForeground}`}>{subtitle}</p> : null}
+		<div className="mt-1 flex justify-end">
+			<CopyButton text={raw} colors={colors} />
+		</div>
+		<pre
+			className={`mt-2 max-h-[min(70vh,36rem)] overflow-auto whitespace-pre-wrap break-words rounded-xl border p-3 text-xs font-mono leading-relaxed ${colors.border} ${colors.muted} ${colors.mutedForeground}`}
+		>
+			{raw}
+		</pre>
+	</div>
+);
+
+const CollapsibleFilePanel = ({ name, content, colors }) => (
+	<details className={`rounded-xl border ${colors.border} ${colors.muted}`}>
+		<summary
+			className={`cursor-pointer select-none px-3 py-2 text-sm font-medium ${colors.foreground}`}
+		>
+			{name}
+		</summary>
+		<div className={`border-t ${colors.border}`}>
+			<div className="flex justify-end px-3 pt-2">
+				<CopyButton text={content} colors={colors} />
+			</div>
+			<pre
+				className={`max-h-[min(60vh,28rem)] overflow-auto whitespace-pre-wrap break-words px-3 pb-3 pt-2 text-xs font-mono leading-relaxed ${colors.mutedForeground}`}
+			>
+				{content}
+			</pre>
+		</div>
+	</details>
+);
 
 const pricingLinks = {
 	inr: "https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX",
@@ -29,7 +88,13 @@ const dataJsonTips = [
 	"For production, replace JSON adapters with API responses using same shape.",
 ];
 
-const About = () => {
+const About = ({
+	designMd = "",
+	dataJson = "",
+	firestoreSchemas = [],
+	zodSchemas = [],
+	sqlSchema = "",
+}) => {
 	const { colors } = useTheme();
 
 	return (
@@ -45,6 +110,95 @@ const About = () => {
 							and support resources.
 						</p>
 					</header>
+
+					<section className={`rounded-xl p-4 ${colors.hoverSecondary}`}>
+						<p className={`text-base font-semibold ${colors.foreground}`}>Design system</p>
+						<p className={`mt-1 text-sm ${colors.textSecondary}`}>
+							Full design guidelines from the project root <code className="text-xs">Design.md</code>
+							— colors, typography, components, spacing, and motion.
+						</p>
+						{designMd ? (
+							<SourcePanel colors={colors} subtitle="Design.md" raw={designMd} />
+						) : (
+							<p className={`mt-2 text-sm ${colors.mutedForeground}`}>
+								Design.md was not found at build time.
+							</p>
+						)}
+					</section>
+
+					<section className={`rounded-xl p-4 ${colors.hoverSecondary}`}>
+						<p className={`text-base font-semibold ${colors.foreground}`}>Sample data</p>
+						<p className={`mt-1 text-sm ${colors.textSecondary}`}>
+							Reference snapshot <code className="text-xs">data.json</code> — shapes for each route;
+							validated by <code className="text-xs">scripts/verify-schemas.mjs</code> against Zod (not
+							imported at runtime).
+						</p>
+						<ul className={`mt-2 list-disc space-y-1 pl-5 text-sm ${colors.textSecondary}`}>
+							{dataJsonTips.map((tip) => (
+								<li key={tip}>{tip}</li>
+							))}
+						</ul>
+						{dataJson ? (
+							<SourcePanel colors={colors} subtitle="data.json" raw={dataJson} />
+						) : (
+							<p className={`mt-2 text-sm ${colors.mutedForeground}`}>
+								data.json was not found at build time.
+							</p>
+						)}
+					</section>
+
+					<section className={`rounded-xl p-4 ${colors.hoverSecondary}`}>
+						<p className={`text-base font-semibold ${colors.foreground}`}>Firestore</p>
+						<p className={`mt-1 text-sm ${colors.textSecondary}`}>
+							Rules and collection layout under{" "}
+							<code className="text-xs">schemas/firestore-schemas/</code> — align with Drizzle tables and
+							tenant isolation.
+						</p>
+						{firestoreSchemas.length ? (
+							<div className="mt-3 space-y-2">
+								{firestoreSchemas.map(({ name, content }) => (
+									<CollapsibleFilePanel key={name} name={name} content={content} colors={colors} />
+								))}
+							</div>
+						) : (
+							<p className={`mt-2 text-sm ${colors.mutedForeground}`}>
+								No Firestore schema files were loaded.
+							</p>
+						)}
+					</section>
+
+					<section className={`rounded-xl p-4 ${colors.hoverSecondary}`}>
+						<p className={`text-base font-semibold ${colors.foreground}`}>Zod schemas</p>
+						<p className={`mt-1 text-sm ${colors.textSecondary}`}>
+							Validation schemas under <code className="text-xs">schemas/zod-schemas/</code>.
+						</p>
+						{zodSchemas.length ? (
+							<div className="mt-3 space-y-2">
+								{zodSchemas.map(({ name, content }) => (
+									<CollapsibleFilePanel key={name} name={name} content={content} colors={colors} />
+								))}
+							</div>
+						) : (
+							<p className={`mt-2 text-sm ${colors.mutedForeground}`}>
+								No Zod schema files were loaded.
+							</p>
+						)}
+					</section>
+
+					<section className={`rounded-xl p-4 ${colors.hoverSecondary}`}>
+						<p className={`text-base font-semibold ${colors.foreground}`}>SQL / Drizzle schema</p>
+						<p className={`mt-1 text-sm ${colors.textSecondary}`}>
+							Postgres table definitions in{" "}
+							<code className="text-xs">schemas/sql-schemas/drizzle/schema.ts</code>.
+						</p>
+						{sqlSchema ? (
+							<SourcePanel colors={colors} subtitle="schema.ts" raw={sqlSchema} />
+						) : (
+							<p className={`mt-2 text-sm ${colors.mutedForeground}`}>
+								schema.ts was not found at build time.
+							</p>
+						)}
+					</section>
 
 					<section className={`rounded-xl p-4 ${colors.hoverSecondary}`}>
 						<p className={`text-base font-semibold ${colors.foreground}`}>How to Use</p>
@@ -116,15 +270,6 @@ const About = () => {
 						<ul className={`mt-3 list-disc space-y-1 pl-5 text-sm ${colors.textSecondary}`}>
 							{customizationSteps.map((step) => (
 								<li key={step}>{step}</li>
-							))}
-						</ul>
-					</section>
-
-					<section className={`rounded-xl p-4 ${colors.hoverSecondary}`}>
-						<p className={`text-base font-semibold ${colors.foreground}`}>Using `data.json`</p>
-						<ul className={`mt-3 list-disc space-y-1 pl-5 text-sm ${colors.textSecondary}`}>
-							{dataJsonTips.map((tip) => (
-								<li key={tip}>{tip}</li>
 							))}
 						</ul>
 					</section>

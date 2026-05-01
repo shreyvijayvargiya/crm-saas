@@ -232,7 +232,7 @@ Use this as a **build checklist** so new pages stay consistent with the shell an
 | Token / class | Use |
 |---------------|-----|
 | `rounded-full` | Pills, FABs, icon-only theme toggle on landing |
-| `--radius` / `rounded-lg` family | Shadcn-aligned defaults in config |
+| `--radius` / `rounded-xl` family | Shadcn-aligned defaults in config |
 | `rounded-xl` | Sidebar, inputs, small panels, AI header icon |
 | `rounded-2xl` | Main content shell, landing feature cards, modals |
 
