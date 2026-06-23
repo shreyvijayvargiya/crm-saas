@@ -12,6 +12,7 @@ import {
 import { useTheme } from "../../../utils/useTheme";
 import { useChartTooltipProps } from "../../../utils/chartTooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getChartColor } from "@/lib/chartColors";
 
 const areaData = [
 	{ x: "1", y: 12 },
@@ -29,6 +30,7 @@ const areaData = [
 const AverageDailySalesCard = () => {
 	const { colors } = useTheme();
 	const tooltipProps = useChartTooltipProps();
+	const chartColor = getChartColor();
 
 	return (
 		<Card className="h-full flex flex-col">
@@ -47,8 +49,8 @@ const AverageDailySalesCard = () => {
 						<AreaChart data={areaData} margin={{ top: 4, right: 4, left: -8, bottom: 0 }}>
 							<defs>
 								<linearGradient id="salesAreaFill" x1="0" y1="0" x2="0" y2="1">
-									<stop offset="0%" stopColor="#a1a1aa" stopOpacity={0.35} />
-									<stop offset="100%" stopColor="#a1a1aa" stopOpacity={0.02} />
+									<stop offset="0%" stopColor={chartColor} stopOpacity={0.35} />
+									<stop offset="100%" stopColor={chartColor} stopOpacity={0.02} />
 								</linearGradient>
 							</defs>
 							<CartesianGrid
@@ -62,7 +64,7 @@ const AverageDailySalesCard = () => {
 							<Area
 								type="monotone"
 								dataKey="y"
-								stroke="#52525b"
+								stroke={chartColor}
 								strokeWidth={2}
 								fill="url(#salesAreaFill)"
 							/>

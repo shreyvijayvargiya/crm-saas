@@ -3,10 +3,11 @@ import { Ticket, Clock, MessageSquare } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { useTheme } from "../../../utils/useTheme";
 import { Card, CardContent } from "@/components/ui/card";
+import { getChartColor, CHART_MUTED } from "@/lib/chartColors";
 
 const donutData = [
-	{ name: "Completed", value: 88, color: "#27272a" },
-	{ name: "Rest", value: 12, color: "#a1a1aa" },
+	{ name: "Completed", value: 88 },
+	{ name: "Rest", value: 12 },
 ];
 
 const bottomStats = [
@@ -32,6 +33,7 @@ const bottomStats = [
 
 const TicketStatusCard = () => {
 	const { colors } = useTheme();
+	const sliceColors = [getChartColor(), CHART_MUTED];
 
 	return (
 		<Card className="h-full flex flex-col">
@@ -49,8 +51,8 @@ const TicketStatusCard = () => {
 								dataKey="value"
 								stroke="none"
 							>
-								{donutData.map((entry) => (
-									<Cell key={entry.name} fill={entry.color} />
+								{donutData.map((entry, i) => (
+									<Cell key={entry.name} fill={sliceColors[i]} />
 								))}
 							</Pie>
 						</PieChart>

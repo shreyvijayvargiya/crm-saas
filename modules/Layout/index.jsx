@@ -15,6 +15,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { I18nextProvider } from "react-i18next";
 import Sidebar from "../Sidebar";
+import ThemeCustomizer from "../ThemeCustomizer";
 import { Toaster } from "@/components/ui/sonner";
 import Navbar from "../Navbar";
 import { useTheme } from "../../utils/useTheme";
@@ -487,6 +488,7 @@ const LayoutWrapper = ({ children }) => {
 						</div>
 					)}
 					<Toaster />
+					<ThemeCustomizer />
 				</div>
 			</AutoTranslate>
 		</I18nextProvider>

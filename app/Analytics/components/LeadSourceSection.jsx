@@ -5,13 +5,13 @@ import { useTheme } from "../../../utils/useTheme";
 import { useChartTooltipProps } from "../../../utils/chartTooltip";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-
-const COLORS = ["#3b82f6", "#8b5cf6", "#14b8a6", "#f59e0b", "#ec4899", "#64748b"];
+import { getChartColor } from "@/lib/chartColors";
 
 const LeadSourceSection = ({ data }) => {
 	const { colors } = useTheme();
 	const tooltipProps = useChartTooltipProps();
 	const total = data.reduce((s, d) => s + d.value, 0);
+	const sliceColor = (i) => (i % 2 === 0 ? getChartColor(1) : getChartColor(2));
 
 	return (
 		<Card className="h-full flex flex-col">
@@ -39,7 +39,7 @@ const LeadSourceSection = ({ data }) => {
 								nameKey="name"
 							>
 								{data.map((_, i) => (
-									<Cell key={i} fill={COLORS[i % COLORS.length]} stroke="none" />
+									<Cell key={i} fill={sliceColor(i)} stroke="none" />
 								))}
 							</Pie>
 							<Tooltip
@@ -66,7 +66,7 @@ const LeadSourceSection = ({ data }) => {
 							<span className="flex items-center gap-2 min-w-0">
 								<span
 									className="w-2.5 h-2.5 rounded-full shrink-0"
-									style={{ backgroundColor: COLORS[i % COLORS.length] }}
+									style={{ backgroundColor: sliceColor(i) }}
 								/>
 								<span className={`truncate ${colors.foreground}`}>{row.name}</span>
 							</span>

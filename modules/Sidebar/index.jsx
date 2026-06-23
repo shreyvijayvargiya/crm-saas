@@ -292,7 +292,9 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 									</DropdownMenuItem>
 									<DropdownMenuSeparator />
 									<DropdownMenuItem>
-										Add project
+											<Button size="xs">
+												Add project
+											</Button>
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>

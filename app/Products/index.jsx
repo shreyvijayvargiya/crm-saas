@@ -421,7 +421,7 @@ const Products = () => {
 				saveLabel="Create Product"
 				maxWidth="max-w-4xl"
 			>
-				<Card className="p-4">
+				<Card className="border-none">
 					<p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
 						Basic Details
 					</p>
@@ -480,7 +480,7 @@ const Products = () => {
 					</div>
 				</Card>
 
-				<Card className="p-4">
+				<Card className="border-none">
 					<p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
 						Pricing and Billing
 					</p>
@@ -519,7 +519,7 @@ const Products = () => {
 					</div>
 				</Card>
 
-				<Card className="p-4">
+				<Card className="border-none">
 					<p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
 						Access and Limits
 					</p>
@@ -570,7 +570,7 @@ const Products = () => {
 					</div>
 				</Card>
 
-				<Card className="p-4">
+				<Card className="border-none">
 					<p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
 						Product Features
 					</p>

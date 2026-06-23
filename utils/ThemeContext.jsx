@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { applySchemeCssVars, colorSchemes, themeColors } from "./theme";
+import { colorSchemes, themeColors } from "./theme";
 
 /** Used when no Provider is above (e.g. Fast Refresh / duplicate context module in dev). Avoids crashes. */
 const fallbackThemeContext = {
@@ -48,7 +48,7 @@ export const ThemeProvider = ({ children }) => {
 			body.style.backgroundColor = "#f4f4f5"; // zinc-100
 		}
 
-		applySchemeCssVars(colorScheme, theme);
+		// Accent/primary tokens owned by ThemeCustomizerProvider
 
 		localStorage.setItem("cms-theme", theme);
 		localStorage.setItem("cms-color-scheme", colorScheme);

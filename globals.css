@@ -24,6 +24,10 @@
 		--destructive-foreground: 210 40% 98%;
 		--ring: 215 20.2% 65.1%;
 		--radius: 0.5rem;
+		--font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+		--font-heading: Figtree, ui-sans-serif, system-ui, sans-serif;
+		--chart-1: 221.2 83.2% 53.3%;
+		--chart-2: 221.2 83.2% 53.3%;
 	}
 
 	.dark {
@@ -55,119 +59,21 @@
 	}
 	body {
 		@apply font-sans antialiased bg-background text-foreground;
+		font-family: var(--font-sans);
+	}
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: var(--font-heading);
+	}
+	[data-theme-customizer] {
+		color-scheme: light;
 	}
 }
 
 .hidescrollbar::-webkit-scrollbar {
 	display: none;
-}
-@keyframes shake {
-	0% {
-		transform: translateX(0);
-	}
-	25% {
-		transform: translateX(-5px);
-	}
-	50% {
-		transform: translateX(5px);
-	}
-	75% {
-		transform: translateX(-5px);
-	}
-	100% {
-		transform: translateX(0);
-	}
-}
-.shake-button:hover {
-	animation: shake 0.5s ease-in-out infinite;
-}
-
-@keyframes borderAnimation {
-	0% {
-		border-color: rgba(0, 0, 0, 0);
-		transform: translate(0, 0);
-	}
-	25% {
-		border-color: rgba(0, 0, 0, 0.5);
-		transform: translate(5px, 5px);
-	}
-	50% {
-		border-color: rgba(0, 0, 0, 0);
-		transform: translate(0, 0);
-	}
-	75% {
-		border-color: rgba(0, 0, 0, 0.5);
-		transform: translate(-5px, -5px);
-	}
-	100% {
-		border-color: rgba(0, 0, 0, 0);
-		transform: translate(0, 0);
-	}
-}
-.animate-border {
-	animation: borderAnimation 3s infinite;
-	border-width: 10px;
-}
-
-@keyframes slideIn {
-	from {
-		opacity: 0;
-		transform: translateY(-10px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-@keyframes slideOut {
-	from {
-		opacity: 1;
-		transform: translateY(0);
-	}
-	to {
-		opacity: 0;
-		transform: translateY(-10px);
-	}
-}
-
-@keyframes gradientAnimation {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
-}
-
-.animate-gradient {
-	animation: gradientAnimation 5s ease infinite;
-	background: linear-gradient(
-		270deg,
-		theme("colors.blue.50"),
-		theme("colors.purple.50"),
-		theme("colors.green.50"),
-		theme("colors.red.50")
-	);
-	background-size: 400% 400%;
-}
-
-@keyframes widthFadeIn {
-	from {
-		width: 0;
-		opacity: 0;
-		visibility: hidden;
-	}
-	to {
-		width: 100%;
-		opacity: 1;
-		visibility: visible;
-	}
-}
-
-.animate-width-fade-in {
-	animation: widthFadeIn 0.5s ease forwards;
-	animation-delay: 0.2s;
 }

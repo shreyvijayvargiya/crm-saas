@@ -14,6 +14,7 @@ import { useChartTooltipProps } from "../../../utils/chartTooltip";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { getChartColor, CHART_MUTED } from "@/lib/chartColors";
 
 const barData = [
 	{ day: "Mo", v: 42 },
@@ -34,6 +35,7 @@ const sideRows = [
 const EarningReportsCard = () => {
 	const { colors } = useTheme();
 	const tooltipProps = useChartTooltipProps();
+	const chartColor = getChartColor();
 
 	return (
 		<Card className="h-full flex flex-col">
@@ -65,8 +67,8 @@ const EarningReportsCard = () => {
 							<BarChart data={barData} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
 								<defs>
 									<linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-										<stop offset="0%" stopColor="#27272a" />
-										<stop offset="100%" stopColor="#52525b" />
+										<stop offset="0%" stopColor={chartColor} />
+										<stop offset="100%" stopColor={CHART_MUTED} />
 									</linearGradient>
 								</defs>
 								<CartesianGrid

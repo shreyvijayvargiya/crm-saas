@@ -11,12 +11,13 @@ import {
 	X,
 	Moon,
 	Sun,
+	Palette,
 } from "lucide-react";
 import Image from "next/image";
 import * as lucideIcons from "lucide-react";
 import { useRouter } from "next/router";
 import { useTheme } from "../../utils/useTheme";
-import { colorSchemes } from "../../utils/theme";
+import { useThemeCustomizer } from "../../utils/ThemeCustomizerContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -32,13 +33,11 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 	const router = useRouter();
 	const [searchModalOpen, setSearchModalOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
-	const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
 	const searchInputRef = useRef(null);
 	const modalSearchInputRef = useRef(null);
 
-	// Theme hook
-	const { theme, colorScheme, setColorScheme, toggleTheme, colors } =
-		useTheme();
+	const { theme, toggleTheme, colors } = useTheme();
+	const { open: customizerOpen, toggleCustomizer } = useThemeCustomizer();
 
 	const navItems = [
 		{
@@ -247,20 +246,6 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 		}
 	}, [searchModalOpen]);
 
-	// Close color picker on outside click
-	useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (
-				isColorPickerOpen &&
-				!event.target.closest(".color-picker-dropdown")
-			) {
-				setIsColorPickerOpen(false);
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => document.removeEventListener("mousedown", handleClickOutside);
-	}, [isColorPickerOpen]);
-
 	const handleSearchClick = () => {
 		setSearchModalOpen(true);
 	};
@@ -323,17 +308,17 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 					className={`flex ${colors.hoverSecondary} rounded-[10px] mx-2 items-center group border ${colors.border} h-7 cursor-pointer transition-colors`}
 					onClick={handleSearchClick}
 				>
-					<Search className={`${colors.textMuted} mx-2`} size={16} />
+					<Search className={`${colors.textMuted} ml-2`} size={16} />
 					<Input
 						ref={searchInputRef}
 						type="text"
 						placeholder="Search..."
-						className="md:block hidden h-7 border-0 bg-transparent shadow-none focus-visible:ring-0 cursor-pointer"
+						className="md:block hidden h-8 border-0 bg-transparent shadow-none focus-visible:ring-0 cursor-pointer"
 						readOnly
 					/>
-					<span className={`text-[10px] hidden md:block ${colors.textMuted} italic mr-2`}>
+					<div className={`text-[10px] min-w-fit hidden md:flex ${colors.textMuted} italic mr-2 gap-0.5 items-center`}>
 						CMD + K
-					</span>
+					</div>
 				</div>
 			</div>
 			<div className="flex items-center justify-between gap-2">
@@ -355,53 +340,22 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 						</a>
 					</div>
 				</div>
-				
-					{/* Color Scheme Picker */}
-					<div className="relative color-picker-dropdown md:block hidden">
-						<div
-							className={`flex w-20 md:w-fit overflow-scroll hidescrollbar gap-1 p-1 rounded-xl border transition-all ${colors.border} ${colors.secondary} ${colors.secondaryForeground} border-current`}
-						>
-							{Object.keys(colorSchemes).map((schemeName) => (
-								<Button
-									key={schemeName}
-									type="button"
-									variant={colorScheme === schemeName ? "default" : "ghost"}
-									size="icon"
-									className="h-7 w-7"
-									onClick={() => {
-										setColorScheme(schemeName);
-										setIsColorPickerOpen(false);
-									}}
-								>
-									<div className="flex flex-col items-center gap-2">
-										<div
-											className={`w-4 h-4 rounded-full ${
-												schemeName === "blue"
-													? "bg-blue-800"
-													: schemeName === "green"
-													? "bg-green-800"
-													: schemeName === "purple"
-													? "bg-purple-800"
-													: schemeName === "orange"
-													? "bg-orange-800"
-													: schemeName === "red"
-													? "bg-red-800"
-													: schemeName === "pink"
-													? "bg-pink-800"
-													: schemeName === "indigo"
-													? "bg-indigo-800"
-													: "bg-zinc-800"
-											}`}
-										/>
-									</div>
-								</Button>
-							))}
-						</div>
-					</div>
+
+					<Button
+						type="button"
+						variant={customizerOpen ? "default" : "primary"}
+						size="icon"
+						onClick={toggleCustomizer}
+						className="h-9 w-9 hidden md:inline-flex"
+						aria-label="Open theme customizer"
+						aria-pressed={customizerOpen}
+					>
+						<Palette className="w-4 h-4" />
+					</Button>
 					{/* Theme Toggle */}
 					<Button
 						type="button"
-						variant="secondary"
+						variant="primary"
 						size="icon"
 						onClick={toggleTheme}
 						className="h-9 w-9"

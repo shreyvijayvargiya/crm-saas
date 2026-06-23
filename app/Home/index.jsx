@@ -38,6 +38,7 @@ import {
 } from "recharts";
 import { useTheme } from "../../utils/useTheme";
 import { cn } from "@/lib/utils";
+import { getChartColor, CHART_MUTED } from "@/lib/chartColors";
 import { Button } from "@/components/ui/button";
 import {
 	Table,
@@ -59,6 +60,8 @@ import {
 
 const Home = () => {
 	const { theme, colors } = useTheme();
+	const chartColor = getChartColor(1);
+	const secondaryColor = getChartColor(2);
 
 	const dashboardData = {
 		stats: {
@@ -332,18 +335,18 @@ const Home = () => {
 								>
 									<CartesianGrid
 										strokeDasharray="3 3"
-										stroke={theme === "dark" ? "#3f3f46" : "#e4e4e7"}
+										className="stroke-zinc-200 dark:stroke-zinc-700"
 										vertical={false}
 									/>
 									<XAxis
 										dataKey="name"
-										stroke={theme === "dark" ? "#71717a" : "#71717a"}
+										stroke={CHART_MUTED}
 										fontSize={10}
 										tickLine={false}
 										axisLine={false}
 									/>
 									<YAxis
-										stroke={theme === "dark" ? "#71717a" : "#71717a"}
+										stroke={CHART_MUTED}
 										fontSize={10}
 										tickLine={false}
 										axisLine={false}
@@ -360,7 +363,7 @@ const Home = () => {
 									/>
 									<Bar
 										dataKey="sales"
-										fill={theme === "dark" ? "#22c55e" : "#27ae60"}
+										fill={chartColor}
 										radius={[8, 8, 0, 0]}
 									/>
 								</BarChart>
@@ -394,18 +397,18 @@ const Home = () => {
 								>
 									<CartesianGrid
 										strokeDasharray="3 3"
-										stroke={theme === "dark" ? "#3f3f46" : "#e4e4e7"}
+										className="stroke-zinc-200 dark:stroke-zinc-700"
 										vertical={false}
 									/>
 									<XAxis
 										dataKey="name"
-										stroke={theme === "dark" ? "#71717a" : "#71717a"}
+										stroke={CHART_MUTED}
 										fontSize={10}
 										tickLine={false}
 										axisLine={false}
 									/>
 									<YAxis
-										stroke={theme === "dark" ? "#71717a" : "#71717a"}
+										stroke={CHART_MUTED}
 										fontSize={10}
 										tickLine={false}
 										axisLine={false}
@@ -422,7 +425,7 @@ const Home = () => {
 									/>
 									<Bar
 										dataKey="revenue"
-										fill={theme === "dark" ? "#f97316" : "#f39c12"}
+										fill={secondaryColor}
 										radius={[8, 8, 0, 0]}
 									/>
 								</BarChart>
@@ -456,18 +459,18 @@ const Home = () => {
 								>
 									<CartesianGrid
 										strokeDasharray="3 3"
-										stroke={theme === "dark" ? "#3f3f46" : "#e4e4e7"}
+										className="stroke-zinc-200 dark:stroke-zinc-700"
 										vertical={false}
 									/>
 									<XAxis
 										dataKey="name"
-										stroke={theme === "dark" ? "#71717a" : "#71717a"}
+										stroke={CHART_MUTED}
 										fontSize={10}
 										tickLine={false}
 										axisLine={false}
 									/>
 									<YAxis
-										stroke={theme === "dark" ? "#71717a" : "#71717a"}
+										stroke={CHART_MUTED}
 										fontSize={10}
 										tickLine={false}
 										axisLine={false}
@@ -485,10 +488,10 @@ const Home = () => {
 									<Line
 										type="monotone"
 										dataKey="conversion"
-										stroke={theme === "dark" ? "#ec4899" : "#e94e77"}
+										stroke={CHART_MUTED}
 										strokeWidth={2}
 										dot={{
-											fill: theme === "dark" ? "#ec4899" : "#e94e77",
+											fill: CHART_MUTED,
 											r: 4,
 										}}
 										activeDot={{ r: 6 }}
@@ -638,32 +641,24 @@ const Home = () => {
 						>
 							<defs>
 								<linearGradient id="colorLeads" x1="0" y1="0" x2="0" y2="1">
-									<stop
-										offset="5%"
-										stopColor={theme === "dark" ? "#3b82f6" : "#3b82f6"}
-										stopOpacity={0.8}
-									/>
-									<stop
-										offset="95%"
-										stopColor={theme === "dark" ? "#3b82f6" : "#3b82f6"}
-										stopOpacity={0.1}
-									/>
+									<stop offset="5%" stopColor={chartColor} stopOpacity={0.8} />
+									<stop offset="95%" stopColor={chartColor} stopOpacity={0.1} />
 								</linearGradient>
 							</defs>
 							<CartesianGrid
 								strokeDasharray="3 3"
-								stroke={theme === "dark" ? "#3f3f46" : "#e4e4e7"}
+								className="stroke-zinc-200 dark:stroke-zinc-700"
 								vertical={false}
 							/>
 							<XAxis
 								dataKey="name"
-								stroke={theme === "dark" ? "#71717a" : "#71717a"}
+								stroke={CHART_MUTED}
 								fontSize={12}
 								tickLine={false}
 								axisLine={false}
 							/>
 							<YAxis
-								stroke={theme === "dark" ? "#71717a" : "#71717a"}
+								stroke={CHART_MUTED}
 								fontSize={12}
 								tickLine={false}
 								axisLine={false}
@@ -682,7 +677,7 @@ const Home = () => {
 							<Area
 								type="monotone"
 								dataKey="leads"
-								stroke={theme === "dark" ? "#3b82f6" : "#3b82f6"}
+								stroke={chartColor}
 								fillOpacity={1}
 								fill="url(#colorLeads)"
 							/>

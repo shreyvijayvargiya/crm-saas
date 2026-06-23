@@ -24,6 +24,7 @@ import {
 } from "recharts";
 import { useTheme } from "../../utils/useTheme";
 import { cn } from "@/lib/utils";
+import { getChartColor, CHART_MUTED } from "@/lib/chartColors";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -51,6 +52,8 @@ const Sales = () => {
 	const router = useRouter();
 	// Theme hook
 	const { theme, colors } = useTheme();
+	const salesColor = getChartColor(1);
+	const revenueColor = getChartColor(2);
 
 	const [salesData] = useState({
 		daily: [
@@ -195,7 +198,7 @@ const Sales = () => {
 								className="w-3 h-3 rounded"
 								style={{
 									backgroundColor:
-										entry.dataKey === "sales" ? "#3b82f6" : "#10b981",
+										entry.dataKey === "sales" ? salesColor : revenueColor,
 								}}
 							/>
 							<span className="text-sm text-muted-foreground">
@@ -397,44 +400,28 @@ const Sales = () => {
 						>
 							<defs>
 								<linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-									<stop
-										offset="5%"
-										stopColor={theme === "dark" ? "#3b82f6" : "#3b82f6"}
-										stopOpacity={0.8}
-									/>
-									<stop
-										offset="95%"
-										stopColor={theme === "dark" ? "#3b82f6" : "#3b82f6"}
-										stopOpacity={0.1}
-									/>
+									<stop offset="5%" stopColor={salesColor} stopOpacity={0.8} />
+									<stop offset="95%" stopColor={salesColor} stopOpacity={0.1} />
 								</linearGradient>
 								<linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-									<stop
-										offset="5%"
-										stopColor={theme === "dark" ? "#10b981" : "#10b981"}
-										stopOpacity={0.8}
-									/>
-									<stop
-										offset="95%"
-										stopColor={theme === "dark" ? "#10b981" : "#10b981"}
-										stopOpacity={0.1}
-									/>
+									<stop offset="5%" stopColor={revenueColor} stopOpacity={0.8} />
+									<stop offset="95%" stopColor={revenueColor} stopOpacity={0.1} />
 								</linearGradient>
 							</defs>
 							<CartesianGrid
 								strokeDasharray="3 3"
-								stroke={theme === "dark" ? "#3f3f46" : "#e4e4e7"}
+								className="stroke-zinc-200 dark:stroke-zinc-700"
 								vertical={false}
 							/>
 							<XAxis
 								dataKey="date"
-								stroke={theme === "dark" ? "#71717a" : "#71717a"}
+								stroke={CHART_MUTED}
 								fontSize={12}
 								tickLine={false}
 								axisLine={false}
 							/>
 							<YAxis
-								stroke={theme === "dark" ? "#71717a" : "#71717a"}
+								stroke={CHART_MUTED}
 								fontSize={12}
 								tickLine={false}
 								axisLine={false}
@@ -443,7 +430,7 @@ const Sales = () => {
 							<Area
 								type="monotone"
 								dataKey="sales"
-								stroke={theme === "dark" ? "#3b82f6" : "#3b82f6"}
+								stroke={salesColor}
 								fillOpacity={1}
 								fill="url(#colorSales)"
 								stackId="1"
@@ -451,7 +438,7 @@ const Sales = () => {
 							<Area
 								type="monotone"
 								dataKey="revenue"
-								stroke={theme === "dark" ? "#10b981" : "#10b981"}
+								stroke={revenueColor}
 								fillOpacity={1}
 								fill="url(#colorRevenue)"
 								stackId="1"
@@ -462,11 +449,11 @@ const Sales = () => {
 
 				<div className="flex items-center justify-center gap-6 mt-4">
 					<div className="flex items-center gap-2">
-						<div className="w-3 h-3 rounded bg-blue-500" />
+						<div className="w-3 h-3 rounded" style={{ backgroundColor: salesColor }} />
 						<span className="text-sm text-muted-foreground">Sales</span>
 					</div>
 					<div className="flex items-center gap-2">
-						<div className="w-3 h-3 rounded bg-green-500" />
+						<div className="w-3 h-3 rounded" style={{ backgroundColor: revenueColor }} />
 						<span className="text-sm text-muted-foreground">Revenue</span>
 					</div>
 				</div>

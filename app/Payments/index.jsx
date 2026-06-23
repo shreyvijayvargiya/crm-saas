@@ -30,11 +30,9 @@ import {
 	Table,
 	TableHeader,
 	TableBody,
-	TableFooter,
 	TableHead,
 	TableRow,
 	TableCell,
-	TableCaption,
 } from "@/components/ui/table";
 
 const textareaClass =
@@ -729,7 +727,7 @@ const Payments = () => {
 								paginatedPayments.map((payment) => (
 									<TableRow
 										key={payment.id}
-										className="hover:bg-zinc-50 transition-colors cursor-pointer"
+										className="cursor-pointer"
 										onClick={() => handlePaymentClick(payment)}
 									>
 										<TableCell className="px-6 py-4 whitespace-nowrap">
@@ -1164,12 +1162,12 @@ const Payments = () => {
 							</div>
 
 							{/* Divider */}
-							<div className="border-t border-zinc-200" />
+							<div className={`border-t ${colors.border}`} />
 
 							{/* Payment Information */}
 							<div className="grid grid-cols-2 gap-6">
 								<div>
-									<p className="text-sm font-medium text-zinc-500 mb-2">
+									<p className={`text-sm font-medium ${colors.mutedForeground} mb-2`}>
 										Customer
 									</p>
 									<p className={`text-sm ${colors.foreground}`}>
@@ -1184,18 +1182,18 @@ const Payments = () => {
 										Payment Method
 									</p>
 									<div className="flex items-center gap-2">
-										<CreditCard className="w-4 h-4 text-zinc-400" />
+										<CreditCard className={`w-4 h-4 ${colors.textMuted}`} />
 										<p className={`text-sm ${colors.foreground}`}>
 											{selectedPayment.paymentMethod}
 										</p>
 									</div>
 								</div>
 								<div>
-									<p className="text-sm font-medium text-zinc-500 mb-2">
+									<p className={`text-sm font-medium ${colors.mutedForeground} mb-2`}>
 										Date & Time
 									</p>
 									<div className="flex items-center gap-2">
-										<Calendar className="w-4 h-4 text-zinc-400" />
+										<Calendar className={`w-4 h-4 ${colors.textMuted}`} />
 										<p className={`text-sm ${colors.foreground}`}>
 											{formatDate(selectedPayment.date)} at{" "}
 											{selectedPayment.time}
@@ -1203,7 +1201,7 @@ const Payments = () => {
 									</div>
 								</div>
 								<div>
-									<p className="text-sm font-medium text-zinc-500 mb-2">
+									<p className={`text-sm font-medium ${colors.mutedForeground} mb-2`}>
 										Invoice ID
 									</p>
 									<p className={`text-sm ${colors.foreground}`}>
@@ -1214,21 +1212,21 @@ const Payments = () => {
 
 							{/* Description */}
 							<div>
-								<p className="text-sm font-medium text-zinc-500 mb-2">
+								<p className={`text-sm font-medium ${colors.mutedForeground} mb-2`}>
 									Description
 								</p>
-								<p className="text-sm text-zinc-900">
+								<p className={`text-sm ${colors.foreground}`}>
 									{selectedPayment.description}
 								</p>
 							</div>
 
 							{/* Divider */}
-							<div className="border-t border-zinc-200" />
+							<div className={`border-t ${colors.border}`} />
 
 							{/* Payment Breakdown */}
-							<div className="bg-zinc-50 rounded-xl p-4 space-y-3">
+							<div className={`${colors.card} space-y-3`}>
 								<div className="flex items-center justify-between">
-									<p className="text-sm text-zinc-600">Gross Amount</p>
+									<p className={`text-sm ${colors.mutedForeground}`}>Gross Amount</p>
 									<p
 										className={`text-sm font-medium ${
 											selectedPayment.amount >= 0
@@ -1241,14 +1239,14 @@ const Payments = () => {
 									</p>
 								</div>
 								<div className="flex items-center justify-between">
-									<p className="text-sm text-zinc-600">Processing Fee</p>
-									<p className="text-sm font-medium text-zinc-900">
+									<p className={`text-sm ${colors.mutedForeground}`}>Processing Fee</p>
+									<p className={`text-sm font-medium ${colors.foreground}`}>
 										-{formatCurrency(selectedPayment.fee)}
 									</p>
 								</div>
-								<div className="border-t border-zinc-200 pt-3">
+								<div className={`border-t ${colors.border} pt-3`}>
 									<div className="flex items-center justify-between">
-										<p className="text-sm font-semibold text-zinc-900">
+										<p className={`text-sm font-semibold ${colors.foreground}`}>
 											Net Amount
 										</p>
 										<p

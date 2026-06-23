@@ -15,12 +15,13 @@ import { TrendingUp } from "lucide-react";
 import { useTheme } from "../../../utils/useTheme";
 import { useChartTooltipProps } from "../../../utils/chartTooltip";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { getChartColor, CHART_MUTED } from "@/lib/chartColors";
 
 const RevenueForecastSection = ({ data, rangeLabel }) => {
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
 	const tooltipProps = useChartTooltipProps();
-	const gridStroke = theme === "dark" ? "#3f3f46" : "#e4e4e7";
-	const axisColor = theme === "dark" ? "#a1a1aa" : "#71717a";
+	const chartColor = getChartColor(1);
+	const secondaryColor = getChartColor(2);
 
 	const last = data?.length ? data[data.length - 1] : null;
 	const prev = data?.length > 1 ? data[data.length - 2] : null;
@@ -64,19 +65,23 @@ const RevenueForecastSection = ({ data, rangeLabel }) => {
 						<ComposedChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
 							<defs>
 								<linearGradient id="actualFill" x1="0" y1="0" x2="0" y2="1">
-									<stop offset="0%" stopColor="#3b82f6" stopOpacity={0.35} />
-									<stop offset="100%" stopColor="#3b82f6" stopOpacity={0} />
+									<stop offset="0%" stopColor={chartColor} stopOpacity={0.35} />
+									<stop offset="100%" stopColor={chartColor} stopOpacity={0} />
 								</linearGradient>
 							</defs>
-							<CartesianGrid strokeDasharray="3 3" stroke={gridStroke} vertical={false} />
+							<CartesianGrid
+								strokeDasharray="3 3"
+								className="stroke-zinc-200 dark:stroke-zinc-700"
+								vertical={false}
+							/>
 							<XAxis
 								dataKey="period"
-								tick={{ fill: axisColor, fontSize: 11 }}
+								tick={{ fill: CHART_MUTED, fontSize: 11 }}
 								tickLine={false}
 								axisLine={false}
 							/>
 							<YAxis
-								tick={{ fill: axisColor, fontSize: 11 }}
+								tick={{ fill: CHART_MUTED, fontSize: 11 }}
 								tickLine={false}
 								axisLine={false}
 								tickFormatter={(v) => `$${v}k`}
@@ -85,12 +90,12 @@ const RevenueForecastSection = ({ data, rangeLabel }) => {
 							<Legend wrapperStyle={{ fontSize: "12px" }} />
 							<ReferenceLine
 								y={avgActual}
-								stroke={theme === "dark" ? "#52525b" : "#d4d4d8"}
+								stroke={CHART_MUTED}
 								strokeDasharray="4 4"
 								label={{
 									value: "Avg",
 									position: "insideTopRight",
-									fill: axisColor,
+									fill: CHART_MUTED,
 									fontSize: 10,
 								}}
 							/>
@@ -98,7 +103,7 @@ const RevenueForecastSection = ({ data, rangeLabel }) => {
 								type="monotone"
 								dataKey="actual"
 								name="Actual revenue"
-								stroke="#2563eb"
+								stroke={chartColor}
 								strokeWidth={2}
 								fill="url(#actualFill)"
 							/>
@@ -106,7 +111,7 @@ const RevenueForecastSection = ({ data, rangeLabel }) => {
 								type="monotone"
 								dataKey="forecast"
 								name="Forecast"
-								stroke="#a855f7"
+								stroke={secondaryColor}
 								strokeWidth={2}
 								dot={{ r: 3 }}
 							/>
@@ -114,7 +119,7 @@ const RevenueForecastSection = ({ data, rangeLabel }) => {
 								type="monotone"
 								dataKey="target"
 								name="Quota target"
-								stroke="#22c55e"
+								stroke={CHART_MUTED}
 								strokeWidth={1.5}
 								strokeDasharray="5 5"
 								dot={false}
