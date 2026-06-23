@@ -15,12 +15,16 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { I18nextProvider } from "react-i18next";
 import Sidebar from "../Sidebar";
-import { ToastContainer } from "react-toast";
+import ThemeCustomizer from "../ThemeCustomizer";
+import { Toaster } from "@/components/ui/sonner";
 import Navbar from "../Navbar";
 import { useTheme } from "../../utils/useTheme";
 import i18n from "../../utils/i18n";
 import AutoTranslate from "../AutoTranslate";
 import AIChatSidebar from "../AIChatSidebar";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 const AI_PANEL_WIDTH = 384; /* w-96 */
 
@@ -185,14 +189,15 @@ const LayoutWrapper = ({ children }) => {
 					</AnimatePresence>
 
 					<div className="fixed bottom-2 right-2 z-40 flex flex-col items-end gap-2">
-						<button
+						<Button
 							type="button"
 							onClick={toggleAiChat}
-							className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:shadow-xl ${
+							className={cn(
+								"rounded-full px-4 py-2.5 shadow-lg hover:shadow-xl",
 								aiChatOpen
 									? "bg-violet-700 hover:bg-violet-600"
 									: "bg-violet-600 hover:bg-violet-500"
-							}`}
+							)}
 							aria-label={aiChatOpen ? "Close AI assistant" : "Open AI assistant"}
 							aria-pressed={aiChatOpen}
 						>
@@ -204,25 +209,26 @@ const LayoutWrapper = ({ children }) => {
 							<span className="hidden md:inline">
 								{aiChatOpen ? "Close AI" : "AI Assistant"}
 							</span>
-						</button>
-						<button
+						</Button>
+						<Button
 							type="button"
 							onClick={() => setIsGuideModalOpen(true)}
-							className="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:bg-indigo-500 hover:shadow-xl"
+							className="rounded-full bg-indigo-600 px-4 py-2.5 shadow-lg hover:bg-indigo-500 hover:shadow-xl"
 							aria-label="Open guide, demo video, and purchasing details"
 						>
 							<Sparkles size={18} className="shrink-0" />
 							<span className="hidden md:inline">Guide & demo</span>
-						</button>
-						<button
+						</Button>
+						<Button
 							type="button"
+							variant="outline"
 							onClick={() => setIsOtherProductsModalOpen(true)}
-							className={`inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium shadow-md transition-all duration-200 hover:shadow-lg ${colors.border} ${colors.card} ${colors.foreground}`}
+							className={`rounded-full px-4 py-2.5 shadow-md hover:shadow-lg ${colors.card}`}
 							aria-label="Browse other CRM templates"
 						>
 							<LayoutGrid size={18} className="shrink-0" />
 							<span className="hidden md:inline">Other CRM templates</span>
-						</button>
+						</Button>
 					</div>
 
 					{isGuideModalOpen && (
@@ -231,11 +237,11 @@ const LayoutWrapper = ({ children }) => {
 							className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 p-3"
 							onClick={() => setIsGuideModalOpen(false)}
 						>
-							<div
+							<Card
 								role="dialog"
 								aria-modal="true"
 								aria-labelledby="guide-modal-title"
-								className={`relative max-h-[min(92vh,900px)] w-full max-w-4xl overflow-y-auto hidescrollbar rounded-2xl border ${colors.border} ${colors.card} p-5 shadow-2xl`}
+								className={`relative max-h-[min(92vh,900px)] w-full max-w-4xl overflow-y-auto hidescrollbar p-5 shadow-2xl ${colors.card}`}
 								onClick={(e) => e.stopPropagation()}
 							>
 								<div className="flex items-start justify-between gap-4">
@@ -247,14 +253,15 @@ const LayoutWrapper = ({ children }) => {
 											How this template ships, watch the demo, get the codebase, then wire your API.
 										</p>
 									</div>
-									<button
+									<Button
 										type="button"
+										variant="ghost"
+										size="icon"
 										onClick={() => setIsGuideModalOpen(false)}
-										className={`shrink-0 rounded-xl p-2 ${colors.hoverSecondary}`}
 										aria-label="Close guide"
 									>
 										<X size={14} className={colors.foreground} />
-									</button>
+									</Button>
 								</div>
 
 								<section className="mt-8">
@@ -425,7 +432,7 @@ const LayoutWrapper = ({ children }) => {
 										<li>Framer Motion</li>
 									</ul>
 								</section>
-							</div>
+							</Card>
 						</div>
 					)}
 
@@ -435,11 +442,11 @@ const LayoutWrapper = ({ children }) => {
 							className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 p-3"
 							onClick={() => setIsOtherProductsModalOpen(false)}
 						>
-							<div
+							<Card
 								role="dialog"
 								aria-modal="true"
 								aria-labelledby="other-products-title"
-								className={`relative w-full max-w-md rounded-2xl border ${colors.border} ${colors.card} p-6 shadow-2xl`}
+								className={`relative w-full max-w-md p-6 shadow-2xl ${colors.card}`}
 								onClick={(e) => e.stopPropagation()}
 							>
 								<div className="flex items-start justify-between gap-4">
@@ -451,14 +458,15 @@ const LayoutWrapper = ({ children }) => {
 											Pick a vertical or stack variant — same quality bar, shipped on Gumroad.
 										</p>
 									</div>
-									<button
+									<Button
 										type="button"
+										variant="ghost"
+										size="icon"
 										onClick={() => setIsOtherProductsModalOpen(false)}
-										className={`shrink-0 rounded-xl p-2 ${colors.hoverSecondary}`}
 										aria-label="Close"
 									>
 										<X size={14} className={colors.foreground} />
-									</button>
+									</Button>
 								</div>
 								<ul className="mt-6 space-y-3">
 									{OTHER_PRODUCTS_LINKS.map((link) => (
@@ -476,10 +484,11 @@ const LayoutWrapper = ({ children }) => {
 										</li>
 									))}
 								</ul>
-							</div>
+							</Card>
 						</div>
 					)}
-					<ToastContainer position="bottom-right" />
+					<Toaster />
+					<ThemeCustomizer />
 				</div>
 			</AutoTranslate>
 		</I18nextProvider>

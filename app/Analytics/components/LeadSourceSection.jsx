@@ -3,26 +3,28 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recha
 import { PieChart as PieIcon } from "lucide-react";
 import { useTheme } from "../../../utils/useTheme";
 import { useChartTooltipProps } from "../../../utils/chartTooltip";
-
-const COLORS = ["#3b82f6", "#8b5cf6", "#14b8a6", "#f59e0b", "#ec4899", "#64748b"];
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { getChartColor } from "@/lib/chartColors";
 
 const LeadSourceSection = ({ data }) => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 	const tooltipProps = useChartTooltipProps();
 	const total = data.reduce((s, d) => s + d.value, 0);
+	const sliceColor = (i) => (i % 2 === 0 ? getChartColor(1) : getChartColor(2));
 
 	return (
-		<div className={`rounded-xl border ${colors.border} ${colors.card} shadow-sm p-5 md:p-6 h-full flex flex-col`}>
-			<div className="flex items-center gap-2 mb-4">
-				<span className={`p-2 rounded-xl ${scheme.primary} ${scheme.primaryForeground}`}>
+		<Card className="h-full flex flex-col">
+			<CardHeader className="flex-row items-center gap-2 space-y-0 pb-4">
+				<span className="p-2 rounded-xl bg-primary text-primary-foreground">
 					<PieIcon className="w-4 h-4" />
 				</span>
 				<div>
-					<h2 className={`text-lg font-semibold ${colors.foreground}`}>Lead source breakdown</h2>
-					<p className={`text-sm ${colors.textSecondary}`}>Attributed pipeline by channel</p>
+					<CardTitle className="text-lg">Lead source breakdown</CardTitle>
+					<CardDescription>Attributed pipeline by channel</CardDescription>
 				</div>
-			</div>
-			<div className="flex flex-col md:flex-row items-center gap-6 flex-1 min-h-[280px]">
+			</CardHeader>
+			<CardContent className="flex flex-col md:flex-row items-center gap-6 flex-1 min-h-[280px] pt-0">
 				<div className="w-full md:w-1/2 h-[220px]">
 					<ResponsiveContainer width="100%" height="100%">
 						<PieChart>
@@ -37,7 +39,7 @@ const LeadSourceSection = ({ data }) => {
 								nameKey="name"
 							>
 								{data.map((_, i) => (
-									<Cell key={i} fill={COLORS[i % COLORS.length]} stroke="none" />
+									<Cell key={i} fill={sliceColor(i)} stroke="none" />
 								))}
 							</Pie>
 							<Tooltip
@@ -55,12 +57,16 @@ const LeadSourceSection = ({ data }) => {
 					{data.map((row, i) => (
 						<li
 							key={row.name}
-							className={`flex items-center justify-between gap-2 text-sm rounded-xl border ${colors.border} px-3 py-2 ${colors.muted}/50`}
+							className={cn(
+								"flex items-center justify-between gap-2 text-sm rounded-xl border px-3 py-2",
+								colors.border,
+								colors.muted + "/50"
+							)}
 						>
 							<span className="flex items-center gap-2 min-w-0">
 								<span
 									className="w-2.5 h-2.5 rounded-full shrink-0"
-									style={{ backgroundColor: COLORS[i % COLORS.length] }}
+									style={{ backgroundColor: sliceColor(i) }}
 								/>
 								<span className={`truncate ${colors.foreground}`}>{row.name}</span>
 							</span>
@@ -70,8 +76,8 @@ const LeadSourceSection = ({ data }) => {
 						</li>
 					))}
 				</ul>
-			</div>
-		</div>
+			</CardContent>
+		</Card>
 	);
 };
 

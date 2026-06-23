@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import clsx from "clsx";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+	Card,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
 	ArrowRight,
 	Bot,
@@ -131,7 +137,7 @@ export default function MarketingLanding() {
 
 	return (
 		<div
-			className={clsx(
+			className={cn(
 				"min-h-screen antialiased transition-colors duration-300",
 				isLight
 					? "bg-zinc-50 text-zinc-900 selection:bg-violet-500/20"
@@ -163,7 +169,7 @@ export default function MarketingLanding() {
 			/>
 
 			<header
-				className={clsx(
+				className={cn(
 					"relative z-10 border-b backdrop-blur-md transition-colors duration-300",
 					isLight ? "border-zinc-200/80 bg-white/75" : "border-white/5 bg-[#06060a]/80"
 				)}
@@ -171,7 +177,7 @@ export default function MarketingLanding() {
 				<div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 px-4 sm:px-6">
 					<Link href="/" passHref>
 						<a
-							className={clsx(
+							className={cn(
 								"flex items-center gap-2 font-semibold tracking-tight",
 								isLight ? "text-zinc-900" : "text-zinc-100"
 							)}
@@ -183,14 +189,14 @@ export default function MarketingLanding() {
 						</a>
 					</Link>
 					<nav
-						className={clsx(
+						className={cn(
 							"hidden items-center gap-6 text-sm md:flex",
 							isLight ? "text-zinc-600" : "text-zinc-400"
 						)}
 					>
 						<a
 							href="#features"
-							className={clsx(
+							className={cn(
 								"transition",
 								isLight ? "hover:text-zinc-900" : "hover:text-white"
 							)}
@@ -199,7 +205,7 @@ export default function MarketingLanding() {
 						</a>
 						<a
 							href="#contact"
-							className={clsx(
+							className={cn(
 								"transition",
 								isLight ? "hover:text-zinc-900" : "hover:text-white"
 							)}
@@ -208,7 +214,7 @@ export default function MarketingLanding() {
 						</a>
 						<Link href="/demo" passHref>
 							<a
-								className={clsx(
+								className={cn(
 									"transition",
 									isLight ? "hover:text-zinc-900" : "hover:text-white"
 								)}
@@ -220,7 +226,7 @@ export default function MarketingLanding() {
 							href={GUMROAD}
 							target="_blank"
 							rel="noopener noreferrer"
-							className={clsx(
+							className={cn(
 								"inline-flex items-center gap-1 transition",
 								isLight
 									? "text-violet-700 hover:text-violet-800"
@@ -232,11 +238,13 @@ export default function MarketingLanding() {
 						</a>
 					</nav>
 					<div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-						<button
+						<Button
 							type="button"
+							variant="outline"
+							size="icon"
 							onClick={toggleTheme}
-							className={clsx(
-								"inline-flex h-9 w-9 items-center justify-center rounded-full border transition",
+							className={cn(
+								"rounded-full",
 								isLight
 									? "border-zinc-200 bg-white text-zinc-700 shadow-sm hover:bg-zinc-50"
 									: "border-white/10 bg-white/5 text-zinc-200 hover:bg-white/10"
@@ -244,7 +252,7 @@ export default function MarketingLanding() {
 							aria-label={isLight ? "Switch to dark theme" : "Switch to light theme"}
 						>
 							{isLight ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-						</button>
+						</Button>
 						
 					</div>
 				</div>
@@ -258,9 +266,10 @@ export default function MarketingLanding() {
 						transition={{ duration: 0.5 }}
 						className="max-w-3xl"
 					>
-						<p
-							className={clsx(
-								"mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium",
+						<Badge
+							variant="outline"
+							className={cn(
+								"mb-4 gap-2 px-3 py-1 text-xs font-medium",
 								isLight
 									? "border-violet-200 bg-violet-50 text-violet-800"
 									: "border-violet-500/30 bg-violet-500/10 text-violet-200"
@@ -268,9 +277,9 @@ export default function MarketingLanding() {
 						>
 							<Zap className="h-3.5 w-3.5" />
 							Next.js · React · Tailwind — ship your CRM UI in days
-						</p>
+						</Badge>
 						<h1
-							className={clsx(
+							className={cn(
 								"text-4xl font-bold tracking-tight sm:text-5xl sm:leading-[1.1]",
 								isLight ? "text-zinc-900" : "text-white"
 							)}
@@ -278,7 +287,7 @@ export default function MarketingLanding() {
 							A production-grade CRM frontend template—not an empty admin theme.
 						</h1>
 						<p
-							className={clsx(
+							className={cn(
 								"mt-6 text-lg leading-relaxed",
 								isLight ? "text-zinc-600" : "text-zinc-400"
 							)}
@@ -288,30 +297,34 @@ export default function MarketingLanding() {
 							load straight into a dense dashboard.
 						</p>
 						<div className="mt-10 flex flex-wrap items-center gap-3">
-							<Link href="/demo" passHref>
-								<a
-									className={clsx(
-										"inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition",
-										isLight
-											? "bg-zinc-900 text-white hover:bg-zinc-800"
-											: "bg-white text-zinc-900 hover:bg-zinc-100"
-									)}
-								>
-									Open live demo
-									<ArrowRight className="h-4 w-4" />
-								</a>
-							</Link>
-							<a
-								href="#contact"
-								className={clsx(
-									"inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition",
+							<Button
+								asChild
+								className={cn(
+									"rounded-full px-5",
+									isLight
+										? "bg-zinc-900 text-white hover:bg-zinc-800"
+										: "bg-white text-zinc-900 hover:bg-zinc-100"
+								)}
+							>
+								<Link href="/demo" passHref>
+									<a>
+										Open live demo
+										<ArrowRight className="h-4 w-4" />
+									</a>
+								</Link>
+							</Button>
+							<Button
+								variant="outline"
+								asChild
+								className={cn(
+									"rounded-full px-5",
 									isLight
 										? "border-zinc-300 text-zinc-800 hover:bg-zinc-100"
 										: "border-white/15 text-white hover:bg-white/5"
 								)}
 							>
-								Get details &amp; pricing
-							</a>
+								<a href="#contact">Get details &amp; pricing</a>
+							</Button>
 						</div>
 						<p className="mt-6 text-xs text-zinc-500">
 							Includes AI assistant UI · i18n-ready · drag-and-drop friendly pipelines · finance &
@@ -322,7 +335,7 @@ export default function MarketingLanding() {
 
 				<section
 					id="features"
-					className={clsx(
+					className={cn(
 						"border-t py-20 transition-colors duration-300",
 						isLight ? "border-zinc-200 bg-zinc-100/50" : "border-white/5 bg-black/20"
 					)}
@@ -330,14 +343,14 @@ export default function MarketingLanding() {
 					<div className="mx-auto max-w-6xl px-4 sm:px-6">
 						<motion.div {...fadeUp} className="mb-12 max-w-2xl">
 							<h2
-								className={clsx(
+								className={cn(
 									"text-2xl font-bold tracking-tight sm:text-3xl",
 									isLight ? "text-zinc-900" : "text-white"
 								)}
 							>
 								Built for founders, agencies, and teams who need a credible CRM demo fast.
 							</h2>
-							<p className={clsx("mt-3", isLight ? "text-zinc-600" : "text-zinc-400")}>
+							<p className={cn("mt-3", isLight ? "text-zinc-600" : "text-zinc-400")}>
 								Everything is designed to extend: connect your REST API, rebrand, and deploy.
 							</p>
 						</motion.div>
@@ -351,36 +364,39 @@ export default function MarketingLanding() {
 										whileInView={{ opacity: 1, y: 0 }}
 										viewport={{ once: true }}
 										transition={{ delay: i * 0.06, duration: 0.4 }}
-										className={clsx(
-											"group rounded-2xl border p-5 transition",
-											isLight
-												? "border-zinc-200 bg-white shadow-sm hover:border-violet-300 hover:shadow-md"
-												: "border-white/10 bg-white/[0.03] hover:border-violet-500/30 hover:bg-white/[0.05]"
-										)}
 									>
-										<div
-											className={clsx(
-												"mb-3 flex h-10 w-10 items-center justify-center rounded-xl",
+										<Card
+											className={cn(
+												"group p-5 transition",
 												isLight
-													? "bg-violet-100 text-violet-700"
-													: "bg-violet-500/15 text-violet-300"
+													? "border-zinc-200 bg-white shadow-sm hover:border-violet-300 hover:shadow-md"
+													: "border-white/10 bg-white/[0.03] hover:border-violet-500/30 hover:bg-white/[0.05]"
 											)}
 										>
-											<Icon className="h-5 w-5" />
-										</div>
-										<h3
-											className={clsx("font-semibold", isLight ? "text-zinc-900" : "text-white")}
-										>
-											{f.title}
-										</h3>
-										<p
-											className={clsx(
-												"mt-2 text-sm leading-relaxed",
-												isLight ? "text-zinc-600" : "text-zinc-400"
-											)}
-										>
-											{f.desc}
-										</p>
+											<div
+												className={cn(
+													"mb-3 flex h-10 w-10 items-center justify-center rounded-xl",
+													isLight
+														? "bg-violet-100 text-violet-700"
+														: "bg-violet-500/15 text-violet-300"
+												)}
+											>
+												<Icon className="h-5 w-5" />
+											</div>
+											<h3
+												className={cn("font-semibold", isLight ? "text-zinc-900" : "text-white")}
+											>
+												{f.title}
+											</h3>
+											<p
+												className={cn(
+													"mt-2 text-sm leading-relaxed",
+													isLight ? "text-zinc-600" : "text-zinc-400"
+												)}
+											>
+												{f.desc}
+											</p>
+										</Card>
 									</motion.div>
 								);
 							})}
@@ -390,68 +406,78 @@ export default function MarketingLanding() {
 
 				<section className="py-16">
 					<div className="mx-auto max-w-6xl px-4 sm:px-6">
-						<motion.div
-							{...fadeUp}
-							className={clsx(
-								"flex flex-col items-start justify-between gap-6 rounded-2xl border p-8 sm:flex-row sm:items-center",
-								isLight
-									? "border-violet-200 bg-gradient-to-br from-violet-50 to-indigo-50/80"
-									: "border-white/10 bg-gradient-to-br from-violet-950/40 to-indigo-950/30"
-							)}
-						>
-							<div>
-								<h2
-									className={clsx("text-xl font-bold", isLight ? "text-zinc-900" : "text-white")}
-								>
-									Pay in USD or INR
-								</h2>
-								<p
-									className={clsx(
-										"mt-2 max-w-xl text-sm",
-										isLight ? "text-zinc-600" : "text-zinc-400"
-									)}
-								>
-									Choose the checkout that fits you. Questions about licensing, customization, or
-									UPI? Use the form—we reply personally.
-								</p>
-							</div>
-							<div className="flex flex-wrap gap-3">
-								<a
-									href={GUMROAD}
-									target="_blank"
-									rel="noopener noreferrer"
-									className={clsx(
-										"inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition",
-										isLight
-											? "bg-zinc-900 text-white hover:bg-zinc-800"
-											: "bg-white text-zinc-900 hover:bg-zinc-100"
-									)}
-								>
-									Gumroad (USD)
-									<ExternalLink className="h-4 w-4" />
-								</a>
-								<a
-									href={DODO}
-									target="_blank"
-									rel="noopener noreferrer"
-									className={clsx(
-										"inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition",
-										isLight
-											? "border-zinc-300 text-zinc-800 hover:bg-white/80"
-											: "border-white/20 text-white hover:bg-white/10"
-									)}
-								>
-									Dodo (INR)
-									<ExternalLink className="h-4 w-4" />
-								</a>
-							</div>
+						<motion.div {...fadeUp}>
+							<Card
+								className={cn(
+									"flex flex-col items-start justify-between gap-6 p-8 sm:flex-row sm:items-center",
+									isLight
+										? "border-violet-200 bg-gradient-to-br from-violet-50 to-indigo-50/80"
+										: "border-white/10 bg-gradient-to-br from-violet-950/40 to-indigo-950/30"
+								)}
+							>
+								<div>
+									<h2
+										className={cn("text-xl font-bold", isLight ? "text-zinc-900" : "text-white")}
+									>
+										Pay in USD or INR
+									</h2>
+									<p
+										className={cn(
+											"mt-2 max-w-xl text-sm",
+											isLight ? "text-zinc-600" : "text-zinc-400"
+										)}
+									>
+										Choose the checkout that fits you. Questions about licensing, customization, or
+										UPI? Use the form—we reply personally.
+									</p>
+								</div>
+								<div className="flex flex-wrap gap-3">
+									<Button
+										asChild
+										className={cn(
+											"rounded-full px-5",
+											isLight
+												? "bg-zinc-900 text-white hover:bg-zinc-800"
+												: "bg-white text-zinc-900 hover:bg-zinc-100"
+										)}
+									>
+										<a
+											href={GUMROAD}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											Gumroad (USD)
+											<ExternalLink className="h-4 w-4" />
+										</a>
+									</Button>
+									<Button
+										variant="outline"
+										asChild
+										className={cn(
+											"rounded-full px-5",
+											isLight
+												? "border-zinc-300 text-zinc-800 hover:bg-white/80"
+												: "border-white/20 text-white hover:bg-white/10"
+										)}
+									>
+										<a
+											href={DODO}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											Dodo (INR)
+											<ExternalLink className="h-4 w-4" />
+										</a>
+									</Button>
+								</div>
+							</Card>
 						</motion.div>
 					</div>
 				</section>
 
 				<section
 					id="contact"
-					className={clsx(
+					className={cn(
 						"border-t pb-24 pt-16 transition-colors duration-300",
 						isLight ? "border-zinc-200" : "border-white/5"
 					)}
@@ -460,23 +486,23 @@ export default function MarketingLanding() {
 						<div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
 							<motion.div {...fadeUp}>
 								<h2
-									className={clsx("text-2xl font-bold", isLight ? "text-zinc-900" : "text-white")}
+									className={cn("text-2xl font-bold", isLight ? "text-zinc-900" : "text-white")}
 								>
 									Get the details in your inbox
 								</h2>
-								<p className={clsx("mt-3", isLight ? "text-zinc-600" : "text-zinc-400")}>
+								<p className={cn("mt-3", isLight ? "text-zinc-600" : "text-zinc-400")}>
 									Leave your email and phone—we&apos;ll follow up with anything you need: custom
 									scopes, team licenses, or a quick walkthrough.
 								</p>
 								<ul
-									className={clsx(
+									className={cn(
 										"mt-8 space-y-3 text-sm",
 										isLight ? "text-zinc-600" : "text-zinc-400"
 									)}
 								>
 									<li className="flex items-start gap-2">
 										<CheckCircle2
-											className={clsx(
+											className={cn(
 												"mt-0.5 h-4 w-4 shrink-0",
 												isLight ? "text-emerald-600" : "text-emerald-400"
 											)}
@@ -485,7 +511,7 @@ export default function MarketingLanding() {
 									</li>
 									<li className="flex items-start gap-2">
 										<CheckCircle2
-											className={clsx(
+											className={cn(
 												"mt-0.5 h-4 w-4 shrink-0",
 												isLight ? "text-emerald-600" : "text-emerald-400"
 											)}
@@ -493,13 +519,13 @@ export default function MarketingLanding() {
 										We never sell your contact info. Used only to respond to this inquiry.
 									</li>
 								</ul>
-								<p className={clsx("mt-8 text-xs", isLight ? "text-zinc-500" : "text-zinc-600")}>
+								<p className={cn("mt-8 text-xs", isLight ? "text-zinc-500" : "text-zinc-600")}>
 									shreyvijayvargiya26@gmail.com ·{" "}
 									<a
 										href="https://x.com/treyvijay"
 										target="_blank"
 										rel="noopener noreferrer"
-										className={clsx(
+										className={cn(
 											"underline",
 											isLight
 												? "text-zinc-600 hover:text-zinc-800"
@@ -514,150 +540,149 @@ export default function MarketingLanding() {
 							<motion.div
 								{...fadeUp}
 								transition={{ ...fadeUp.transition, delay: 0.08 }}
-								className={clsx(
-									"rounded-2xl border p-6 sm:p-8",
-									isLight
-										? "border-zinc-200 bg-white shadow-sm"
-										: "border-white/10 bg-white/[0.04]"
-								)}
 							>
+								<Card
+									className={cn(
+										"p-6 sm:p-8",
+										isLight
+											? "border-zinc-200 bg-white shadow-sm"
+											: "border-white/10 bg-white/[0.04]"
+									)}
+								>
 								{status === "success" ? (
 									<div className="py-8 text-center">
 										<CheckCircle2
-											className={clsx(
+											className={cn(
 												"mx-auto h-12 w-12",
 												isLight ? "text-emerald-600" : "text-emerald-400"
 											)}
 										/>
 										<p
-											className={clsx(
+											className={cn(
 												"mt-4 font-semibold",
 												isLight ? "text-zinc-900" : "text-white"
 											)}
 										>
 											Thanks — you&apos;re all set.
 										</p>
-										<p className={clsx("mt-2 text-sm", isLight ? "text-zinc-600" : "text-zinc-400")}>
+										<p className={cn("mt-2 text-sm", isLight ? "text-zinc-600" : "text-zinc-400")}>
 											We&apos;ll reach out soon. You can still explore the{" "}
-											<Link href="/demo" passHref>
-												<a
-													className={clsx(
-														"underline",
-														isLight
-															? "text-violet-700 hover:text-violet-900"
-															: "text-violet-300 hover:text-violet-200"
-													)}
-												>
-													live demo
-												</a>
-											</Link>
+											<Button variant="link" asChild className="h-auto p-0">
+												<Link href="/demo" passHref>
+													<a
+														className={cn(
+															isLight
+																? "text-violet-700 hover:text-violet-900"
+																: "text-violet-300 hover:text-violet-200"
+														)}
+													>
+														live demo
+													</a>
+												</Link>
+											</Button>
 											.
 										</p>
 									</div>
 								) : (
 									<form onSubmit={onSubmit} className="relative space-y-4">
 										<div className="grid gap-4 sm:grid-cols-2">
-											<div>
+											<div className="space-y-1">
 												<label
 													htmlFor="name"
-													className={clsx(
+													className={cn(
 														"block text-xs font-medium",
 														isLight ? "text-zinc-600" : "text-zinc-400"
 													)}
 												>
 													Name *
 												</label>
-												<input
+												<Input
 													id="name"
 													name="name"
 													required
 													autoComplete="name"
-													className={clsx(
-														"mt-1 w-full rounded-xl border px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-violet-500/40",
+													className={cn(
 														isLight
-															? "border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus:border-violet-400"
-															: "border-white/10 bg-black/40 text-white placeholder:text-zinc-600 focus:border-violet-500/50"
+															? "border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus-visible:ring-violet-500/40"
+															: "border-white/10 bg-black/40 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500/50"
 													)}
 													placeholder="Your name"
 												/>
 											</div>
-											<div>
+											<div className="space-y-1">
 												<label
 													htmlFor="company"
-													className={clsx(
+													className={cn(
 														"block text-xs font-medium",
 														isLight ? "text-zinc-600" : "text-zinc-400"
 													)}
 												>
 													Company
 												</label>
-												<input
+												<Input
 													id="company"
 													name="company"
 													autoComplete="organization"
-													className={clsx(
-														"mt-1 w-full rounded-xl border px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-violet-500/40",
+													className={cn(
 														isLight
-															? "border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus:border-violet-400"
-															: "border-white/10 bg-black/40 text-white placeholder:text-zinc-600 focus:border-violet-500/50"
+															? "border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus-visible:ring-violet-500/40"
+															: "border-white/10 bg-black/40 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500/50"
 													)}
 													placeholder="Optional"
 												/>
 											</div>
 										</div>
-										<div>
+										<div className="space-y-1">
 											<label
 												htmlFor="email"
-												className={clsx(
+												className={cn(
 													"block text-xs font-medium",
 													isLight ? "text-zinc-600" : "text-zinc-400"
 												)}
 											>
 												Email *
 											</label>
-											<input
+											<Input
 												id="email"
 												name="email"
 												type="email"
 												required
 												autoComplete="email"
-												className={clsx(
-													"mt-1 w-full rounded-xl border px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-violet-500/40",
+												className={cn(
 													isLight
-														? "border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus:border-violet-400"
-														: "border-white/10 bg-black/40 text-white placeholder:text-zinc-600 focus:border-violet-500/50"
+														? "border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus-visible:ring-violet-500/40"
+														: "border-white/10 bg-black/40 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500/50"
 												)}
 												placeholder="you@company.com"
 											/>
 										</div>
-										<div>
+										<div className="space-y-1">
 											<label
 												htmlFor="phone"
-												className={clsx(
+												className={cn(
 													"block text-xs font-medium",
 													isLight ? "text-zinc-600" : "text-zinc-400"
 												)}
 											>
 												Phone / WhatsApp
 											</label>
-											<input
+											<Input
 												id="phone"
 												name="phone"
 												type="tel"
 												autoComplete="tel"
-												className={clsx(
-													"mt-1 w-full rounded-xl border px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-violet-500/40",
+												className={cn(
 													isLight
-														? "border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus:border-violet-400"
-														: "border-white/10 bg-black/40 text-white placeholder:text-zinc-600 focus:border-violet-500/50"
+														? "border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus-visible:ring-violet-500/40"
+														: "border-white/10 bg-black/40 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500/50"
 												)}
 												placeholder="+91 …"
 											/>
 										</div>
-										<div>
+										<div className="space-y-1">
 											<label
 												htmlFor="message"
-												className={clsx(
+												className={cn(
 													"block text-xs font-medium",
 													isLight ? "text-zinc-600" : "text-zinc-400"
 												)}
@@ -668,11 +693,11 @@ export default function MarketingLanding() {
 												id="message"
 												name="message"
 												rows={4}
-												className={clsx(
-													"mt-1 w-full resize-none rounded-xl border px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-violet-500/40",
+												className={cn(
+													"flex w-full resize-none rounded-xl border px-3 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/40",
 													isLight
-														? "border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus:border-violet-400"
-														: "border-white/10 bg-black/40 text-white placeholder:text-zinc-600 focus:border-violet-500/50"
+														? "border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400"
+														: "border-white/10 bg-black/40 text-white placeholder:text-zinc-600"
 												)}
 												placeholder="Optional — niche, timeline, team size…"
 											/>
@@ -684,7 +709,7 @@ export default function MarketingLanding() {
 										</div>
 										{errorMsg ? (
 											<p
-												className={clsx(
+												className={cn(
 													"text-sm",
 													isLight ? "text-red-600" : "text-red-400"
 												)}
@@ -693,15 +718,15 @@ export default function MarketingLanding() {
 												{errorMsg}
 											</p>
 										) : null}
-										<button
+										<Button
 											type="submit"
 											disabled={status === "loading"}
-											className="w-full rounded-xl bg-violet-600 py-3 text-sm font-semibold text-white transition hover:bg-violet-500 disabled:opacity-60"
+											className="w-full bg-violet-600 hover:bg-violet-500 text-white"
 										>
 											{status === "loading" ? "Sending…" : "Request follow-up"}
-										</button>
+										</Button>
 										<p
-											className={clsx(
+											className={cn(
 												"text-[10px] leading-relaxed",
 												isLight ? "text-zinc-500" : "text-zinc-600"
 											)}
@@ -710,6 +735,7 @@ export default function MarketingLanding() {
 										</p>
 									</form>
 								)}
+								</Card>
 							</motion.div>
 						</div>
 					</div>
@@ -717,34 +743,33 @@ export default function MarketingLanding() {
 			</main>
 
 			<footer
-				className={clsx(
+				className={cn(
 					"relative z-10 border-t py-8 transition-colors duration-300",
 					isLight ? "border-zinc-200" : "border-white/5"
 				)}
 			>
 				<div
-					className={clsx(
+					className={cn(
 						"mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 text-center text-xs sm:flex-row sm:text-left sm:px-6",
 						isLight ? "text-zinc-500" : "text-zinc-600"
 					)}
 				>
 					<p>CRM SaaS Template — build your vertical CRM faster.</p>
 					<div className="flex flex-wrap justify-center gap-4 sm:justify-end">
-						<Link href="/demo" passHref>
-							<a
-								className={clsx(
-									"transition",
-									isLight ? "hover:text-zinc-800" : "hover:text-zinc-400"
-								)}
-							>
-								Demo
-							</a>
-						</Link>
+						<Button variant="link" asChild className="h-auto p-0 text-xs">
+							<Link href="/demo" passHref>
+								<a
+									className={cn(isLight ? "hover:text-zinc-800" : "hover:text-zinc-400")}
+								>
+									Demo
+								</a>
+							</Link>
+						</Button>
 						<a
 							href={GUMROAD}
 							target="_blank"
 							rel="noopener noreferrer"
-							className={clsx(
+							className={cn(
 								"transition",
 								isLight ? "hover:text-zinc-800" : "hover:text-zinc-400"
 							)}
@@ -755,7 +780,7 @@ export default function MarketingLanding() {
 							href={DODO}
 							target="_blank"
 							rel="noopener noreferrer"
-							className={clsx(
+							className={cn(
 								"transition",
 								isLight ? "hover:text-zinc-800" : "hover:text-zinc-400"
 							)}

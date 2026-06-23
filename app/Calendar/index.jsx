@@ -1,14 +1,25 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import {
 	ChevronLeft,
 	ChevronRight,
 	ChevronDown,
 	Plus,
-	Calendar as CalendarIcon,
 } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
-import { FormModal, FormField, formInputClass } from "../../lib/ui/modal";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import FormSelect from "../../lib/ui/FormSelect";
 import {
 	DndContext,
 	closestCenter,
@@ -34,11 +45,10 @@ const EVENT_COLOR_OPTIONS = [
 ];
 
 const Calendar = () => {
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { theme, colors } = useTheme();
 	const [currentDate, setCurrentDate] = useState(new Date());
 	const [events, setEvents] = useState([]);
 	const [viewMode, setViewMode] = useState("Month");
-	const [isViewDropdownOpen, setIsViewDropdownOpen] = useState(false);
 	const [isNewEventModalOpen, setIsNewEventModalOpen] = useState(false);
 	const [isEventDetailsModalOpen, setIsEventDetailsModalOpen] = useState(false);
 	const [selectedEvent, setSelectedEvent] = useState(null);
@@ -489,7 +499,7 @@ const Calendar = () => {
 				className={`min-h-[84px] sm:min-h-[100px] border ${colors.border} p-1.5 sm:p-2 rounded-xl ${
 					day.isCurrentMonth ? colors.background : colors.muted
 				} ${isCurrentDay ? "ring-2 ring-black dark:ring-white" : ""} ${
-					isOver ? "bg-opacity-50 " + scheme.primary : ""
+					isOver ? "bg-primary/10 ring-1 ring-primary/30" : ""
 				} transition-colors duration-100 ease-in`}
 			>
 				<div
@@ -532,74 +542,54 @@ const Calendar = () => {
 						{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
 					</h2>
 					<div className="flex items-center gap-1.5 sm:gap-2">
-						<button
+						<Button
+							variant="ghost"
+							size="icon"
 							onClick={goToPreviousMonth}
-							className={`p-1.5 sm:p-2 ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
+							aria-label="Previous month"
 						>
 							<ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-						</button>
-						<button
+						</Button>
+						<Button
+							variant="ghost"
+							size="icon"
 							onClick={goToNextMonth}
-							className={`p-1.5 sm:p-2 ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
+							aria-label="Next month"
 						>
 							<ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-						</button>
+						</Button>
 					</div>
 				</div>
 
 				<div className="flex flex-wrap items-center gap-2 sm:gap-3">
-					<button
-						onClick={goToToday}
-						className={`px-3 sm:px-4 py-1.5 sm:py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.foreground} hover:${colors.hoverSecondary} transition-colors text-sm font-medium`}
-					>
+					<Button variant="outline" size="sm" onClick={goToToday}>
 						Today
-					</button>
-					<div className="relative">
-						<button
-							onClick={() => setIsViewDropdownOpen(!isViewDropdownOpen)}
-							className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.foreground} hover:${colors.hoverSecondary} transition-colors text-sm`}
-						>
-							{viewMode}
-							<ChevronDown className="w-4 h-4" />
-						</button>
-						{isViewDropdownOpen && (
-							<>
-								<div
-									className="fixed inset-0 z-10"
-									onClick={() => setIsViewDropdownOpen(false)}
-								></div>
-								<div
-									className={`absolute right-0 mt-2 w-40 ${colors.card} border ${colors.border} rounded-xl shadow-xl z-20 py-2`}
+					</Button>
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="outline" size="sm">
+								{viewMode}
+								<ChevronDown className="w-4 h-4" />
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end" className="w-40">
+							{["Month", "Week", "Day", "Agenda"].map((view) => (
+								<DropdownMenuItem
+									key={view}
+									onClick={() => setViewMode(view)}
+									className={cn(
+										viewMode === view && "bg-primary text-primary-foreground focus:bg-primary focus:text-primary-foreground"
+									)}
 								>
-									{["Month", "Week", "Day", "Agenda"].map((view) => (
-										<button
-											key={view}
-											onClick={() => {
-												setViewMode(view);
-												setIsViewDropdownOpen(false);
-											}}
-											className={`w-full text-left px-4 py-2 text-sm hover:${
-												colors.hoverSecondary
-											} transition-colors ${
-												viewMode === view
-													? `${scheme.primary} ${scheme.primaryForeground}`
-													: `${colors.foreground}`
-											}`}
-										>
-											{view}
-										</button>
-									))}
-								</div>
-							</>
-						)}
-					</div>
-					<button
-						onClick={() => setIsNewEventModalOpen(true)}
-						className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} rounded-xl text-sm font-medium transition-colors`}
-					>
+									{view}
+								</DropdownMenuItem>
+							))}
+						</DropdownMenuContent>
+					</DropdownMenu>
+					<Button size="sm" onClick={() => setIsNewEventModalOpen(true)}>
 						<Plus className="w-4 h-4" />
 						New event
-					</button>
+					</Button>
 				</div>
 			</div>
 
@@ -611,9 +601,7 @@ const Calendar = () => {
 				onDragEnd={handleDragEnd}
 			>
 				<div className="-mx-1 overflow-x-auto px-1">
-					<div
-						className={`${colors.card} border ${colors.border} rounded-xl overflow-hidden min-w-[680px] sm:min-w-0`}
-					>
+					<Card className="overflow-hidden min-w-[680px] sm:min-w-0">
 					{/* Day Headers */}
 					<div className={`grid grid-cols-7 border-b ${colors.border}`}>
 						{dayNames.map((day) => (
@@ -635,7 +623,7 @@ const Calendar = () => {
 							);
 						})}
 					</div>
-				</div>
+				</Card>
 				</div>
 
 				<DragOverlay>
@@ -664,7 +652,7 @@ const Calendar = () => {
 				maxWidth="max-w-md"
 			>
 				<FormField label="Event title" htmlFor="new-event-title" required>
-					<input
+					<Input
 						id="new-event-title"
 						type="text"
 						value={newEvent.title}
@@ -673,11 +661,10 @@ const Calendar = () => {
 						}
 						required
 						placeholder="Enter event title"
-						className={formInputClass(colorScheme, colors)}
 					/>
 				</FormField>
 				<FormField label="Time" htmlFor="new-event-time" required>
-					<input
+					<Input
 						id="new-event-time"
 						type="text"
 						value={newEvent.time}
@@ -686,11 +673,10 @@ const Calendar = () => {
 						}
 						required
 						placeholder="e.g., 10am, 2:30pm"
-						className={formInputClass(colorScheme, colors)}
 					/>
 				</FormField>
 				<FormField label="Date" htmlFor="new-event-date" required>
-					<input
+					<Input
 						id="new-event-date"
 						type="date"
 						value={newEvent.date}
@@ -698,24 +684,17 @@ const Calendar = () => {
 							setNewEvent({ ...newEvent, date: e.target.value })
 						}
 						required
-						className={formInputClass(colorScheme, colors)}
 					/>
 				</FormField>
 				<FormField label="Color" htmlFor="new-event-color">
-					<select
+					<FormSelect
 						id="new-event-color"
 						value={newEvent.color}
 						onChange={(e) =>
 							setNewEvent({ ...newEvent, color: e.target.value })
 						}
-						className={formInputClass(colorScheme, colors)}
-					>
-						{EVENT_COLOR_OPTIONS.map((opt) => (
-							<option key={opt.value} value={opt.value}>
-								{opt.label}
-							</option>
-						))}
-					</select>
+						options={EVENT_COLOR_OPTIONS}
+					/>
 				</FormField>
 			</FormModal>
 
@@ -736,16 +715,17 @@ const Calendar = () => {
 				maxWidth="max-w-md"
 			>
 				{selectedEvent && (
-					<div
-						className={`mb-2 inline-flex rounded-xl px-2.5 py-1 text-xs capitalize ${getColorClasses(
-							editEvent.color
-						)}`}
+					<Badge
+						className={cn(
+							"mb-2 capitalize border-0",
+							getColorClasses(editEvent.color)
+						)}
 					>
 						{editEvent.color}
-					</div>
+					</Badge>
 				)}
 				<FormField label="Title" htmlFor="edit-event-title" required>
-					<input
+					<Input
 						id="edit-event-title"
 						type="text"
 						value={editEvent.title}
@@ -753,12 +733,11 @@ const Calendar = () => {
 							setEditEvent((prev) => ({ ...prev, title: e.target.value }))
 						}
 						required
-						className={formInputClass(colorScheme, colors)}
 					/>
 				</FormField>
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<FormField label="Time" htmlFor="edit-event-time" required>
-						<input
+						<Input
 							id="edit-event-time"
 							type="text"
 							value={editEvent.time}
@@ -767,11 +746,10 @@ const Calendar = () => {
 							}
 							required
 							placeholder="10am"
-							className={formInputClass(colorScheme, colors)}
 						/>
 					</FormField>
 					<FormField label="Date" htmlFor="edit-event-date" required>
-						<input
+						<Input
 							id="edit-event-date"
 							type="date"
 							value={editEvent.date}
@@ -779,25 +757,18 @@ const Calendar = () => {
 								setEditEvent((prev) => ({ ...prev, date: e.target.value }))
 							}
 							required
-							className={formInputClass(colorScheme, colors)}
 						/>
 					</FormField>
 				</div>
 				<FormField label="Color" htmlFor="edit-event-color">
-					<select
+					<FormSelect
 						id="edit-event-color"
 						value={editEvent.color}
 						onChange={(e) =>
 							setEditEvent((prev) => ({ ...prev, color: e.target.value }))
 						}
-						className={formInputClass(colorScheme, colors)}
-					>
-						{EVENT_COLOR_OPTIONS.map((opt) => (
-							<option key={opt.value} value={opt.value}>
-								{opt.label}
-							</option>
-						))}
-					</select>
+						options={EVENT_COLOR_OPTIONS}
+					/>
 				</FormField>
 			</FormModal>
 		</div>

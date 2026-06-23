@@ -16,6 +16,8 @@ export { default as Payments } from "./Payments";
 export { default as Products } from "./Products";
 export { default as Projects } from "./Projects";
 export { default as ContentManagementSystem } from "./Content Management System";
+export { default as CmsBlogDetail } from "./Content Management System/BlogDetail";
+export { default as CmsNewsletterDetail } from "./Content Management System/NewsletterDetail";
 export { default as Pipelines } from "./Pipelines";
 export { default as Deals } from "./Deals";
 export { default as LeadDetail } from "./Leads/LeadDetail";

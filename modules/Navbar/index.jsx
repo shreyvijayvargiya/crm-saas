@@ -11,25 +11,33 @@ import {
 	X,
 	Moon,
 	Sun,
+	Palette,
 } from "lucide-react";
 import Image from "next/image";
 import * as lucideIcons from "lucide-react";
 import { useRouter } from "next/router";
 import { useTheme } from "../../utils/useTheme";
-import { colorSchemes } from "../../utils/theme";
+import { useThemeCustomizer } from "../../utils/ThemeCustomizerContext";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) => {
 	const router = useRouter();
-	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [searchModalOpen, setSearchModalOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
-	const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
 	const searchInputRef = useRef(null);
 	const modalSearchInputRef = useRef(null);
 
-	// Theme hook
-	const { theme, colorScheme, setColorScheme, toggleTheme, colors, scheme } =
-		useTheme();
+	const { theme, toggleTheme, colors } = useTheme();
+	const { open: customizerOpen, toggleCustomizer } = useThemeCustomizer();
 
 	const navItems = [
 		{
@@ -238,20 +246,6 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 		}
 	}, [searchModalOpen]);
 
-	// Close color picker on outside click
-	useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (
-				isColorPickerOpen &&
-				!event.target.closest(".color-picker-dropdown")
-			) {
-				setIsColorPickerOpen(false);
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => document.removeEventListener("mousedown", handleClickOutside);
-	}, [isColorPickerOpen]);
-
 	const handleSearchClick = () => {
 		setSearchModalOpen(true);
 	};
@@ -289,8 +283,6 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 	}))
 		.filter((section) => section.items.length > 0);
 
-	const handleDropdownToggle = () => setDropdownOpen(!dropdownOpen);
-
 	return (
 		<div
 			className={`flex justify-between md:overflow-hidden overflow-x-scroll hidescrollbar w-full border-b ${colors.border} px-2 py-1 ${colors.primaryBackground} transition-all duration-100 ease-in`}
@@ -316,17 +308,17 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 					className={`flex ${colors.hoverSecondary} rounded-[10px] mx-2 items-center group border ${colors.border} h-7 cursor-pointer transition-colors`}
 					onClick={handleSearchClick}
 				>
-					<Search className={`${colors.textMuted} mx-2`} size={16} />
-					<input
+					<Search className={`${colors.textMuted} ml-2`} size={16} />
+					<Input
 						ref={searchInputRef}
 						type="text"
 						placeholder="Search..."
-						className={`outline-none md:block hidden text-sm bg-transparent focus:outline-none ${colors.hoverSecondary} cursor-pointer ${colors.foreground}`}
+						className="md:block hidden h-8 border-0 bg-transparent shadow-none focus-visible:ring-0 cursor-pointer"
 						readOnly
 					/>
-					<span className={`text-[10px] hidden md:block ${colors.textMuted} italic mr-2`}>
+					<div className={`text-[10px] min-w-fit hidden md:flex ${colors.textMuted} italic mr-2 gap-0.5 items-center`}>
 						CMD + K
-					</span>
+					</div>
 				</div>
 			</div>
 			<div className="flex items-center justify-between gap-2">
@@ -348,53 +340,25 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 						</a>
 					</div>
 				</div>
-				
-					{/* Color Scheme Picker */}
-					<div className="relative color-picker-dropdown md:block hidden">
-						<div
-							className={`flex w-20 md:w-fit overflow-scroll hidescrollbar gap-1 p-1 rounded-xl border transition-all ${colors.border} ${colors.secondary} ${colors.secondaryForeground} border-current`}
-						>
-							{Object.keys(colorSchemes).map((schemeName) => (
-								<button
-									key={schemeName}
-									onClick={() => {
-										setColorScheme(schemeName);
-										setIsColorPickerOpen(false);
-									}}
-									className={`p-1 rounded transition-all ${
-										colorScheme === schemeName &&
-										`${scheme.primary} ${scheme.primaryForeground}`
-									}`}
-								>
-									<div className="flex flex-col items-center gap-2">
-										<div
-											className={`w-4 h-4 rounded-full ${
-												schemeName === "blue"
-													? "bg-blue-800"
-													: schemeName === "green"
-													? "bg-green-800"
-													: schemeName === "purple"
-													? "bg-purple-800"
-													: schemeName === "orange"
-													? "bg-orange-800"
-													: schemeName === "red"
-													? "bg-red-800"
-													: schemeName === "pink"
-													? "bg-pink-800"
-													: schemeName === "indigo"
-													? "bg-indigo-800"
-													: "bg-zinc-800"
-											}`}
-										/>
-									</div>
-								</button>
-							))}
-						</div>
-					</div>
+
+					<Button
+						type="button"
+						variant={customizerOpen ? "default" : "primary"}
+						size="icon"
+						onClick={toggleCustomizer}
+						className="h-9 w-9 hidden md:inline-flex"
+						aria-label="Open theme customizer"
+						aria-pressed={customizerOpen}
+					>
+						<Palette className="w-4 h-4" />
+					</Button>
 					{/* Theme Toggle */}
-					<button
+					<Button
+						type="button"
+						variant="primary"
+						size="icon"
 						onClick={toggleTheme}
-						className={`p-2 rounded-xl ${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary} transition-all duration-100 ease-in`}
+						className="h-9 w-9"
 						aria-label="Toggle theme"
 					>
 						{theme === "light" ? (
@@ -402,8 +366,8 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 						) : (
 							<Sun className="w-4 h-4" />
 						)}
-					</button>
-					
+					</Button>
+
 				<div
 					className="relative"
 					onClick={() => router.push("/notifications")}
@@ -412,71 +376,70 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 					size={18}
 						className={`cursor-pointer ${colors.mutedForeground} transition-all duration-100 ease-in`}
 					/>
-					<span className="absolute -top-2 right-0 bg-red-500 text-white text-[8px] rounded-full px-1">
+					<Badge className="absolute -top-2 right-0 h-4 min-w-4 justify-center border-transparent bg-red-500 px-1 text-[8px] text-white hover:bg-red-500">
 						3
-					</span>
+					</Badge>
 				</div>
 				
-				<div
-					className="relative inline-block relative"
-					onMouseEnter={handleDropdownToggle}
-					onMouseLeave={handleDropdownToggle}
-				>
-					<Image
-						src="/people/person-1.png"
-						alt="User Avatar"
-						width={32}
-						height={32}
-						onClick={handleDropdownToggle}
-						className="rounded-full cursor-pointer"
-					/>
-					{dropdownOpen && (
-						<div
-							className={`absolute right-0 top-full z-[100] mt-1 w-48 space-y-2 py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.shadow}`}
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<Button
+							type="button"
+							variant="ghost"
+							size="icon"
+							className="h-8 w-8 rounded-full p-0"
+							aria-label="User menu"
 						>
-							<div className="border-b border-zinc-200 dark:border-zinc-800">
-								<div className="p-2 flex justify-start">
-									<Image
-										src="/people/person-1.png"
-										alt="User Avatar"
-										width={40}
-										height={40}
-										className="rounded-full mr-2"
-									/>
-								</div>
-								<div className={`text-left mb-2 px-2 ${colors.foreground}`}>
-									<p className="font-bold">John Doe</p>
-									<p className={`text-sm ${colors.mutedForeground}`}>
-										john@doe.com
-									</p>
-								</div>
+							<Image
+								src="/people/person-1.png"
+								alt="User Avatar"
+								width={32}
+								height={32}
+								className="rounded-full"
+							/>
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end" className="w-48">
+						<div className="border-b border-zinc-200 dark:border-zinc-800">
+							<div className="p-2 flex justify-start">
+								<Image
+									src="/people/person-1.png"
+									alt="User Avatar"
+									width={40}
+									height={40}
+									className="rounded-full mr-2"
+								/>
 							</div>
-							<div className={`px-2`}>
-								<button
-									className={`flex items-center gap-2 p-2 w-full text-sm ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
-									onClick={() => router.push("/settings")}
-								>
-									<Users2 size={14} className="text-sm" /> Profile
-								</button>
-								<button
-									className={`flex items-center gap-2 p-2 w-full text-sm ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
-									onClick={() => router.push("/settings")}
-								>
-									<SettingsIcon size={14} className="text-sm" /> Settings
-								</button>
-								<button
-									className={`flex items-center p-2 gap-2 w-full text-sm ${colors.hoverSecondary} rounded-xl ${colors.foreground} transition-colors`}
-								>
-									<LogOutIcon size={14} className="text-sm" /> Logout
-								</button>
+							<div className={`text-left mb-2 px-2 ${colors.foreground}`}>
+								<p className="font-bold">John Doe</p>
+								<p className={`text-sm ${colors.mutedForeground}`}>
+									john@doe.com
+								</p>
 							</div>
 						</div>
-					)}
-				</div>
-				<button
+						<div className="px-1 py-1">
+							<DropdownMenuItem onClick={() => router.push("/settings")}>
+								<Users2 size={14} className="text-sm" />
+								Profile
+							</DropdownMenuItem>
+							<DropdownMenuItem onClick={() => router.push("/settings")}>
+								<SettingsIcon size={14} className="text-sm" />
+								Settings
+							</DropdownMenuItem>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem>
+								<LogOutIcon size={14} className="text-sm" />
+								Logout
+							</DropdownMenuItem>
+						</div>
+					</DropdownMenuContent>
+				</DropdownMenu>
+				<Button
 					type="button"
+					variant={aiChatOpen ? "default" : "outline"}
+					size="icon"
 					onClick={onToggleAiChat}
-					className={`ml-1 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[10px] border ${colors.border} ${aiChatOpen ? scheme.primary + " " + scheme.primaryForeground : colors.hoverSecondary + " " + colors.mutedForeground} transition-all duration-200`}
+					className="ml-1 h-7 w-7 shrink-0 rounded-[10px]"
 					aria-label={aiChatOpen ? "Close AI assistant" : "Open AI assistant"}
 					aria-pressed={aiChatOpen}
 				>
@@ -485,7 +448,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 					) : (
 						<Bot className="h-3.5 w-3.5" />
 					)}
-				</button>
+				</Button>
 			</div>
 
 			{/* Search Modal */}
@@ -499,21 +462,24 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 						>
 							<div className="flex items-center gap-2 flex-1">
 								<Search className={colors.mutedForeground} size={18} />
-								<input
+								<Input
 									ref={modalSearchInputRef}
 									type="text"
 									placeholder="Search pages..."
 									value={searchTerm}
 									onChange={(e) => setSearchTerm(e.target.value)}
-									className={`outline-none flex-1 bg-transparent ${colors.foreground} placeholder:${colors.textTertiary}`}
+									className="flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0"
 								/>
 							</div>
-							<button
+							<Button
+								type="button"
+								variant="ghost"
+								size="icon"
 								onClick={handleCloseModal}
-								className={`${colors.mutedForeground} ${colors.hoverSecondary} p-1 rounded-xl transition-colors`}
+								aria-label="Close search"
 							>
 								<X size={18} />
-							</button>
+							</Button>
 						</div>
 						<div className="p-2 overflow-y-auto max-h-[60vh]">
 							<div className="space-y-2">
@@ -529,10 +495,11 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 												{section.items.map((item) => {
 													const Icon = lucideIcons[item.icon];
 													return (
-														<button
+														<Button
 															key={item.id}
+															variant="ghost"
+															className="w-full justify-between gap-3 px-2 py-1 text-left h-auto"
 															onClick={() => handleNavigate(item.route)}
-															className={`w-full flex items-center justify-between gap-3 px-2 py-1 ${colors.hoverSecondary} rounded-xl transition-all duration-100 ease-in text-left`}
 														>
 															<div className="flex items-center gap-3 min-w-0">
 																{Icon && (
@@ -552,7 +519,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 															>
 																{item.route}
 															</span>
-														</button>
+														</Button>
 													);
 												})}
 											</div>

@@ -17,11 +17,14 @@ import {
 	formatCurrency,
 	getInvoiceStatusColor,
 } from "../CRM/invoicesSeedData";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 const SaleDetail = () => {
 	const router = useRouter();
 	const { id } = router.query;
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 
 	const sale = useMemo(() => {
 		if (!id) return null;
@@ -42,13 +45,10 @@ const SaleDetail = () => {
 	}
 
 	const sidebar = (
-		<div
-			className={`rounded-xl border ${colors.border} ${colors.card} ${colors.shadow} p-6`}
-		>
+		<Card className={colors.shadow}>
+			<CardContent className="p-6">
 			<div className="flex items-center gap-3 mb-4">
-				<span
-					className={`w-12 h-12 rounded-xl flex items-center justify-center ${scheme.primary} ${scheme.primaryForeground}`}
-				>
+				<span className="w-12 h-12 rounded-xl flex items-center justify-center bg-primary text-primary-foreground">
 					<Package className="w-6 h-6" />
 				</span>
 				<div className="min-w-0">
@@ -81,7 +81,8 @@ const SaleDetail = () => {
 					<span className={colors.textSecondary}>{sale.category}</span>
 				</li>
 			</ul>
-		</div>
+			</CardContent>
+		</Card>
 	);
 
 	return (
@@ -90,9 +91,8 @@ const SaleDetail = () => {
 			backLabel="Back to sales"
 			sidebar={sidebar}
 		>
-			<div
-				className={`rounded-xl border ${colors.border} ${colors.card} ${colors.shadow} p-5 sm:p-6 space-y-6`}
-			>
+			<Card className={colors.shadow}>
+				<CardContent className="p-5 sm:p-6 space-y-6">
 				<div>
 					<h2 className={`text-sm font-semibold ${colors.foreground} mb-2`}>
 						Description
@@ -126,13 +126,9 @@ const SaleDetail = () => {
 										{invoice.client} · {invoice.clientEmail}
 									</p>
 								</div>
-								<span
-									className={`text-xs font-medium px-2.5 py-1 rounded-md border ${getInvoiceStatusColor(
-										invoice.status
-									)}`}
-								>
+								<Badge className={cn("border", getInvoiceStatusColor(invoice.status))}>
 									{invoice.status}
-								</span>
+								</Badge>
 							</div>
 							<div
 								className={`mt-4 pt-4 border-t ${colors.border} flex flex-wrap gap-6 text-sm`}
@@ -166,7 +162,8 @@ const SaleDetail = () => {
 						No invoice linked to this sale.
 					</p>
 				)}
-			</div>
+				</CardContent>
+			</Card>
 		</EntityDetailShell>
 	);
 };

@@ -13,11 +13,14 @@ import EntityDetailShell from "../CRM/EntityDetailShell";
 import EntityRecordTabs from "../CRM/EntityRecordTabs";
 import { getDealRecord } from "../CRM/entityDetailData";
 import { STAGE_META } from "../CRM/dealsSeedData";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 const DealDetail = () => {
 	const router = useRouter();
 	const { id } = router.query;
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 
 	const deal = useMemo(() => {
 		if (!id) return null;
@@ -35,13 +38,10 @@ const DealDetail = () => {
 	const sm = STAGE_META[deal.stage] || STAGE_META.prospect;
 
 	const sidebar = (
-		<div
-			className={`rounded-xl border ${colors.border} ${colors.card} ${colors.shadow} p-6`}
-		>
+		<Card className={colors.shadow}>
+			<CardContent className="p-6">
 			<div className="flex items-center gap-3 mb-4">
-				<span
-					className={`w-12 h-12 rounded-xl flex items-center justify-center ${scheme.primary} ${scheme.primaryForeground}`}
-				>
+				<span className="w-12 h-12 rounded-xl flex items-center justify-center bg-primary text-primary-foreground">
 					<Handshake className="w-6 h-6" />
 				</span>
 				<div className="min-w-0">
@@ -54,11 +54,9 @@ const DealDetail = () => {
 				</div>
 			</div>
 
-			<span
-				className={`inline-flex text-xs font-medium px-2.5 py-1 rounded-md border ${sm.className}`}
-			>
+			<Badge className={cn("border", sm.className)}>
 				{sm.label}
-			</span>
+			</Badge>
 
 			<ul
 				className={`mt-6 space-y-3 text-sm border-t ${colors.border} pt-6`}
@@ -90,7 +88,8 @@ const DealDetail = () => {
 					</a>
 				</Link>
 			</p>
-		</div>
+			</CardContent>
+		</Card>
 	);
 
 	return (

@@ -10,7 +10,6 @@ import {
 	ChevronDown,
 	ChevronLeft,
 	ChevronRight,
-	MoreHorizontal,
 	Calendar,
 	Download,
 	ChevronUp,
@@ -29,13 +28,27 @@ import {
 	ResponsiveContainer,
 } from "recharts";
 import { useTheme } from "../../utils/useTheme";
-import { getFocusRingClass } from "../../utils/theme";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { INITIAL_PROJECTS } from "../CRM/projectsSeedData";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const Projects = () => {
 	const router = useRouter();
-	// Theme hook
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { colors } = useTheme();
 
 	const [timePeriod, setTimePeriod] = useState("3months");
 	const [searchTerm, setSearchTerm] = useState("");
@@ -401,9 +414,10 @@ const Projects = () => {
 				<div className="flex items-center gap-2">
 					{/* Date Range Selector */}
 					<div className="relative date-range-dropdown">
-						<button
+						<Button
+							variant="outline"
+							size="sm"
 							onClick={() => setIsDateRangeOpen(!isDateRangeOpen)}
-							className={`px-4 py-2 border ${colors.border} rounded-xl text-sm font-medium ${colors.textSecondary} ${colors.hoverSecondary} transition-colors flex items-center gap-2`}
 						>
 							<Calendar className="w-4 h-4" />
 							{formatDateRange(dateRange.start, dateRange.end)}
@@ -412,7 +426,7 @@ const Projects = () => {
 							) : (
 								<ChevronDown className="w-4 h-4" />
 							)}
-						</button>
+						</Button>
 
 						{/* Date Range Dropdown */}
 						{isDateRangeOpen && (
@@ -432,20 +446,23 @@ const Projects = () => {
 											"Last Month",
 											"This Year",
 										].map((preset) => (
-											<button
+											<Button
 												key={preset}
+												type="button"
+												variant="ghost"
 												onClick={() => {
 													handlePresetSelect(preset);
 													setIsDateRangeOpen(false);
 												}}
-												className={`w-full text-left px-3 py-2 rounded-xl text-sm transition-colors ${
+												className={cn(
+													"w-full justify-start h-auto px-3 py-2 text-sm",
 													selectedPreset === preset
-														? `${colors.secondary} ${colors.foreground} font-medium`
-														: `${colors.textSecondary} ${colors.hoverSecondary}`
-												}`}
+														? cn(colors.secondary, colors.foreground, "font-medium")
+														: cn(colors.textSecondary, colors.hoverSecondary)
+												)}
 											>
 												{preset}
-											</button>
+											</Button>
 										))}
 									</div>
 								</div>
@@ -454,7 +471,9 @@ const Projects = () => {
 								<div className="w-80 p-4">
 									{/* Calendar Header */}
 									<div className="flex items-center justify-between mb-4">
-										<button
+										<Button
+											variant="ghost"
+											size="icon"
 											onClick={() =>
 												setCalendarMonth(
 													new Date(
@@ -464,10 +483,10 @@ const Projects = () => {
 													)
 												)
 											}
-											className={`p-1 ${colors.hoverSecondary} rounded transition-colors`}
+											aria-label="Previous month"
 										>
 											<ChevronLeft className="w-4 h-4 text-zinc-600" />
-										</button>
+										</Button>
 										<h3
 											className={`text-sm font-semibold ${colors.foreground}`}
 										>
@@ -476,7 +495,9 @@ const Projects = () => {
 												year: "numeric",
 											})}
 										</h3>
-										<button
+										<Button
+											variant="ghost"
+											size="icon"
 											onClick={() =>
 												setCalendarMonth(
 													new Date(
@@ -486,10 +507,10 @@ const Projects = () => {
 													)
 												)
 											}
-											className={`p-1 ${colors.hoverSecondary} rounded transition-colors`}
+											aria-label="Next month"
 										>
 											<ChevronRight className="w-4 h-4 text-zinc-600" />
-										</button>
+										</Button>
 									</div>
 
 									{/* Days of Week */}
@@ -515,27 +536,31 @@ const Projects = () => {
 												date.toDateString() === new Date().toDateString();
 
 											return (
-												<button
+												<Button
 													key={index}
+													type="button"
+													variant="ghost"
+													disabled={!isCurrentMonth}
 													onClick={() => {
 														if (isCurrentMonth) {
 															handleDateClick(date);
 														}
 													}}
-													className={`h-8 text-xs rounded transition-colors ${
+													className={cn(
+														"h-8 w-full p-0 text-xs rounded",
 														!isCurrentMonth
 															? "text-zinc-300"
 															: isSelected
-															? `${scheme.primary} ${scheme.primaryForeground} font-medium`
+															? "bg-primary text-primary-foreground font-medium hover:bg-primary hover:text-primary-foreground"
 															: inRange
-															? `${colors.secondary} ${colors.foreground}`
+															? cn(colors.secondary, colors.foreground)
 															: isToday
-															? `${colors.muted} ${colors.foreground} font-medium border ${colors.border}`
-															: `${colors.textSecondary} ${colors.hoverSecondary}`
-													}`}
+															? cn(colors.muted, colors.foreground, "font-medium border", colors.border)
+															: cn(colors.textSecondary, colors.hoverSecondary)
+													)}
 												>
 													{date.getDate()}
-												</button>
+												</Button>
 											);
 										})}
 									</div>
@@ -545,27 +570,19 @@ const Projects = () => {
 					</div>
 
 					{/* Export Button */}
-					<button
-						onClick={handleExport}
-						className="px-4 py-2 border border-zinc-200 rounded-xl text-sm font-medium text-zinc-700 hover:bg-zinc-50 transition-colors flex items-center gap-2"
-					>
+					<Button variant="outline" size="sm" onClick={handleExport}>
 						<Download className="w-4 h-4" />
 						Export
-					</button>
+					</Button>
 				</div>
 			</div>
 
 			{/* Metrics Cards */}
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-				{/* Active Projects Card */}
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
-				>
+				<Card className={`p-6 ${colors.shadow}`}>
 					<div className="flex items-center justify-between">
 						<div>
-							<p
-								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
-							>
+							<p className="text-sm font-medium text-muted-foreground mb-1">
 								Active Projects
 							</p>
 							<p className={`text-3xl font-bold ${colors.foreground}`}>
@@ -580,17 +597,12 @@ const Projects = () => {
 							<Briefcase className="w-6 h-6 text-zinc-600" />
 						</div>
 					</div>
-				</div>
+				</Card>
 
-				{/* Total Revenue Card */}
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
-				>
+				<Card className={`p-6 ${colors.shadow}`}>
 					<div className="flex items-center justify-between">
 						<div>
-							<p
-								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
-							>
+							<p className="text-sm font-medium text-muted-foreground mb-1">
 								Total Revenue
 							</p>
 							<p className={`text-3xl font-bold ${colors.foreground}`}>
@@ -605,17 +617,12 @@ const Projects = () => {
 							<DollarSign className="w-6 h-6 text-green-600" />
 						</div>
 					</div>
-				</div>
+				</Card>
 
-				{/* Total Leads Card */}
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
-				>
+				<Card className={`p-6 ${colors.shadow}`}>
 					<div className="flex items-center justify-between">
 						<div>
-							<p
-								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
-							>
+							<p className="text-sm font-medium text-muted-foreground mb-1">
 								Total Leads
 							</p>
 							<p className={`text-3xl font-bold ${colors.foreground}`}>
@@ -630,13 +637,11 @@ const Projects = () => {
 							<Users className="w-6 h-6 text-blue-600" />
 						</div>
 					</div>
-				</div>
+				</Card>
 			</div>
 
 			{/* Projects Overview Chart */}
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
-			>
+			<Card className={`p-6 ${colors.shadow}`}>
 				<div className="flex items-center justify-between mb-6">
 					<div>
 						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
@@ -652,36 +657,27 @@ const Projects = () => {
 						</p>
 					</div>
 					<div className="flex gap-2">
-						<button
+						<Button
+							size="sm"
+							variant={timePeriod === "3months" ? "default" : "secondary"}
 							onClick={() => setTimePeriod("3months")}
-							className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-								timePeriod === "3months"
-									? `${scheme.primary} ${scheme.primaryForeground}`
-									: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-							}`}
 						>
 							Last 3 months
-						</button>
-						<button
+						</Button>
+						<Button
+							size="sm"
+							variant={timePeriod === "30days" ? "default" : "secondary"}
 							onClick={() => setTimePeriod("30days")}
-							className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-								timePeriod === "30days"
-									? `${scheme.primary} ${scheme.primaryForeground}`
-									: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-							}`}
 						>
 							Last 30 days
-						</button>
-						<button
+						</Button>
+						<Button
+							size="sm"
+							variant={timePeriod === "7days" ? "default" : "secondary"}
 							onClick={() => setTimePeriod("7days")}
-							className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-								timePeriod === "7days"
-									? `${scheme.primary} ${scheme.primaryForeground}`
-									: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-							}`}
 						>
 							Last 7 days
-						</button>
+						</Button>
 					</div>
 				</div>
 
@@ -752,12 +748,10 @@ const Projects = () => {
 						<span className="text-sm text-zinc-600">Desktop</span>
 					</div>
 				</div>
-			</div>
+			</Card>
 
 			{/* Recent Projects Table */}
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
-			>
+			<Card className={`${colors.shadow} overflow-hidden`}>
 				{/* Table Header */}
 				<div className={`p-6 border-b ${colors.border}`}>
 					<div className="flex items-center justify-between mb-4">
@@ -768,8 +762,8 @@ const Projects = () => {
 					<div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
 						{/* Filter Input */}
 						<div className="relative flex-1 max-w-sm w-full md:w-auto">
-							<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
-							<input
+							<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+							<Input
 								type="text"
 								placeholder="Filter projects..."
 								value={searchTerm}
@@ -777,172 +771,156 @@ const Projects = () => {
 									setSearchTerm(e.target.value);
 									setCurrentPage(1);
 								}}
-								className={`w-full pl-10 pr-4 py-2 ${
-									colors.background
-								} border ${colors.border} rounded-xl text-sm ${
-									colors.foreground
-								} focus:outline-none focus:ring-2 ${getFocusRingClass(
-									colorScheme
-								)} focus:border-transparent placeholder:${colors.textTertiary}`}
+								className="pl-10"
 							/>
 						</div>
 
 						{/* Status Filter Tabs */}
 						<div className="flex gap-2 flex-wrap">
-							<button
+							<Button
+								size="sm"
+								variant={statusFilter === "All" ? "default" : "secondary"}
 								onClick={() => {
 									setStatusFilter("All");
 									setCurrentPage(1);
 								}}
-								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-									statusFilter === "All"
-										? `${scheme.primary} ${scheme.primaryForeground}`
-										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-								}`}
 							>
 								All ({statusCounts.All})
-							</button>
-							<button
+							</Button>
+							<Button
+								size="sm"
+								variant={statusFilter === "Active" ? "default" : "secondary"}
+								className={cn(
+									statusFilter === "Active" && "bg-green-600 text-white hover:bg-green-600/90"
+								)}
 								onClick={() => {
 									setStatusFilter("Active");
 									setCurrentPage(1);
 								}}
-								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
-									statusFilter === "Active"
-										? "bg-green-600 text-white"
-										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-								}`}
 							>
 								<CheckCircle2 className="w-4 h-4" />
 								Active ({statusCounts.Active})
-							</button>
-							<button
+							</Button>
+							<Button
+								size="sm"
+								variant={statusFilter === "Cancel" ? "default" : "secondary"}
+								className={cn(
+									statusFilter === "Cancel" && "bg-red-600 text-white hover:bg-red-600/90"
+								)}
 								onClick={() => {
 									setStatusFilter("Cancel");
 									setCurrentPage(1);
 								}}
-								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
-									statusFilter === "Cancel"
-										? "bg-red-600 text-white"
-										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-								}`}
 							>
 								<XCircle className="w-4 h-4" />
 								Cancel ({statusCounts.Cancel})
-							</button>
-							<button
+							</Button>
+							<Button
+								size="sm"
+								variant={statusFilter === "Completed" ? "default" : "secondary"}
+								className={cn(
+									statusFilter === "Completed" && "bg-blue-600 text-white hover:bg-blue-600/90"
+								)}
 								onClick={() => {
 									setStatusFilter("Completed");
 									setCurrentPage(1);
 								}}
-								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
-									statusFilter === "Completed"
-										? "bg-blue-600 text-white"
-										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-								}`}
 							>
 								<CheckCircle2 className="w-4 h-4" />
 								Completed ({statusCounts.Completed})
-							</button>
-							<button
+							</Button>
+							<Button
+								size="sm"
+								variant={statusFilter === "Pending" ? "default" : "secondary"}
+								className={cn(
+									statusFilter === "Pending" && "bg-yellow-600 text-white hover:bg-yellow-600/90"
+								)}
 								onClick={() => {
 									setStatusFilter("Pending");
 									setCurrentPage(1);
 								}}
-								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
-									statusFilter === "Pending"
-										? "bg-yellow-600 text-white"
-										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-								}`}
 							>
 								<Clock className="w-4 h-4" />
 								Pending ({statusCounts.Pending})
-							</button>
+							</Button>
 						</div>
 					</div>
 				</div>
 
 				{/* Table */}
-				<div className="overflow-x-auto">
-					<table className="w-full">
-						<thead className={`${colors.muted} border-b ${colors.border}`}>
-							<tr>
-								<th className="px-6 py-3 text-left">
-									<input
-										type="checkbox"
+				<Table className="w-full">
+						<TableHeader className={`${colors.muted} border-b ${colors.border}`}>
+							<TableRow>
+								<TableHead className="px-6 py-3 text-left">
+									<Checkbox
 										checked={
 											paginatedProjects.length > 0 &&
 											selectedRows.length === paginatedProjects.length
 										}
-										onChange={handleSelectAll}
-										className="w-4 h-4 text-zinc-900 border-zinc-300 rounded focus:ring-zinc-900"
+										onCheckedChange={handleSelectAll}
+										aria-label="Select all projects"
 									/>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Project Name
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Client Name
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Start Date
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Deadline
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Status
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Progress
-								</th>
-								<th className="px-6 py-3 text-right text-xs font-medium text-zinc-500 uppercase tracking-wider">
+								</TableHead>
+								<TableHead className="px-6 py-3 text-right text-xs font-medium text-zinc-500 uppercase tracking-wider">
 									Actions
-								</th>
-							</tr>
-						</thead>
-						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+								</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody className={`${colors.card} divide-y ${colors.border}`}>
 							{paginatedProjects.length === 0 ? (
-								<tr>
-									<td colSpan="8" className="px-6 py-12 text-center">
+								<TableRow>
+									<TableCell colSpan="8" className="px-6 py-12 text-center">
 										<p className={colors.mutedForeground}>No projects found</p>
-									</td>
-								</tr>
+									</TableCell>
+								</TableRow>
 							) : (
 								paginatedProjects.map((project) => (
-									<tr
+									<TableRow
 										key={project.id}
 										className={`${colors.hover} transition-colors cursor-pointer`}
 										onClick={() => router.push(`/projects/${project.id}`)}
 									>
-										<td
+										<TableCell
 											className="px-6 py-4"
 											onClick={(e) => e.stopPropagation()}
 										>
-											<input
-												type="checkbox"
+											<Checkbox
 												checked={selectedRows.includes(project.id)}
-												onChange={() => handleSelectRow(project.id)}
-												className={`w-4 h-4 ${colors.foreground} ${
-													colors.border
-												} rounded focus:ring-2 ${getFocusRingClass(
-													colorScheme
-												)}`}
+												onCheckedChange={() => handleSelectRow(project.id)}
+												aria-label={`Select ${project.projectName}`}
 											/>
-										</td>
-										<td className="px-6 py-4">
+										</TableCell>
+										<TableCell className="px-6 py-4">
 											<Link href={`/projects/${project.id}`} passHref>
 												<a
 													className={`text-sm font-medium ${colors.foreground} hover:underline`}
@@ -950,8 +928,8 @@ const Projects = () => {
 													{project.projectName}
 												</a>
 											</Link>
-										</td>
-										<td className="px-6 py-4">
+										</TableCell>
+										<TableCell className="px-6 py-4">
 											<div className="flex items-center gap-3">
 												<div
 													className={`w-8 h-8 rounded-full ${project.clientAvatarColor} flex items-center justify-center text-white text-xs font-medium`}
@@ -962,33 +940,29 @@ const Projects = () => {
 													{project.clientName}
 												</span>
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{project.startDate}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{project.deadline}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
-											<span
-												className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-													project.status
-												)}`}
-											>
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
+											<Badge className={cn("border-0", getStatusColor(project.status))}>
 												{project.status}
-											</span>
-										</td>
-										<td className="px-6 py-4">
+											</Badge>
+										</TableCell>
+										<TableCell className="px-6 py-4">
 											<div className="flex items-center gap-3">
 												<div
 													className={`flex-1 ${colors.secondary} rounded-full h-2 max-w-[100px]`}
 												>
 													<div
-														className={`${scheme.primary} h-2 rounded-full transition-all`}
+														className="bg-primary h-2 rounded-full transition-all"
 														style={{ width: `${project.progress}%` }}
 													/>
 												</div>
@@ -998,26 +972,29 @@ const Projects = () => {
 													{project.progress}%
 												</span>
 											</div>
-										</td>
-										<td
+										</TableCell>
+										<TableCell
 											className="px-6 py-4 text-right"
 											onClick={(e) => e.stopPropagation()}
 										>
 											<Link href={`/projects/${project.id}`} passHref>
-												<a
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors inline-flex`}
+												<Button
+													variant="ghost"
+													size="icon"
+													asChild
 													title="View project"
 												>
-													<Eye className={`w-4 h-4 ${colors.textSecondary}`} />
-												</a>
+													<a>
+														<Eye className={`w-4 h-4 ${colors.textSecondary}`} />
+													</a>
+												</Button>
 											</Link>
-										</td>
-									</tr>
+										</TableCell>
+									</TableRow>
 								))
 							)}
-						</tbody>
-					</table>
-				</div>
+						</TableBody>
+					</Table>
 
 				{/* Table Footer */}
 				<div
@@ -1027,25 +1004,27 @@ const Projects = () => {
 						{selectedRows.length} of {filteredProjects.length} row(s) selected.
 					</div>
 					<div className="flex items-center gap-2">
-						<button
+						<Button
+							variant="outline"
+							size="icon"
 							onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
 							disabled={currentPage === 1}
-							className={`p-2 border ${colors.border} rounded-xl ${colors.hoverSecondary} disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
 						>
 							<ChevronLeft className="w-4 h-4" />
-						</button>
-						<button
+						</Button>
+						<Button
+							variant="outline"
+							size="icon"
 							onClick={() =>
 								setCurrentPage((prev) => Math.min(totalPages, prev + 1))
 							}
 							disabled={currentPage === totalPages}
-							className={`p-2 border ${colors.border} rounded-xl ${colors.hoverSecondary} disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
 						>
 							<ChevronRight className="w-4 h-4" />
-						</button>
+						</Button>
 					</div>
 				</div>
-			</div>
+			</Card>
 		</div>
 	);
 };

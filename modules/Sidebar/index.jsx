@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import * as lucideIcons from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "../../utils/useTheme";
+import { Button } from "@/components/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 const Sidebar = ({ open, setDrawerOpen }) => {
 	const router = useRouter();
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 	const { i18n, t } = useTranslation();
-	const [isLanguageOpen, setIsLanguageOpen] = useState(false);
 
 	/* Native endonyms — not passed through locale JSON / AutoTranslate (picker uses data-no-translate). */
 	const languageOptions = [
@@ -246,76 +254,64 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 				<div className="flex flex-col gap-1">
 					<div className={`flex items-center justify-between gap-2 p-1`}>
 						{open ? (
-							<div
-								className={`relative group flex items-center px-2 py-1 justify-between border ${colors.border} ${colors.hoverSecondary} rounded-xl cursor-pointer w-full transition-colors`}
-							>
-								<div className="flex items-center gap-2">
-									<lucideIcons.Rocket
-										className={`w-3 h-3 ${colors.foreground}`}
-									/>
-									<p className={`text-sm ${colors.foreground}`}>CRM pages</p>
-								</div>
-								<div className="flex flex-col items-center justify-center">
-									<lucideIcons.ChevronUp
-										className={`${colors.mutedForeground} group-hover:rotate-180 transition-all duration-200 ease-in w-3 h-3`}
-									/>
-								</div>
-								<div
-									className={`absolute top-8 left-0 right-0 w-54 h-fit ${colors.card} text-xs rounded-xl border ${colors.border} px-1 py-2 opacity-0 transition-opacity duration-200 invisible group-hover:visible group-hover:opacity-100 z-20`}
-								>
-									<p className={`text-xs font-medium p-1 ${colors.foreground}`}>
-										Projects
-									</p>
-									<div className="flex flex-col gap-1 my-2">
-										<div
-											className={`flex items-center gap-2 ${colors.hoverSecondary} cursor-pointer rounded p-1 transition-colors`}
-										>
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<Button
+										type="button"
+										variant="ghost"
+										className={cn(
+											"flex items-center px-2 py-1 justify-between border w-full h-auto",
+											colors.border,
+											colors.hoverSecondary
+										)}
+									>
+										<div className="flex items-center gap-2">
 											<lucideIcons.Rocket
-												className={`w-5 h-5 p-1 rounded border ${colors.border} ${colors.foreground}`}
+												className={`w-3 h-3 ${colors.foreground}`}
 											/>
-											<p className={`text-sm ${colors.foreground}`}>
-												CRM pages
-											</p>
+											<p className={`text-sm ${colors.foreground}`}>CRM pages</p>
 										</div>
-										<div
-											className={`flex items-center gap-2 ${colors.hoverSecondary} cursor-pointer rounded p-1 transition-colors`}
-										>
-											<lucideIcons.ShoppingCart
-												className={`w-5 h-5 p-1 rounded border ${colors.border} ${colors.foreground}`}
-											/>
-											<p className={`text-sm ${colors.foreground}`}>
-												E-commerce
-											</p>
-										</div>
-										<div
-											className={`flex items-center gap-2 ${colors.hoverSecondary} cursor-pointer rounded p-1 transition-colors`}
-										>
-											<lucideIcons.Book
-												className={`w-5 h-5 p-1 rounded border ${colors.border} ${colors.foreground}`}
-											/>
-											<p className={`text-sm ${colors.foreground}`}>Blog</p>
-										</div>
-										<div className={`border-t ${colors.border}`} />
-										<button
-											className={`${scheme.primary} ${scheme.primaryForeground} mt-2 cursor-pointer hover:shadow-xl transition-all duration-100 ease-in ${scheme.primaryHover} text-xs rounded w-full p-1`}
-
-										>
-											Add project
-										</button>
-									</div>
-								</div>
-							</div>
+										<lucideIcons.ChevronUp
+											className={`${colors.mutedForeground} w-3 h-3`}
+										/>
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent align="start" className="w-56">
+									<DropdownMenuLabel>Projects</DropdownMenuLabel>
+									<DropdownMenuItem>
+										<lucideIcons.Rocket className="w-4 h-4" />
+										CRM pages
+									</DropdownMenuItem>
+									<DropdownMenuItem>
+										<lucideIcons.ShoppingCart className="w-4 h-4" />
+										E-commerce
+									</DropdownMenuItem>
+									<DropdownMenuItem>
+										<lucideIcons.Book className="w-4 h-4" />
+										Blog
+									</DropdownMenuItem>
+									<DropdownMenuSeparator />
+									<DropdownMenuItem>
+											<Button size="xs">
+												Add project
+											</Button>
+									</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
 						) : (
 							<lucideIcons.Rocket
 								className={`w-4 h-4 my-4 mx-auto ${colors.foreground}`}
 							/>
 						)}
-						<button
+						<Button
+							type="button"
+							variant="ghost"
+							size="icon"
 							onClick={() => setDrawerOpen(!open)}
 							className={`md:hidden ${colors.foreground}`}
 						>
 							<lucideIcons.X size={18} />
-						</button>
+						</Button>
 					</div>
 					<div className="flex flex-col">
 						{navCategories?.map((category) => (
@@ -331,32 +327,26 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 										const isActive = router.pathname === item.route;
 										return (
 											<div key={item.id} className="relative group">
-												<a
-													href={item.route}
-													className={`${open ? "py-1": "py-1.5"} px-3 my-0.5 transition-all duration-100 ease-in rounded flex items-center gap-2 text-sm ${
-														isActive
-															? `${scheme.primary} ${scheme.primaryForeground}`
-															: `${colors.hoverSecondary} ${colors.textSecondary}`
-													}`}
+												<Button
+													variant={isActive ? "default" : "ghost"}
+													size="sm"
+													asChild
+													className={cn(
+														open ? "py-1" : "py-1.5",
+														"w-full justify-start gap-2 px-3 my-0.5"
+													)}
 													onMouseEnter={() => setDrawerOpen(!open)}
 													onMouseLeave={() => setDrawerOpen(!open)}
 												>
-													{Icon ? (
-														<Icon
-															className={`w-4 h-4 ${
-																isActive
-																	? scheme.primaryForeground
-																	: colors.textSecondary
-															}`}
-															
-														/>
-													) : null}{" "}
-													{open ? item.label : null}
-												</a>
+													<a href={item.route}>
+														{Icon ? (
+															<Icon className="w-4 h-4" />
+														) : null}
+														{open ? item.label : null}
+													</a>
+												</Button>
 												{!open && (
-													<div
-														className={`fixed left-14 mb-2 w-max ${scheme.primary} ${scheme.primaryForeground} text-xs rounded p-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100 z-10`}
-													>
+													<div className="fixed left-14 mb-2 w-max rounded bg-primary px-1 py-1 text-xs text-primary-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100 z-10">
 														{item.label}
 													</div>
 												)}
@@ -369,53 +359,43 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					</div>
 					{open && (
 						<>
-							<div className="px-3 mb-2 relative">
+							<div className="px-3 mb-2 relative" data-no-translate translate="no">
 								<p className={`text-xs font-medium ${colors.mutedForeground} mb-2 tracking-wide`}>
 									{t("Language")}
 								</p>
-								<div data-no-translate translate="no">
-									<button
-										type="button"
-										onClick={() => setIsLanguageOpen((prev) => !prev)}
-										className={`w-full flex items-center justify-between rounded-xl border ${colors.border} ${colors.hoverSecondary} px-2.5 py-2 text-xs ${colors.foreground} transition-colors`}
-									>
-										<span className="inline-flex min-w-0 items-center gap-2">
-											<span aria-hidden>{selectedLanguage.flag}</span>
-											<span className="truncate">{selectedLanguage.label}</span>
-										</span>
-										<lucideIcons.ChevronDown className={`w-3.5 h-3.5 shrink-0 ${colors.mutedForeground}`} />
-									</button>
-									<AnimatePresence>
-										{isLanguageOpen && (
-											<motion.div
-												initial={{ opacity: 0, y: -6 }}
-												animate={{ opacity: 1, y: 0 }}
-												exit={{ opacity: 0, y: -6 }}
-												transition={{ duration: 0.2 }}
-												className={`absolute left-3 right-3 mt-1 rounded-xl border ${colors.border} ${colors.card} p-1 z-20`}
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<Button
+											type="button"
+											variant="outline"
+											className={cn(
+												"w-full justify-between rounded-xl px-2.5 py-2 text-xs h-auto",
+												colors.foreground
+											)}
+										>
+											<span className="inline-flex min-w-0 items-center gap-2">
+												<span aria-hidden>{selectedLanguage.flag}</span>
+												<span className="truncate">{selectedLanguage.label}</span>
+											</span>
+											<lucideIcons.ChevronDown className={`w-3.5 h-3.5 shrink-0 ${colors.mutedForeground}`} />
+										</Button>
+									</DropdownMenuTrigger>
+									<DropdownMenuContent align="start" className="w-[var(--radix-dropdown-menu-trigger-width)]">
+										{languageOptions.map((lang) => (
+											<DropdownMenuItem
+												key={lang.code}
+												onClick={() => i18n.changeLanguage(lang.code)}
+												className={cn(
+													"gap-2 text-xs",
+													langPrefix === lang.code && "bg-primary text-primary-foreground focus:bg-primary focus:text-primary-foreground"
+												)}
 											>
-												{languageOptions.map((lang) => (
-													<button
-														type="button"
-														key={lang.code}
-														onClick={() => {
-															i18n.changeLanguage(lang.code);
-															setIsLanguageOpen(false);
-														}}
-														className={`w-full text-left rounded-xl px-2 py-1.5 text-xs inline-flex items-center gap-2 transition-colors ${
-															langPrefix === lang.code
-																? `${scheme.primary} ${scheme.primaryForeground}`
-																: `${colors.hoverSecondary} ${colors.foreground}`
-														}`}
-													>
-														<span aria-hidden>{lang.flag}</span>
-														<span>{lang.label}</span>
-													</button>
-												))}
-											</motion.div>
-										)}
-									</AnimatePresence>
-								</div>
+												<span aria-hidden>{lang.flag}</span>
+												<span>{lang.label}</span>
+											</DropdownMenuItem>
+										))}
+									</DropdownMenuContent>
+								</DropdownMenu>
 							</div>
 							<p className={`text-xs font-medium ${colors.mutedForeground} mb-2 px-3 tracking-wide`}>
 								Buy Template

@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import AuthPageShell from "./AuthPageShell";
 import PasswordField from "./PasswordField";
 import { useTheme } from "../../utils/useTheme";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 const ChangePassword = () => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 	const [current, setCurrent] = useState("");
 	const [next, setNext] = useState("");
 	const [confirm, setConfirm] = useState("");
@@ -50,16 +52,16 @@ const ChangePassword = () => {
 				</p>
 			}
 		>
-			<div
-				className={`mb-5 flex gap-3 rounded-xl border ${colors.border} ${colors.muted} p-3 text-xs ${colors.textSecondary}`}
-			>
-				<ShieldCheck className="h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-400" />
-				<p className="leading-relaxed">
-					<strong className={`font-medium ${colors.foreground}`}>Best practice:</strong>{" "}
-					rotate passwords on a schedule you define, enforce breaches checks, and pair with
-					MFA when you go live.
-				</p>
-			</div>
+			<Card className={`mb-5 ${colors.muted}`}>
+				<CardContent className="flex gap-3 p-3 text-xs">
+					<ShieldCheck className="h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-400" />
+					<p className={`leading-relaxed ${colors.textSecondary}`}>
+						<strong className={`font-medium ${colors.foreground}`}>Best practice:</strong>{" "}
+						rotate passwords on a schedule you define, enforce breaches checks, and pair with
+						MFA when you go live.
+					</p>
+				</CardContent>
+			</Card>
 			<form onSubmit={handleSubmit} className="space-y-4" noValidate>
 				<PasswordField
 					label="Current password"
@@ -86,12 +88,9 @@ const ChangePassword = () => {
 					autoComplete="new-password"
 					error={errors.confirm}
 				/>
-				<button
-					type="submit"
-					className={`w-full rounded-xl py-2.5 text-sm font-semibold transition-colors ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`}
-				>
+				<Button type="submit" className="w-full">
 					Update password
-				</button>
+				</Button>
 			</form>
 		</AuthPageShell>
 	);

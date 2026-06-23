@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import AuthPageShell from "./AuthPageShell";
 import LabeledInput from "./LabeledInput";
 import PasswordField from "./PasswordField";
 import { useTheme } from "../../utils/useTheme";
+import { Button } from "@/components/ui/button";
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -24,7 +25,7 @@ function strengthLabel(pw) {
 }
 
 const Signup = () => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 	const [name, setName] = useState("");
 	const [company, setCompany] = useState("");
 	const [email, setEmail] = useState("");
@@ -154,12 +155,9 @@ const Signup = () => {
 						</p>
 					) : null}
 				</div>
-				<button
-					type="submit"
-					className={`w-full rounded-xl py-2.5 text-sm font-semibold transition-colors ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`}
-				>
+				<Button type="submit" className="w-full">
 					Create account
-				</button>
+				</Button>
 			</form>
 		</AuthPageShell>
 	);

@@ -8,7 +8,6 @@ import {
 	ChevronDown,
 	Download,
 	PlusCircle,
-	X,
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
@@ -24,13 +23,37 @@ import {
 	ResponsiveContainer,
 } from "recharts";
 import { useTheme } from "../../utils/useTheme";
-import { getFocusRingClass } from "../../utils/theme";
+import { cn } from "@/lib/utils";
+import { getChartColor, CHART_MUTED } from "@/lib/chartColors";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { FormModal, FormField } from "../../lib/ui/modal";
 import { INITIAL_SALES } from "../CRM/salesSeedData";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
 
 const Sales = () => {
 	const router = useRouter();
 	// Theme hook
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { theme, colors } = useTheme();
+	const salesColor = getChartColor(1);
+	const revenueColor = getChartColor(2);
 
 	const [salesData] = useState({
 		daily: [
@@ -114,8 +137,7 @@ const Sales = () => {
 			)
 		) : null;
 
-	const handleAddProduct = (e) => {
-		e.preventDefault();
+	const handleAddProduct = () => {
 		const productToAdd = {
 			...newProduct,
 			id: String(products.length + 1),
@@ -154,32 +176,32 @@ const Sales = () => {
 		0
 	);
 
+	const categoryBadgeClass = (category) =>
+		cn(
+			category === "Electronics" && "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/40 dark:text-blue-200 dark:border-blue-800/50",
+			category === "Books" && "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/40 dark:text-purple-200 dark:border-purple-800/50",
+			category === "Clothing" && "bg-pink-100 text-pink-800 border-pink-200 dark:bg-pink-950/40 dark:text-pink-200 dark:border-pink-800/50",
+			category === "Home" && "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-950/40 dark:text-orange-200 dark:border-orange-800/50",
+			!["Electronics", "Books", "Clothing", "Home"].includes(category) &&
+				"bg-green-100 text-green-800 border-green-200 dark:bg-green-950/40 dark:text-green-200 dark:border-green-800/50"
+		);
+
 	// Custom Tooltip for charts
 	const CustomTooltip = ({ active, payload, label }) => {
 		if (active && payload && payload.length) {
 			return (
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} p-3`}
-				>
-					<p className={`text-sm font-medium ${colors.foreground} mb-2`}>
-						{label}
-					</p>
+				<Card className="p-3 shadow-md">
+					<p className="text-sm font-medium mb-2">{label}</p>
 					{payload.map((entry, index) => (
 						<div key={index} className="flex items-center gap-2 mb-1">
 							<div
 								className="w-3 h-3 rounded"
 								style={{
 									backgroundColor:
-										entry.dataKey === "sales"
-											? theme === "dark"
-												? "#3b82f6"
-												: "#3b82f6"
-											: theme === "dark"
-											? "#10b981"
-											: "#10b981",
+										entry.dataKey === "sales" ? salesColor : revenueColor,
 								}}
 							/>
-							<span className={`text-sm ${colors.textSecondary}`}>
+							<span className="text-sm text-muted-foreground">
 								{entry.dataKey === "sales" ? "Sales" : "Revenue"}:{" "}
 								{entry.dataKey === "sales"
 									? entry.value
@@ -187,7 +209,7 @@ const Sales = () => {
 							</span>
 						</div>
 					))}
-				</div>
+				</Card>
 			);
 		}
 		return null;
@@ -197,277 +219,175 @@ const Sales = () => {
 		<div className={`p-4 transition-all duration-100 ease-in`}>
 			<div className="flex justify-between gap-4 items-start mb-6 flex-wrap">
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1">
-					{/* Total Sales Card */}
-					<div
-						className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-all duration-300 group`}
-					>
-						{/* Background Gradient Shapes */}
+					<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300 group">
 						<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-green-400/20 to-green-600/10 rounded-full blur-2xl"></div>
 						<div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-green-300/15 to-green-500/5 rounded-full blur-xl"></div>
 						<div className="absolute top-4 right-4 w-16 h-16 bg-green-500/10 rounded-full blur-lg"></div>
-
-						<div className="relative flex items-center justify-between">
+						<CardContent className="relative p-6">
 							<div className="flex items-center gap-4">
 								<div className="p-3 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-sm border border-green-500/20">
 									<DollarSign size={28} className="text-green-500" />
 								</div>
 								<div>
-									<p
-										className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
-									>
+									<p className="text-sm font-medium text-muted-foreground mb-1">
 										Total Sales
 									</p>
-									<p className={`text-2xl font-bold ${colors.foreground}`}>
+									<p className="text-2xl font-bold">
 										{totalSales.toLocaleString()}
 									</p>
 								</div>
 							</div>
-						</div>
-					</div>
+						</CardContent>
+					</Card>
 
-					{/* Total Revenue Card */}
-					<div
-						className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-all duration-300 group`}
-					>
-						{/* Background Gradient Shapes */}
+					<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300 group">
 						<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-blue-600/10 rounded-full blur-2xl"></div>
 						<div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-blue-300/15 to-blue-500/5 rounded-full blur-xl"></div>
 						<div className="absolute top-4 right-4 w-16 h-16 bg-blue-500/10 rounded-full blur-lg"></div>
-
-						<div className="relative flex items-center justify-between">
+						<CardContent className="relative p-6">
 							<div className="flex items-center gap-4">
 								<div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-sm border border-blue-500/20">
 									<Mail size={28} className="text-blue-500" />
 								</div>
 								<div>
-									<p
-										className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
-									>
+									<p className="text-sm font-medium text-muted-foreground mb-1">
 										Total Revenue
 									</p>
-									<p className={`text-2xl font-bold ${colors.foreground}`}>
+									<p className="text-2xl font-bold">
 										${totalRevenue.toLocaleString()}
 									</p>
 								</div>
 							</div>
-						</div>
-					</div>
+						</CardContent>
+					</Card>
 
-					{/* Total Visitors Card */}
-					<div
-						className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-all duration-300 group`}
-					>
-						{/* Background Gradient Shapes */}
+					<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300 group">
 						<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-purple-600/10 rounded-full blur-2xl"></div>
 						<div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-purple-300/15 to-purple-500/5 rounded-full blur-xl"></div>
 						<div className="absolute top-4 right-4 w-16 h-16 bg-purple-500/10 rounded-full blur-lg"></div>
-
-						<div className="relative flex items-center justify-between">
+						<CardContent className="relative p-6">
 							<div className="flex items-center gap-4">
 								<div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 backdrop-blur-sm border border-purple-500/20">
 									<Users size={28} className="text-purple-500" />
 								</div>
 								<div>
-									<p
-										className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
-									>
+									<p className="text-sm font-medium text-muted-foreground mb-1">
 										Total Visitors
 									</p>
-									<p className={`text-2xl font-bold ${colors.foreground}`}>
+									<p className="text-2xl font-bold">
 										{totalVisitors.toLocaleString()}
 									</p>
 								</div>
 							</div>
-						</div>
-					</div>
+						</CardContent>
+					</Card>
 				</div>
 				<div className="flex justify-around items-center gap-2">
-					<button
-						className={`flex items-center ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} py-2 px-4 text-xs rounded-xl  transition-all duration-200`}
-					>
-						<Download size={18} className="mr-2" />
+					<Button>
+						<Download size={18} />
 						Download Report
-					</button>
-					<button
-						onClick={() => setIsModalOpen(true)}
-						className={`flex items-center ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl py-2 text-xs px-4  transition-all duration-200`}
-					>
-						<PlusCircle size={18} className="mr-2" />
+					</Button>
+					<Button onClick={() => setIsModalOpen(true)}>
+						<PlusCircle size={18} />
 						Add Product
-					</button>
+					</Button>
 				</div>
 			</div>
 
-			{isModalOpen && (
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-					<div
-						className={`${colors.card} rounded-xl p-6 w-1/3 border ${colors.border}`}
-					>
-						<div className="flex justify-between items-center mb-4">
-							<h2 className={`text-xl ${colors.foreground}`}>Add Product</h2>
-							<button
-								onClick={() => setIsModalOpen(false)}
-								className={`${colors.textMuted} ${colors.hoverSecondary} transition-colors`}
-							>
-								<X size={20} />
-							</button>
-						</div>
-						<form onSubmit={handleAddProduct}>
-							<div className="mb-4">
-								<label
-									className={`block text-sm font-medium mb-1 ${colors.textSecondary}`}
-								>
-									Product Name
-								</label>
-								<input
-									type="text"
-									value={newProduct.name}
-									onChange={(e) =>
-										setNewProduct({ ...newProduct, name: e.target.value })
-									}
-									className={`border ${colors.border} ${
-										colors.input
-									} rounded w-full py-1 px-2 outline-none ${
-										colors.hoverSecondary
-									} ${colors.background} ${colors.foreground} placeholder:${
-										colors.mutedForeground
-									} ${getFocusRingClass(colorScheme)}`}
-									placeholder="Enter product name"
-									required
-								/>
-							</div>
-							<div className="mb-4">
-								<label
-									className={`block text-sm font-medium mb-1 ${colors.textSecondary}`}
-								>
-									Category
-								</label>
-								<input
-									type="text"
-									value={newProduct.category}
-									onChange={(e) =>
-										setNewProduct({ ...newProduct, category: e.target.value })
-									}
-									className={`border ${colors.border} ${
-										colors.input
-									} rounded w-full py-1 px-2 outline-none ${
-										colors.hoverSecondary
-									} ${colors.background} ${colors.foreground} placeholder:${
-										colors.mutedForeground
-									} ${getFocusRingClass(colorScheme)}`}
-									placeholder="Enter product category"
-									required
-								/>
-							</div>
-							<div className="mb-4">
-								<label
-									className={`block text-sm font-medium mb-1 ${colors.textSecondary}`}
-								>
-									Price
-								</label>
-								<input
-									type="number"
-									value={newProduct.price}
-									onChange={(e) =>
-										setNewProduct({ ...newProduct, price: e.target.value })
-									}
-									className={`border ${colors.border} ${
-										colors.input
-									} rounded w-full py-1 px-2 outline-none ${
-										colors.hoverSecondary
-									} ${colors.background} ${colors.foreground} placeholder:${
-										colors.mutedForeground
-									} ${getFocusRingClass(colorScheme)}`}
-									placeholder="Enter product price"
-									required
-								/>
-							</div>
-							<div className="mb-4">
-								<label
-									className={`block text-sm font-medium mb-1 ${colors.textSecondary}`}
-								>
-									Description
-								</label>
-								<textarea
-									value={newProduct.description}
-									onChange={(e) =>
-										setNewProduct({
-											...newProduct,
-											description: e.target.value,
-										})
-									}
-									className={`border ${colors.border} ${
-										colors.input
-									} rounded w-full py-1 px-2 outline-none ${
-										colors.hoverSecondary
-									} ${colors.background} ${colors.foreground} placeholder:${
-										colors.mutedForeground
-									} ${getFocusRingClass(colorScheme)}`}
-									placeholder="Enter product description"
-									required
-								/>
-							</div>
-							<button
-								type="submit"
-								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} py-1 px-4 rounded transition-colors`}
-							>
-								Submit
-							</button>
-						</form>
-					</div>
-				</div>
-			)}
-
-			{/* Sales & Revenue Overview Chart - Full Width */}
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
+			<FormModal
+				open={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				title="Add Product"
+				subtitle="Add a new product to recently sold"
+				onSubmit={handleAddProduct}
+				saveLabel="Submit"
+				maxWidth="max-w-md"
 			>
+				<FormField label="Product Name" htmlFor="product-name" required>
+					<Input
+						id="product-name"
+						type="text"
+						value={newProduct.name}
+						onChange={(e) =>
+							setNewProduct({ ...newProduct, name: e.target.value })
+						}
+						placeholder="Enter product name"
+						required
+					/>
+				</FormField>
+				<FormField label="Category" htmlFor="product-category" required>
+					<Input
+						id="product-category"
+						type="text"
+						value={newProduct.category}
+						onChange={(e) =>
+							setNewProduct({ ...newProduct, category: e.target.value })
+						}
+						placeholder="Enter product category"
+						required
+					/>
+				</FormField>
+				<FormField label="Price" htmlFor="product-price" required>
+					<Input
+						id="product-price"
+						type="number"
+						value={newProduct.price}
+						onChange={(e) =>
+							setNewProduct({ ...newProduct, price: e.target.value })
+						}
+						placeholder="Enter product price"
+						required
+					/>
+				</FormField>
+				<FormField label="Description" htmlFor="product-description" required>
+					<textarea
+						id="product-description"
+						value={newProduct.description}
+						onChange={(e) =>
+							setNewProduct({
+								...newProduct,
+								description: e.target.value,
+							})
+						}
+						className={cn(
+							"flex min-h-[80px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+						)}
+						placeholder="Enter product description"
+						required
+					/>
+				</FormField>
+			</FormModal>
+
+			<Card className="p-6">
 				<div className="flex items-center justify-between mb-6">
 					<div>
-						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
-							Sales & Revenue Overview
-						</h2>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+						<h2 className="text-lg font-semibold">Sales & Revenue Overview</h2>
+						<p className="text-sm text-muted-foreground mt-1">
 							Track your sales performance and revenue trends
 						</p>
 					</div>
 					<div className="flex gap-2">
-						<button
+						<Button
+							variant={activeTab === "daily" ? "default" : "outline"}
+							size="sm"
 							onClick={() => setActiveTab("daily")}
-							className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-								activeTab === "daily"
-									? `${scheme.primary} ${scheme.primaryForeground}`
-									: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-							}`}
 						>
-							<span className="flex items-center gap-2">
-								<Calendar size={16} /> Daily
-							</span>
-						</button>
-						<button
+							<Calendar size={16} /> Daily
+						</Button>
+						<Button
+							variant={activeTab === "weekly" ? "default" : "outline"}
+							size="sm"
 							onClick={() => setActiveTab("weekly")}
-							className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-								activeTab === "weekly"
-									? `${scheme.primary} ${scheme.primaryForeground}`
-									: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-							}`}
 						>
-							<span className="flex items-center gap-2">
-								<BarChart2 size={16} /> Weekly
-							</span>
-						</button>
-						<button
+							<BarChart2 size={16} /> Weekly
+						</Button>
+						<Button
+							variant={activeTab === "monthly" ? "default" : "outline"}
+							size="sm"
 							onClick={() => setActiveTab("monthly")}
-							className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-								activeTab === "monthly"
-									? `${scheme.primary} ${scheme.primaryForeground}`
-									: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-							}`}
 						>
-							<span className="flex items-center gap-2">
-								<BsCalendarMonth size={16} /> Monthly
-							</span>
-						</button>
+							<BsCalendarMonth size={16} /> Monthly
+						</Button>
 					</div>
 				</div>
 
@@ -480,44 +400,28 @@ const Sales = () => {
 						>
 							<defs>
 								<linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-									<stop
-										offset="5%"
-										stopColor={theme === "dark" ? "#3b82f6" : "#3b82f6"}
-										stopOpacity={0.8}
-									/>
-									<stop
-										offset="95%"
-										stopColor={theme === "dark" ? "#3b82f6" : "#3b82f6"}
-										stopOpacity={0.1}
-									/>
+									<stop offset="5%" stopColor={salesColor} stopOpacity={0.8} />
+									<stop offset="95%" stopColor={salesColor} stopOpacity={0.1} />
 								</linearGradient>
 								<linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-									<stop
-										offset="5%"
-										stopColor={theme === "dark" ? "#10b981" : "#10b981"}
-										stopOpacity={0.8}
-									/>
-									<stop
-										offset="95%"
-										stopColor={theme === "dark" ? "#10b981" : "#10b981"}
-										stopOpacity={0.1}
-									/>
+									<stop offset="5%" stopColor={revenueColor} stopOpacity={0.8} />
+									<stop offset="95%" stopColor={revenueColor} stopOpacity={0.1} />
 								</linearGradient>
 							</defs>
 							<CartesianGrid
 								strokeDasharray="3 3"
-								stroke={theme === "dark" ? "#3f3f46" : "#e4e4e7"}
+								className="stroke-zinc-200 dark:stroke-zinc-700"
 								vertical={false}
 							/>
 							<XAxis
 								dataKey="date"
-								stroke={theme === "dark" ? "#71717a" : "#71717a"}
+								stroke={CHART_MUTED}
 								fontSize={12}
 								tickLine={false}
 								axisLine={false}
 							/>
 							<YAxis
-								stroke={theme === "dark" ? "#71717a" : "#71717a"}
+								stroke={CHART_MUTED}
 								fontSize={12}
 								tickLine={false}
 								axisLine={false}
@@ -526,7 +430,7 @@ const Sales = () => {
 							<Area
 								type="monotone"
 								dataKey="sales"
-								stroke={theme === "dark" ? "#3b82f6" : "#3b82f6"}
+								stroke={salesColor}
 								fillOpacity={1}
 								fill="url(#colorSales)"
 								stackId="1"
@@ -534,7 +438,7 @@ const Sales = () => {
 							<Area
 								type="monotone"
 								dataKey="revenue"
-								stroke={theme === "dark" ? "#10b981" : "#10b981"}
+								stroke={revenueColor}
 								fillOpacity={1}
 								fill="url(#colorRevenue)"
 								stackId="1"
@@ -543,49 +447,36 @@ const Sales = () => {
 					</ResponsiveContainer>
 				</div>
 
-				{/* Legend */}
 				<div className="flex items-center justify-center gap-6 mt-4">
 					<div className="flex items-center gap-2">
-						<div className="w-3 h-3 rounded bg-blue-500" />
-						<span className={`text-sm ${colors.textSecondary}`}>Sales</span>
+						<div className="w-3 h-3 rounded" style={{ backgroundColor: salesColor }} />
+						<span className="text-sm text-muted-foreground">Sales</span>
 					</div>
 					<div className="flex items-center gap-2">
-						<div className="w-3 h-3 rounded bg-green-500" />
-						<span className={`text-sm ${colors.textSecondary}`}>Revenue</span>
+						<div className="w-3 h-3 rounded" style={{ backgroundColor: revenueColor }} />
+						<span className="text-sm text-muted-foreground">Revenue</span>
 					</div>
 				</div>
-			</div>
-			{/* Products Table - Full Width */}
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
-			>
-				<div
-					className={`flex items-center justify-between px-6 py-4 border-b ${colors.border}`}
-				>
+			</Card>
+			<Card className="overflow-hidden my-4">
+				<CardHeader className="flex-row items-center justify-between space-y-0 border-b">
 					<div>
-						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
-							Recently Sold Products
-						</h2>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							View and manage all sold products
-						</p>
+						<CardTitle>Recently Sold Products</CardTitle>
+						<CardDescription>View and manage all sold products</CardDescription>
 					</div>
-					<button
-						className={`text-sm font-medium ${colors.textSecondary} ${colors.hoverSecondary} transition-colors px-3 py-1.5 rounded-xl`}
-					>
+					<Button variant="ghost" size="sm">
 						View all
-					</button>
-				</div>
-				<div className="overflow-x-auto">
-					<table className="w-full">
-						<thead className={`${colors.muted} border-b ${colors.border}`}>
-							<tr>
-								<th
+					</Button>
+				</CardHeader>
+				<Table className="w-full">
+						<TableHeader className={`${colors.muted} border-b ${colors.border}`}>
+							<TableRow>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									ID
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("name")}
 								>
@@ -593,8 +484,8 @@ const Sales = () => {
 										Name
 										<SortIcon column="name" />
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("price")}
 								>
@@ -602,8 +493,8 @@ const Sales = () => {
 										Price (USD)
 										<SortIcon column="price" />
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("soldAt")}
 								>
@@ -611,41 +502,41 @@ const Sales = () => {
 										Sold At
 										<SortIcon column="soldAt" />
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Description
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Category
-								</th>
-							</tr>
-						</thead>
-						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+								</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody className={`${colors.card} divide-y ${colors.border}`}>
 							{sortedProducts.length === 0 ? (
-								<tr>
-									<td colSpan="6" className="px-6 py-12 text-center">
+								<TableRow>
+									<TableCell colSpan="6" className="px-6 py-12 text-center">
 										<p className={colors.mutedForeground}>No products found</p>
-									</td>
-								</tr>
+									</TableCell>
+								</TableRow>
 							) : (
 								sortedProducts.map((product) => (
-									<tr
+									<TableRow
 										key={product.id}
 										className={`${colors.hover} transition-colors cursor-pointer`}
 										onClick={() => router.push(`/sales/${product.id}`)}
 									>
-										<td className="px-6 py-4 whitespace-nowrap">
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div
 												className={`text-sm font-medium ${colors.foreground}`}
 											>
 												#{product.id}
 											</div>
-										</td>
-										<td className="px-6 py-4">
+										</TableCell>
+										<TableCell className="px-6 py-4">
 											<Link href={`/sales/${product.id}`} passHref>
 												<a
 													className={`text-sm font-medium ${colors.foreground} hover:underline`}
@@ -653,69 +544,49 @@ const Sales = () => {
 													{product.name}
 												</a>
 											</Link>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div
 												className={`text-sm font-semibold ${colors.foreground}`}
 											>
 												${product.price.toLocaleString()}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{product.soldAtLabel || product.soldAt}
 											</div>
-										</td>
-										<td className="px-6 py-4">
+										</TableCell>
+										<TableCell className="px-6 py-4">
 											<div
 												className={`text-sm ${colors.textSecondary} max-w-md truncate`}
 											>
 												{product.description}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
-											<span
-												className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-													product.category === "Electronics"
-														? "bg-blue-100 text-blue-800"
-														: product.category === "Books"
-														? "bg-purple-100 text-purple-800"
-														: product.category === "Clothing"
-														? "bg-pink-100 text-pink-800"
-														: product.category === "Home"
-														? "bg-orange-100 text-orange-800"
-														: "bg-green-100 text-green-800"
-												}`}
-											>
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
+											<Badge variant="outline" className={categoryBadgeClass(product.category)}>
 												{product.category}
-											</span>
-										</td>
-									</tr>
+											</Badge>
+										</TableCell>
+									</TableRow>
 								))
 							)}
-						</tbody>
-					</table>
-				</div>
-			</div>
+						</TableBody>
+					</Table>
+			</Card>
 
-			{/* Top Countries Section */}
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} p-6 my-4`}
-			>
+			<Card className="p-6 my-4">
 				<div className="flex items-center justify-between mb-4">
 					<div>
-						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
-							Top Countries
-						</h2>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+						<CardTitle>Top Countries</CardTitle>
+						<CardDescription className="mt-1">
 							Sales distribution by country
-						</p>
+						</CardDescription>
 					</div>
-					<button
-						className={`text-sm font-medium ${colors.textSecondary} ${colors.hoverSecondary} transition-colors px-3 py-1.5 rounded-xl`}
-					>
+					<Button variant="ghost" size="sm">
 						View all
-					</button>
+					</Button>
 				</div>
 				<div className="space-y-4">
 					{topCountries.map((country) => (
@@ -746,7 +617,7 @@ const Sales = () => {
 						</div>
 					))}
 				</div>
-			</div>
+			</Card>
 		</div>
 	);
 };

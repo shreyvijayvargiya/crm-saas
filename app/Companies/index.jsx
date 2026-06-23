@@ -1,11 +1,9 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FaEdit, FaTrash } from "react-icons/fa";
 import {
 	PlusCircle,
 	Search,
-	X,
 	ChevronUp,
 	ChevronDown,
 	Building2,
@@ -13,6 +11,8 @@ import {
 	Layers,
 	MapPin,
 	Eye,
+	Pen,
+	Trash,
 } from "lucide-react";
 import {
 	Bar,
@@ -24,11 +24,30 @@ import {
 	YAxis,
 } from "recharts";
 import { ExportDropdown } from "../../lib/ui/dropdown";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { Pagination } from "../../modules";
 import { useTheme } from "../../utils/useTheme";
 import { useChartTooltipProps } from "../../utils/chartTooltip";
-import { getFocusRingClass } from "../../utils/theme";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
 import {
 	INITIAL_COMPANIES,
 	companySlug,
@@ -37,7 +56,7 @@ import {
 const Companies = () => {
 	const router = useRouter();
 	// Theme hook
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { theme, colors } = useTheme();
 	const chartTooltipProps = useChartTooltipProps();
 
 	const [companies, setCompanies] = useState(INITIAL_COMPANIES);
@@ -164,90 +183,63 @@ const Companies = () => {
 		<div className={`p-6 transition-colors`}>
 			{/* Stats + charts */}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
+				<Card className="relative overflow-hidden">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-blue-600/10 rounded-full blur-2xl" />
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-sm border border-blue-500/20">
 								<Building2 className="text-blue-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>
-							{companyStats.total}
-						</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Total companies
-						</p>
-					</div>
-				</div>
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
+						<p className="text-2xl font-bold">{companyStats.total}</p>
+						<p className="text-sm text-muted-foreground mt-1">Total companies</p>
+					</CardContent>
+				</Card>
+				<Card className="relative overflow-hidden">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-amber-400/20 to-amber-600/10 rounded-full blur-2xl" />
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 backdrop-blur-sm border border-amber-500/20">
 								<Star className="text-amber-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>
-							{companyStats.avgRating}
-						</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Average rating
-						</p>
-					</div>
-				</div>
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
+						<p className="text-2xl font-bold">{companyStats.avgRating}</p>
+						<p className="text-sm text-muted-foreground mt-1">Average rating</p>
+					</CardContent>
+				</Card>
+				<Card className="relative overflow-hidden">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-purple-600/10 rounded-full blur-2xl" />
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 backdrop-blur-sm border border-purple-500/20">
 								<Layers className="text-purple-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>
-							{companyStats.industries}
-						</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Unique industries
-						</p>
-					</div>
-				</div>
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
+						<p className="text-2xl font-bold">{companyStats.industries}</p>
+						<p className="text-sm text-muted-foreground mt-1">Unique industries</p>
+					</CardContent>
+				</Card>
+				<Card className="relative overflow-hidden">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-teal-400/20 to-teal-600/10 rounded-full blur-2xl" />
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-teal-500/20 to-teal-600/10 backdrop-blur-sm border border-teal-500/20">
 								<MapPin className="text-teal-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>
-							{companyStats.locations}
-						</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Unique locations
-						</p>
-					</div>
-				</div>
+						<p className="text-2xl font-bold">{companyStats.locations}</p>
+						<p className="text-sm text-muted-foreground mt-1">Unique locations</p>
+					</CardContent>
+				</Card>
 			</div>
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-				<div
-					className={`${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
-					<p className={`text-sm font-medium ${colors.foreground} mb-1`}>
-						Companies by industry
-					</p>
-					<p className={`text-xs ${colors.mutedForeground} mb-4`}>
-						Matches unique industries and totals
-					</p>
+				<Card>
+					<CardHeader className="pb-2">
+						<CardTitle>Companies by industry</CardTitle>
+						<CardDescription>Matches unique industries and totals</CardDescription>
+					</CardHeader>
+					<CardContent>
 					<ResponsiveContainer width="100%" height={240}>
 						<BarChart
 							data={industryChartData}
@@ -287,16 +279,16 @@ const Companies = () => {
 							/>
 						</BarChart>
 					</ResponsiveContainer>
-				</div>
-				<div
-					className={`${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
-					<p className={`text-sm font-medium ${colors.foreground} mb-1`}>
-						Companies by location
-					</p>
-					<p className={`text-xs ${colors.mutedForeground} mb-4`}>
-						Top cities (unique location count: {companyStats.locations})
-					</p>
+					</CardContent>
+				</Card>
+				<Card>
+					<CardHeader className="pb-2">
+						<CardTitle>Companies by location</CardTitle>
+						<CardDescription>
+							Top cities (unique location count: {companyStats.locations})
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
 					<ResponsiveContainer width="100%" height={240}>
 						<BarChart
 							data={locationChartData}
@@ -336,7 +328,8 @@ const Companies = () => {
 							/>
 						</BarChart>
 					</ResponsiveContainer>
-				</div>
+					</CardContent>
+				</Card>
 			</div>
 
 			{/* Companies Table - Improved */}
@@ -353,31 +346,20 @@ const Companies = () => {
 						</p>
 					</div>
 					<div className="flex items-center gap-4 flex-wrap w-full md:w-auto">
-						{/* Search */}
-						<div
-							className={`relative flex gap-2 items-center border ${colors.border} rounded-xl px-3 py-2 ${colors.card} w-full md:w-auto`}
-						>
-							<Search className={colors.textSecondary} size={18} />
-							<input
+						<div className="relative flex gap-2 items-center w-full md:w-auto">
+							<Search size={18} className="absolute left-3 text-muted-foreground pointer-events-none" />
+							<Input
 								type="text"
 								placeholder="Search companies..."
 								value={searchTerm}
 								onChange={(e) => setSearchTerm(e.target.value)}
-								className={`outline-none flex-1 ${
-									colors.foreground
-								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-									colorScheme
-								)}`}
+								className="pl-9"
 							/>
 						</div>
-						{/* Add Company Button */}
-						<button
-							onClick={() => setIsAddCompanyModalOpen(true)}
-							className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-sm px-4 py-2 transition-all duration-200 font-medium flex items-center gap-2`}
-						>
+						<Button onClick={() => setIsAddCompanyModalOpen(true)}>
 							<PlusCircle size={16} />
 							Add Company
-						</button>
+						</Button>
 						<ExportDropdown
 							onExportCsv={handleExportCompaniesCsv}
 							onExportPdf={handleExportCompaniesCsv}
@@ -385,22 +367,19 @@ const Companies = () => {
 						/>
 					</div>
 				</div>
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
-			>
+			<Card className="overflow-hidden my-4">
 				
 
 				{/* Table */}
-				<div className="overflow-x-auto">
-					<table className="w-full">
-						<thead className={`${colors.muted} border-b ${colors.border}`}>
-							<tr>
-								<th
+				<Table className="w-full">
+						<TableHeader className={`${colors.muted} border-b ${colors.border}`}>
+							<TableRow>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Logo
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("name")}
 								>
@@ -416,8 +395,8 @@ const Companies = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("owner")}
 								>
@@ -433,8 +412,8 @@ const Companies = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("industry")}
 								>
@@ -450,8 +429,8 @@ const Companies = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("rating")}
 								>
@@ -467,41 +446,41 @@ const Companies = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Location
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Actions
-								</th>
-							</tr>
-						</thead>
-						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+								</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody className={`${colors.card} divide-y ${colors.border}`}>
 							{sortedCompanies.length === 0 ? (
-								<tr>
-									<td colSpan="7" className="px-6 py-12 text-center">
+								<TableRow>
+									<TableCell colSpan="7" className="px-6 py-12 text-center">
 										<p className={colors.mutedForeground}>No companies found</p>
-									</td>
-								</tr>
+									</TableCell>
+								</TableRow>
 							) : (
 								sortedCompanies.map((company) => (
-									<tr
+									<TableRow
 										key={company.id}
 										className={`${colors.hover} transition-colors cursor-pointer`}
 										onClick={() => router.push(`/companies/${company.id}`)}
 									>
-										<td className="px-6 py-4 whitespace-nowrap">
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<img
 												src={company.logo}
 												alt={company.name}
 												className="w-10 h-10 rounded-full border-2 border-zinc-200"
 											/>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<Link href={`/companies/${company.id}`} passHref>
 												<a
 													className={`text-sm font-medium ${colors.foreground} hover:underline`}
@@ -509,18 +488,18 @@ const Companies = () => {
 													{company.name}
 												</a>
 											</Link>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{company.owner}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{company.industry}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-1">
 												<span
 													className={`text-sm font-medium ${colors.foreground}`}
@@ -529,251 +508,127 @@ const Companies = () => {
 												</span>
 												<span className={`text-xs ${colors.textMuted}`}>★</span>
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{company.location}
 											</div>
-										</td>
-										<td
+										</TableCell>
+										<TableCell
 											className="px-6 py-4 whitespace-nowrap"
 											onClick={(e) => e.stopPropagation()}
 										>
-											<div className="flex items-center gap-2">
-												<Link href={`/companies/${company.id}`} passHref>
-													<a
-														className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors inline-flex`}
-														title="View company"
-													>
-														<Eye size={16} className={colors.textSecondary} />
-													</a>
-												</Link>
-												<button
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
+											<div className="flex items-center gap-1">
+												<Button variant="ghost" size="icon" asChild title="View company">
+													<Link href={`/companies/${company.id}`}>
+														<a>
+															<Eye size={16} />
+														</a>
+													</Link>
+												</Button>
+												<Button
+													variant="ghost"
+													size="icon"
 													title="Edit"
 													onClick={() => toast.info(`Edit ${company.name}`)}
 												>
-													<FaEdit size={16} className={colors.textSecondary} />
-												</button>
-												<button
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
+													<Pen size={16} />
+												</Button>
+												<Button
+													variant="ghost"
+													size="icon"
 													title="Delete"
 													onClick={() => toast.info(`Delete ${company.name}`)}
 												>
-													<FaTrash size={16} className={colors.textSecondary} />
-												</button>
+													<Trash size={16} />
+												</Button>
 											</div>
-										</td>
-									</tr>
+										</TableCell>
+									</TableRow>
 								))
 							)}
-						</tbody>
-					</table>
-				</div>
-			</div>
+						</TableBody>
+					</Table>
+			</Card>
 
-			{/* Add New Company Modal */}
-			{isAddCompanyModalOpen && (
-				<div
-					className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-					onClick={() => setIsAddCompanyModalOpen(false)}
-				>
-					<div
-						className={`${colors.card} rounded-xl ${colors.shadow} max-w-xl w-full overflow-y-auto`}
-						onClick={(e) => e.stopPropagation()}
-					>
-						{/* Modal Header */}
-						<div
-							className={`flex items-center justify-between p-6 border-b ${colors.border}`}
-						>
-							<div>
-								<h2 className={`text-xl font-semibold ${colors.foreground}`}>
-									Add New Company
-								</h2>
-								<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-									Create a new company in your database
-								</p>
-							</div>
-							<button
-								onClick={() => setIsAddCompanyModalOpen(false)}
-								className={`p-2 ${colors.hoverSecondary} rounded-xl transition-colors`}
-							>
-								<X className={`w-5 h-5 ${colors.mutedForeground}`} />
-							</button>
-						</div>
-
-						{/* Modal Body */}
-						<div className="p-6 space-y-4">
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Name <span className="text-red-500">*</span>
-								</label>
-								<input
-									type="text"
-									placeholder="Enter company name"
-									value={newCompany.name}
-									onChange={(e) =>
-										setNewCompany({ ...newCompany, name: e.target.value })
-									}
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${getFocusRingClass(
-										colorScheme
-									)} focus:border-transparent placeholder:${
-										colors.mutedForeground
-									}`}
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Owner
-								</label>
-								<input
-									type="text"
-									placeholder="Enter owner name"
-									value={newCompany.owner}
-									onChange={(e) =>
-										setNewCompany({ ...newCompany, owner: e.target.value })
-									}
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${getFocusRingClass(
-										colorScheme
-									)} focus:border-transparent placeholder:${
-										colors.mutedForeground
-									}`}
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Logo URL
-								</label>
-								<input
-									type="text"
-									placeholder="https://example.com/logo.png"
-									value={newCompany.logo}
-									onChange={(e) =>
-										setNewCompany({ ...newCompany, logo: e.target.value })
-									}
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${getFocusRingClass(
-										colorScheme
-									)} focus:border-transparent placeholder:${
-										colors.mutedForeground
-									}`}
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Industry
-								</label>
-								<input
-									type="text"
-									placeholder="Enter industry"
-									value={newCompany.industry}
-									onChange={(e) =>
-										setNewCompany({ ...newCompany, industry: e.target.value })
-									}
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${getFocusRingClass(
-										colorScheme
-									)} focus:border-transparent placeholder:${
-										colors.mutedForeground
-									}`}
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Rating
-								</label>
-								<input
-									type="number"
-									placeholder="0.0 - 5.0"
-									min="0"
-									max="5"
-									step="0.1"
-									value={newCompany.rating}
-									onChange={(e) =>
-										setNewCompany({ ...newCompany, rating: e.target.value })
-									}
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${getFocusRingClass(
-										colorScheme
-									)} focus:border-transparent placeholder:${
-										colors.mutedForeground
-									}`}
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Location
-								</label>
-								<input
-									type="text"
-									placeholder="Enter location"
-									value={newCompany.location}
-									onChange={(e) =>
-										setNewCompany({ ...newCompany, location: e.target.value })
-									}
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${getFocusRingClass(
-										colorScheme
-									)} focus:border-transparent placeholder:${
-										colors.mutedForeground
-									}`}
-								/>
-							</div>
-						</div>
-
-						{/* Modal Footer */}
-						<div
-							className={`flex items-center justify-end gap-3 p-6 border-t ${colors.border}`}
-						>
-							<button
-								onClick={() => setIsAddCompanyModalOpen(false)}
-								className={`px-4 py-2 text-sm font-medium ${colors.textSecondary} ${colors.secondary} ${colors.hoverSecondary} rounded-xl transition-colors`}
-							>
-								Cancel
-							</button>
-							<button
-								onClick={handleAddCompany}
-								className={`px-4 py-2 text-sm font-medium ${scheme.primaryForeground} ${scheme.primary} ${scheme.primaryHover} rounded-xl transition-colors flex items-center gap-2`}
-							>
-								<PlusCircle size={16} />
-								Add Company
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
+			<FormModal
+				open={isAddCompanyModalOpen}
+				onClose={() => setIsAddCompanyModalOpen(false)}
+				title="Add New Company"
+				subtitle="Create a new company in your database"
+				onSubmit={handleAddCompany}
+				saveLabel="Add Company"
+			>
+				<FormField label="Name" htmlFor="company-name" required>
+					<Input
+						id="company-name"
+						type="text"
+						placeholder="Enter company name"
+						value={newCompany.name}
+						onChange={(e) =>
+							setNewCompany({ ...newCompany, name: e.target.value })
+						}
+					/>
+				</FormField>
+				<FormField label="Owner" htmlFor="company-owner">
+					<Input
+						id="company-owner"
+						type="text"
+						placeholder="Enter owner name"
+						value={newCompany.owner}
+						onChange={(e) =>
+							setNewCompany({ ...newCompany, owner: e.target.value })
+						}
+					/>
+				</FormField>
+				<FormField label="Logo URL" htmlFor="company-logo">
+					<Input
+						id="company-logo"
+						type="text"
+						placeholder="https://example.com/logo.png"
+						value={newCompany.logo}
+						onChange={(e) =>
+							setNewCompany({ ...newCompany, logo: e.target.value })
+						}
+					/>
+				</FormField>
+				<FormField label="Industry" htmlFor="company-industry">
+					<Input
+						id="company-industry"
+						type="text"
+						placeholder="Enter industry"
+						value={newCompany.industry}
+						onChange={(e) =>
+							setNewCompany({ ...newCompany, industry: e.target.value })
+						}
+					/>
+				</FormField>
+				<FormField label="Rating" htmlFor="company-rating">
+					<Input
+						id="company-rating"
+						type="number"
+						placeholder="0.0 - 5.0"
+						min="0"
+						max="5"
+						step="0.1"
+						value={newCompany.rating}
+						onChange={(e) =>
+							setNewCompany({ ...newCompany, rating: e.target.value })
+						}
+					/>
+				</FormField>
+				<FormField label="Location" htmlFor="company-location">
+					<Input
+						id="company-location"
+						type="text"
+						placeholder="Enter location"
+						value={newCompany.location}
+						onChange={(e) =>
+							setNewCompany({ ...newCompany, location: e.target.value })
+						}
+					/>
+				</FormField>
+			</FormModal>
 			<Pagination />
 		</div>
 	);

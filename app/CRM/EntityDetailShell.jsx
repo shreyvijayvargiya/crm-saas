@@ -1,7 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { useTheme } from "../../utils/useTheme";
+import { Button } from "@/components/ui/button";
+
 
 /**
  * Shared layout shell for entity detail pages (deals, companies, invoices, projects).
@@ -13,21 +14,17 @@ const EntityDetailShell = ({
 	children,
 	wide = false,
 }) => {
-	const { colors } = useTheme();
-
 	return (
-		<div
-			className={`p-4 sm:p-6 max-w-7xl mx-auto transition-colors min-h-screen`}
-		>
+		<div className="p-4 sm:p-6 max-w-7xl mx-auto transition-colors min-h-screen">
 			<div className="flex flex-wrap items-center gap-3 mb-6">
-				<Link href={backHref} passHref>
-					<a
-						className={`inline-flex items-center gap-1.5 text-sm font-medium ${colors.textSecondary} ${colors.hoverSecondary} rounded-xl px-2 py-1`}
-					>
-						<ArrowLeft className="w-4 h-4" />
-						{backLabel}
-					</a>
-				</Link>
+				<Button variant="ghost" size="sm" className="gap-1.5"  asChild>
+					<Link href={backHref}>
+						<a className={`flex items-center gap-1.5 primary`}>
+							<ArrowLeft className="w-4 h-4" />
+							{backLabel}
+						</a>
+					</Link>
+				</Button>
 			</div>
 
 			<div

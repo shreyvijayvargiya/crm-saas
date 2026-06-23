@@ -12,8 +12,13 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "../../utils/useTheme";
-import { getFocusRingClass } from "../../utils/theme";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import FormSelect from "../../lib/ui/FormSelect";
 
 const INITIAL_NOTIFICATIONS = [
 	{
@@ -81,7 +86,8 @@ const TYPE_ICON = {
 };
 
 const Notifications = () => {
-	const { colorScheme, colors, scheme } = useTheme();
+	const { colors } = useTheme();
+
 	const [items, setItems] = useState(INITIAL_NOTIFICATIONS);
 	const [query, setQuery] = useState("");
 	const [status, setStatus] = useState("all");
@@ -126,14 +132,12 @@ const Notifications = () => {
 		setItems((prev) => prev.filter((n) => n.id !== id));
 	};
 
-	const selectClass = `rounded-xl border ${colors.border} text-zinc-800 dark:text-zinc-200 bg-zinc-50/50 dark:bg-transparent text-sm px-3 py-2 pr-8 focus:outline-none focus:ring-2 ${getFocusRingClass(colorScheme)}`;
-
 	return (
 		<div className={`min-h-screen transition-all duration-100 ease-in pb-12`}>
 			<div className="max-w-4xl mx-auto px-4 md:px-6 pt-6 md:pt-8">
 				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
 					<div className="flex items-center gap-3">
-						<span className={`p-2.5 rounded-xl ${scheme.primary} ${scheme.primaryForeground}`}>
+						<span className="p-2.5 rounded-xl bg-primary text-primary-foreground">
 							<Bell className="w-6 h-6" />
 						</span>
 						<div>
@@ -146,85 +150,69 @@ const Notifications = () => {
 						</div>
 					</div>
 					<div className="flex items-center gap-2 flex-wrap">
-						<button
-							type="button"
-							onClick={markAllRead}
-							className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white transition-colors`}
-						>
+						<Button type="button" onClick={markAllRead}>
 							<CheckCheck className="w-4 h-4" />
 							Mark all as read
-						</button>
-						<button
-							type="button"
-							className={`p-2.5 rounded-xl border ${colors.border} ${colors.card} ${colors.hoverSecondary} ${colors.foreground}`}
-							title="Notification settings"
-						>
+						</Button>
+						<Button type="button" variant="outline" size="icon" title="Notification settings">
 							<Settings className="w-5 h-5" />
-						</button>
+						</Button>
 					</div>
 				</div>
 
-				<div
-					className={`rounded-xl border ${colors.border} ${colors.card} shadow-sm p-4 mb-6 flex flex-col lg:flex-row gap-3 lg:items-center lg:justify-between`}
-				>
+				<Card className="p-4 mb-6 flex flex-col lg:flex-row gap-3 lg:items-center lg:justify-between">
 					<div className="relative flex-1 min-w-0 max-w-md">
-						<Search
-							className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 ${colors.textMuted}`}
-						/>
-						<input
+						<Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+						<Input
 							type="search"
 							placeholder="Search notifications…"
 							value={query}
 							onChange={(e) => setQuery(e.target.value)}
-							className={`w-full pl-10 pr-4 py-2.5 rounded-xl border ${colors.border} ${colors.background} ${colors.foreground} text-sm placeholder:${colors.textMuted} focus:outline-none focus:ring-2 ${getFocusRingClass(colorScheme)}`}
+							className="pl-10"
 						/>
 					</div>
 					<div className="flex flex-wrap items-center gap-2">
-						<select
+						<FormSelect
 							value={status}
 							onChange={(e) => setStatus(e.target.value)}
-							className={selectClass}
-							aria-label="Status"
-						>
-							<option value="all">Status: All</option>
-							<option value="unread">Unread</option>
-							<option value="read">Read</option>
-						</select>
-						<select
+							options={[
+								{ value: "all", label: "Status: All" },
+								{ value: "unread", label: "Unread" },
+								{ value: "read", label: "Read" },
+							]}
+						/>
+						<FormSelect
 							value={typeFilter}
 							onChange={(e) => setTypeFilter(e.target.value)}
-							className={selectClass}
-							aria-label="Type"
-						>
-							<option value="all">Type: All</option>
-							<option value="ticket">Ticket</option>
-							<option value="message">Message</option>
-							<option value="team">Team</option>
-						</select>
+							options={[
+								{ value: "all", label: "Type: All" },
+								{ value: "ticket", label: "Ticket" },
+								{ value: "message", label: "Message" },
+								{ value: "team", label: "Team" },
+							]}
+						/>
 						<div className={`flex rounded-xl border ${colors.border} p-0.5 ${colors.muted}`}>
-							<button
+							<Button
 								type="button"
+								variant={!compact ? "secondary" : "ghost"}
+								size="icon"
 								onClick={() => setCompact(false)}
-								className={`p-2 rounded-xl transition-colors ${
-									!compact ? `${colors.card} shadow-sm ${colors.foreground}` : colors.hoverSecondary
-								}`}
 								title="Comfortable list"
 							>
 								<List className="w-4 h-4" />
-							</button>
-							<button
+							</Button>
+							<Button
 								type="button"
+								variant={compact ? "secondary" : "ghost"}
+								size="icon"
 								onClick={() => setCompact(true)}
-								className={`p-2 rounded-xl transition-colors ${
-									compact ? `${colors.card} shadow-sm ${colors.foreground}` : colors.hoverSecondary
-								}`}
 								title="Compact list"
 							>
 								<LayoutGrid className="w-4 h-4" />
-							</button>
+							</Button>
 						</div>
 					</div>
-				</div>
+				</Card>
 
 				<ul className="space-y-2">
 					{filtered.length === 0 ? (
@@ -273,42 +261,41 @@ const Notifications = () => {
 													</p>
 													{n.actions && (
 														<div className="flex gap-2 mt-3">
-															<button
+															<Button
 																type="button"
+																variant="outline"
+																size="sm"
 																onClick={() => handleAccept(n.id)}
-																className={`px-3 py-1.5 rounded-xl text-sm font-medium border ${colors.border} ${colors.card} ${colors.foreground} ${colors.hoverSecondary}`}
 															>
 																Accept
-															</button>
-															<button
+															</Button>
+															<Button
 																type="button"
+																variant="destructive"
+																size="sm"
 																onClick={() => handleDecline(n.id)}
-																className="px-3 py-1.5 rounded-xl text-sm font-medium border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300 dark:hover:bg-red-950/60"
 															>
 																Decline
-															</button>
+															</Button>
 														</div>
 													)}
 												</div>
 												<div className="flex sm:flex-col items-start sm:items-end gap-2 sm:text-right shrink-0">
-													<span
-														className={`text-xs font-medium px-2 py-0.5 rounded-md ${colors.muted} ${colors.foreground}`}
-													>
-														{n.category}
-													</span>
+													<Badge variant="secondary">{n.category}</Badge>
 													<span className={`text-xs whitespace-nowrap ${colors.textMuted}`}>
 														{n.time}
 													</span>
 												</div>
 											</div>
 											<div className="flex items-center justify-end gap-1 mt-3 pt-3 border-t border-zinc-200/80 dark:border-zinc-800">
-												<button
+												<Button
 													type="button"
+													variant="ghost"
+													size="sm"
 													onClick={() => toggleRead(n.id)}
-													className={`text-xs font-medium px-2 py-1 rounded-xl ${colors.hoverSecondary} ${colors.textSecondary}`}
 												>
 													{n.unread ? "Mark as read" : "Mark unread"}
-												</button>
+												</Button>
 											</div>
 										</div>
 									</div>

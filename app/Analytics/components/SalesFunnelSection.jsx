@@ -1,23 +1,24 @@
 import React from "react";
 import { Filter } from "lucide-react";
 import { useTheme } from "../../../utils/useTheme";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const SalesFunnelSection = ({ steps }) => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 	const max = steps[0]?.count || 1;
 
 	return (
-		<div className={`rounded-xl border ${colors.border} ${colors.card} shadow-sm p-5 md:p-6 h-full flex flex-col`}>
-			<div className="flex items-center gap-2 mb-5">
-				<span className={`p-2 rounded-xl ${scheme.primary} ${scheme.primaryForeground}`}>
+		<Card className="h-full flex flex-col">
+			<CardHeader className="flex-row items-center gap-2 space-y-0 pb-5">
+				<span className="p-2 rounded-xl bg-primary text-primary-foreground">
 					<Filter className="w-4 h-4" />
 				</span>
 				<div>
-					<h2 className={`text-lg font-semibold ${colors.foreground}`}>Sales funnel</h2>
-					<p className={`text-sm ${colors.textSecondary}`}>Volume by stage (period)</p>
+					<CardTitle className="text-lg">Sales funnel</CardTitle>
+					<CardDescription>Volume by stage (period)</CardDescription>
 				</div>
-			</div>
-			<div className="space-y-4 flex-1">
+			</CardHeader>
+			<CardContent className="space-y-4 flex-1 pt-0">
 				{steps.map((step, i) => (
 					<div key={step.label}>
 						<div className="flex items-center justify-between text-xs mb-1">
@@ -44,8 +45,8 @@ const SalesFunnelSection = ({ steps }) => {
 						</div>
 					</div>
 				))}
-			</div>
-		</div>
+			</CardContent>
+		</Card>
 	);
 };
 

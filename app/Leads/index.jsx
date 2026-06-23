@@ -1,6 +1,5 @@
 import {
 	Eye,
-	Mail,
 	MessageCircle,
 	Pen,
 	Phone,
@@ -22,7 +21,7 @@ import {
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import {
 	Bar,
 	BarChart,
@@ -35,9 +34,32 @@ import {
 import { useTheme } from "../../utils/useTheme";
 import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { getFocusRingClass } from "../../utils/theme";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { ExportDropdown } from "../../lib/ui/dropdown";
 import { INITIAL_LEADS, INITIAL_PIPELINES } from "../CRM/leadsSeedData";
-import { FormModal, FormField, formInputClass } from "../../lib/ui/modal";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import FormSelect from "../../lib/ui/FormSelect";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const LEAD_AVATARS = [
 	"./people/person-1.png",
@@ -92,13 +114,6 @@ function leadKanbanMeta(lead, pipelineId) {
 	return { progress, priority, attachments, comments };
 }
 
-const PRIORITY_CLASS = {
-	high: "border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-800/50 dark:bg-rose-950/40 dark:text-rose-200",
-	medium:
-		"border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-800/50 dark:bg-amber-950/40 dark:text-amber-200",
-	low: "border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900/60 dark:text-zinc-300",
-};
-
 const AVATAR_STACK = [
 	"bg-violet-500 text-white",
 	"bg-amber-400 text-amber-950",
@@ -145,10 +160,10 @@ function RingProgress({ percent, complete }) {
 	);
 }
 
-const Leads = () => {
+const LeadsShadcn = () => {
 	// Theme hook
 	const router = useRouter();
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { theme, colorScheme, colors } = useTheme();
 	const chartTooltipProps = useChartTooltipProps();
 
 	const [pipelines, setPipelines] = useState(INITIAL_PIPELINES);
@@ -356,90 +371,63 @@ const Leads = () => {
 		>
 			{/* Stats + charts */}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
+				<Card className="relative overflow-hidden">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-blue-600/10 rounded-full blur-2xl" />
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-sm border border-blue-500/20">
 								<Users className="text-blue-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>
-							{leadStats.total}
-						</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Total leads
-						</p>
-					</div>
-				</div>
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
+						<p className="text-2xl font-bold">{leadStats.total}</p>
+						<p className="text-sm text-muted-foreground mt-1">Total leads</p>
+					</CardContent>
+				</Card>
+				<Card className="relative overflow-hidden">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-purple-600/10 rounded-full blur-2xl" />
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 backdrop-blur-sm border border-purple-500/20">
 								<Layers className="text-purple-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>
-							{leadStats.uniqueAccounts}
-						</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Unique accounts
-						</p>
-					</div>
-				</div>
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
+						<p className="text-2xl font-bold">{leadStats.uniqueAccounts}</p>
+						<p className="text-sm text-muted-foreground mt-1">Unique accounts</p>
+					</CardContent>
+				</Card>
+				<Card className="relative overflow-hidden">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-amber-400/20 to-amber-600/10 rounded-full blur-2xl" />
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 backdrop-blur-sm border border-amber-500/20">
 								<Kanban className="text-amber-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>
-							{leadStats.activeInPipeline}
-						</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Active in pipeline
-						</p>
-					</div>
-				</div>
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
+						<p className="text-2xl font-bold">{leadStats.activeInPipeline}</p>
+						<p className="text-sm text-muted-foreground mt-1">Active in pipeline</p>
+					</CardContent>
+				</Card>
+				<Card className="relative overflow-hidden">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-green-400/20 to-green-600/10 rounded-full blur-2xl" />
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-sm border border-green-500/20">
 								<CheckCircle2 className="text-green-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>
-							{leadStats.done}
-						</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Closed (Done)
-						</p>
-					</div>
-				</div>
+						<p className="text-2xl font-bold">{leadStats.done}</p>
+						<p className="text-sm text-muted-foreground mt-1">Closed (Done)</p>
+					</CardContent>
+				</Card>
 			</div>
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-				<div
-					className={`${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
-					<p className={`text-sm font-medium ${colors.foreground} mb-1`}>
-						Leads by pipeline stage
-					</p>
-					<p className={`text-xs ${colors.mutedForeground} mb-4`}>
-						Kanban columns (Backlog, In Progress, Done)
-					</p>
+				<Card>
+					<CardHeader className="pb-2">
+						<CardTitle>Leads by pipeline stage</CardTitle>
+						<CardDescription>Kanban columns (Backlog, In Progress, Done)</CardDescription>
+					</CardHeader>
+					<CardContent>
 					<ResponsiveContainer width="100%" height={220}>
 						<BarChart
 							data={pipelineStageData}
@@ -475,16 +463,14 @@ const Leads = () => {
 							/>
 						</BarChart>
 					</ResponsiveContainer>
-				</div>
-				<div
-					className={`${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
-					<p className={`text-sm font-medium ${colors.foreground} mb-1`}>
-						Leads by account
-					</p>
-					<p className={`text-xs ${colors.mutedForeground} mb-4`}>
-						Top companies (from company or email domain)
-					</p>
+					</CardContent>
+				</Card>
+				<Card>
+					<CardHeader className="pb-2">
+						<CardTitle>Leads by account</CardTitle>
+						<CardDescription>Top companies (from company or email domain)</CardDescription>
+					</CardHeader>
+					<CardContent>
 					<ResponsiveContainer width="100%" height={240}>
 						<BarChart
 							data={companyLeadCounts}
@@ -524,7 +510,8 @@ const Leads = () => {
 							/>
 						</BarChart>
 					</ResponsiveContainer>
-				</div>
+					</CardContent>
+				</Card>
 			</div>
 
 			{/* Table Header */}
@@ -540,15 +527,13 @@ const Leads = () => {
 						</p>
 					</div>
 					<div className="flex md:justify-end justify-start items-center gap-2 flex-wrap w-full md:w-auto">
-						<div
-							className={`relative flex gap-2 items-center border ${colors.border} rounded-xl px-3 py-2 ${colors.card} w-full md:w-auto`}
-						>
-							<Search size={18} className={colors.textSecondary} />
-							<input
+						<div className="relative flex gap-2 items-center w-full md:w-auto">
+							<Search size={18} className="absolute left-3 text-muted-foreground pointer-events-none" />
+							<Input
 								type="text"
 								placeholder="Search Leads..."
 								name="search-leads"
-								className={`outline-none flex-1 placeholder:${colors.mutedForeground} ${getFocusRingClass(colorScheme)}`}
+								className="pl-9"
 								onChange={(e) => {
 									const searchTerm = e.target.value.toLowerCase();
 									const filteredLeads =
@@ -563,13 +548,10 @@ const Leads = () => {
 								}}
 							/>
 						</div>
-						<button
-							onClick={handleAddLead}
-							className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-sm px-4 py-2 transition-all duration-200 font-medium flex items-center gap-2`}
-						>
+						<Button onClick={handleAddLead}>
 							<UserPlus size={16} />
 							Add Lead
-						</button>
+						</Button>
 						<ExportDropdown
 							onExportCsv={handleExportCSV}
 							onExportPdf={handleExportCSV}
@@ -578,28 +560,23 @@ const Leads = () => {
 					</div>
 				</div>
 			{/* Leads Table - Improved */}
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
-			>
+			<Card className="overflow-hidden my-4">
 				
 
 				{/* Table */}
-				<div className="overflow-x-auto">
-					<table className="w-full">
-						<thead className={`${colors.muted} border-b ${colors.border}`}>
-							<tr>
-								<th
+				<Table className="w-full">
+						<TableHeader className={`${colors.muted} border-b ${colors.border}`}>
+							<TableRow>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
-									<input
-										type="checkbox"
+									<Checkbox
 										checked={allVisibleSelected}
-										onChange={toggleSelectAllLeads}
-										className={getFocusRingClass(colorScheme)}
+										onCheckedChange={toggleSelectAllLeads}
 										aria-label="Select all leads"
 									/>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("name")}
 								>
@@ -615,51 +592,49 @@ const Leads = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Email
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Contacted At
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Actions
-								</th>
-							</tr>
-						</thead>
-						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+								</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody className={`${colors.card} divide-y ${colors.border}`}>
 							{sortedLeads.length === 0 ? (
-								<tr>
-									<td colSpan="5" className="px-6 py-12 text-center">
+								<TableRow>
+									<TableCell colSpan="5" className="px-6 py-12 text-center">
 										<p className={colors.mutedForeground}>No leads found</p>
-									</td>
-								</tr>
+									</TableCell>
+								</TableRow>
 							) : (
 								sortedLeads.map((lead) => (
-									<tr
+									<TableRow
 										key={lead.id}
 										className={`${colors.hover} transition-colors cursor-pointer`}
 										onClick={() => router.push(`/leads/${lead.id}`)}
 									>
-										<td
+										<TableCell
 											className="px-6 py-4 whitespace-nowrap"
 											onClick={(e) => e.stopPropagation()}
 										>
-											<input
-												type="checkbox"
+											<Checkbox
 												checked={selectedLeadIds.includes(lead.id)}
-												onChange={() => toggleLeadSelection(lead.id)}
-												className={getFocusRingClass(colorScheme)}
+												onCheckedChange={() => toggleLeadSelection(lead.id)}
 												aria-label={`Select ${lead.name}`}
 											/>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-3">
 												<img
 													src={lead.image}
@@ -674,93 +649,72 @@ const Leads = () => {
 													</a>
 												</Link>
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{lead.email}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{lead.lastContacted}
 											</div>
-										</td>
-										<td
+										</TableCell>
+										<TableCell
 											className="px-6 py-4 whitespace-nowrap"
 											onClick={(e) => e.stopPropagation()}
 										>
-											<div className="flex items-center gap-2">
-												<button
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
-													title="Call"
-												>
-													<Phone size={16} className={colors.textSecondary} />
-												</button>
-												<button
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
-													title="Message"
-												>
-													<MessageCircle
-														size={16}
-														className={colors.textSecondary}
-													/>
-												</button>
-												<Link href={`/leads/${lead.id}`} passHref>
-													<a
-														className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors inline-flex`}
-														title="View profile"
-													>
-														<Eye size={16} className={colors.textSecondary} />
-													</a>
-												</Link>
-												<button
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
-													title="Edit"
-												>
-													<Pen size={16} className={colors.textSecondary} />
-												</button>
-												<button
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
+											<div className="flex items-center gap-1">
+												<Button variant="ghost" size="icon" title="Call">
+													<Phone size={16} />
+												</Button>
+												<Button variant="ghost" size="icon" title="Message">
+													<MessageCircle size={16} />
+												</Button>
+												<Button variant="ghost" size="icon" asChild title="View profile">
+													<Link href={`/leads/${lead.id}`}>
+														<a>
+															<Eye size={16} />
+														</a>
+													</Link>
+												</Button>
+												<Button variant="ghost" size="icon" title="Edit">
+													<Pen size={16} />
+												</Button>
+												<Button
+													variant="ghost"
+													size="icon"
 													title="Delete"
 													onClick={() => handleRemoveLead(lead.id)}
 												>
-													<Trash size={16} className={colors.textSecondary} />
-												</button>
+													<Trash size={16} />
+												</Button>
 											</div>
-										</td>
-									</tr>
+										</TableCell>
+									</TableRow>
 								))
 							)}
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div className="flex items-center justify-end my-4">
-				<ChevronLeft
-					size={18}
-					className={`cursor-pointer ${colors.textSecondary} transition-colors ${colors.hoverSecondary}`}
-					onClick={() => {}}
-				/>
+						</TableBody>
+					</Table>
+			</Card>
+			<div className="flex items-center justify-end my-4 gap-1">
+				<Button variant="ghost" size="icon" onClick={() => {}} aria-label="Previous page">
+					<ChevronLeft size={18} />
+				</Button>
 				{Array.from({ length: 5 }, (_, index) => (
-					<button
+					<Button
 						key={index}
-						className={`mx-1 px-3 py-1 rounded ${
-							colors.hoverSecondary
-						} transition-colors ${
-							index === 0
-								? `${colors.muted} ${colors.foreground}`
-								: colors.foreground
-						}`}
+						variant={index === 0 ? "secondary" : "ghost"}
+						size="sm"
+						className="min-w-9"
 						onClick={() => {}}
 					>
 						{index + 1}
-					</button>
+					</Button>
 				))}
-				<ChevronRight
-					size={18}
-					className={`cursor-pointer ${colors.textSecondary} transition-colors ${colors.hoverSecondary}`}
-					onClick={() => {}}
-				/>
+				<Button variant="ghost" size="icon" onClick={() => {}} aria-label="Next page">
+					<ChevronRight size={18} />
+				</Button>
 			</div>
 			<div className="mt-10 mb-3">
 				<h2 className={`text-lg font-semibold ${colors.foreground}`}>Lead board</h2>
@@ -768,7 +722,7 @@ const Leads = () => {
 					Drag cards between Backlog, In Progress, and Done
 				</p>
 			</div>
-			<div className="flex flex-col lg:flex-row gap-4 lg:items-start overflow-x-auto pb-2">
+			<div className="flex flex-col lg:flex-row gap-4 lg:items-start pb-2">
 				{pipelines.map((pipeline) => {
 					const isOver = dragOverColumn === pipeline.id;
 					return (
@@ -781,11 +735,9 @@ const Leads = () => {
 									<h3 className={`font-bold text-[15px] ${colors.foreground} truncate`}>
 										{pipeline.name}
 									</h3>
-									<span
-										className={`flex h-7 min-w-[1.75rem] px-1.5 items-center justify-center rounded-full text-xs font-semibold bg-zinc-200/90 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200`}
-									>
+									<Badge variant="secondary" className="h-7 min-w-[1.75rem] px-1.5 justify-center font-semibold">
 										{pipeline.leads.length}
-									</span>
+									</Badge>
 								</div>
 								<div className="flex items-center gap-1 shrink-0">
 									<span
@@ -794,13 +746,15 @@ const Leads = () => {
 									>
 										<GripVertical className="w-4 h-4" />
 									</span>
-									<button
+									<Button
 										type="button"
-										className={`p-1.5 rounded-full border ${colors.border} ${colors.card} ${colors.hoverSecondary} ${colors.foreground}`}
+										variant="outline"
+										size="icon"
+										className="rounded-full"
 										title="Add card"
 									>
 										<Plus className="w-4 h-4" />
-									</button>
+									</Button>
 								</div>
 							</div>
 							<div
@@ -865,15 +819,13 @@ const Leads = () => {
 												/>
 											</div>
 											<div className="flex items-center justify-between mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800">
-												<span
-													className={`text-[11px] font-medium px-2 py-0.5 rounded-full border ${PRIORITY_CLASS[meta.priority]}`}
-												>
+												<Badge variant={meta.priority} className="text-[11px] font-medium">
 													{meta.priority === "high"
 														? "High"
 														: meta.priority === "medium"
 														? "Medium"
 														: "Low"}
-												</span>
+												</Badge>
 												<div className={`flex items-center gap-3 text-xs ${colors.textMuted}`}>
 													<span className="inline-flex items-center gap-1">
 														<Paperclip className="w-3.5 h-3.5" />
@@ -906,27 +858,30 @@ const Leads = () => {
 				<FormField label="Avatar" hint="Pick a profile image">
 					<div className="flex flex-wrap gap-2">
 						{LEAD_AVATARS.map((src) => (
-							<button
+							<Button
 								key={src}
 								type="button"
+								variant="ghost"
+								size="icon"
 								onClick={() => setNewLead((p) => ({ ...p, image: src }))}
-								className={`rounded-full p-0.5 border-2 transition-colors ${
+								className={cn(
+									"rounded-full h-auto w-auto p-0.5 border-2",
 									newLead.image === src
-										? `${scheme.primary} border-current`
-										: `${colors.border} ${colors.hoverSecondary}`
-								}`}
+										? "border-primary ring-2 ring-primary/30"
+										: "border-border hover:bg-accent"
+								)}
 							>
 								<img
 									src={src}
 									alt=""
 									className="w-10 h-10 rounded-full object-cover"
 								/>
-							</button>
+							</Button>
 						))}
 					</div>
 				</FormField>
 				<FormField label="Name" htmlFor="lead-name" required>
-					<input
+					<Input
 						id="lead-name"
 						type="text"
 						value={newLead.name}
@@ -934,12 +889,11 @@ const Leads = () => {
 							setNewLead((p) => ({ ...p, name: e.target.value }))
 						}
 						required
-						className={formInputClass(colorScheme, colors)}
 						placeholder="Full name"
 					/>
 				</FormField>
 				<FormField label="Email" htmlFor="lead-email" required>
-					<input
+					<Input
 						id="lead-email"
 						type="email"
 						value={newLead.email}
@@ -947,66 +901,53 @@ const Leads = () => {
 							setNewLead((p) => ({ ...p, email: e.target.value }))
 						}
 						required
-						className={formInputClass(colorScheme, colors)}
 						placeholder="email@company.com"
 					/>
 				</FormField>
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<FormField label="Company" htmlFor="lead-company">
-						<input
+						<Input
 							id="lead-company"
 							type="text"
 							value={newLead.company}
 							onChange={(e) =>
 								setNewLead((p) => ({ ...p, company: e.target.value }))
 							}
-							className={formInputClass(colorScheme, colors)}
 							placeholder="Company name"
 						/>
 					</FormField>
 					<FormField label="Phone" htmlFor="lead-phone">
-						<input
+						<Input
 							id="lead-phone"
 							type="tel"
 							value={newLead.phone}
 							onChange={(e) =>
 								setNewLead((p) => ({ ...p, phone: e.target.value }))
 							}
-							className={formInputClass(colorScheme, colors)}
 							placeholder="+1 (555) 000-0000"
 						/>
 					</FormField>
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<FormField label="Source" htmlFor="lead-source">
-						<select
+						<FormSelect
 							id="lead-source"
 							value={newLead.source}
 							onChange={(e) =>
 								setNewLead((p) => ({ ...p, source: e.target.value }))
 							}
-							className={formInputClass(colorScheme, colors)}
-						>
-							<option value="Website">Website</option>
-							<option value="Referral">Referral</option>
-							<option value="Outbound">Outbound</option>
-							<option value="Event">Event</option>
-						</select>
+							options={["Website", "Referral", "Outbound", "Event"]}
+						/>
 					</FormField>
 					<FormField label="Status" htmlFor="lead-status">
-						<select
+						<FormSelect
 							id="lead-status"
 							value={newLead.status}
 							onChange={(e) =>
 								setNewLead((p) => ({ ...p, status: e.target.value }))
 							}
-							className={formInputClass(colorScheme, colors)}
-						>
-							<option value="New">New</option>
-							<option value="Qualified">Qualified</option>
-							<option value="Contacted">Contacted</option>
-							<option value="Nurture">Nurture</option>
-						</select>
+							options={["New", "Qualified", "Contacted", "Nurture"]}
+						/>
 					</FormField>
 				</div>
 				<FormField label="Notes" htmlFor="lead-notes">
@@ -1017,17 +958,19 @@ const Leads = () => {
 						onChange={(e) =>
 							setNewLead((p) => ({ ...p, notes: e.target.value }))
 						}
-						className={formInputClass(colorScheme, colors)}
+						className={cn(
+							"flex min-h-[80px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+						)}
 						placeholder="Context, next steps, competitor info…"
 					/>
 				</FormField>
 				<FormField label="Attachments" htmlFor="lead-files">
-					<input
+					<Input
 						id="lead-files"
 						type="file"
 						multiple
 						onChange={handleLeadFileChange}
-						className={`text-sm ${colors.foreground} file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-sm file:font-medium ${scheme.primary} file:${scheme.primaryForeground}`}
+						className="text-sm file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground"
 					/>
 					{newLead.files.length > 0 && (
 						<ul className={`mt-2 text-xs ${colors.textSecondary} space-y-1`}>
@@ -1042,4 +985,4 @@ const Leads = () => {
 	);
 };
 
-export default Leads;
+export default LeadsShadcn;

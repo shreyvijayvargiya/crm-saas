@@ -4,14 +4,35 @@ import {
 	Search,
 	Plus,
 	ChevronDown,
-	X,
 	Shield,
 	UserCircle,
 	Eye,
 } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useTheme } from "../../utils/useTheme";
-import { getFocusRingClass } from "../../utils/theme";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import FormSelect from "../../lib/ui/FormSelect";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
 
 const ROLE_OPTIONS = [
 	{ value: "all", label: "All roles" },
@@ -66,11 +87,10 @@ const initialMembers = [
 ];
 
 const Teams = () => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 	const [members, setMembers] = useState(initialMembers);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [roleFilter, setRoleFilter] = useState("all");
-	const [filterOpen, setFilterOpen] = useState(false);
 	const [addOpen, setAddOpen] = useState(false);
 	const [form, setForm] = useState({
 		name: "",
@@ -93,8 +113,7 @@ const Teams = () => {
 		});
 	}, [members, searchTerm, roleFilter]);
 
-	const handleAddMember = (e) => {
-		e.preventDefault();
+	const handleAddMember = () => {
 		if (!form.name.trim() || !form.email.trim()) {
 			toast.error("Name and email are required.");
 			return;
@@ -132,128 +151,102 @@ const Teams = () => {
 					</p>
 				</div>
 
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
-				>
+				<Card className="overflow-hidden">
 					<div
 						className={`flex flex-col gap-4 px-4 md:px-6 py-4 border-b ${colors.border}`}
 					>
 						<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-							<button
-								type="button"
-								onClick={() => setAddOpen(true)}
-								className={`inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-medium ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} transition-colors shrink-0`}
-							>
+							<Button type="button" onClick={() => setAddOpen(true)} className="shrink-0">
 								<Plus className="w-4 h-4" />
 								Add new member
-							</button>
+							</Button>
 							<div className="flex flex-col sm:flex-row gap-3 sm:items-center flex-1 sm:justify-end min-w-0">
-								<div
-									className={`flex items-center gap-2 border ${colors.border} rounded-xl px-3 py-2 ${colors.secondary} min-w-0 flex-1 sm:max-w-xs`}
-								>
-									<Search className={`w-4 h-4 shrink-0 ${colors.textMuted}`} />
-									<input
+								<div className="relative flex-1 sm:max-w-xs min-w-0">
+									<Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+									<Input
 										type="search"
 										placeholder="Search members..."
 										value={searchTerm}
 										onChange={(e) => setSearchTerm(e.target.value)}
-										className={`bg-transparent outline-none text-sm flex-1 min-w-0 ${colors.foreground} placeholder:${colors.textTertiary}`}
+										className="pl-9"
 									/>
 								</div>
-								<div className="relative shrink-0">
-									<button
-										type="button"
-										onClick={() => setFilterOpen(!filterOpen)}
-										className={`flex items-center justify-between gap-2 w-full sm:w-44 px-3 py-2 rounded-xl border ${colors.border} ${colors.secondary} text-sm ${colors.foreground} ${colors.hoverSecondary} transition-colors`}
-									>
-										<span className="truncate">{currentRoleLabel}</span>
-										<ChevronDown
-											className={`w-4 h-4 shrink-0 ${colors.textMuted} ${filterOpen ? "rotate-180" : ""} transition-transform`}
-										/>
-									</button>
-									{filterOpen && (
-										<>
-											<button
-												type="button"
-												className="fixed inset-0 z-10 cursor-default"
-												aria-label="Close menu"
-												onClick={() => setFilterOpen(false)}
-											/>
-											<div
-												className={`absolute right-0 mt-1 z-20 min-w-full py-1 rounded-xl border ${colors.border} ${colors.card} ${colors.shadow}`}
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<Button
+											type="button"
+											variant="outline"
+											className="w-full sm:w-44 justify-between shrink-0"
+										>
+											<span className="truncate">{currentRoleLabel}</span>
+											<ChevronDown className="w-4 h-4 shrink-0 text-muted-foreground" />
+										</Button>
+									</DropdownMenuTrigger>
+									<DropdownMenuContent align="end" className="min-w-[var(--radix-dropdown-menu-trigger-width)]">
+										{ROLE_OPTIONS.map((opt) => (
+											<DropdownMenuItem
+												key={opt.value}
+												onClick={() => setRoleFilter(opt.value)}
 											>
-												{ROLE_OPTIONS.map((opt) => (
-													<button
-														key={opt.value}
-														type="button"
-														onClick={() => {
-															setRoleFilter(opt.value);
-															setFilterOpen(false);
-														}}
-														className={`w-full text-left px-3 py-2 text-sm ${colors.hoverSecondary} ${colors.foreground}`}
-													>
-														{opt.label}
-													</button>
-												))}
-											</div>
-										</>
-									)}
-								</div>
+												{opt.label}
+											</DropdownMenuItem>
+										))}
+									</DropdownMenuContent>
+								</DropdownMenu>
 							</div>
 						</div>
 					</div>
 
-					<div className="overflow-x-auto">
-						<table className="w-full text-sm">
-							<thead>
-								<tr className={`border-b ${colors.border} ${colors.secondary}`}>
-									<th
+					<Table className="w-full text-sm">
+							<TableHeader>
+								<TableRow className={`border-b ${colors.border} ${colors.secondary}`}>
+									<TableHead
 										className={`text-left font-semibold px-4 md:px-6 py-3 ${colors.textSecondary}`}
 									>
 										Member
-									</th>
-									<th
+									</TableHead>
+									<TableHead
 										className={`text-left font-semibold px-4 py-3 ${colors.textSecondary} hidden md:table-cell`}
 									>
 										Email
-									</th>
-									<th
+									</TableHead>
+									<TableHead
 										className={`text-left font-semibold px-4 py-3 ${colors.textSecondary}`}
 									>
 										Role
-									</th>
-									<th
+									</TableHead>
+									<TableHead
 										className={`text-left font-semibold px-4 py-3 ${colors.textSecondary}`}
 									>
 										Status
-									</th>
-									<th
+									</TableHead>
+									<TableHead
 										className={`text-left font-semibold px-4 md:px-6 py-3 ${colors.textSecondary} hidden sm:table-cell`}
 									>
 										Joined
-									</th>
-								</tr>
-							</thead>
-							<tbody>
+									</TableHead>
+								</TableRow>
+							</TableHeader>
+							<TableBody>
 								{filteredMembers.length === 0 ? (
-									<tr>
-										<td
+									<TableRow>
+										<TableCell
 											colSpan={5}
 											className={`px-6 py-12 text-center ${colors.mutedForeground}`}
 										>
 											No team members match your filters.
-										</td>
-									</tr>
+										</TableCell>
+									</TableRow>
 								) : (
 									filteredMembers.map((m) => {
 										const RoleIcon = ROLE_ICONS[m.role] || UserCircle;
 										const statusActive = m.status === "Active";
 										return (
-											<tr
+											<TableRow
 												key={m.id}
 												className={`border-b ${colors.border} ${colors.hoverSecondary} transition-colors`}
 											>
-												<td className="px-4 md:px-6 py-3">
+												<TableCell className="px-4 md:px-6 py-3">
 													<div className="flex items-center gap-3 min-w-0">
 														<div className="relative w-9 h-9 rounded-full overflow-hidden shrink-0 ring-2 ring-white dark:ring-zinc-800">
 															<Image
@@ -277,147 +270,84 @@ const Teams = () => {
 															</span>
 														</div>
 													</div>
-												</td>
-												<td
+												</TableCell>
+												<TableCell
 													className={`px-4 py-3 ${colors.textSecondary} hidden md:table-cell max-w-[200px] truncate`}
 												>
 													{m.email}
-												</td>
-												<td className="px-4 py-3">
-													<span
-														className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-xl text-xs font-medium ${colors.secondary} ${colors.foreground}`}
-													>
+												</TableCell>
+												<TableCell className="px-4 py-3">
+													<Badge variant="secondary" className="gap-1.5">
 														<RoleIcon className="w-3.5 h-3.5" />
 														{m.role}
-													</span>
-												</td>
-												<td className="px-4 py-3">
-													<span
-														className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${
+													</Badge>
+												</TableCell>
+												<TableCell className="px-4 py-3">
+													<Badge
+														variant="secondary"
+														className={cn(
 															statusActive
-																? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
-																: "bg-amber-500/15 text-amber-800 dark:text-amber-200"
-														}`}
+																? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-transparent"
+																: "bg-amber-500/15 text-amber-800 dark:text-amber-200 border-transparent"
+														)}
 													>
 														{m.status}
-													</span>
-												</td>
-												<td
+													</Badge>
+												</TableCell>
+												<TableCell
 													className={`px-4 md:px-6 py-3 ${colors.textSecondary} hidden sm:table-cell whitespace-nowrap`}
 												>
 													{m.joinedAt}
-												</td>
-											</tr>
+												</TableCell>
+											</TableRow>
 										);
 									})
 								)}
-							</tbody>
-						</table>
-					</div>
-				</div>
+							</TableBody>
+						</Table>
+				</Card>
 			</div>
 
-			{addOpen && (
-				<div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-					<div
-						className={`w-full max-w-md rounded-xl border ${colors.border} ${colors.card} ${colors.shadow}`}
-						role="dialog"
-						aria-modal="true"
-						aria-labelledby="add-member-title"
-					>
-						<div
-							className={`flex items-center justify-between px-5 py-4 border-b ${colors.border}`}
-						>
-							<h2
-								id="add-member-title"
-								className={`text-lg font-semibold ${colors.foreground}`}
-							>
-								Add team member
-							</h2>
-							<button
-								type="button"
-								onClick={() => setAddOpen(false)}
-								className={`p-1 rounded-xl ${colors.hoverSecondary} ${colors.mutedForeground}`}
-								aria-label="Close"
-							>
-								<X className="w-5 h-5" />
-							</button>
-						</div>
-						<form onSubmit={handleAddMember} className="p-5 space-y-4">
-							<div>
-								<label
-									htmlFor="tm-name"
-									className={`block text-sm font-medium mb-1.5 ${colors.foreground}`}
-								>
-									Full name
-								</label>
-								<input
-									id="tm-name"
-									value={form.name}
-									onChange={(e) =>
-										setForm((f) => ({ ...f, name: e.target.value }))
-									}
-									className={`w-full px-3 py-2 rounded-xl border ${colors.border} ${colors.background} ${colors.foreground} text-sm ${getFocusRingClass()}`}
-									placeholder="Jane Doe"
-								/>
-							</div>
-							<div>
-								<label
-									htmlFor="tm-email"
-									className={`block text-sm font-medium mb-1.5 ${colors.foreground}`}
-								>
-									Email
-								</label>
-								<input
-									id="tm-email"
-									type="email"
-									value={form.email}
-									onChange={(e) =>
-										setForm((f) => ({ ...f, email: e.target.value }))
-									}
-									className={`w-full px-3 py-2 rounded-xl border ${colors.border} ${colors.background} ${colors.foreground} text-sm ${getFocusRingClass()}`}
-									placeholder="jane@company.com"
-								/>
-							</div>
-							<div>
-								<label
-									htmlFor="tm-role"
-									className={`block text-sm font-medium mb-1.5 ${colors.foreground}`}
-								>
-									Role
-								</label>
-								<select
-									id="tm-role"
-									value={form.role}
-									onChange={(e) =>
-										setForm((f) => ({ ...f, role: e.target.value }))
-									}
-									className={`w-full px-3 py-2 rounded-xl border ${colors.border} ${colors.background} ${colors.foreground} text-sm ${getFocusRingClass()}`}
-								>
-									<option value="Admin">Admin</option>
-									<option value="Member">Member</option>
-									<option value="Viewer">Viewer</option>
-								</select>
-							</div>
-							<div className="flex justify-end gap-2 pt-2">
-								<button
-									type="button"
-									onClick={() => setAddOpen(false)}
-									className={`px-4 py-2 rounded-xl text-sm font-medium border ${colors.border} ${colors.secondary} ${colors.foreground} ${colors.hoverSecondary}`}
-								>
-									Cancel
-								</button>
-								<button
-									type="submit"
-									className={`px-4 py-2 rounded-xl text-sm font-medium ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`}
-								>
-									Add member
-								</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			)}
+			<FormModal
+				open={addOpen}
+				onClose={() => setAddOpen(false)}
+				onSubmit={handleAddMember}
+				title="Add team member"
+				saveLabel="Add member"
+				maxWidth="max-w-md"
+			>
+				<FormField label="Full name" htmlFor="tm-name">
+					<Input
+						id="tm-name"
+						value={form.name}
+						onChange={(e) =>
+							setForm((f) => ({ ...f, name: e.target.value }))
+						}
+						placeholder="Jane Doe"
+					/>
+				</FormField>
+				<FormField label="Email" htmlFor="tm-email">
+					<Input
+						id="tm-email"
+						type="email"
+						value={form.email}
+						onChange={(e) =>
+							setForm((f) => ({ ...f, email: e.target.value }))
+						}
+						placeholder="jane@company.com"
+					/>
+				</FormField>
+				<FormField label="Role" htmlFor="tm-role">
+					<FormSelect
+						id="tm-role"
+						value={form.role}
+						onChange={(e) =>
+							setForm((f) => ({ ...f, role: e.target.value }))
+						}
+						options={["Admin", "Member", "Viewer"]}
+					/>
+				</FormField>
+			</FormModal>
 		</div>
 	);
 };

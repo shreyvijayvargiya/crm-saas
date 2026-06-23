@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import {
 	Search,
 	ChevronDown,
@@ -10,8 +10,12 @@ import {
 	PlusIcon,
 } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
-import { getFocusRingClass } from "../../utils/theme";
-import { FormModal, FormField, formInputClass } from "../../lib/ui/modal";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import FormSelect from "../../lib/ui/FormSelect";
 
 const defaultTaskExtras = () => ({
 	description: "",
@@ -101,7 +105,7 @@ const AssigneeStack = ({ assignees }) => {
 
 const Tasks = () => {
 	// Theme hook
-	const { colorScheme, colors, scheme } = useTheme();
+	const { colors } = useTheme();
 
 	const [taskSections, setTaskSections] = useState([
 		{
@@ -522,31 +526,26 @@ const Tasks = () => {
 					Task Kanban board
 				</p>
 				<div className="flex items-center gap-3 w-full md:w-auto">
-					{/* Search Bar */}
 					<div className="relative flex-1 md:flex-initial md:min-w-[250px]">
 						<Search
-							className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${colors.mutedForeground}`}
+							className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none"
 						/>
-						<input
+						<Input
 							type="text"
 							placeholder="Search tasks..."
 							value={searchTerm}
 							onChange={(e) => setSearchTerm(e.target.value)}
-							className={`w-full pl-10 pr-4 py-2 ${colors.background} border ${
-								colors.border
-							} rounded-xl text-sm ${
-								colors.foreground
-							} focus:outline-none focus:ring-2 ${getFocusRingClass(
-								colorScheme
-							)} focus:border-transparent placeholder:${colors.textTertiary}`}
+							className="pl-9"
 						/>
 					</div>
 
 					{/* Filter Dropdown */}
 					<div className="relative">
-						<button
+						<Button
+							type="button"
+							variant="outline"
 							onClick={() => setIsFilterOpen(!isFilterOpen)}
-							className={`flex items-center gap-2 px-4 py-2 border ${colors.border} ${colors.card} rounded-xl text-sm ${colors.foreground} hover:${colors.hoverSecondary} transition-colors`}
+							className="gap-2"
 						>
 							<span>
 								{filterStatus === "all"
@@ -558,11 +557,12 @@ const Tasks = () => {
 									: "Done"}
 							</span>
 							<ChevronDown
-								className={`w-4 h-4 transition-transform ${
-									isFilterOpen ? "rotate-180" : ""
-								}`}
+								className={cn(
+									"w-4 h-4 transition-transform",
+									isFilterOpen && "rotate-180"
+								)}
 							/>
-						</button>
+						</Button>
 						{isFilterOpen && (
 							<>
 								<div
@@ -572,71 +572,34 @@ const Tasks = () => {
 								<div
 									className={`absolute right-0 mt-2 w-48 ${colors.card} border ${colors.border} rounded-xl shadow-lg z-20 py-2`}
 								>
-									<button
-										onClick={() => {
-											setFilterStatus("all");
-											setIsFilterOpen(false);
-										}}
-										className={`w-full text-left px-4 py-2 text-sm hover:${colors.hoverSecondary} transition-colors ${
-											filterStatus === "all"
-												? `${scheme.primary} ${scheme.primaryForeground}`
-												: ""
-										}`}
-									>
-										All Tasks
-									</button>
-									<button
-										onClick={() => {
-											setFilterStatus("to-dos");
-											setIsFilterOpen(false);
-										}}
-										className={`w-full text-left px-4 py-2 text-sm hover:${colors.hoverSecondary} transition-colors ${
-											filterStatus === "to-dos"
-												? `${scheme.primary} ${scheme.primaryForeground}`
-												: ""
-										}`}
-									>
-										Backlog
-									</button>
-									<button
-										onClick={() => {
-											setFilterStatus("progress");
-											setIsFilterOpen(false);
-										}}
-										className={`w-full text-left px-4 py-2 text-sm hover:${colors.hoverSecondary} transition-colors ${
-											filterStatus === "progress"
-												? `${scheme.primary} ${scheme.primaryForeground}`
-												: ""
-										}`}
-									>
-										In Progress
-									</button>
-									<button
-										onClick={() => {
-											setFilterStatus("completed");
-											setIsFilterOpen(false);
-										}}
-										className={`w-full text-left px-4 py-2 text-sm hover:${colors.hoverSecondary} transition-colors ${
-											filterStatus === "completed"
-												? `${scheme.primary} ${scheme.primaryForeground}`
-												: ""
-										}`}
-									>
-										Done
-									</button>
+									{[
+										{ value: "all", label: "All Tasks" },
+										{ value: "to-dos", label: "Backlog" },
+										{ value: "progress", label: "In Progress" },
+										{ value: "completed", label: "Done" },
+									].map(({ value, label }) => (
+										<Button
+											key={value}
+											type="button"
+											variant={filterStatus === value ? "default" : "ghost"}
+											className="w-full justify-start rounded-none h-auto py-2 px-4 font-normal"
+											onClick={() => {
+												setFilterStatus(value);
+												setIsFilterOpen(false);
+											}}
+										>
+											{label}
+										</Button>
+									))}
 								</div>
 							</>
 						)}
 					</div>
 
-					{/* Add New Button */}
-					<button
-						className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} flex gap-1 items-center rounded-xl text-xs px-4 py-2.5 transition-all duration-100 ease-in whitespace-nowrap`}
-						onClick={handleAddNewTask}
-					>
+					<Button onClick={handleAddNewTask} className="gap-1 whitespace-nowrap">
 						<PlusIcon className="w-4 h-4" />
 						Add new
-					</button>
+					</Button>
 				</div>
 			</div>
 
@@ -659,7 +622,7 @@ const Tasks = () => {
 				maxWidth="max-w-lg"
 			>
 				<FormField label="Task name" htmlFor="task-name" required>
-					<input
+					<Input
 						id="task-name"
 						type="text"
 						placeholder="e.g. Prepare presentation"
@@ -668,11 +631,10 @@ const Tasks = () => {
 							setNewTask({ ...newTask, name: e.target.value })
 						}
 						required
-						className={formInputClass(colorScheme, colors)}
 					/>
 				</FormField>
 				<FormField label="Icon" htmlFor="task-icon" required hint="Emoji or short label">
-					<input
+					<Input
 						id="task-icon"
 						type="text"
 						placeholder="📝"
@@ -681,7 +643,6 @@ const Tasks = () => {
 							setNewTask({ ...newTask, icon: e.target.value })
 						}
 						required
-						className={formInputClass(colorScheme, colors)}
 					/>
 				</FormField>
 				<FormField label="Description" htmlFor="task-description">
@@ -693,37 +654,31 @@ const Tasks = () => {
 						onChange={(e) =>
 							setNewTask({ ...newTask, description: e.target.value })
 						}
-						className={formInputClass(colorScheme, colors)}
+						className={cn(
+							"flex min-h-[80px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+						)}
 					/>
 				</FormField>
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<FormField label="Status" htmlFor="task-progress">
-						<select
+						<FormSelect
 							id="task-progress"
 							value={newTask.progress}
 							onChange={(e) =>
 								setNewTask({ ...newTask, progress: e.target.value })
 							}
-							className={formInputClass(colorScheme, colors)}
-						>
-							<option value="Not Started">Not Started</option>
-							<option value="In Progress">In Progress</option>
-							<option value="Completed">Completed</option>
-						</select>
+							options={["Not Started", "In Progress", "Completed"]}
+						/>
 					</FormField>
 					<FormField label="Priority" htmlFor="task-priority">
-						<select
+						<FormSelect
 							id="task-priority"
 							value={newTask.priority}
 							onChange={(e) =>
 								setNewTask({ ...newTask, priority: e.target.value })
 							}
-							className={formInputClass(colorScheme, colors)}
-						>
-							<option value="High">High</option>
-							<option value="Medium">Medium</option>
-							<option value="Low">Low</option>
-						</select>
+							options={["High", "Medium", "Low"]}
+						/>
 					</FormField>
 				</div>
 			</FormModal>
@@ -743,30 +698,32 @@ const Tasks = () => {
 								>
 									{section.name}
 								</h3>
-								<span
-									className="inline-flex items-center justify-center min-w-[1.75rem] h-7 px-2 rounded-full text-xs font-semibold tabular-nums bg-white/90 dark:bg-zinc-800/90 text-zinc-600 dark:text-zinc-300 border border-zinc-200/90 dark:border-zinc-600/90 shadow-sm"
-								>
+								<Badge variant="secondary" className="h-7 min-w-[1.75rem] px-1.5 justify-center font-semibold">
 									{section.tasks.length}
-								</span>
+								</Badge>
 							</div>
 							<div className="flex items-center gap-1 shrink-0">
-								<button
+								<Button
 									type="button"
-									className={`p-2 rounded-xl ${colors.hoverSecondary} transition-colors ${colors.textMuted} hover:${colors.foreground} cursor-grab active:cursor-grabbing`}
+									variant="ghost"
+									size="icon"
 									title="Reorder column"
 									aria-label="Reorder column"
+									className="cursor-grab active:cursor-grabbing"
 								>
 									<GripVertical className="w-4 h-4" />
-								</button>
-								<button
+								</Button>
+								<Button
 									type="button"
+									variant="outline"
+									size="icon"
+									className="rounded-full"
 									onClick={() => handleAddNewTask(section.id)}
-									className={`flex items-center justify-center w-9 h-9 rounded-full border ${colors.border} bg-white/90 dark:bg-zinc-800/90 ${colors.hoverSecondary} transition-colors ${colors.textMuted} hover:${colors.foreground}`}
 									title="Add task"
 									aria-label="Add task"
 								>
 									<Plus className="w-4 h-4" strokeWidth={2.25} />
-								</button>
+								</Button>
 							</div>
 						</div>
 						<div className="space-y-3">
@@ -808,11 +765,18 @@ const Tasks = () => {
 										<div
 											className={`mt-4 pt-3 border-t ${colors.border} flex items-center justify-between gap-2`}
 										>
-											<span
-												className={`inline-flex items-center rounded-full border ${colors.border} px-2.5 py-1 text-xs font-medium ${colors.foreground}`}
+											<Badge
+												variant={
+													priority === "High"
+														? "high"
+														: priority === "Low"
+														? "low"
+														: "medium"
+												}
+												className="text-xs font-medium"
 											>
 												{priority}
-											</span>
+											</Badge>
 											<div
 												className={`flex items-center gap-4 text-xs ${colors.textMuted}`}
 											>

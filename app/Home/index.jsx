@@ -20,7 +20,7 @@ import {
 	ArrowRight,
 } from "lucide-react";
 import router from "next/router";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { BiParty } from "react-icons/bi";
 import {
 	AreaChart,
@@ -37,10 +37,31 @@ import {
 	ResponsiveContainer,
 } from "recharts";
 import { useTheme } from "../../utils/useTheme";
+import { cn } from "@/lib/utils";
+import { getChartColor, CHART_MUTED } from "@/lib/chartColors";
+import { Button } from "@/components/ui/button";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 
 const Home = () => {
-	// Theme hook
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { theme, colors } = useTheme();
+	const chartColor = getChartColor(1);
+	const secondaryColor = getChartColor(2);
 
 	const dashboardData = {
 		stats: {
@@ -274,39 +295,35 @@ const Home = () => {
 	];
 
 	return (
-		<div className={`p-6 mx-auto transition-all duration-100 ease-in`}>
-			<h1 className={`text-xl font-semibold mb-4 ${colors.foreground}`}>
+		<div className="p-6 mx-auto transition-all duration-100 ease-in">
+			<h1 className="text-xl font-semibold mb-4">
 				Welcome back, John
 			</h1>
-			<div
-				className={`flex items-center gap-1 hover:underline cursor-pointer ${colors.foreground}`}
+			<Button
+				variant="link"
+				className="h-auto p-0 gap-1 hover:underline"
 				onClick={() => router.push("/stats")}
 			>
-				<p>Stats</p>
-				<ExternalLink size={18} className={colors.textSecondary} />
-			</div>
+				Stats
+				<ExternalLink size={18} className="text-muted-foreground" />
+			</Button>
 			<div className="py-1 mb-4">
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2 w-full">
 					{/* Sales Chart Card */}
-					<div
-						className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-all duration-300 group`}
-					>
-						{/* Background Gradient Shapes */}
+					<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300 group">
 						<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-green-400/20 to-green-600/10 rounded-full blur-2xl"></div>
 						<div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-green-300/15 to-green-500/5 rounded-full blur-xl"></div>
 
-						<div className="relative">
+						<CardContent className="relative p-6">
 							<div className="flex items-center gap-3 mb-4">
 								<div className="p-2 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-sm border border-green-500/20">
 									<BiParty className="text-green-500 text-xl" />
 								</div>
 								<div>
-									<p
-										className={`text-sm font-medium ${colors.mutedForeground}`}
-									>
+									<p className="text-sm font-medium text-muted-foreground">
 										Sales
 									</p>
-									<p className={`text-xl font-bold ${colors.foreground}`}>
+									<p className="text-xl font-bold">
 										{dashboardData.stats.sales}
 									</p>
 								</div>
@@ -318,18 +335,18 @@ const Home = () => {
 								>
 									<CartesianGrid
 										strokeDasharray="3 3"
-										stroke={theme === "dark" ? "#3f3f46" : "#e4e4e7"}
+										className="stroke-zinc-200 dark:stroke-zinc-700"
 										vertical={false}
 									/>
 									<XAxis
 										dataKey="name"
-										stroke={theme === "dark" ? "#71717a" : "#71717a"}
+										stroke={CHART_MUTED}
 										fontSize={10}
 										tickLine={false}
 										axisLine={false}
 									/>
 									<YAxis
-										stroke={theme === "dark" ? "#71717a" : "#71717a"}
+										stroke={CHART_MUTED}
 										fontSize={10}
 										tickLine={false}
 										axisLine={false}
@@ -346,34 +363,29 @@ const Home = () => {
 									/>
 									<Bar
 										dataKey="sales"
-										fill={theme === "dark" ? "#22c55e" : "#27ae60"}
+										fill={chartColor}
 										radius={[8, 8, 0, 0]}
 									/>
 								</BarChart>
 							</ResponsiveContainer>
-						</div>
-					</div>
+						</CardContent>
+					</Card>
 
 					{/* Revenue Chart Card */}
-					<div
-						className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-all duration-300 group`}
-					>
-						{/* Background Gradient Shapes */}
+					<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300 group">
 						<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-orange-400/20 to-orange-600/10 rounded-full blur-2xl"></div>
 						<div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-orange-300/15 to-orange-500/5 rounded-full blur-xl"></div>
 
-						<div className="relative">
+						<CardContent className="relative p-6">
 							<div className="flex items-center gap-3 mb-4">
 								<div className="p-2 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 backdrop-blur-sm border border-orange-500/20">
 									<DollarSign className="text-orange-500" size={20} />
 								</div>
 								<div>
-									<p
-										className={`text-sm font-medium ${colors.mutedForeground}`}
-									>
+									<p className="text-sm font-medium text-muted-foreground">
 										Revenue
 									</p>
-									<p className={`text-xl font-bold ${colors.foreground}`}>
+									<p className="text-xl font-bold">
 										{dashboardData.stats.revenue}
 									</p>
 								</div>
@@ -385,18 +397,18 @@ const Home = () => {
 								>
 									<CartesianGrid
 										strokeDasharray="3 3"
-										stroke={theme === "dark" ? "#3f3f46" : "#e4e4e7"}
+										className="stroke-zinc-200 dark:stroke-zinc-700"
 										vertical={false}
 									/>
 									<XAxis
 										dataKey="name"
-										stroke={theme === "dark" ? "#71717a" : "#71717a"}
+										stroke={CHART_MUTED}
 										fontSize={10}
 										tickLine={false}
 										axisLine={false}
 									/>
 									<YAxis
-										stroke={theme === "dark" ? "#71717a" : "#71717a"}
+										stroke={CHART_MUTED}
 										fontSize={10}
 										tickLine={false}
 										axisLine={false}
@@ -413,34 +425,29 @@ const Home = () => {
 									/>
 									<Bar
 										dataKey="revenue"
-										fill={theme === "dark" ? "#f97316" : "#f39c12"}
+										fill={secondaryColor}
 										radius={[8, 8, 0, 0]}
 									/>
 								</BarChart>
 							</ResponsiveContainer>
-						</div>
-					</div>
+						</CardContent>
+					</Card>
 
 					{/* Conversion Rate Chart Card */}
-					<div
-						className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-all duration-300 group`}
-					>
-						{/* Background Gradient Shapes */}
+					<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300 group">
 						<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-pink-400/20 to-pink-600/10 rounded-full blur-2xl"></div>
 						<div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-pink-300/15 to-pink-500/5 rounded-full blur-xl"></div>
 
-						<div className="relative">
+						<CardContent className="relative p-6">
 							<div className="flex items-center gap-3 mb-4">
 								<div className="p-2 rounded-xl bg-gradient-to-br from-pink-500/20 to-pink-600/10 backdrop-blur-sm border border-pink-500/20">
 									<TrendingUp className="text-pink-500" size={20} />
 								</div>
 								<div>
-									<p
-										className={`text-sm font-medium ${colors.mutedForeground}`}
-									>
+									<p className="text-sm font-medium text-muted-foreground">
 										Conversion Rate
 									</p>
-									<p className={`text-xl font-bold ${colors.foreground}`}>
+									<p className="text-xl font-bold">
 										{dashboardData.stats.conversionRate}
 									</p>
 								</div>
@@ -452,18 +459,18 @@ const Home = () => {
 								>
 									<CartesianGrid
 										strokeDasharray="3 3"
-										stroke={theme === "dark" ? "#3f3f46" : "#e4e4e7"}
+										className="stroke-zinc-200 dark:stroke-zinc-700"
 										vertical={false}
 									/>
 									<XAxis
 										dataKey="name"
-										stroke={theme === "dark" ? "#71717a" : "#71717a"}
+										stroke={CHART_MUTED}
 										fontSize={10}
 										tickLine={false}
 										axisLine={false}
 									/>
 									<YAxis
-										stroke={theme === "dark" ? "#71717a" : "#71717a"}
+										stroke={CHART_MUTED}
 										fontSize={10}
 										tickLine={false}
 										axisLine={false}
@@ -481,55 +488,50 @@ const Home = () => {
 									<Line
 										type="monotone"
 										dataKey="conversion"
-										stroke={theme === "dark" ? "#ec4899" : "#e94e77"}
+										stroke={CHART_MUTED}
 										strokeWidth={2}
 										dot={{
-											fill: theme === "dark" ? "#ec4899" : "#e94e77",
+											fill: CHART_MUTED,
 											r: 4,
 										}}
 										activeDot={{ r: 6 }}
 									/>
 								</LineChart>
 							</ResponsiveContainer>
-						</div>
-					</div>
+						</CardContent>
+					</Card>
 				</div>
 			</div>
-			<div
-				className={`flex items-center justify-start gap-2 hover:underline cursor-pointer ${colors.foreground}`}
+			<Button
+				variant="link"
+				className="h-auto p-0 gap-2 hover:underline"
 				onClick={() => router.push("/leads")}
 			>
-				<p>Leads</p>
-				<ExternalLink size={18} className={colors.textSecondary} />
-			</div>
+				Leads
+				<ExternalLink size={18} className="text-muted-foreground" />
+			</Button>
 			<div className="space-y-4 my-2">
 				{/* Recent Leads Table */}
-				<div
-					className={`w-full ${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
-				>
-					<div
-						className={`flex items-center justify-between px-6 py-4 border-b ${colors.border}`}
-					>
+				<Card className="overflow-hidden w-full">
+					<CardHeader className="flex flex-row items-center justify-between border-b px-6 py-4">
 						<div>
-							<h2 className={`text-lg font-semibold ${colors.foreground}`}>
-								Recent Leads
-							</h2>
-							<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							<CardTitle className="text-lg">Recent Leads</CardTitle>
+							<CardDescription>
 								View and manage your recent leads
-							</p>
+							</CardDescription>
 						</div>
-						<button
-							className={`text-sm font-medium ${colors.textSecondary} ${colors.hoverSecondary} transition-colors px-3 py-1.5 rounded-xl`}
+						<Button
+							variant="ghost"
+							size="sm"
 							onClick={() => router.push("/leads")}
 						>
 							View all
-						</button>
-					</div>
-					<div className="overflow-x-auto">
-						<table className="w-full">
-							<thead className={`${colors.muted} border-b ${colors.border}`}>
-								<tr>
-									<th
+						</Button>
+					</CardHeader>
+					<Table className="w-full">
+							<TableHeader className={`${colors.muted} border-b ${colors.border}`}>
+								<TableRow>
+									<TableHead
 										className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 										onClick={() => requestSort("name")}
 									>
@@ -545,33 +547,33 @@ const Home = () => {
 												</>
 											)}
 										</div>
-									</th>
-									<th
+									</TableHead>
+									<TableHead
 										className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 									>
 										Email
-									</th>
-									<th
+									</TableHead>
+									<TableHead
 										className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 									>
 										Actions
-									</th>
-								</tr>
-							</thead>
-							<tbody className={`${colors.card} divide-y ${colors.border}`}>
+									</TableHead>
+								</TableRow>
+							</TableHeader>
+							<TableBody className={`${colors.card} divide-y ${colors.border}`}>
 								{sortedLeads.length === 0 ? (
-									<tr>
-										<td colSpan="3" className="px-6 py-12 text-center">
+									<TableRow>
+										<TableCell colSpan="3" className="px-6 py-12 text-center">
 											<p className={colors.mutedForeground}>No leads found</p>
-										</td>
-									</tr>
+										</TableCell>
+									</TableRow>
 								) : (
 									sortedLeads.map((lead) => (
-										<tr
+										<TableRow
 											key={lead.id}
 											className={`${colors.hover} transition-colors`}
 										>
-											<td className="px-6 py-4 whitespace-nowrap">
+											<TableCell className="px-6 py-4 whitespace-nowrap">
 												<div className="flex items-center gap-3">
 													<img
 														src={lead.image}
@@ -584,74 +586,54 @@ const Home = () => {
 														{lead.name}
 													</div>
 												</div>
-											</td>
-											<td className="px-6 py-4 whitespace-nowrap">
+											</TableCell>
+											<TableCell className="px-6 py-4 whitespace-nowrap">
 												<div className={`text-sm ${colors.textSecondary}`}>
 													{lead.email}
 												</div>
-											</td>
-											<td className="px-6 py-4 whitespace-nowrap">
-												<div className="flex items-center gap-3">
-													<button
-														className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
-														title="Call"
-													>
-														<Phone size={16} className={colors.textSecondary} />
-													</button>
-													<button
-														className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
-														title="Message"
-													>
-														<MessageCircle
-															size={16}
-															className={colors.textSecondary}
-														/>
-													</button>
-													<button
-														className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
-														title="View"
-													>
-														<Eye size={16} className={colors.textSecondary} />
-													</button>
-													<button
-														className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
-														title="Edit"
-													>
-														<Pen size={16} className={colors.textSecondary} />
-													</button>
-													<button
-														className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
+											</TableCell>
+											<TableCell className="px-6 py-4 whitespace-nowrap">
+												<div className="flex items-center gap-1">
+													<Button variant="ghost" size="icon" title="Call">
+														<Phone size={16} />
+													</Button>
+													<Button variant="ghost" size="icon" title="Message">
+														<MessageCircle size={16} />
+													</Button>
+													<Button variant="ghost" size="icon" title="View">
+														<Eye size={16} />
+													</Button>
+													<Button variant="ghost" size="icon" title="Edit">
+														<Pen size={16} />
+													</Button>
+													<Button
+														variant="ghost"
+														size="icon"
 														title="Delete"
 														onClick={() =>
 															toast.info(`Removing lead: ${lead.id}`)
 														}
 													>
-														<Trash size={16} className={colors.textSecondary} />
-													</button>
+														<Trash size={16} />
+													</Button>
 												</div>
-											</td>
-										</tr>
+											</TableCell>
+										</TableRow>
 									))
 								)}
-							</tbody>
-						</table>
-					</div>
-				</div>
+							</TableBody>
+						</Table>
+				</Card>
 
 				{/* Total Leads Chart */}
-				<div
-					className={`w-full ${colors.card} border ${colors.border} rounded-xl ${colors.shadow} p-6`}
-				>
-					<div className="flex items-center justify-between mb-6">
-						<div>
-							<h2 className={`text-lg font-semibold ${colors.foreground}`}>
-								Total Leads Overview
-							</h2>
-							<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-								Total Leads: {dashboardData.stats.totalLeads}
-							</p>
-						</div>
-					</div>
+				<Card className="w-full">
+					<CardHeader>
+						<CardTitle className="text-lg">Total Leads Overview</CardTitle>
+						<CardDescription>
+							Total Leads: {dashboardData.stats.totalLeads}
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
 					<ResponsiveContainer width="100%" height={400}>
 						<AreaChart
 							data={sampleData}
@@ -659,32 +641,24 @@ const Home = () => {
 						>
 							<defs>
 								<linearGradient id="colorLeads" x1="0" y1="0" x2="0" y2="1">
-									<stop
-										offset="5%"
-										stopColor={theme === "dark" ? "#3b82f6" : "#3b82f6"}
-										stopOpacity={0.8}
-									/>
-									<stop
-										offset="95%"
-										stopColor={theme === "dark" ? "#3b82f6" : "#3b82f6"}
-										stopOpacity={0.1}
-									/>
+									<stop offset="5%" stopColor={chartColor} stopOpacity={0.8} />
+									<stop offset="95%" stopColor={chartColor} stopOpacity={0.1} />
 								</linearGradient>
 							</defs>
 							<CartesianGrid
 								strokeDasharray="3 3"
-								stroke={theme === "dark" ? "#3f3f46" : "#e4e4e7"}
+								className="stroke-zinc-200 dark:stroke-zinc-700"
 								vertical={false}
 							/>
 							<XAxis
 								dataKey="name"
-								stroke={theme === "dark" ? "#71717a" : "#71717a"}
+								stroke={CHART_MUTED}
 								fontSize={12}
 								tickLine={false}
 								axisLine={false}
 							/>
 							<YAxis
-								stroke={theme === "dark" ? "#71717a" : "#71717a"}
+								stroke={CHART_MUTED}
 								fontSize={12}
 								tickLine={false}
 								axisLine={false}
@@ -703,102 +677,92 @@ const Home = () => {
 							<Area
 								type="monotone"
 								dataKey="leads"
-								stroke={theme === "dark" ? "#3b82f6" : "#3b82f6"}
+								stroke={chartColor}
 								fillOpacity={1}
 								fill="url(#colorLeads)"
 							/>
 						</AreaChart>
 					</ResponsiveContainer>
-				</div>
+					</CardContent>
+				</Card>
 			</div>
 
 			{/* Quick Stats Cards */}
 			<div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-4">
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-all duration-300`}
-				>
+				<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-blue-600/10 rounded-full blur-2xl"></div>
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-sm border border-blue-500/20">
 								<Target className="text-blue-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>142</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+						<p className="text-2xl font-bold">142</p>
+						<p className="text-sm text-muted-foreground mt-1">
 							Active Deals
 						</p>
-					</div>
-				</div>
+					</CardContent>
+				</Card>
 
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-all duration-300`}
-				>
+				<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-purple-600/10 rounded-full blur-2xl"></div>
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 backdrop-blur-sm border border-purple-500/20">
 								<FileText className="text-purple-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>28</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+						<p className="text-2xl font-bold">28</p>
+						<p className="text-sm text-muted-foreground mt-1">
 							Pending Invoices
 						</p>
-					</div>
-				</div>
+					</CardContent>
+				</Card>
 
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-all duration-300`}
-				>
+				<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-green-400/20 to-green-600/10 rounded-full blur-2xl"></div>
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-sm border border-green-500/20">
 								<CheckCircle2 className="text-green-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>89%</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>Win Rate</p>
-					</div>
-				</div>
+						<p className="text-2xl font-bold">89%</p>
+						<p className="text-sm text-muted-foreground mt-1">Win Rate</p>
+					</CardContent>
+				</Card>
 
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-all duration-300`}
-				>
+				<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-orange-400/20 to-orange-600/10 rounded-full blur-2xl"></div>
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 backdrop-blur-sm border border-orange-500/20">
 								<Activity className="text-orange-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>1.2K</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+						<p className="text-2xl font-bold">1.2K</p>
+						<p className="text-sm text-muted-foreground mt-1">
 							Monthly Visits
 						</p>
-					</div>
-				</div>
+					</CardContent>
+				</Card>
 			</div>
 
 			{/* Recent Activity & Upcoming Meetings */}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
 				{/* Recent Activity */}
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} p-6`}
-				>
-					<div className="flex items-center justify-between mb-4">
+				<Card>
+					<CardHeader className="flex flex-row items-center justify-between">
 						<div>
-							<h2 className={`text-lg font-semibold ${colors.foreground}`}>
-								Recent Activity
-							</h2>
-							<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							<CardTitle className="text-lg">Recent Activity</CardTitle>
+							<CardDescription>
 								Latest updates and actions
-							</p>
+							</CardDescription>
 						</div>
-						<Bell className={`${colors.textSecondary}`} size={20} />
-					</div>
-					<div className="space-y-4">
+						<Bell className="text-muted-foreground" size={20} />
+					</CardHeader>
+					<CardContent>
+						<div className="space-y-4">
 						{[
 							{
 								icon: UserPlus,
@@ -845,13 +809,13 @@ const Home = () => {
 										<Icon size={18} />
 									</div>
 									<div className="flex-1">
-										<p className={`text-sm font-medium ${colors.foreground}`}>
+										<p className="text-sm font-medium">
 											{activity.title}
 										</p>
-										<p className={`text-xs ${colors.textSecondary} mt-0.5`}>
+										<p className="text-xs text-muted-foreground mt-0.5">
 											{activity.description}
 										</p>
-										<p className={`text-xs ${colors.textMuted} mt-1`}>
+										<p className="text-xs text-muted-foreground/70 mt-1">
 											{activity.time}
 										</p>
 									</div>
@@ -859,30 +823,31 @@ const Home = () => {
 							);
 						})}
 					</div>
-				</div>
+					</CardContent>
+				</Card>
 
 				{/* Upcoming Meetings */}
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} p-6`}
-				>
-					<div className="flex items-center justify-between mb-4">
+				<Card>
+					<CardHeader className="flex flex-row items-center justify-between">
 						<div>
-							<h2 className={`text-lg font-semibold ${colors.foreground}`}>
-								Upcoming Meetings
-							</h2>
-							<p className={`text-sm ${colors.mutedForeground} mt-1`}>
+							<CardTitle className="text-lg">Upcoming Meetings</CardTitle>
+							<CardDescription>
 								Your scheduled meetings and events
-							</p>
+							</CardDescription>
 						</div>
-						<Calendar className={`${colors.textSecondary}`} size={20} />
-					</div>
-					<div className="space-y-3">
+						<Calendar className="text-muted-foreground" size={20} />
+					</CardHeader>
+					<CardContent>
+						<div className="space-y-3">
 						{dashboardData.upcomingMeetings
 							.slice(0, 5)
 							.map((meeting, index) => (
 								<div
 									key={index}
-									className={`flex items-center justify-between p-3 rounded-xl ${colors.hoverSecondary} transition-colors border ${colors.border}`}
+									className={cn(
+										"flex items-center justify-between p-3 rounded-xl transition-colors border",
+										colors.hoverSecondary
+									)}
 								>
 									<div className="flex items-center gap-3 flex-1">
 										<div
@@ -899,24 +864,22 @@ const Home = () => {
 											)}
 										</div>
 										<div className="flex-1 min-w-0">
-											<p
-												className={`text-sm font-medium ${colors.foreground} truncate`}
-											>
+											<p className="text-sm font-medium truncate">
 												{meeting.title}
 											</p>
-											<p className={`text-xs ${colors.textSecondary} mt-0.5`}>
+											<p className="text-xs text-muted-foreground mt-0.5">
 												{meeting.contact}
 											</p>
 										</div>
 									</div>
 									<div className="text-right">
-										<p className={`text-xs font-medium ${colors.foreground}`}>
+										<p className="text-xs font-medium">
 											{new Date(meeting.date).toLocaleDateString("en-US", {
 												month: "short",
 												day: "numeric",
 											})}
 										</p>
-										<p className={`text-xs ${colors.textMuted} mt-0.5`}>
+										<p className="text-xs text-muted-foreground/70 mt-0.5">
 											{new Date(meeting.date).toLocaleDateString("en-US", {
 												weekday: "short",
 											})}
@@ -925,30 +888,27 @@ const Home = () => {
 								</div>
 							))}
 					</div>
-					<button
-						className={`w-full mt-4 py-2 text-sm font-medium ${colors.textSecondary} ${colors.hoverSecondary} rounded-xl transition-colors`}
+					<Button
+						variant="ghost"
+						className="w-full mt-4"
 						onClick={() => router.push("/tasks")}
 					>
 						View all meetings
-					</button>
-				</div>
+					</Button>
+					</CardContent>
+				</Card>
 			</div>
 
 			{/* Quick Actions */}
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} p-6 my-4`}
-			>
-				<div className="flex items-center justify-between mb-4">
-					<div>
-						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
-							Quick Actions
-						</h2>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Common tasks and shortcuts
-						</p>
-					</div>
-				</div>
-				<div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+			<Card className="my-4">
+				<CardHeader>
+					<CardTitle className="text-lg">Quick Actions</CardTitle>
+					<CardDescription>
+						Common tasks and shortcuts
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-3">
 					{[
 						{
 							icon: UserPlus,
@@ -983,30 +943,29 @@ const Home = () => {
 							orange: "bg-orange-500/10 text-orange-500 border-orange-500/20",
 						};
 						return (
-							<button
+							<Button
 								key={index}
+								variant="outline"
 								onClick={() => router.push(action.route)}
-								className={`flex flex-col items-center gap-2 p-4 rounded-xl border ${
-									colorClasses[action.color]
-								} ${
-									colors.hoverSecondary
-								} transition-all duration-200 hover:scale-105`}
+								className={cn(
+									"flex h-auto flex-col items-center gap-2 p-4 rounded-xl border",
+									colorClasses[action.color],
+									"transition-all duration-200 hover:scale-105"
+								)}
 							>
 								<Icon size={24} />
-								<span className={`text-xs font-medium ${colors.foreground}`}>
+								<span className="text-xs font-medium">
 									{action.label}
 								</span>
-							</button>
+							</Button>
 						);
 					})}
 				</div>
-			</div>
+				</CardContent>
+			</Card>
 
-			
 			<div className="flex items-start justify-start">
-				<div
-					className="grid w-full md:w-full grid-cols-1 md:grid-cols-4 gap-4 my-4"
-				>
+				<div className="grid w-full md:w-full grid-cols-1 md:grid-cols-4 gap-4 my-4">
 					{dashboardData.moduleStats.map((item, index) => {
 						const iconMap = {
 							calendar: Calendar,
@@ -1021,37 +980,34 @@ const Home = () => {
 						const Icon = iconMap[item.icon] || Activity;
 
 						return (
-							<div
-								className={`p-4 border ${colors.border} rounded-xl ${colors.card} ${colors.shadow} transition-all`}
-								key={index}
-							>
+							<Card key={index} className="p-4">
 								<div className="flex items-start justify-between">
 									<div>
-										<p className={`text-sm ${colors.textSecondary}`}>{item.title}</p>
-										<p className={`text-2xl font-semibold ${colors.foreground} mt-1`}>
+										<p className="text-sm text-muted-foreground">{item.title}</p>
+										<p className="text-2xl font-semibold mt-1">
 											{item.value}
 										</p>
-										<p className={`text-xs ${colors.textMuted} mt-1`}>
+										<p className="text-xs text-muted-foreground/70 mt-1">
 											{item.description}
 										</p>
 									</div>
-									<div
-										className={`h-10 w-10 rounded-xl border ${colors.border} flex items-center justify-center`}
-									>
-										<Icon size={18} className={colors.foreground} />
+									<div className="h-10 w-10 rounded-xl border flex items-center justify-center">
+										<Icon size={18} />
 									</div>
 								</div>
-								<button
+								<Button
+									variant="ghost"
+									size="sm"
 									onClick={() => router.push(item.route)}
-									className={`mt-4 w-fit inline-flex items-center justify-center gap-2 p-2 rounded-xl text-xs font-medium ${colors.hoverSecondary} ${colors.foreground} transition-colors`}
+									className="mt-4 gap-2"
 								>
 									View details
 									<ArrowRight size={14} />
-								</button>
-							</div>
+								</Button>
+							</Card>
 						);
 					})}
-						</div>
+				</div>
 			</div>
 		</div>
 	);

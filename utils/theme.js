@@ -146,60 +146,150 @@ export const colorSchemes = {
 	},
 };
 
-// Shadcn color theme object
+// Semantic tokens — follow CSS variables from globals.css / theme customizer
+const semanticColors = {
+	primaryBackground: "bg-background",
+	background: "bg-background",
+	foreground: "text-foreground",
+	muted: "bg-muted",
+	mutedForeground: "text-muted-foreground",
+	mutedBackground: "bg-muted",
+	border: "border-border",
+	input: "border-input",
+	card: "bg-card",
+	cardForeground: "text-card-foreground",
+	primary: "bg-primary",
+	primaryForeground: "text-primary-foreground",
+	secondary: "bg-secondary",
+	secondaryForeground: "text-secondary-foreground",
+	accent: "bg-accent",
+	accentForeground: "text-accent-foreground",
+	hover: "hover:bg-accent",
+	hoverPrimary: "hover:bg-primary/90",
+	hoverSecondary: "hover:bg-accent",
+	ring: "ring-ring",
+	shadow: "shadow-sm",
+	textMuted: "text-muted-foreground",
+	textSecondary: "text-foreground",
+	textTertiary: "text-muted-foreground",
+};
+
+// Shadcn color theme object (light & dark share tokens; CSS vars switch via .dark)
 export const themeColors = {
-	light: {
-		primaryBackground: "bg-white",
-		background: "bg-zinc-50/50",
-		foreground: "text-zinc-900",
-		muted: "bg-zinc-50",
-		mutedForeground: "text-zinc-500",
-		mutedBackground: "bg-gray-50",
-		border: "border-zinc-200",
-		input: "border-zinc-200",
-		card: "bg-white",
-		cardForeground: "text-zinc-900",
-		primary: "bg-zinc-900",
-		primaryForeground: "text-white",
-		secondary: "bg-zinc-100",
-		secondaryForeground: "text-zinc-700",
-		accent: "bg-zinc-100",
-		accentForeground: "text-zinc-900",
-		hover: "hover:bg-zinc-50",
-		hoverPrimary: "hover:bg-zinc-800",
-		hoverSecondary: "hover:bg-zinc-100",
-		ring: "ring-zinc-900",
-		shadow: "shadow-sm",
-		textMuted: "text-zinc-400",
-		textSecondary: "text-zinc-700",
-		textTertiary: "text-zinc-500",
+	light: semanticColors,
+	dark: semanticColors,
+};
+
+/** HSL tokens for shadcn CSS vars — synced when navbar accent picker changes. */
+export const schemeCssVars = {
+	blue: {
+		light: {
+			primary: "221.2 83.2% 53.3%",
+			primaryForeground: "0 0% 100%",
+			ring: "221.2 83.2% 53.3%",
+		},
+		dark: {
+			primary: "217.2 91.2% 59.8%",
+			primaryForeground: "228.6 84% 4.9%",
+			ring: "217.2 91.2% 59.8%",
+		},
 	},
-	dark: {
-		primaryBackground: "bg-zinc-950",
-		background: "bg-black",
-		foreground: "text-zinc-50",
-		muted: "bg-zinc-900",
-		mutedForeground: "text-zinc-400",
-		mutedBackground: "bg-zinc-950",
-		border: "border-zinc-800",
-		input: "border-zinc-800",
-		card: "bg-zinc-900",
-		cardForeground: "text-zinc-50",
-		primary: "bg-zinc-50",
-		primaryForeground: "text-zinc-900",
-		secondary: "bg-zinc-900",
-		secondaryForeground: "text-zinc-200",
-		accent: "bg-zinc-800",
-		accentForeground: "text-zinc-50",
-		hover: "hover:bg-zinc-900",
-		hoverPrimary: "hover:bg-zinc-100",
-		hoverSecondary: "hover:bg-zinc-800",
-		ring: "ring-zinc-50",
-		shadow: "shadow-lg",
-		textMuted: "text-zinc-500",
-		textSecondary: "text-zinc-300",
-		textTertiary: "text-zinc-400",
+	green: {
+		light: {
+			primary: "142.1 76.2% 36.3%",
+			primaryForeground: "0 0% 100%",
+			ring: "142.1 76.2% 36.3%",
+		},
+		dark: {
+			primary: "142.1 70.6% 45.3%",
+			primaryForeground: "144.9 80.4% 10%",
+			ring: "142.1 70.6% 45.3%",
+		},
 	},
+	purple: {
+		light: {
+			primary: "271.5 81.3% 55.9%",
+			primaryForeground: "0 0% 100%",
+			ring: "271.5 81.3% 55.9%",
+		},
+		dark: {
+			primary: "271.5 91% 65.1%",
+			primaryForeground: "274.3 86.8% 12.9%",
+			ring: "271.5 91% 65.1%",
+		},
+	},
+	orange: {
+		light: {
+			primary: "20.5 90.2% 48.2%",
+			primaryForeground: "0 0% 100%",
+			ring: "20.5 90.2% 48.2%",
+		},
+		dark: {
+			primary: "24.6 95% 53.1%",
+			primaryForeground: "13 81.1% 14.5%",
+			ring: "24.6 95% 53.1%",
+		},
+	},
+	red: {
+		light: {
+			primary: "0 72.2% 50.6%",
+			primaryForeground: "0 0% 100%",
+			ring: "0 72.2% 50.6%",
+		},
+		dark: {
+			primary: "0 84.2% 60.2%",
+			primaryForeground: "0 74.7% 15.5%",
+			ring: "0 84.2% 60.2%",
+		},
+	},
+	pink: {
+		light: {
+			primary: "346.8 77.2% 49.8%",
+			primaryForeground: "0 0% 100%",
+			ring: "346.8 77.2% 49.8%",
+		},
+		dark: {
+			primary: "330.4 81.2% 60.4%",
+			primaryForeground: "343.4 81.2% 14.9%",
+			ring: "330.4 81.2% 60.4%",
+		},
+	},
+	indigo: {
+		light: {
+			primary: "243.4 75.4% 58.6%",
+			primaryForeground: "0 0% 100%",
+			ring: "243.4 75.4% 58.6%",
+		},
+		dark: {
+			primary: "238.7 83.5% 66.7%",
+			primaryForeground: "244.3 47.1% 20.2%",
+			ring: "238.7 83.5% 66.7%",
+		},
+	},
+	zinc: {
+		light: {
+			primary: "240 5.9% 10%",
+			primaryForeground: "0 0% 100%",
+			ring: "240 5.9% 10%",
+		},
+		dark: {
+			primary: "0 0% 98%",
+			primaryForeground: "240 5.9% 10%",
+			ring: "0 0% 98%",
+		},
+	},
+};
+
+/** Push accent palette into shadcn CSS custom properties on :root. */
+export const applySchemeCssVars = (colorScheme, theme) => {
+	if (typeof document === "undefined") return;
+	const vars =
+		schemeCssVars[colorScheme]?.[theme] ?? schemeCssVars.blue[theme];
+	const root = document.documentElement;
+	root.style.setProperty("--primary", vars.primary);
+	root.style.setProperty("--primary-foreground", vars.primaryForeground);
+	root.style.setProperty("--ring", vars.ring);
+	root.dataset.colorScheme = colorScheme;
 };
 
 // Helper function to get focus ring class based on color scheme

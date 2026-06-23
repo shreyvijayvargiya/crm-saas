@@ -18,13 +18,19 @@ import {
 	Zap,
 	CircleDot,
 } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useTheme } from "../../utils/useTheme";
-import { FormModal, FormField, formInputClass } from "../../lib/ui/modal";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import FormSelect from "../../lib/ui/FormSelect";
 import {
 	INITIAL_PIPELINE_DEALS,
 	PIPELINE_STAGES,
 } from "../CRM/pipelineDealsSeedData";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 const STAGES = [
 	{
@@ -140,18 +146,14 @@ function DealCard({ deal, stageAccent, colors, onOpen }) {
 					<div className="min-w-0 flex-1 space-y-2">
 						<div className="flex flex-wrap items-start gap-1.5">
 							{deal.tag && (
-								<span
-									className={`text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded-md border ${colors.muted} ${colors.foreground} border-zinc-200/80 dark:border-zinc-700`}
-								>
+								<Badge variant="secondary" className="text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5">
 									{deal.tag}
-								</span>
+								</Badge>
 							)}
-							<span
-								className={`inline-flex items-center gap-0.5 text-[10px] font-medium px-1.5 py-0.5 rounded-md border ${p.className}`}
-							>
+							<Badge variant={deal.priority} className="text-[10px] font-medium px-1.5 py-0.5 gap-0.5">
 								<PIcon className="w-3 h-3" />
 								{p.label}
-							</span>
+							</Badge>
 						</div>
 						<div>
 							<p className={`text-sm font-semibold leading-snug ${colors.foreground} line-clamp-2`}>
@@ -216,9 +218,9 @@ function StageColumn({ stage, deals, colors, totalValue, onOpen, onAddDeal }) {
 					<span className={`text-[11px] font-bold uppercase tracking-wider ${colors.mutedForeground}`}>
 						{stage.label}
 					</span>
-					<span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${stage.badge}`}>
+					<Badge className={cn("text-[10px] font-semibold px-2 py-0.5", stage.badge)}>
 						{deals.length}
-					</span>
+					</Badge>
 				</div>
 				<div
 					className={`rounded-xl px-2.5 py-2 border ${colors.border} bg-gradient-to-br from-zinc-50/90 to-transparent dark:from-zinc-900/40 dark:to-transparent`}
@@ -249,14 +251,15 @@ function StageColumn({ stage, deals, colors, totalValue, onOpen, onAddDeal }) {
 						<p className={`text-xs ${colors.textMuted}`}>Drop deals here</p>
 					</div>
 				)}
-				<button
+				<Button
 					type="button"
+					variant="outline"
 					onClick={() => onAddDeal(stage.id)}
-					className={`w-full mt-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-medium border border-dashed ${colors.border} ${colors.hoverSecondary} ${colors.mutedForeground} transition-colors`}
+					className="w-full mt-1 border-dashed gap-1.5 text-xs font-medium h-auto py-2"
 				>
 					<Plus className="w-3.5 h-3.5" />
 					Add deal
-				</button>
+				</Button>
 			</div>
 		</div>
 	);
@@ -264,7 +267,7 @@ function StageColumn({ stage, deals, colors, totalValue, onOpen, onAddDeal }) {
 
 const Pipelines = () => {
 	const router = useRouter();
-	const { colors, colorScheme } = useTheme();
+	const { colors } = useTheme();
 	const [deals, setDeals] = useState(INITIAL_PIPELINE_DEALS);
 	const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 	const [newDeal, setNewDeal] = useState(EMPTY_DEAL_FORM);
@@ -359,32 +362,32 @@ const Pipelines = () => {
 						Drag deals between stages — click a card for details. Totals update as you move cards.
 					</p>
 				</div>
-				<div
-					className={`flex flex-wrap gap-3 rounded-xl border ${colors.border} ${colors.card} px-4 py-3 shadow-sm`}
-				>
-					<div>
-						<p className={`text-[10px] uppercase font-semibold tracking-wide ${colors.mutedForeground}`}>
-							Open pipeline
-						</p>
-						<p className={`text-lg font-bold tabular-nums ${colors.foreground}`}>{formatMoney(pipelineTotal)}</p>
-					</div>
-					<div className={`w-px bg-zinc-200 dark:bg-zinc-700 self-stretch min-h-[2.5rem]`} />
-					<div>
-						<p className={`text-[10px] uppercase font-semibold tracking-wide ${colors.mutedForeground}`}>
-							Active deals
-						</p>
-						<p className={`text-lg font-bold ${colors.foreground}`}>{openDeals}</p>
-					</div>
-					<div className={`w-px bg-zinc-200 dark:bg-zinc-700 self-stretch min-h-[2.5rem]`} />
-					<div>
-						<p className={`text-[10px] uppercase font-semibold tracking-wide ${colors.mutedForeground}`}>
-							Avg deal size
-						</p>
-						<p className={`text-lg font-bold tabular-nums ${colors.foreground}`}>
-							{openDeals ? formatMoney(Math.round(pipelineTotal / openDeals)) : "—"}
-						</p>
-					</div>
-				</div>
+				<Card className="shadow-sm">
+					<CardContent className="flex flex-wrap gap-3 px-4 py-3">
+						<div>
+							<p className={`text-[10px] uppercase font-semibold tracking-wide ${colors.mutedForeground}`}>
+								Open pipeline
+							</p>
+							<p className={`text-lg font-bold tabular-nums ${colors.foreground}`}>{formatMoney(pipelineTotal)}</p>
+						</div>
+						<div className={`w-px bg-zinc-200 dark:bg-zinc-700 self-stretch min-h-[2.5rem]`} />
+						<div>
+							<p className={`text-[10px] uppercase font-semibold tracking-wide ${colors.mutedForeground}`}>
+								Active deals
+							</p>
+							<p className={`text-lg font-bold ${colors.foreground}`}>{openDeals}</p>
+						</div>
+						<div className={`w-px bg-zinc-200 dark:bg-zinc-700 self-stretch min-h-[2.5rem]`} />
+						<div>
+							<p className={`text-[10px] uppercase font-semibold tracking-wide ${colors.mutedForeground}`}>
+								Avg deal size
+							</p>
+							<p className={`text-lg font-bold tabular-nums ${colors.foreground}`}>
+								{openDeals ? formatMoney(Math.round(pipelineTotal / openDeals)) : "—"}
+							</p>
+						</div>
+					</CardContent>
+				</Card>
 			</div>
 
 			<DndContext sensors={sensors} onDragEnd={handleDragEnd}>
@@ -416,63 +419,57 @@ const Pipelines = () => {
 				maxWidth="max-w-md"
 			>
 				<FormField label="Deal title" htmlFor="deal-title" required>
-					<input
+					<Input
 						id="deal-title"
 						type="text"
 						value={newDeal.title}
 						onChange={(e) => setNewDeal((p) => ({ ...p, title: e.target.value }))}
 						required
-						className={formInputClass(colorScheme, colors)}
 						placeholder="e.g. Enterprise expansion"
 					/>
 				</FormField>
 				<FormField label="Company" htmlFor="deal-company" required>
-					<input
+					<Input
 						id="deal-company"
 						type="text"
 						value={newDeal.company}
 						onChange={(e) => setNewDeal((p) => ({ ...p, company: e.target.value }))}
 						required
-						className={formInputClass(colorScheme, colors)}
 					/>
 				</FormField>
 				<div className="grid grid-cols-2 gap-4">
 					<FormField label="Value ($)" htmlFor="deal-value">
-						<input
+						<Input
 							id="deal-value"
 							type="number"
 							min="0"
 							value={newDeal.value}
 							onChange={(e) => setNewDeal((p) => ({ ...p, value: e.target.value }))}
-							className={formInputClass(colorScheme, colors)}
 						/>
 					</FormField>
 					<FormField label="Priority" htmlFor="deal-priority">
-						<select
+						<FormSelect
 							id="deal-priority"
 							value={newDeal.priority}
 							onChange={(e) => setNewDeal((p) => ({ ...p, priority: e.target.value }))}
-							className={formInputClass(colorScheme, colors)}
-						>
-							<option value="high">High</option>
-							<option value="medium">Medium</option>
-							<option value="low">Low</option>
-						</select>
+							options={[
+								{ value: "high", label: "High" },
+								{ value: "medium", label: "Medium" },
+								{ value: "low", label: "Low" },
+							]}
+						/>
 					</FormField>
 				</div>
 				<FormField label="Stage" htmlFor="deal-stage">
-					<select
+					<FormSelect
 						id="deal-stage"
 						value={newDeal.stage}
 						onChange={(e) => setNewDeal((p) => ({ ...p, stage: e.target.value }))}
-						className={formInputClass(colorScheme, colors)}
-					>
-						{PIPELINE_STAGES.map((s) => (
-							<option key={s.id} value={s.id}>
-								{s.label}
-							</option>
-						))}
-					</select>
+						options={PIPELINE_STAGES.map((s) => ({
+							value: s.id,
+							label: s.label,
+						}))}
+					/>
 				</FormField>
 			</FormModal>
 		</div>

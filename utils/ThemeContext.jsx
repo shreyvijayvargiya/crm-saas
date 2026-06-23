@@ -33,28 +33,26 @@ export const ThemeProvider = ({ children }) => {
 		return "blue";
 	});
 
-	// Apply theme to document
+	// Apply light/dark mode + accent palette to document (shadcn CSS vars)
 	useEffect(() => {
-		if (typeof window !== "undefined") {
-			const root = document.documentElement;
-			const body = document.body;
-			if (theme === "dark") {
-				root.classList.add("dark");
-				body.style.backgroundColor = "#09090b"; // zinc-950
-			} else {
-				root.classList.remove("dark");
-				body.style.backgroundColor = "#f4f4f5"; // zinc-100
-			}
-			localStorage.setItem("cms-theme", theme);
-		}
-	}, [theme]);
+		if (typeof window === "undefined") return;
 
-	// Save color scheme
-	useEffect(() => {
-		if (typeof window !== "undefined") {
-			localStorage.setItem("cms-color-scheme", colorScheme);
+		const root = document.documentElement;
+		const body = document.body;
+
+		if (theme === "dark") {
+			root.classList.add("dark");
+			body.style.backgroundColor = "#09090b"; // zinc-950
+		} else {
+			root.classList.remove("dark");
+			body.style.backgroundColor = "#f4f4f5"; // zinc-100
 		}
-	}, [colorScheme]);
+
+		// Accent/primary tokens owned by ThemeCustomizerProvider
+
+		localStorage.setItem("cms-theme", theme);
+		localStorage.setItem("cms-color-scheme", colorScheme);
+	}, [theme, colorScheme]);
 
 	const toggleTheme = () => {
 		setTheme((prev) => (prev === "light" ? "dark" : "light"));

@@ -11,6 +11,8 @@ import {
 } from "recharts";
 import { useTheme } from "../../../utils/useTheme";
 import { useChartTooltipProps } from "../../../utils/chartTooltip";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getChartColor } from "@/lib/chartColors";
 
 const areaData = [
 	{ x: "1", y: 12 },
@@ -28,50 +30,49 @@ const areaData = [
 const AverageDailySalesCard = () => {
 	const { colors } = useTheme();
 	const tooltipProps = useChartTooltipProps();
+	const chartColor = getChartColor();
 
 	return (
-		<div
-			className={`rounded-xl border ${colors.border} ${colors.card} shadow-sm p-5 h-full flex flex-col`}
-		>
-			<div className="flex items-start justify-between gap-2 mb-4">
-				<h2 className={`text-lg font-semibold ${colors.foreground}`}>
-					Average Daily Sales
-				</h2>
+		<Card className="h-full flex flex-col">
+			<CardHeader className="flex-row items-start justify-between gap-2 space-y-0 pb-4">
+				<CardTitle className="text-lg">Average Daily Sales</CardTitle>
 				<span className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-rose-500/15 text-rose-600 dark:text-rose-400">
 					<TrendingDown className="w-4 h-4" />
 				</span>
-			</div>
-			<p className={`text-3xl font-bold tracking-tight mb-4 ${colors.foreground}`}>
-				$28,450
-			</p>
-			<div className="flex-1 min-h-[140px]">
-				<ResponsiveContainer width="100%" height="100%" minHeight={140}>
-					<AreaChart data={areaData} margin={{ top: 4, right: 4, left: -8, bottom: 0 }}>
-						<defs>
-							<linearGradient id="salesAreaFill" x1="0" y1="0" x2="0" y2="1">
-								<stop offset="0%" stopColor="#a1a1aa" stopOpacity={0.35} />
-								<stop offset="100%" stopColor="#a1a1aa" stopOpacity={0.02} />
-							</linearGradient>
-						</defs>
-						<CartesianGrid
-							strokeDasharray="3 3"
-							vertical={false}
-							className="stroke-zinc-200 dark:stroke-zinc-700"
-						/>
-						<XAxis dataKey="x" hide />
-						<YAxis hide />
-						<Tooltip {...tooltipProps} />
-						<Area
-							type="monotone"
-							dataKey="y"
-							stroke="#52525b"
-							strokeWidth={2}
-							fill="url(#salesAreaFill)"
-						/>
-					</AreaChart>
-				</ResponsiveContainer>
-			</div>
-		</div>
+			</CardHeader>
+			<CardContent className="flex flex-col flex-1 pt-0">
+				<p className={`text-3xl font-bold tracking-tight mb-4 ${colors.foreground}`}>
+					$28,450
+				</p>
+				<div className="flex-1 min-h-[140px]">
+					<ResponsiveContainer width="100%" height="100%" minHeight={140}>
+						<AreaChart data={areaData} margin={{ top: 4, right: 4, left: -8, bottom: 0 }}>
+							<defs>
+								<linearGradient id="salesAreaFill" x1="0" y1="0" x2="0" y2="1">
+									<stop offset="0%" stopColor={chartColor} stopOpacity={0.35} />
+									<stop offset="100%" stopColor={chartColor} stopOpacity={0.02} />
+								</linearGradient>
+							</defs>
+							<CartesianGrid
+								strokeDasharray="3 3"
+								vertical={false}
+								className="stroke-zinc-200 dark:stroke-zinc-700"
+							/>
+							<XAxis dataKey="x" hide />
+							<YAxis hide />
+							<Tooltip {...tooltipProps} />
+							<Area
+								type="monotone"
+								dataKey="y"
+								stroke={chartColor}
+								strokeWidth={2}
+								fill="url(#salesAreaFill)"
+							/>
+						</AreaChart>
+					</ResponsiveContainer>
+				</div>
+			</CardContent>
+		</Card>
 	);
 };
 

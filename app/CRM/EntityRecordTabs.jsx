@@ -10,6 +10,9 @@ import {
 } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
 import { getEntityBundle } from "./entityDetailData";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 function TimelineIcon({ type }) {
 	if (type === "email")
@@ -38,7 +41,7 @@ function TimelineIcon({ type }) {
 }
 
 const EntityRecordTabs = ({ kind, id }) => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 	const [activeTab, setActiveTab] = useState("activity");
 	const bundle = useMemo(() => getEntityBundle(kind, id), [kind, id]);
 	const [notes, setNotes] = useState(() => bundle.notesSeed);
@@ -74,107 +77,104 @@ const EntityRecordTabs = ({ kind, id }) => {
 
 	return (
 		<>
-			<div
-				className={`flex flex-wrap gap-1 p-1 rounded-xl border ${colors.border} ${colors.card}`}
-			>
-				{tabs.map(({ id: tabId, label, icon: Icon }) => {
-					const on = activeTab === tabId;
-					return (
-						<button
-							key={tabId}
-							type="button"
-							onClick={() => setActiveTab(tabId)}
-							className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
-								on
-									? `${scheme.primary} ${scheme.primaryForeground}`
-									: `${colors.mutedForeground} ${colors.hoverSecondary} ${colors.foreground}`
-							}`}
-						>
-							<Icon className="w-4 h-4 shrink-0" />
-							{label}
-						</button>
-					);
-				})}
-			</div>
+			<Card className="p-1">
+				<div className="flex flex-wrap gap-1">
+					{tabs.map(({ id: tabId, label, icon: Icon }) => {
+						const on = activeTab === tabId;
+						return (
+							<Button
+								key={tabId}
+								type="button"
+								variant={on ? "default" : "ghost"}
+								size="sm"
+								onClick={() => setActiveTab(tabId)}
+								className="gap-2"
+							>
+								<Icon className="w-4 h-4 shrink-0" />
+								{label}
+							</Button>
+						);
+					})}
+				</div>
+			</Card>
 
 			{activeTab === "activity" && (
-				<div
-					className={`rounded-xl border ${colors.border} ${colors.card} ${colors.shadow} p-5 sm:p-6`}
-				>
-					<h2
-						className={`text-sm font-semibold ${colors.foreground} flex items-center gap-2`}
-					>
-						<Clock className="w-4 h-4" />
-						Activity timeline
-					</h2>
-					<ul className="mt-5 space-y-0">
-						{bundle.activity.map((item, i) => (
-							<li key={item.id} className="flex gap-3">
-								<div className="flex flex-col items-center">
-									<TimelineIcon type={item.type} />
-									{i < bundle.activity.length - 1 && (
-										<span
-											className={`w-px flex-1 min-h-[2.5rem] bg-current opacity-20 ${colors.border}`}
-										/>
-									)}
-								</div>
-								<div className="flex-1 pb-6">
-									<p className={`text-sm font-medium ${colors.foreground}`}>
-										{item.title}
-									</p>
-									<p className={`text-xs mt-1 ${colors.textSecondary}`}>
-										{item.body}
-									</p>
-									<p className={`text-[10px] mt-2 ${colors.textMuted}`}>
-										{item.at} · {item.user}
-									</p>
-								</div>
-							</li>
-						))}
-					</ul>
-				</div>
+				<Card className={colors.shadow}>
+					<CardContent className="p-5 sm:p-6">
+						<h2
+							className={`text-sm font-semibold ${colors.foreground} flex items-center gap-2`}
+						>
+							<Clock className="w-4 h-4" />
+							Activity timeline
+						</h2>
+						<ul className="mt-5 space-y-0">
+							{bundle.activity.map((item, i) => (
+								<li key={item.id} className="flex gap-3">
+									<div className="flex flex-col items-center">
+										<TimelineIcon type={item.type} />
+										{i < bundle.activity.length - 1 && (
+											<span
+												className={`w-px flex-1 min-h-[2.5rem] bg-current opacity-20 ${colors.border}`}
+											/>
+										)}
+									</div>
+									<div className="flex-1 pb-6">
+										<p className={`text-sm font-medium ${colors.foreground}`}>
+											{item.title}
+										</p>
+										<p className={`text-xs mt-1 ${colors.textSecondary}`}>
+											{item.body}
+										</p>
+										<p className={`text-[10px] mt-2 ${colors.textMuted}`}>
+											{item.at} · {item.user}
+										</p>
+									</div>
+								</li>
+							))}
+						</ul>
+					</CardContent>
+				</Card>
 			)}
 
 			{activeTab === "notes" && (
-				<div
-					className={`rounded-xl border ${colors.border} ${colors.card} ${colors.shadow} p-5 sm:p-6`}
-				>
-					<h2
-						className={`text-sm font-semibold ${colors.foreground} flex items-center gap-2`}
-					>
-						<StickyNote className="w-4 h-4" />
-						Notes
-					</h2>
-					<div className="mt-4">
-						<textarea
-							value={draftNote}
-							onChange={(e) => setDraftNote(e.target.value)}
-							rows={3}
-							placeholder="Add a note…"
-							className={`w-full rounded-xl border ${colors.border} ${colors.background} ${colors.foreground} px-3 py-2 text-sm placeholder:opacity-50`}
-						/>
-						<button
-							type="button"
-							onClick={addNote}
-							className={`mt-2 text-xs font-medium px-3 py-2 rounded-xl ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`}
+				<Card className={colors.shadow}>
+					<CardContent className="p-5 sm:p-6">
+						<h2
+							className={`text-sm font-semibold ${colors.foreground} flex items-center gap-2`}
 						>
-							Save note
-						</button>
-					</div>
-					<ul className="mt-6 space-y-3">
-						{notes.map((n) => (
-							<li
-								key={n.id}
-								className={`rounded-xl border ${colors.border} px-4 py-3 ${colors.muted}`}
-							>
-								<p className={`text-sm ${colors.foreground}`}>{n.body}</p>
-								<p className={`text-[10px] mt-2 ${colors.textMuted}`}>
-									{n.at} · {n.author}
-								</p>
-							</li>
-						))}
-					</ul>
-				</div>
+							<StickyNote className="w-4 h-4" />
+							Notes
+						</h2>
+						<div className="mt-4">
+							<textarea
+								value={draftNote}
+								onChange={(e) => setDraftNote(e.target.value)}
+								rows={3}
+								placeholder="Add a note…"
+								className={cn(
+									"flex min-h-[80px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+									colors.foreground
+								)}
+							/>
+							<Button type="button" size="sm" onClick={addNote} className="mt-2">
+								Save note
+							</Button>
+						</div>
+						<ul className="mt-6 space-y-3">
+							{notes.map((n) => (
+								<li
+									key={n.id}
+									className={`rounded-xl border ${colors.border} px-4 py-3 ${colors.muted}`}
+								>
+									<p className={`text-sm ${colors.foreground}`}>{n.body}</p>
+									<p className={`text-[10px] mt-2 ${colors.textMuted}`}>
+										{n.at} · {n.author}
+									</p>
+								</li>
+							))}
+						</ul>
+					</CardContent>
+				</Card>
 			)}
 		</>
 	);

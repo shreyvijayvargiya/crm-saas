@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Mail } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import AuthPageShell from "./AuthPageShell";
 import LabeledInput from "./LabeledInput";
 import { useTheme } from "../../utils/useTheme";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const ForgotPassword = () => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 	const [email, setEmail] = useState("");
 	const [sent, setSent] = useState(false);
 	const [error, setError] = useState("");
@@ -47,36 +49,35 @@ const ForgotPassword = () => {
 			}
 		>
 			{sent ? (
-				<div
-					className={`rounded-xl border ${colors.border} ${colors.muted} p-4 text-sm ${colors.textSecondary}`}
-					role="status"
-				>
-					<div className="flex gap-3">
-						<div
-							className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${scheme.primary} ${scheme.primaryForeground}`}
-						>
-							<Mail className="h-5 w-5" />
+				<Card className={colors.muted}>
+					<CardContent className="p-4 text-sm" role="status">
+						<div className="flex gap-3">
+							<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+								<Mail className="h-5 w-5" />
+							</div>
+							<div>
+								<p className={`font-medium ${colors.foreground}`}>Check your inbox</p>
+								<p className={`mt-1 text-xs leading-relaxed ${colors.textSecondary}`}>
+									If an account exists for{" "}
+									<span className="font-mono text-[11px]">{email.trim()}</span>, a reset
+									link would arrive within a few minutes. Demo mode does not send mail.
+								</p>
+								<Button
+									type="button"
+									variant="link"
+									size="sm"
+									onClick={() => {
+										setSent(false);
+										setEmail("");
+									}}
+									className="mt-3 h-auto p-0 text-xs"
+								>
+									Use a different email
+								</Button>
+							</div>
 						</div>
-						<div>
-							<p className={`font-medium ${colors.foreground}`}>Check your inbox</p>
-							<p className="mt-1 text-xs leading-relaxed">
-								If an account exists for{" "}
-								<span className="font-mono text-[11px]">{email.trim()}</span>, a reset
-								link would arrive within a few minutes. Demo mode does not send mail.
-							</p>
-							<button
-								type="button"
-								onClick={() => {
-									setSent(false);
-									setEmail("");
-								}}
-								className={`mt-3 text-xs font-semibold ${colors.foreground} underline-offset-2 hover:underline`}
-							>
-								Use a different email
-							</button>
-						</div>
-					</div>
-				</div>
+					</CardContent>
+				</Card>
 			) : (
 				<form onSubmit={handleSubmit} className="space-y-4" noValidate>
 					<LabeledInput
@@ -96,12 +97,9 @@ const ForgotPassword = () => {
 						For production, invalidate active sessions after a successful reset and rate-limit
 						this endpoint to reduce abuse.
 					</p>
-					<button
-						type="submit"
-						className={`w-full rounded-xl py-2.5 text-sm font-semibold transition-colors ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`}
-					>
+					<Button type="submit" className="w-full">
 						Send reset link
-					</button>
+					</Button>
 				</form>
 			)}
 		</AuthPageShell>
