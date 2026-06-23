@@ -3,7 +3,6 @@ import {
 	FileText,
 	Eye,
 	Plus,
-	X,
 	Search,
 	ChevronLeft,
 	ChevronRight,
@@ -16,13 +15,32 @@ import {
 	Clock,
 	CheckCircle2,
 } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useTheme } from "../../utils/useTheme";
-import { getFocusRingClass } from "../../utils/theme";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import FormSelect from "../../lib/ui/FormSelect";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
+
+const textareaClass = cn(
+	"flex min-h-24 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+);
 
 const ContentManagementSystem = () => {
-	// Theme hook
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { theme, colors } = useTheme();
 
 	const [blogs, setBlogs] = useState([
 		{
@@ -332,9 +350,7 @@ const ContentManagementSystem = () => {
 
 			{/* Stats Cards */}
 			<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
-				>
+				<Card className={`p-6 ${colors.shadow}`}>
 					<div className="flex items-center justify-between">
 						<div>
 							<p
@@ -359,11 +375,9 @@ const ContentManagementSystem = () => {
 							/>
 						</div>
 					</div>
-				</div>
+				</Card>
 
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
-				>
+				<Card className={`p-6 ${colors.shadow}`}>
 					<div className="flex items-center justify-between">
 						<div>
 							<p
@@ -394,11 +408,9 @@ const ContentManagementSystem = () => {
 							/>
 						</div>
 					</div>
-				</div>
+				</Card>
 
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
-				>
+				<Card className={`p-6 ${colors.shadow}`}>
 					<div className="flex items-center justify-between">
 						<div>
 							<p
@@ -427,11 +439,9 @@ const ContentManagementSystem = () => {
 							/>
 						</div>
 					</div>
-				</div>
+				</Card>
 
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
-				>
+				<Card className={`p-6 ${colors.shadow}`}>
 					<div className="flex items-center justify-between">
 						<div>
 							<p
@@ -458,7 +468,7 @@ const ContentManagementSystem = () => {
 							/>
 						</div>
 					</div>
-				</div>
+				</Card>
 			</div>
 {/* Table Header */}
 <div className={`p-2`}>
@@ -466,20 +476,17 @@ const ContentManagementSystem = () => {
 						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
 							Recent Blogs
 						</h2>
-						<button
-							onClick={() => setIsAddModalOpen(true)}
-							className={`px-4 py-2 rounded-xl text-sm font-medium ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} transition-colors flex items-center gap-2`}
-						>
+						<Button onClick={() => setIsAddModalOpen(true)}>
 							<Plus className="w-4 h-4" />
 							Add New Blog
-						</button>
+						</Button>
 					</div>
 					<div className="flex items-center gap-4">
 						<div className="relative flex-1 max-w-sm">
 							<Search
-								className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${colors.mutedForeground}`}
+								className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none"
 							/>
-							<input
+							<Input
 								type="text"
 								placeholder="Search blogs..."
 								value={searchTerm}
@@ -487,79 +494,70 @@ const ContentManagementSystem = () => {
 									setSearchTerm(e.target.value);
 									setCurrentPage(1);
 								}}
-								className={`w-full pl-10 pr-4 py-2 ${
-									colors.background
-								} border ${colors.border} rounded-xl text-sm ${
-									colors.foreground
-								} focus:outline-none focus:ring-2 ${getFocusRingClass(
-									colorScheme
-								)} focus:border-transparent placeholder:${colors.textTertiary}`}
+								className="pl-10"
 							/>
 						</div>
 					</div>
 				</div>
 			{/* Recent Blogs Table */}
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
-			>
+			<Card className={`${colors.shadow} overflow-hidden`}>
 				
 
 				{/* Table */}
-				<div className="overflow-x-auto">
-					<table className="w-full">
-						<thead className={`${colors.muted} border-b ${colors.border}`}>
-							<tr>
-								<th
+				<Table className="w-full">
+						<TableHeader className={`${colors.muted} border-b ${colors.border}`}>
+							<TableRow>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Title
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Author
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Category
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Status
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Publish Date
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Views
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-right text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Actions
-								</th>
-							</tr>
-						</thead>
-						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+								</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody className={`${colors.card} divide-y ${colors.border}`}>
 							{paginatedBlogs.length === 0 ? (
-								<tr>
-									<td colSpan="7" className="px-6 py-12 text-center">
+								<TableRow>
+									<TableCell colSpan="7" className="px-6 py-12 text-center">
 										<p className={colors.mutedForeground}>No blogs found</p>
-									</td>
-								</tr>
+									</TableCell>
+								</TableRow>
 							) : (
 								paginatedBlogs.map((blog) => (
-									<tr
+									<TableRow
 										key={blog.id}
 										className={`${colors.hover} transition-colors`}
 									>
-										<td className="px-6 py-4">
+										<TableCell className="px-6 py-4">
 											<div
 												className={`text-sm font-medium ${colors.foreground}`}
 											>
@@ -567,18 +565,13 @@ const ContentManagementSystem = () => {
 											</div>
 											<div className="flex items-center gap-2 mt-1">
 												{blog.tags.slice(0, 3).map((tag, idx) => (
-													<span
-														key={idx}
-														className={`text-xs px-2 py-0.5 rounded border ${
-															theme === "dark" ? scheme.chipDark : scheme.chip
-														}`}
-													>
+													<Badge key={idx} variant="secondary" className="text-xs">
 														{tag}
-													</span>
+													</Badge>
 												))}
 											</div>
-										</td>
-										<td className="px-6 py-4">
+										</TableCell>
+										<TableCell className="px-6 py-4">
 											<div className="flex items-center gap-3">
 												<div
 													className={`w-8 h-8 rounded-full ${blog.authorAvatar} flex items-center justify-center text-white text-xs font-medium`}
@@ -589,54 +582,47 @@ const ContentManagementSystem = () => {
 													{blog.author}
 												</span>
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{blog.category}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
-											<span
-												className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-													blog.status
-												)}`}
-											>
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
+											<Badge className={cn("border", getStatusColor(blog.status))}>
 												{blog.status === "Published" ? (
 													<CheckCircle2 className="w-3 h-3 mr-1" />
 												) : (
 													<Clock className="w-3 h-3 mr-1" />
 												)}
 												{blog.status}
-											</span>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+											</Badge>
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{formatDate(blog.publishDate)}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div
 												className={`flex items-center gap-1 text-sm ${colors.textSecondary}`}
 											>
 												<Eye className={`w-4 h-4 ${colors.textMuted}`} />
 												{blog.views.toLocaleString()}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap text-right">
-											<button
-												className={`p-1 ${colors.hoverSecondary} rounded transition-colors`}
-											>
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap text-right">
+											<Button variant="ghost" size="icon">
 												<MoreHorizontal
 													className={`w-5 h-5 ${colors.mutedForeground}`}
 												/>
-											</button>
-										</td>
-									</tr>
+											</Button>
+										</TableCell>
+									</TableRow>
 								))
 							)}
-						</tbody>
-					</table>
-				</div>
+						</TableBody>
+					</Table>
 
 				{/* Pagination */}
 				{totalPages > 1 && (
@@ -649,43 +635,42 @@ const ContentManagementSystem = () => {
 							{filteredBlogs.length} blogs
 						</div>
 						<div className="flex items-center gap-2">
-							<button
+							<Button
+								variant="outline"
+								size="icon"
 								onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
 								disabled={currentPage === 1}
-								className={`p-2 border ${colors.border} rounded-xl ${colors.hoverSecondary} disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
 							>
 								<ChevronLeft className={`w-4 h-4 ${colors.foreground}`} />
-							</button>
+							</Button>
 							<div className="flex items-center gap-1">
 								{Array.from({ length: totalPages }, (_, i) => i + 1).map(
 									(page) => (
-										<button
+										<Button
 											key={page}
+											size="sm"
+											variant={currentPage === page ? "default" : "ghost"}
 											onClick={() => setCurrentPage(page)}
-											className={`px-3 py-1 rounded-xl text-sm ${
-												currentPage === page
-													? `${scheme.primary} ${scheme.primaryForeground}`
-													: `${colors.textSecondary} ${colors.hoverSecondary}`
-											}`}
 										>
 											{page}
-										</button>
+										</Button>
 									)
 								)}
 							</div>
-							<button
+							<Button
+								variant="outline"
+								size="icon"
 								onClick={() =>
 									setCurrentPage((prev) => Math.min(totalPages, prev + 1))
 								}
 								disabled={currentPage === totalPages}
-								className={`p-2 border ${colors.border} rounded-xl ${colors.hoverSecondary} disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
 							>
 								<ChevronRight className={`w-4 h-4 ${colors.foreground}`} />
-							</button>
+							</Button>
 						</div>
 					</div>
 				)}
-			</div>
+			</Card>
 			<div className={`p-2`}>
 					<h2 className={`text-lg font-semibold ${colors.foreground}`}>
 						Newsletter Subscribers
@@ -695,59 +680,56 @@ const ContentManagementSystem = () => {
 					</p>
 				</div>
 			{/* Newsletter Subscribers */}
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
-			>
+			<Card className={`${colors.shadow} overflow-hidden`}>
 				
 
 				{/* Table */}
-				<div className="overflow-x-auto">
-					<table className="w-full">
-						<thead className={`${colors.muted} border-b ${colors.border}`}>
-							<tr>
-								<th
+				<Table className="w-full">
+						<TableHeader className={`${colors.muted} border-b ${colors.border}`}>
+							<TableRow>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Subscriber
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Email
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Subscription Date
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Status
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-right text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Actions
-								</th>
-							</tr>
-						</thead>
-						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+								</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody className={`${colors.card} divide-y ${colors.border}`}>
 							{subscribers.length === 0 ? (
-								<tr>
-									<td colSpan="5" className="px-6 py-12 text-center">
+								<TableRow>
+									<TableCell colSpan="5" className="px-6 py-12 text-center">
 										<p className={colors.mutedForeground}>
 											No subscribers found
 										</p>
-									</td>
-								</tr>
+									</TableCell>
+								</TableRow>
 							) : (
 								subscribers.map((subscriber) => (
-									<tr
+									<TableRow
 										key={subscriber.id}
 										className={`${colors.hover} transition-colors`}
 									>
-										<td className="px-6 py-4">
+										<TableCell className="px-6 py-4">
 											<div className="flex items-center gap-3">
 												<div
 													className={`w-8 h-8 rounded-full ${subscriber.avatarColor} flex items-center justify-center text-white text-xs font-medium`}
@@ -760,385 +742,195 @@ const ContentManagementSystem = () => {
 													{subscriber.name}
 												</span>
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{subscriber.email}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{formatDate(subscriber.subscribedDate)}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
-											<span
-												className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
+											<Badge
+												className={cn(
+													"border",
 													theme === "dark"
-														? "bg-green-900/30 text-green-400 border border-green-800/50"
-														: "bg-green-100 text-green-800"
-												}`}
+														? "bg-green-900/30 text-green-400 border-green-800/50"
+														: "bg-green-100 text-green-800 border-green-200"
+												)}
 											>
 												<CheckCircle2 className="w-3 h-3 mr-1" />
 												{subscriber.status}
-											</span>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap text-right">
-											<button
-												className={`p-1 ${colors.hoverSecondary} rounded transition-colors`}
-											>
+											</Badge>
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap text-right">
+											<Button variant="ghost" size="icon">
 												<MoreHorizontal
 													className={`w-5 h-5 ${colors.mutedForeground}`}
 												/>
-											</button>
-										</td>
-									</tr>
+											</Button>
+										</TableCell>
+									</TableRow>
 								))
 							)}
-						</tbody>
-					</table>
-				</div>
-			</div>
+						</TableBody>
+					</Table>
+			</Card>
 
-			{/* Add Blog Modal */}
-			{isAddModalOpen && (
-				<div
-					className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-					onClick={handleCloseModal}
+			<FormModal
+				open={isAddModalOpen}
+				onClose={handleCloseModal}
+				title="Add New Blog Post"
+				subtitle="Create a new blog post with content and details"
+				onSubmit={handleAddBlog}
+				saveLabel="Add Blog Post"
+				maxWidth="max-w-4xl"
+			>
+				<FormField label="Blog Title" htmlFor="blog-title" required>
+					<Input
+						id="blog-title"
+						type="text"
+						name="title"
+						value={newBlog.title}
+						onChange={handleInputChange}
+						placeholder="Enter blog title..."
+					/>
+				</FormField>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<FormField label="Author" htmlFor="blog-author" required>
+						<div className="relative">
+							<User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+							<Input
+								id="blog-author"
+								type="text"
+								name="author"
+								value={newBlog.author}
+								onChange={handleInputChange}
+								placeholder="Author name"
+								className="pl-10"
+							/>
+						</div>
+					</FormField>
+					<FormField label="Category" htmlFor="blog-category" required>
+						<FormSelect
+							id="blog-category"
+							value={newBlog.category}
+							onChange={(e) =>
+								handleInputChange({
+									target: { name: "category", value: e.target.value },
+								})
+							}
+							options={[
+								"Technology",
+								"Design",
+								"Backend",
+								"Frontend",
+								"Business",
+								"Marketing",
+							]}
+						/>
+					</FormField>
+				</div>
+				<FormField
+					label="Content"
+					htmlFor="blog-content"
+					required
+					hint="You can use markdown or HTML for formatting"
 				>
-					<div
-						className={`${colors.card} rounded-xl ${colors.shadow} max-w-4xl w-full max-h-[90vh] overflow-y-auto hidescrollbar`}
-						onClick={(e) => e.stopPropagation()}
+					<textarea
+						id="blog-content"
+						name="content"
+						value={newBlog.content}
+						onChange={handleInputChange}
+						placeholder="Write your blog content here..."
+						rows={8}
+						className={cn(textareaClass, "min-h-48 resize-none")}
+					/>
+				</FormField>
+				<FormField
+					label="Excerpt"
+					htmlFor="blog-excerpt"
+					hint="Brief summary shown in blog listings"
+				>
+					<textarea
+						id="blog-excerpt"
+						name="excerpt"
+						value={newBlog.excerpt}
+						onChange={handleInputChange}
+						placeholder="Short description of the blog post..."
+						rows={3}
+						className={cn(textareaClass, "resize-none")}
+					/>
+				</FormField>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<FormField
+						label="Tags"
+						htmlFor="blog-tags"
+						hint="Separate tags with commas"
 					>
-						{/* Modal Header */}
-						<div
-							className={`flex items-center justify-between p-6 border-b ${colors.border}`}
-						>
-							<div>
-								<h2 className={`text-xl font-semibold ${colors.foreground}`}>
-									Add New Blog Post
-								</h2>
-								<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-									Create a new blog post with content and details
-								</p>
-							</div>
-							<button
-								onClick={handleCloseModal}
-								className={`p-2 ${colors.hoverSecondary} rounded-xl transition-colors`}
-							>
-								<X className={`w-5 h-5 ${colors.mutedForeground}`} />
-							</button>
+						<div className="relative">
+							<Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+							<Input
+								id="blog-tags"
+								type="text"
+								name="tags"
+								value={newBlog.tags}
+								onChange={handleInputChange}
+								placeholder="React, JavaScript, Frontend (comma separated)"
+								className="pl-10"
+							/>
 						</div>
-
-						{/* Modal Body */}
-						<div className="p-6 space-y-4">
-							{/* Title */}
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Blog Title <span className="text-red-500">*</span>
-								</label>
-								<input
-									type="text"
-									name="title"
-									value={newBlog.title}
-									onChange={handleInputChange}
-									placeholder="Enter blog title..."
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${
-										theme === "dark"
-											? "focus:ring-zinc-50"
-											: "focus:ring-zinc-900"
-									} focus:border-transparent placeholder:${
-										colors.textTertiary
-									}`}
-								/>
-							</div>
-
-							{/* Author and Category */}
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-								<div>
-									<label
-										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-									>
-										Author <span className="text-red-500">*</span>
-									</label>
-									<div className="relative">
-										<User
-											className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${colors.textMuted}`}
-										/>
-										<input
-											type="text"
-											name="author"
-											value={newBlog.author}
-											onChange={handleInputChange}
-											placeholder="Author name"
-											className={`w-full pl-10 pr-4 py-2 ${
-												colors.background
-											} border ${colors.border} rounded-xl text-sm ${
-												colors.foreground
-											} focus:outline-none focus:ring-2 ${getFocusRingClass(
-												colorScheme
-											)} focus:border-transparent placeholder:${
-												colors.textTertiary
-											}`}
-										/>
-									</div>
-								</div>
-								<div>
-									<label
-										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-									>
-										Category <span className="text-red-500">*</span>
-									</label>
-									<select
-										name="category"
-										value={newBlog.category}
-										onChange={handleInputChange}
-										className={`w-full px-4 py-2 ${colors.background} border ${
-											colors.border
-										} rounded-xl text-sm ${
-											colors.foreground
-										} focus:outline-none focus:ring-2 ${getFocusRingClass(
-											colorScheme
-										)} focus:border-transparent`}
-									>
-										<option value="Technology">Technology</option>
-										<option value="Design">Design</option>
-										<option value="Backend">Backend</option>
-										<option value="Frontend">Frontend</option>
-										<option value="Business">Business</option>
-										<option value="Marketing">Marketing</option>
-									</select>
-								</div>
-							</div>
-
-							{/* Content */}
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Content <span className="text-red-500">*</span>
-								</label>
-								<textarea
-									name="content"
-									value={newBlog.content}
-									onChange={handleInputChange}
-									placeholder="Write your blog content here..."
-									rows="8"
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${
-										colorScheme === "blue"
-											? "focus:ring-blue-600 dark:focus:ring-blue-500"
-											: colorScheme === "green"
-											? "focus:ring-green-600 dark:focus:ring-green-500"
-											: colorScheme === "purple"
-											? "focus:ring-purple-600 dark:focus:ring-purple-500"
-											: colorScheme === "orange"
-											? "focus:ring-orange-600 dark:focus:ring-orange-500"
-											: colorScheme === "red"
-											? "focus:ring-red-600 dark:focus:ring-red-500"
-											: colorScheme === "pink"
-											? "focus:ring-pink-600 dark:focus:ring-pink-500"
-											: colorScheme === "indigo"
-											? "focus:ring-indigo-600 dark:focus:ring-indigo-500"
-											: "focus:ring-zinc-900 dark:focus:ring-zinc-50"
-									} focus:border-transparent resize-none placeholder:${
-										colors.textTertiary
-									}`}
-								/>
-								<p className={`text-xs ${colors.textMuted} mt-1`}>
-									You can use markdown or HTML for formatting
-								</p>
-							</div>
-
-							{/* Excerpt */}
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Excerpt
-								</label>
-								<textarea
-									name="excerpt"
-									value={newBlog.excerpt}
-									onChange={handleInputChange}
-									placeholder="Short description of the blog post..."
-									rows="3"
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${
-										colorScheme === "blue"
-											? "focus:ring-blue-600 dark:focus:ring-blue-500"
-											: colorScheme === "green"
-											? "focus:ring-green-600 dark:focus:ring-green-500"
-											: colorScheme === "purple"
-											? "focus:ring-purple-600 dark:focus:ring-purple-500"
-											: colorScheme === "orange"
-											? "focus:ring-orange-600 dark:focus:ring-orange-500"
-											: colorScheme === "red"
-											? "focus:ring-red-600 dark:focus:ring-red-500"
-											: colorScheme === "pink"
-											? "focus:ring-pink-600 dark:focus:ring-pink-500"
-											: colorScheme === "indigo"
-											? "focus:ring-indigo-600 dark:focus:ring-indigo-500"
-											: "focus:ring-zinc-900 dark:focus:ring-zinc-50"
-									} focus:border-transparent resize-none placeholder:${
-										colors.textTertiary
-									}`}
-								/>
-								<p className={`text-xs ${colors.textMuted} mt-1`}>
-									Brief summary shown in blog listings
-								</p>
-							</div>
-
-							{/* Tags and Featured Image */}
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-								<div>
-									<label
-										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-									>
-										Tags
-									</label>
-									<div className="relative">
-										<Tag
-											className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${colors.textMuted}`}
-										/>
-										<input
-											type="text"
-											name="tags"
-											value={newBlog.tags}
-											onChange={handleInputChange}
-											placeholder="React, JavaScript, Frontend (comma separated)"
-											className={`w-full pl-10 pr-4 py-2 ${
-												colors.background
-											} border ${colors.border} rounded-xl text-sm ${
-												colors.foreground
-											} focus:outline-none focus:ring-2 ${getFocusRingClass(
-												colorScheme
-											)} focus:border-transparent placeholder:${
-												colors.textTertiary
-											}`}
-										/>
-									</div>
-									<p className={`text-xs ${colors.textMuted} mt-1`}>
-										Separate tags with commas
-									</p>
-								</div>
-								<div>
-									<label
-										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-									>
-										Featured Image URL
-									</label>
-									<div className="relative">
-										<ImageIcon
-											className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${colors.textMuted}`}
-										/>
-										<input
-											type="url"
-											name="featuredImage"
-											value={newBlog.featuredImage}
-											onChange={handleInputChange}
-											placeholder="https://example.com/image.jpg"
-											className={`w-full pl-10 pr-4 py-2 ${
-												colors.background
-											} border ${colors.border} rounded-xl text-sm ${
-												colors.foreground
-											} focus:outline-none focus:ring-2 ${getFocusRingClass(
-												colorScheme
-											)} focus:border-transparent placeholder:${
-												colors.textTertiary
-											}`}
-										/>
-									</div>
-								</div>
-							</div>
-
-							{/* Publish Date and Status */}
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-								<div>
-									<label
-										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-									>
-										Publish Date
-									</label>
-									<div className="relative">
-										<Calendar
-											className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${colors.textMuted}`}
-										/>
-										<input
-											type="date"
-											name="publishDate"
-											value={newBlog.publishDate}
-											onChange={handleInputChange}
-											className={`w-full pl-10 pr-4 py-2 ${
-												colors.background
-											} border ${colors.border} rounded-xl text-sm ${
-												colors.foreground
-											} focus:outline-none focus:ring-2 ${getFocusRingClass(
-												colorScheme
-											)} focus:border-transparent`}
-										/>
-									</div>
-									<p className={`text-xs ${colors.textMuted} mt-1`}>
-										Leave empty to use current date
-									</p>
-								</div>
-								<div>
-									<label
-										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-									>
-										Status <span className="text-red-500">*</span>
-									</label>
-									<select
-										name="status"
-										value={newBlog.status}
-										onChange={handleInputChange}
-										className={`w-full px-4 py-2 ${colors.background} border ${
-											colors.border
-										} rounded-xl text-sm ${
-											colors.foreground
-										} focus:outline-none focus:ring-2 ${getFocusRingClass(
-											colorScheme
-										)} focus:border-transparent`}
-									>
-										<option value="Draft">Draft</option>
-										<option value="Published">Published</option>
-									</select>
-								</div>
-							</div>
+					</FormField>
+					<FormField label="Featured Image URL" htmlFor="blog-featured-image">
+						<div className="relative">
+							<ImageIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+							<Input
+								id="blog-featured-image"
+								type="url"
+								name="featuredImage"
+								value={newBlog.featuredImage}
+								onChange={handleInputChange}
+								placeholder="https://example.com/image.jpg"
+								className="pl-10"
+							/>
 						</div>
-
-						{/* Modal Footer */}
-						<div
-							className={`flex items-center justify-end gap-3 p-6 border-t ${colors.border}`}
-						>
-							<button
-								onClick={handleCloseModal}
-								className={`px-4 py-2 text-sm font-medium ${colors.textSecondary} ${colors.secondary} ${colors.hoverSecondary} rounded-xl transition-colors`}
-							>
-								Cancel
-							</button>
-							<button
-								onClick={handleAddBlog}
-								className={`px-4 py-2 text-sm font-medium ${scheme.primaryForeground} ${scheme.primary} ${scheme.primaryHover} rounded-xl transition-colors`}
-							>
-								Add Blog Post
-							</button>
-						</div>
-					</div>
+					</FormField>
 				</div>
-			)}
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<FormField
+						label="Publish Date"
+						htmlFor="blog-publish-date"
+						hint="Leave empty to use current date"
+					>
+						<div className="relative">
+							<Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+							<Input
+								id="blog-publish-date"
+								type="date"
+								name="publishDate"
+								value={newBlog.publishDate}
+								onChange={handleInputChange}
+								className="pl-10"
+							/>
+						</div>
+					</FormField>
+					<FormField label="Status" htmlFor="blog-status" required>
+						<FormSelect
+							id="blog-status"
+							value={newBlog.status}
+							onChange={(e) =>
+								handleInputChange({
+									target: { name: "status", value: e.target.value },
+								})
+							}
+							options={["Draft", "Published"]}
+						/>
+					</FormField>
+				</div>
+			</FormModal>
 		</div>
 	);
 };

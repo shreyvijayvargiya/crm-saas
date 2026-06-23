@@ -18,7 +18,7 @@ import {
 import React, { useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import {
 	Bar,
 	BarChart,
@@ -31,16 +31,44 @@ import {
 import { useTheme } from "../../utils/useTheme";
 import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { getFocusRingClass } from "../../utils/theme";
+import { ExportDropdown } from "../../lib/ui/dropdown";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import FormSelect from "../../lib/ui/FormSelect";
 import {
 	INITIAL_INVOICES,
 	formatCurrency,
 	getInvoiceStatusColor,
 } from "../CRM/invoicesSeedData";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
+import { Checkbox } from "@/components/ui/checkbox";
+
+const textareaClass =
+	"flex min-h-[80px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 
 const Invoices = () => {
 	const router = useRouter();
 	// Theme hook
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { theme, colorScheme, colors } = useTheme();
 	const chartTooltipProps = useChartTooltipProps();
 
 	const [invoices, setInvoices] = useState(INITIAL_INVOICES);
@@ -297,90 +325,63 @@ const Invoices = () => {
 		>
 			{/* Stats + charts */}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
+				<Card className="relative overflow-hidden">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-blue-600/10 rounded-full blur-2xl" />
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-sm border border-blue-500/20">
 								<FileText className="text-blue-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>
-							{invoiceStats.total}
-						</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Total invoices
-						</p>
-					</div>
-				</div>
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
+						<p className="text-2xl font-bold">{invoiceStats.total}</p>
+						<p className="text-sm text-muted-foreground mt-1">Total invoices</p>
+					</CardContent>
+				</Card>
+				<Card className="relative overflow-hidden">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-purple-600/10 rounded-full blur-2xl" />
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 backdrop-blur-sm border border-purple-500/20">
 								<DollarSign className="text-purple-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>
-							{formatCurrency(invoiceStats.totalValue)}
-						</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Total billed
-						</p>
-					</div>
-				</div>
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
+						<p className="text-2xl font-bold">{formatCurrency(invoiceStats.totalValue)}</p>
+						<p className="text-sm text-muted-foreground mt-1">Total billed</p>
+					</CardContent>
+				</Card>
+				<Card className="relative overflow-hidden">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-green-400/20 to-green-600/10 rounded-full blur-2xl" />
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-sm border border-green-500/20">
 								<CheckCircle2 className="text-green-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>
-							{formatCurrency(invoiceStats.paidValue)}
-						</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Collected (paid)
-						</p>
-					</div>
-				</div>
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
+						<p className="text-2xl font-bold">{formatCurrency(invoiceStats.paidValue)}</p>
+						<p className="text-sm text-muted-foreground mt-1">Collected (paid)</p>
+					</CardContent>
+				</Card>
+				<Card className="relative overflow-hidden">
 					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-orange-400/20 to-orange-600/10 rounded-full blur-2xl" />
-					<div className="relative">
+					<CardContent className="relative p-6">
 						<div className="flex items-center justify-between mb-2">
 							<div className="p-2 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 backdrop-blur-sm border border-orange-500/20">
 								<Wallet className="text-orange-500" size={20} />
 							</div>
 						</div>
-						<p className={`text-2xl font-bold ${colors.foreground}`}>
-							{formatCurrency(invoiceStats.outstanding)}
-						</p>
-						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Outstanding
-						</p>
-					</div>
-				</div>
+						<p className="text-2xl font-bold">{formatCurrency(invoiceStats.outstanding)}</p>
+						<p className="text-sm text-muted-foreground mt-1">Outstanding</p>
+					</CardContent>
+				</Card>
 			</div>
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-				<div
-					className={`${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
-					<p className={`text-sm font-medium ${colors.foreground} mb-1`}>
-						Invoices by status
-					</p>
-					<p className={`text-xs ${colors.mutedForeground} mb-4`}>
-						Count breakdown (matches totals above)
-					</p>
+				<Card>
+					<CardHeader className="pb-2">
+						<CardTitle>Invoices by status</CardTitle>
+						<CardDescription>Count breakdown (matches totals above)</CardDescription>
+					</CardHeader>
+					<CardContent>
 					<ResponsiveContainer width="100%" height={220}>
 						<BarChart
 							data={statusCountData}
@@ -416,16 +417,14 @@ const Invoices = () => {
 							/>
 						</BarChart>
 					</ResponsiveContainer>
-				</div>
-				<div
-					className={`${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow}`}
-				>
-					<p className={`text-sm font-medium ${colors.foreground} mb-1`}>
-						Amount by status
-					</p>
-					<p className={`text-xs ${colors.mutedForeground} mb-4`}>
-						USD split across paid, pending, and overdue
-					</p>
+					</CardContent>
+				</Card>
+				<Card>
+					<CardHeader className="pb-2">
+						<CardTitle>Amount by status</CardTitle>
+						<CardDescription>USD split across paid, pending, and overdue</CardDescription>
+					</CardHeader>
+					<CardContent>
 					<ResponsiveContainer width="100%" height={220}>
 						<BarChart
 							data={amountByStatusData}
@@ -463,7 +462,8 @@ const Invoices = () => {
 							/>
 						</BarChart>
 					</ResponsiveContainer>
-				</div>
+					</CardContent>
+				</Card>
 			</div>
 
 			{/* Table Header */}
@@ -478,63 +478,46 @@ const Invoices = () => {
 							View and manage all your invoices
 						</p>
 					</div>
-					<div className="flex items-center gap-4 flex-wrap w-full md:w-auto">
-						{/* Search */}
-						<div
-							className={`relative flex gap-2 items-center border ${colors.border} rounded-xl px-3 py-2 ${colors.card} w-full md:w-auto`}
-						>
-							<Search className={colors.textSecondary} size={16} />
-							<input
+					<div className="flex md:justify-end justify-start items-center gap-2 flex-wrap w-full md:w-auto">
+						<div className="relative flex gap-2 items-center w-full md:w-auto">
+							<Search size={18} className="absolute left-3 text-muted-foreground pointer-events-none" />
+							<Input
 								type="text"
 								placeholder="Search invoices..."
-								className={`outline-none flex-1 placeholder:${colors.mutedForeground} ${getFocusRingClass(
-									colorScheme
-								)}`}
+								className="pl-9"
 								value={searchTerm}
 								onChange={(e) => setSearchTerm(e.target.value)}
 							/>
 						</div>
-						{/* Add Invoice Button */}
-						<button
-							onClick={handleAddInvoice}
-							className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-sm px-4 py-2 transition-all duration-200 font-medium flex items-center gap-2`}
-						>
+						<Button onClick={handleAddInvoice}>
 							<Plus size={16} />
 							Add Invoice
-						</button>
-						{/* Export CSV Button */}
-						<button
-							onClick={handleExportCSV}
-							className={`border ${colors.border} ${colors.hoverSecondary} ${colors.foreground} rounded-xl text-sm px-4 py-2 transition-all duration-200 font-medium flex items-center gap-2`}
-						>
-							<Download size={16} />
-							Export CSV
-						</button>
+						</Button>
+						<ExportDropdown
+							onExportCsv={handleExportCSV}
+							onExportPdf={handleExportCSV}
+							onExportJson={handleExportCSV}
+						/>
 					</div>
 				</div>
 			{/* Invoices Table - Improved */}
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
-			>
+			<Card className="overflow-hidden my-4">
 				
 
 				{/* Table */}
-				<div className="overflow-x-auto">
-					<table className="w-full">
-						<thead className={`${colors.muted} border-b ${colors.border}`}>
-							<tr>
-								<th
+				<Table className="w-full">
+						<TableHeader className={`${colors.muted} border-b ${colors.border}`}>
+							<TableRow>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
-									<input
-										type="checkbox"
+									<Checkbox
 										checked={allInvoicesSelected}
-										onChange={toggleSelectAllInvoices}
-										className={getFocusRingClass(colorScheme)}
+										onCheckedChange={toggleSelectAllInvoices}
 										aria-label="Select all invoices"
 									/>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("invoiceNumber")}
 								>
@@ -550,8 +533,8 @@ const Invoices = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("client")}
 								>
@@ -567,8 +550,8 @@ const Invoices = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("amount")}
 								>
@@ -584,8 +567,8 @@ const Invoices = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("status")}
 								>
@@ -601,8 +584,8 @@ const Invoices = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("issueDate")}
 								>
@@ -618,8 +601,8 @@ const Invoices = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("dueDate")}
 								>
@@ -635,41 +618,39 @@ const Invoices = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Actions
-								</th>
-							</tr>
-						</thead>
-						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+								</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody className={`${colors.card} divide-y ${colors.border}`}>
 							{filteredInvoices.length === 0 ? (
-								<tr>
-									<td colSpan="8" className="px-6 py-12 text-center">
+								<TableRow>
+									<TableCell colSpan="8" className="px-6 py-12 text-center">
 										<p className={colors.mutedForeground}>No invoices found</p>
-									</td>
-								</tr>
+									</TableCell>
+								</TableRow>
 							) : (
 								filteredInvoices.map((invoice) => (
-									<tr
+									<TableRow
 										key={invoice.id}
 										className={`${colors.hover} transition-colors cursor-pointer`}
 										onClick={() => router.push(`/invoices/${invoice.id}`)}
 									>
-										<td
+										<TableCell
 											className="px-6 py-4 whitespace-nowrap"
 											onClick={(e) => e.stopPropagation()}
 										>
-											<input
-												type="checkbox"
+											<Checkbox
 												checked={selectedInvoiceIds.includes(invoice.id)}
-												onChange={() => toggleInvoiceSelection(invoice.id)}
-												className={getFocusRingClass(colorScheme)}
+												onCheckedChange={() => toggleInvoiceSelection(invoice.id)}
 												aria-label={`Select ${invoice.invoiceNumber}`}
 											/>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-2">
 												<FileText size={16} className={colors.textSecondary} />
 												<Link href={`/invoices/${invoice.id}`} passHref>
@@ -680,8 +661,8 @@ const Invoices = () => {
 													</a>
 												</Link>
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div>
 												<div
 													className={`text-sm font-medium ${colors.foreground}`}
@@ -692,48 +673,44 @@ const Invoices = () => {
 													{invoice.clientEmail}
 												</div>
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div
 												className={`text-sm font-semibold ${colors.foreground}`}
 											>
 												{formatCurrency(invoice.amount)}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
-											<span
-												className={`px-2.5 py-1 rounded-md text-xs font-medium border ${getInvoiceStatusColor(
-													invoice.status
-												)}`}
-											>
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
+											<Badge className={getInvoiceStatusColor(invoice.status)}>
 												{invoice.status}
-											</span>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+											</Badge>
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{invoice.issueDate}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{invoice.dueDate}
 											</div>
-										</td>
-										<td
+										</TableCell>
+										<TableCell
 											className="px-6 py-4 whitespace-nowrap"
 											onClick={(e) => e.stopPropagation()}
 										>
-											<div className="flex items-center gap-2">
-												<Link href={`/invoices/${invoice.id}`} passHref>
-													<a
-														className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors inline-flex`}
-														title="View invoice"
-													>
-														<Eye size={16} className={colors.textSecondary} />
-													</a>
-												</Link>
-												<button
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
+											<div className="flex items-center gap-1">
+												<Button variant="ghost" size="icon" asChild title="View invoice">
+													<Link href={`/invoices/${invoice.id}`}>
+														<a>
+															<Eye size={16} />
+														</a>
+													</Link>
+												</Button>
+												<Button
+													variant="ghost"
+													size="icon"
 													title="Edit"
 													onClick={() =>
 														toast.info(
@@ -741,10 +718,11 @@ const Invoices = () => {
 														)
 													}
 												>
-													<Pen size={16} className={colors.textSecondary} />
-												</button>
-												<button
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
+													<Pen size={16} />
+												</Button>
+												<Button
+													variant="ghost"
+													size="icon"
 													title="Download"
 													onClick={() =>
 														toast.info(
@@ -752,359 +730,241 @@ const Invoices = () => {
 														)
 													}
 												>
-													<Download
-														size={16}
-														className={colors.textSecondary}
-													/>
-												</button>
-												<button
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
+													<Download size={16} />
+												</Button>
+												<Button
+													variant="ghost"
+													size="icon"
 													title="Delete"
 													onClick={() => handleRemoveInvoice(invoice.id)}
 												>
-													<Trash size={16} className={colors.textSecondary} />
-												</button>
+													<Trash size={16} />
+												</Button>
 											</div>
-										</td>
-									</tr>
+										</TableCell>
+									</TableRow>
 								))
 							)}
-						</tbody>
-					</table>
+						</TableBody>
+					</Table>
+			</Card>
+
+			<FormModal
+				open={isModalOpen}
+				onClose={handleModalClose}
+				title="Add New Invoice"
+				onSubmit={handleSubmit}
+				saveLabel="Save"
+				maxWidth="max-w-2xl"
+			>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<FormField label="Invoice Number" htmlFor="invoice-number" required>
+						<Input
+							id="invoice-number"
+							type="text"
+							name="invoiceNumber"
+							placeholder="INV-2024-XXX"
+							value={newInvoice.invoiceNumber}
+							onChange={handleInputChange}
+						/>
+					</FormField>
+					<FormField label="Client Name" htmlFor="invoice-client" required>
+						<Input
+							id="invoice-client"
+							type="text"
+							name="client"
+							placeholder="Client Company"
+							value={newInvoice.client}
+							onChange={handleInputChange}
+						/>
+					</FormField>
+					<FormField label="Client Email" htmlFor="invoice-email">
+						<Input
+							id="invoice-email"
+							type="email"
+							name="clientEmail"
+							placeholder="client@company.com"
+							value={newInvoice.clientEmail}
+							onChange={handleInputChange}
+						/>
+					</FormField>
+					<FormField label="Status" htmlFor="invoice-status">
+						<FormSelect
+							id="invoice-status"
+							value={newInvoice.status}
+							onChange={(e) =>
+								handleInputChange({
+									target: { name: "status", value: e.target.value },
+								})
+							}
+							options={["Pending", "Paid", "Overdue"]}
+						/>
+					</FormField>
+					<FormField label="Issue Date" htmlFor="invoice-issue-date">
+						<Input
+							id="invoice-issue-date"
+							type="date"
+							name="issueDate"
+							value={newInvoice.issueDate}
+							onChange={handleInputChange}
+						/>
+					</FormField>
+					<FormField label="Due Date" htmlFor="invoice-due-date">
+						<Input
+							id="invoice-due-date"
+							type="date"
+							name="dueDate"
+							value={newInvoice.dueDate}
+							onChange={handleInputChange}
+						/>
+					</FormField>
+					<div className="md:col-span-2">
+						<FormField label="Description" htmlFor="invoice-description">
+							<textarea
+								id="invoice-description"
+								name="description"
+								placeholder="Invoice description or notes..."
+								value={newInvoice.description}
+								onChange={handleInputChange}
+								rows={3}
+								className={cn(textareaClass)}
+							/>
+						</FormField>
+					</div>
 				</div>
-			</div>
 
-			{isModalOpen && (
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+				<div className="mt-2">
+					<div className="flex justify-between items-center mb-4">
+						<span className={`block text-sm font-semibold ${colors.textSecondary}`}>
+							Invoice Items *
+						</span>
+						<Button type="button" size="sm" onClick={handleAddItem}>
+							<Plus size={14} />
+							Add Item
+						</Button>
+					</div>
 					<div
-						className={`${colors.card} p-6 rounded ${colors.shadow} max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border ${colors.border}`}
+						className={`border ${colors.border} rounded-xl overflow-hidden`}
 					>
-						<div className="flex justify-between items-center mb-4">
-							<h2 className={`text-lg font-semibold ${colors.foreground}`}>
-								Add New Invoice
-							</h2>
-							<button
-								onClick={handleModalClose}
-								className={`${colors.textMuted} ${colors.hoverSecondary} transition-colors`}
-							>
-								×
-							</button>
-						</div>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
-								>
-									Invoice Number *
-								</label>
-								<input
-									type="text"
-									name="invoiceNumber"
-									placeholder="INV-2024-XXX"
-									value={newInvoice.invoiceNumber}
-									onChange={handleInputChange}
-									className={`border ${colors.border} ${
-										colors.input
-									} rounded px-3 py-2 w-full outline-none ${
-										colors.background
-									} ${colors.foreground} placeholder:${
-										colors.mutedForeground
-									} ${getFocusRingClass(colorScheme)}`}
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
-								>
-									Client Name *
-								</label>
-								<input
-									type="text"
-									name="client"
-									placeholder="Client Company"
-									value={newInvoice.client}
-									onChange={handleInputChange}
-									className={`border ${colors.border} ${
-										colors.input
-									} rounded px-3 py-2 w-full outline-none ${
-										colors.background
-									} ${colors.foreground} placeholder:${
-										colors.mutedForeground
-									} ${getFocusRingClass(colorScheme)}`}
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
-								>
-									Client Email
-								</label>
-								<input
-									type="email"
-									name="clientEmail"
-									placeholder="client@company.com"
-									value={newInvoice.clientEmail}
-									onChange={handleInputChange}
-									className={`border ${colors.border} ${
-										colors.input
-									} rounded px-3 py-2 w-full outline-none ${
-										colors.background
-									} ${colors.foreground} placeholder:${
-										colors.mutedForeground
-									} ${getFocusRingClass(colorScheme)}`}
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
-								>
-									Status
-								</label>
-								<select
-									name="status"
-									value={newInvoice.status}
-									onChange={handleInputChange}
-									className={`border ${colors.border} ${
-										colors.input
-									} rounded px-3 py-2 w-full outline-none ${
-										colors.background
-									} ${colors.foreground} ${getFocusRingClass(colorScheme)}`}
-								>
-									<option value="Pending">Pending</option>
-									<option value="Paid">Paid</option>
-									<option value="Overdue">Overdue</option>
-								</select>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
-								>
-									Issue Date
-								</label>
-								<input
-									type="date"
-									name="issueDate"
-									value={newInvoice.issueDate}
-									onChange={handleInputChange}
-									className={`border ${colors.border} ${
-										colors.input
-									} rounded px-3 py-2 w-full outline-none ${
-										colors.background
-									} ${colors.foreground} ${getFocusRingClass(colorScheme)}`}
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
-								>
-									Due Date
-								</label>
-								<input
-									type="date"
-									name="dueDate"
-									value={newInvoice.dueDate}
-									onChange={handleInputChange}
-									className={`border ${colors.border} ${
-										colors.input
-									} rounded px-3 py-2 w-full outline-none ${
-										colors.background
-									} ${colors.foreground} ${getFocusRingClass(colorScheme)}`}
-								/>
-							</div>
-							<div className="md:col-span-2">
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-1`}
-								>
-									Description
-								</label>
-								<textarea
-									name="description"
-									placeholder="Invoice description or notes..."
-									value={newInvoice.description}
-									onChange={handleInputChange}
-									rows={3}
-									className={`border ${colors.border} ${
-										colors.input
-									} rounded px-3 py-2 w-full outline-none ${
-										colors.background
-									} ${colors.foreground} placeholder:${
-										colors.mutedForeground
-									} ${getFocusRingClass(colorScheme)}`}
-								/>
-							</div>
-						</div>
-
-						<div className="mt-6">
-							<div className="flex justify-between items-center mb-4">
-								<label
-									className={`block text-sm font-semibold ${colors.textSecondary}`}
-								>
-									Invoice Items *
-								</label>
-								<button
-									type="button"
-									onClick={handleAddItem}
-									className={`flex items-center gap-1 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-3 py-1.5 rounded transition-all duration-100 ease-in`}
-								>
-									<Plus size={14} />
-									Add Item
-								</button>
-							</div>
-							<div
-								className={`border ${colors.border} rounded-xl overflow-hidden`}
-							>
-								<table className={`min-w-full ${colors.card}`}>
-									<thead className={colors.muted}>
-										<tr>
-											<th
-												className={`py-2 px-3 text-left text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
-											>
-												Item Name
-											</th>
-											<th
-												className={`py-2 px-3 text-center text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
-											>
-												Quantity
-											</th>
-											<th
-												className={`py-2 px-3 text-right text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
-											>
-												Price
-											</th>
-											<th
-												className={`py-2 px-3 text-right text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
-											>
-												Total
-											</th>
-											<th
-												className={`py-2 px-3 text-center text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
-											>
-												Action
-											</th>
-										</tr>
-									</thead>
-									<tbody>
-										{invoiceItems.map((item) => (
-											<tr
-												key={item.id}
-												className={`border-b ${colors.border} ${colors.hover}`}
-											>
-												<td className={`py-2 px-3 ${colors.foreground}`}>
-													<input
-														type="text"
-														placeholder="Item name"
-														value={item.name}
-														onChange={(e) =>
-															handleItemChange(item.id, "name", e.target.value)
-														}
-														className={`border ${colors.border} ${
-															colors.input
-														} rounded px-2 py-1 w-full text-sm outline-none ${
-															colors.background
-														} ${colors.foreground} placeholder:${
-															colors.mutedForeground
-														} ${getFocusRingClass(colorScheme)}`}
-													/>
-												</td>
-												<td className={`py-2 px-3 ${colors.foreground}`}>
-													<input
-														type="number"
-														placeholder="Qty"
-														value={item.quantity}
-														onChange={(e) =>
-															handleItemChange(
-																item.id,
-																"quantity",
-																e.target.value
-															)
-														}
-														min="1"
-														step="1"
-														className={`border ${colors.border} ${
-															colors.input
-														} rounded px-2 py-1 w-full text-sm outline-none ${
-															colors.background
-														} ${colors.foreground} placeholder:${
-															colors.mutedForeground
-														} ${getFocusRingClass(colorScheme)} text-center`}
-													/>
-												</td>
-												<td className={`py-2 px-3 ${colors.foreground}`}>
-													<input
-														type="number"
-														placeholder="0.00"
-														value={item.price}
-														onChange={(e) =>
-															handleItemChange(item.id, "price", e.target.value)
-														}
-														min="0"
-														step="0.01"
-														className={`border ${colors.border} ${
-															colors.input
-														} rounded px-2 py-1 w-full text-sm outline-none ${
-															colors.background
-														} ${colors.foreground} placeholder:${
-															colors.mutedForeground
-														} ${getFocusRingClass(colorScheme)} text-right`}
-													/>
-												</td>
-												<td
-													className={`py-2 px-3 text-right text-sm font-medium ${colors.foreground}`}
-												>
-													{formatCurrency(
-														(parseFloat(item.quantity) || 0) *
-															(parseFloat(item.price) || 0)
-													)}
-												</td>
-												<td className="py-2 px-3 text-center">
-													<button
-														type="button"
-														onClick={() => handleRemoveItem(item.id)}
-														className="text-red-600 hover:text-red-800 transition-colors"
-													>
-														<Trash size={16} />
-													</button>
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
-							<div className="flex justify-end mt-4">
-								<div
-									className={`${colors.muted} p-4 rounded-xl w-full md:w-80`}
-								>
-									<div className="flex justify-between items-center">
-										<span
-											className={`text-base font-semibold ${colors.foreground}`}
+						<Table className={`min-w-full ${colors.card}`}>
+							<TableHeader className={colors.muted}>
+								<TableRow>
+									<TableHead
+										className={`py-2 px-3 text-left text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+									>
+										Item Name
+									</TableHead>
+									<TableHead
+										className={`py-2 px-3 text-center text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+									>
+										Quantity
+									</TableHead>
+									<TableHead
+										className={`py-2 px-3 text-right text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+									>
+										Price
+									</TableHead>
+									<TableHead
+										className={`py-2 px-3 text-right text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+									>
+										Total
+									</TableHead>
+									<TableHead
+										className={`py-2 px-3 text-center text-xs font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
+									>
+										Action
+									</TableHead>
+								</TableRow>
+							</TableHeader>
+							<TableBody>
+								{invoiceItems.map((item) => (
+									<TableRow
+										key={item.id}
+										className={`border-b ${colors.border} ${colors.hover}`}
+									>
+										<TableCell className={`py-2 px-3 ${colors.foreground}`}>
+											<Input
+												type="text"
+												placeholder="Item name"
+												value={item.name}
+												onChange={(e) =>
+													handleItemChange(item.id, "name", e.target.value)
+												}
+												className="h-8 text-sm"
+											/>
+										</TableCell>
+										<TableCell className={`py-2 px-3 ${colors.foreground}`}>
+											<Input
+												type="number"
+												placeholder="Qty"
+												value={item.quantity}
+												onChange={(e) =>
+													handleItemChange(
+														item.id,
+														"quantity",
+														e.target.value
+													)
+												}
+												min="1"
+												step="1"
+												className="h-8 text-sm text-center"
+											/>
+										</TableCell>
+										<TableCell className={`py-2 px-3 ${colors.foreground}`}>
+											<Input
+												type="number"
+												placeholder="0.00"
+												value={item.price}
+												onChange={(e) =>
+													handleItemChange(item.id, "price", e.target.value)
+												}
+												min="0"
+												step="0.01"
+												className="h-8 text-sm text-right"
+											/>
+										</TableCell>
+										<TableCell
+											className={`py-2 px-3 text-right text-sm font-medium ${colors.foreground}`}
 										>
-											Total Amount:
-										</span>
-										<span className={`text-xl font-bold ${colors.foreground}`}>
-											{formatCurrency(calculateTotal())}
-										</span>
-									</div>
-								</div>
+											{formatCurrency(
+												(parseFloat(item.quantity) || 0) *
+													(parseFloat(item.price) || 0)
+											)}
+										</TableCell>
+										<TableCell className="py-2 px-3 text-center">
+											<Button
+												type="button"
+												variant="ghost"
+												size="icon"
+												onClick={() => handleRemoveItem(item.id)}
+												className="text-red-600 hover:text-red-800"
+											>
+												<Trash size={16} />
+											</Button>
+										</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					</div>
+					<div className="flex justify-end mt-4">
+						<div
+							className={`${colors.muted} p-4 rounded-xl w-full md:w-80`}
+						>
+							<div className="flex justify-between items-center">
+								<span
+									className={`text-base font-semibold ${colors.foreground}`}
+								>
+									Total Amount:
+								</span>
+								<span className={`text-xl font-bold ${colors.foreground}`}>
+									{formatCurrency(calculateTotal())}
+								</span>
 							</div>
-						</div>
-
-						<div className="flex justify-end gap-2 mt-6">
-							<button
-								onClick={handleModalClose}
-								className={`${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground} rounded px-4 py-2 text-sm transition-all duration-100 ease-in`}
-							>
-								Cancel
-							</button>
-							<button
-								onClick={handleSubmit}
-								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded px-4 py-2 text-sm transition-all duration-100 ease-in `}
-							>
-								Save
-							</button>
 						</div>
 					</div>
 				</div>
-			)}
+			</FormModal>
 
 			{isViewModalOpen && selectedInvoice && (
 				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -1120,12 +980,15 @@ const Invoices = () => {
 									{selectedInvoice.invoiceNumber}
 								</p>
 							</div>
-							<button
+							<Button
+								type="button"
+								variant="ghost"
+								size="icon"
 								onClick={handleCloseViewModal}
-								className={`${colors.textMuted} ${colors.hoverSecondary} p-1 rounded transition-colors`}
+								aria-label="Close"
 							>
 								<X size={24} />
-							</button>
+							</Button>
 						</div>
 
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -1155,13 +1018,9 @@ const Invoices = () => {
 										<span className={`text-sm ${colors.textSecondary}`}>
 											Status:
 										</span>
-										<span
-											className={`px-2 py-1 rounded text-xs font-medium border ${getInvoiceStatusColor(
-												selectedInvoice.status
-											)}`}
-										>
+										<Badge className={getInvoiceStatusColor(selectedInvoice.status)}>
 											{selectedInvoice.status}
-										</span>
+										</Badge>
 									</div>
 									<div className="flex justify-between">
 										<span className={`text-sm ${colors.textSecondary}`}>
@@ -1211,61 +1070,61 @@ const Invoices = () => {
 							<div
 								className={`border ${colors.border} rounded-xl overflow-hidden`}
 							>
-								<table className={`min-w-full ${colors.card}`}>
-									<thead className={colors.muted}>
-										<tr>
-											<th
+								<Table className={`min-w-full ${colors.card}`}>
+									<TableHeader className={colors.muted}>
+										<TableRow>
+											<TableHead
 												className={`py-3 px-4 text-left text-sm font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
 											>
 												Item
-											</th>
-											<th
+											</TableHead>
+											<TableHead
 												className={`py-3 px-4 text-center text-sm font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
 											>
 												Quantity
-											</th>
-											<th
+											</TableHead>
+											<TableHead
 												className={`py-3 px-4 text-right text-sm font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
 											>
 												Price
-											</th>
-											<th
+											</TableHead>
+											<TableHead
 												className={`py-3 px-4 text-right text-sm font-semibold ${colors.mutedForeground} border-b ${colors.border}`}
 											>
 												Total
-											</th>
-										</tr>
-									</thead>
-									<tbody>
+											</TableHead>
+										</TableRow>
+									</TableHeader>
+									<TableBody>
 										{selectedInvoice.items.map((item, index) => (
-											<tr
+											<TableRow
 												key={index}
 												className={`border-b ${colors.border} ${colors.hover}`}
 											>
-												<td
+												<TableCell
 													className={`py-3 px-4 text-sm ${colors.foreground}`}
 												>
 													{item.name}
-												</td>
-												<td
+												</TableCell>
+												<TableCell
 													className={`py-3 px-4 text-sm ${colors.textSecondary} text-center`}
 												>
 													{item.quantity}
-												</td>
-												<td
+												</TableCell>
+												<TableCell
 													className={`py-3 px-4 text-sm ${colors.textSecondary} text-right`}
 												>
 													{formatCurrency(item.price)}
-												</td>
-												<td
+												</TableCell>
+												<TableCell
 													className={`py-3 px-4 text-sm font-semibold ${colors.foreground} text-right`}
 												>
 													{formatCurrency(item.quantity * item.price)}
-												</td>
-											</tr>
+												</TableCell>
+											</TableRow>
 										))}
-									</tbody>
-								</table>
+									</TableBody>
+								</Table>
 							</div>
 						</div>
 
@@ -1285,17 +1144,17 @@ const Invoices = () => {
 						</div>
 
 						<div className="flex justify-end gap-2 mt-6">
-							<button
+							<Button
+								type="button"
 								onClick={() => {
 									toast.info(
 										`Downloading invoice ${selectedInvoice.invoiceNumber}`
 									);
 								}}
-								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded px-4 py-2 text-sm transition-all duration-100 ease-in  flex items-center gap-2`}
 							>
 								<Download size={16} />
 								Download PDF
-							</button>
+							</Button>
 						</div>
 					</div>
 				</div>

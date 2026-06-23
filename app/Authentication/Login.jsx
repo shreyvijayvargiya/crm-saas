@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import AuthPageShell from "./AuthPageShell";
 import LabeledInput from "./LabeledInput";
 import PasswordField from "./PasswordField";
 import { useTheme } from "../../utils/useTheme";
+import { Button } from "@/components/ui/button";
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const Login = () => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [remember, setRemember] = useState(true);
@@ -85,12 +86,9 @@ const Login = () => {
 						Forgot password?
 					</Link>
 				</div>
-				<button
-					type="submit"
-					className={`w-full rounded-xl py-2.5 text-sm font-semibold transition-colors ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`}
-				>
+				<Button type="submit" className="w-full">
 					Sign in
-				</button>
+				</Button>
 			</form>
 		</AuthPageShell>
 	);

@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { FileBarChart } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
+import { Card, CardContent } from "@/components/ui/card";
 import DateRangeFilter from "./components/DateRangeFilter";
 import RevenueForecastSection from "./components/RevenueForecastSection";
 import LeadSourceSection from "./components/LeadSourceSection";
@@ -16,7 +17,7 @@ import {
 } from "./reportData";
 
 const Analytics = () => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 	const [range, setRange] = useState("30d");
 	const [showCustom, setShowCustom] = useState(false);
 	const [customFrom, setCustomFrom] = useState("");
@@ -50,9 +51,7 @@ const Analytics = () => {
 			<div className="max-w-7xl mx-auto px-4 md:px-6 pt-6 md:pt-8 space-y-6">
 				<div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
 					<div className="flex items-start gap-3">
-						<span
-							className={`hidden sm:flex p-2.5 rounded-xl ${scheme.primary} ${scheme.primaryForeground} shrink-0`}
-						>
+						<span className="hidden sm:flex p-2.5 rounded-xl bg-primary text-primary-foreground shrink-0">
 							<FileBarChart className="w-6 h-6" />
 						</span>
 						<div>
@@ -88,18 +87,17 @@ const Analytics = () => {
 							hint: "vs plan",
 						},
 					].map((k) => (
-						<div
-							key={k.label}
-							className={`rounded-xl border ${colors.border} ${colors.card} shadow-sm p-4 md:p-5`}
-						>
-							<p className={`text-[11px] font-semibold uppercase tracking-wide ${colors.mutedForeground}`}>
-								{k.label}
-							</p>
-							<p className={`text-xl md:text-2xl font-bold tabular-nums mt-1 ${colors.foreground}`}>
-								{k.value}
-							</p>
-							<p className={`text-xs mt-0.5 ${colors.textMuted}`}>{k.hint}</p>
-						</div>
+						<Card key={k.label}>
+							<CardContent className="p-4 md:p-5">
+								<p className={`text-[11px] font-semibold uppercase tracking-wide ${colors.mutedForeground}`}>
+									{k.label}
+								</p>
+								<p className={`text-xl md:text-2xl font-bold tabular-nums mt-1 ${colors.foreground}`}>
+									{k.value}
+								</p>
+								<p className={`text-xs mt-0.5 ${colors.textMuted}`}>{k.hint}</p>
+							</CardContent>
+						</Card>
 					))}
 				</div>
 

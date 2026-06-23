@@ -1,6 +1,8 @@
 import React from "react";
 import { CalendarRange } from "lucide-react";
 import { useTheme } from "../../../utils/useTheme";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const PRESETS = [
 	{ id: "7d", label: "7 days" },
@@ -11,61 +13,53 @@ const PRESETS = [
 ];
 
 const DateRangeFilter = ({ value, onChange, showCustom, onToggleCustom, customFrom, customTo, onCustomChange }) => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 
 	return (
-		<div
-			className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl`}
-		>
+		<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl">
 			<div className="flex items-center gap-2 text-sm font-medium">
 				<CalendarRange className={`w-4 h-4 ${colors.textMuted}`} />
 				<span className={colors.foreground}>Reporting period</span>
 			</div>
 			<div className="flex flex-wrap items-center gap-1">
 				{PRESETS.map((p) => (
-					<button
+					<Button
 						key={p.id}
 						type="button"
+						size="sm"
+						variant={value === p.id && !showCustom ? "default" : "outline"}
 						onClick={() => {
 							onChange(p.id);
 							onToggleCustom(false);
 						}}
-						className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors ${
-							value === p.id && !showCustom
-								? `${scheme.primary} ${scheme.primaryForeground}`
-								: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary} border ${colors.border}`
-						}`}
 					>
 						{p.label}
-					</button>
+					</Button>
 				))}
-				<button
+				<Button
 					type="button"
+					size="sm"
+					variant={showCustom ? "default" : "outline"}
 					onClick={() => onToggleCustom(!showCustom)}
-					className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-colors ${
-						showCustom
-							? `${scheme.primary} ${scheme.primaryForeground}`
-							: `${colors.border} ${colors.foreground} ${colors.hoverSecondary}`
-					}`}
 				>
 					Custom
-				</button>
+				</Button>
 			</div>
 			{showCustom && (
 				<div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
 					<label className={`text-xs ${colors.mutedForeground}`}>From</label>
-					<input
+					<Input
 						type="date"
 						value={customFrom}
 						onChange={(e) => onCustomChange("from", e.target.value)}
-						className={`rounded-xl border ${colors.border} ${colors.background} ${colors.foreground} px-2 py-1.5 text-xs`}
+						className="h-8 w-auto text-xs"
 					/>
 					<label className={`text-xs ${colors.mutedForeground}`}>To</label>
-					<input
+					<Input
 						type="date"
 						value={customTo}
 						onChange={(e) => onCustomChange("to", e.target.value)}
-						className={`rounded-xl border ${colors.border} ${colors.background} ${colors.foreground} px-2 py-1.5 text-xs`}
+						className="h-8 w-auto text-xs"
 					/>
 				</div>
 			)}

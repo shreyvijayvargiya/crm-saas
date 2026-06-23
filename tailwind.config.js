@@ -3,13 +3,19 @@ module.exports = {
 	darkMode: ["class"],
 	content: [
 		"app/**/*.{js,jsx}",
-		"components/**/*.{js,jsx}",
+		"components/**/*.{js,jsx,ts,tsx}",
 		"modules/**/*.{js,jsx}",
+		"pages/**/*.{js,jsx}",
 		"utils/**/*.{js,jsx}",
-		"lib/**/*.{js,jsx}",
+		"lib/**/*.{js,jsx,ts,tsx}",
 	],
 	theme: {
 		extend: {
+			borderRadius: {
+				lg: "var(--radius)",
+				md: "calc(var(--radius) - 2px)",
+				sm: "calc(var(--radius) - 4px)",
+			},
 			colors: {
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",

@@ -3,7 +3,6 @@ import {
 	ChevronUp,
 	Search,
 	Plus,
-	X,
 	Key,
 	Calendar,
 	RefreshCw,
@@ -13,13 +12,29 @@ import {
 	Zap,
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useTheme } from "../../utils/useTheme";
 import { getFocusRingClass } from "../../utils/theme";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const ApiKeys = () => {
-	// Theme hook
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { theme, colorScheme, colors } = useTheme();
 
 	const initialApiKeys = [
 		{
@@ -86,11 +101,6 @@ const ApiKeys = () => {
 		setNewApiKey({
 			name: "",
 		});
-	};
-
-	const handleInputChange = (e) => {
-		const { name, value } = e.target;
-		setNewApiKey((prev) => ({ ...prev, [name]: value }));
 	};
 
 	const handleSubmit = () => {
@@ -194,107 +204,62 @@ const ApiKeys = () => {
 
 			{/* Stats Grid */}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-				{/* Total Usage Card */}
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-shadow`}
-				>
-					{/* Background Gradient Shapes */}
-					<div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl"></div>
-					<div className="absolute -bottom-10 -left-10 w-24 h-24 bg-blue-400/20 rounded-full blur-2xl"></div>
-					<div className="relative z-10 flex items-center justify-between">
+				<Card className="relative overflow-hidden">
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl" />
+					<div className="absolute -bottom-10 -left-10 w-24 h-24 bg-blue-400/20 rounded-full blur-2xl" />
+					<CardContent className="relative z-10 p-6 flex items-center justify-between">
 						<div>
-							<p className={`text-sm ${colors.mutedForeground} mb-1`}>
-								Total Usage
-							</p>
-							<p className={`text-2xl font-bold ${colors.foreground}`}>
-								{stats.totalUsage}
-							</p>
+							<p className="text-sm text-muted-foreground mb-1">Total Usage</p>
+							<p className="text-2xl font-bold">{stats.totalUsage}</p>
 						</div>
 						<div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-sm border border-blue-500/20">
-							<Activity
-								size={24}
-								className="text-blue-600 dark:text-blue-400"
-							/>
+							<Activity size={24} className="text-blue-600 dark:text-blue-400" />
 						</div>
-					</div>
-				</div>
-
-				{/* Plans Card */}
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-shadow`}
-				>
-					{/* Background Gradient Shapes */}
-					<div className="absolute -top-10 -right-10 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl"></div>
-					<div className="absolute -bottom-10 -left-10 w-24 h-24 bg-purple-400/20 rounded-full blur-2xl"></div>
-					<div className="relative z-10 flex items-center justify-between">
+					</CardContent>
+				</Card>
+				<Card className="relative overflow-hidden">
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl" />
+					<div className="absolute -bottom-10 -left-10 w-24 h-24 bg-purple-400/20 rounded-full blur-2xl" />
+					<CardContent className="relative z-10 p-6 flex items-center justify-between">
 						<div>
-							<p className={`text-sm ${colors.mutedForeground} mb-1`}>Plans</p>
-							<p className={`text-2xl font-bold ${colors.foreground}`}>
-								{stats.plans}
-							</p>
+							<p className="text-sm text-muted-foreground mb-1">Plans</p>
+							<p className="text-2xl font-bold">{stats.plans}</p>
 						</div>
 						<div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 backdrop-blur-sm border border-purple-500/20">
-							<CreditCard
-								size={24}
-								className="text-purple-600 dark:text-purple-400"
-							/>
+							<CreditCard size={24} className="text-purple-600 dark:text-purple-400" />
 						</div>
-					</div>
-				</div>
-
-				{/* Conversions Card */}
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-shadow`}
-				>
-					{/* Background Gradient Shapes */}
-					<div className="absolute -top-10 -right-10 w-32 h-32 bg-green-500/20 rounded-full blur-3xl"></div>
-					<div className="absolute -bottom-10 -left-10 w-24 h-24 bg-green-400/20 rounded-full blur-2xl"></div>
-					<div className="relative z-10 flex items-center justify-between">
+					</CardContent>
+				</Card>
+				<Card className="relative overflow-hidden">
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-green-500/20 rounded-full blur-3xl" />
+					<div className="absolute -bottom-10 -left-10 w-24 h-24 bg-green-400/20 rounded-full blur-2xl" />
+					<CardContent className="relative z-10 p-6 flex items-center justify-between">
 						<div>
-							<p className={`text-sm ${colors.mutedForeground} mb-1`}>
-								Conversions
-							</p>
-							<p className={`text-2xl font-bold ${colors.foreground}`}>
-								{stats.conversions}
-							</p>
+							<p className="text-sm text-muted-foreground mb-1">Conversions</p>
+							<p className="text-2xl font-bold">{stats.conversions}</p>
 						</div>
 						<div className="p-3 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-sm border border-green-500/20">
-							<TrendingUp
-								size={24}
-								className="text-green-600 dark:text-green-400"
-							/>
+							<TrendingUp size={24} className="text-green-600 dark:text-green-400" />
 						</div>
-					</div>
-				</div>
-
-				{/* API Calls Card */}
-				<div
-					className={`relative overflow-hidden ${colors.card} border ${colors.border} rounded-2xl p-6 ${colors.shadow} hover:shadow-xl transition-shadow`}
-				>
-					{/* Background Gradient Shapes */}
-					<div className="absolute -top-10 -right-10 w-32 h-32 bg-orange-500/20 rounded-full blur-3xl"></div>
-					<div className="absolute -bottom-10 -left-10 w-24 h-24 bg-orange-400/20 rounded-full blur-2xl"></div>
-					<div className="relative z-10 flex items-center justify-between">
+					</CardContent>
+				</Card>
+				<Card className="relative overflow-hidden">
+					<div className="absolute -top-10 -right-10 w-32 h-32 bg-orange-500/20 rounded-full blur-3xl" />
+					<div className="absolute -bottom-10 -left-10 w-24 h-24 bg-orange-400/20 rounded-full blur-2xl" />
+					<CardContent className="relative z-10 p-6 flex items-center justify-between">
 						<div>
-							<p className={`text-sm ${colors.mutedForeground} mb-1`}>
-								API Calls
-							</p>
-							<p className={`text-2xl font-bold ${colors.foreground}`}>
-								{stats.apiCalls}
-							</p>
+							<p className="text-sm text-muted-foreground mb-1">API Calls</p>
+							<p className="text-2xl font-bold">{stats.apiCalls}</p>
 						</div>
 						<div className="p-3 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 backdrop-blur-sm border border-orange-500/20">
 							<Zap size={24} className="text-orange-600 dark:text-orange-400" />
 						</div>
-					</div>
-				</div>
+					</CardContent>
+				</Card>
 			</div>
 
-			{/* API Keys Table - Improved */}
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
-			>
-				{/* Table Header */}
+			{/* API Keys Table */}
+			<Card className="overflow-hidden my-4">
 				<div
 					className={`flex flex-col md:flex-row items-start md:items-center justify-between px-6 py-4 border-b ${colors.border} gap-4`}
 				>
@@ -307,48 +272,32 @@ const ApiKeys = () => {
 						</p>
 					</div>
 					<div className="flex items-center gap-4 flex-wrap w-full md:w-auto">
-						{/* Search */}
-						<div
-							className={`relative flex gap-2 items-center border ${colors.border} rounded-xl px-3 py-2 ${colors.card} w-full md:w-auto`}
-						>
-							<Search className={colors.textSecondary} size={18} />
-							<input
+						<div className="relative flex gap-2 items-center w-full md:w-auto">
+							<Search size={18} className="absolute left-3 text-muted-foreground pointer-events-none" />
+							<Input
 								type="text"
 								placeholder="Search API keys..."
-								className={`outline-none flex-1 ${colors.background} ${
-									colors.foreground
-								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-									colorScheme
-								)}`}
+								className="pl-9"
 								value={searchTerm}
 								onChange={(e) => setSearchTerm(e.target.value)}
 							/>
 						</div>
-						{/* Add API Key Button */}
-						<button
-							onClick={handleAddApiKey}
-							className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-sm px-4 py-2 transition-all duration-200 font-medium flex items-center gap-2`}
-						>
+						<Button onClick={handleAddApiKey}>
 							<Plus size={16} />
 							Add API Key
-						</button>
+						</Button>
 					</div>
 				</div>
 
-				{/* Table */}
-				<div className="overflow-x-auto">
-					<table className="w-full">
-						<thead className={`${colors.muted} border-b ${colors.border}`}>
-							<tr>
-								<th
+				<Table className="w-full">
+						<TableHeader className={`${colors.muted} border-b ${colors.border}`}>
+							<TableRow>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
-									<input
-										type="checkbox"
-										className={getFocusRingClass(colorScheme)}
-									/>
-								</th>
-								<th
+									<Checkbox aria-label="Select all API keys" />
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("name")}
 								>
@@ -364,13 +313,13 @@ const ApiKeys = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									API Key
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("createdAt")}
 								>
@@ -386,8 +335,8 @@ const ApiKeys = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("updatedAt")}
 								>
@@ -403,39 +352,36 @@ const ApiKeys = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Status
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Actions
-								</th>
-							</tr>
-						</thead>
-						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+								</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody className={`${colors.card} divide-y ${colors.border}`}>
 							{filteredApiKeys.length === 0 ? (
-								<tr>
-									<td colSpan="7" className="px-6 py-12 text-center">
+								<TableRow>
+									<TableCell colSpan="7" className="px-6 py-12 text-center">
 										<p className={colors.mutedForeground}>No API keys found</p>
-									</td>
-								</tr>
+									</TableCell>
+								</TableRow>
 							) : (
 								filteredApiKeys.map((apiKey) => (
-									<tr
+									<TableRow
 										key={apiKey.id}
 										className={`${colors.hover} transition-colors`}
 									>
-										<td className="px-6 py-4 whitespace-nowrap">
-											<input
-												type="checkbox"
-												className={getFocusRingClass(colorScheme)}
-											/>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										<TableCell className="px-6 py-4 whitespace-nowrap">
+											<Checkbox aria-label={`Select ${apiKey.name}`} />
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-2">
 												<Key size={16} className={colors.textSecondary} />
 												<span
@@ -444,152 +390,91 @@ const ApiKeys = () => {
 													{apiKey.name}
 												</span>
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<code
 												className={`text-xs ${colors.muted} px-3 py-1.5 rounded-xl ${colors.foreground} font-mono border ${colors.border}`}
 											>
 												{apiKey.key.substring(0, 20)}...
 											</code>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-2">
 												<Calendar size={16} className={colors.textSecondary} />
 												<span className={`text-sm ${colors.textSecondary}`}>
 													{formatDate(apiKey.createdAt)}
 												</span>
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-2">
 												<RefreshCw size={16} className={colors.textSecondary} />
 												<span className={`text-sm ${colors.textSecondary}`}>
 													{formatDate(apiKey.updatedAt)}
 												</span>
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
-											<span
-												className={`px-2.5 py-1 rounded-md text-xs font-medium border ${
-													apiKey.status === "Active"
-														? theme === "dark"
-															? "bg-green-900/30 text-green-400 border-green-800/50"
-															: "bg-green-100 text-green-800"
-														: theme === "dark"
-														? "bg-red-900/30 text-red-400 border-red-800/50"
-														: "bg-red-100 text-red-800"
-												}`}
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
+											<Badge
+												variant={apiKey.status === "Active" ? "secondary" : "destructive"}
+												className={cn(
+													apiKey.status === "Active" &&
+														"bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800/50"
+												)}
 											>
 												{apiKey.status}
-											</span>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+											</Badge>
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											{apiKey.status === "Active" ? (
-												<button
+												<Button
+													variant="ghost"
+													size="sm"
 													onClick={(e) => handleRevokeApiKey(apiKey.id, e)}
-													className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors ${
-														theme === "dark"
-															? "text-red-400 hover:bg-red-900/20"
-															: "text-red-600 hover:bg-red-50"
-													}`}
+													className="text-destructive hover:text-destructive"
 												>
 													Revoke
-												</button>
+												</Button>
 											) : (
 												<span className={`text-xs ${colors.textMuted}`}>
 													Revoked
 												</span>
 											)}
-										</td>
-									</tr>
+										</TableCell>
+									</TableRow>
 								))
 							)}
-						</tbody>
-					</table>
-				</div>
-			</div>
+						</TableBody>
+					</Table>
+			</Card>
 
-			{/* Add New API Key Modal */}
-			{isModalOpen && (
-				<div
-					className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-					onClick={handleModalClose}
+			<FormModal
+				open={isModalOpen}
+				onClose={handleModalClose}
+				onSubmit={handleSubmit}
+				title="Add New API Key"
+				subtitle="Create a new API key for your application"
+				saveLabel="Create API Key"
+				maxWidth="max-w-md"
+			>
+				<FormField
+					label="API Key Name"
+					htmlFor="api-key-name"
+					required
+					hint="Give your API key a descriptive name for easy identification."
 				>
-					<div
-						className={`${colors.card} rounded-xl ${colors.shadow} max-w-md w-full overflow-y-auto`}
-						onClick={(e) => e.stopPropagation()}
-					>
-						{/* Modal Header */}
-						<div
-							className={`flex items-center justify-between p-6 border-b ${colors.border}`}
-						>
-							<div>
-								<h2 className={`text-xl font-semibold ${colors.foreground}`}>
-									Add New API Key
-								</h2>
-								<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-									Create a new API key for your application
-								</p>
-							</div>
-							<button
-								onClick={handleModalClose}
-								className={`p-2 ${colors.hoverSecondary} rounded-xl transition-colors`}
-							>
-								<X className={`w-5 h-5 ${colors.mutedForeground}`} />
-							</button>
-						</div>
-
-						{/* Modal Body */}
-						<div className="p-6 space-y-4">
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									API Key Name <span className="text-red-500">*</span>
-								</label>
-								<input
-									type="text"
-									name="name"
-									placeholder="e.g., Production API Key"
-									value={newApiKey.name}
-									onChange={handleInputChange}
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${getFocusRingClass(
-										colorScheme
-									)} focus:border-transparent placeholder:${
-										colors.mutedForeground
-									}`}
-								/>
-								<p className={`text-xs ${colors.textMuted} mt-2`}>
-									Give your API key a descriptive name for easy identification.
-								</p>
-							</div>
-						</div>
-
-						{/* Modal Footer */}
-						<div
-							className={`flex items-center justify-end gap-3 p-6 border-t ${colors.border}`}
-						>
-							<button
-								onClick={handleModalClose}
-								className={`px-4 py-2 text-sm font-medium ${colors.textSecondary} ${colors.secondary} ${colors.hoverSecondary} rounded-xl transition-colors`}
-							>
-								Cancel
-							</button>
-							<button
-								onClick={handleSubmit}
-								className={`px-4 py-2 text-sm font-medium ${scheme.primaryForeground} ${scheme.primary} ${scheme.primaryHover} rounded-xl transition-colors flex items-center gap-2`}
-							>
-								<Plus size={16} />
-								Create API Key
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
+					<Input
+						id="api-key-name"
+						type="text"
+						name="name"
+						placeholder="e.g., Production API Key"
+						value={newApiKey.name}
+						onChange={(e) =>
+							setNewApiKey((prev) => ({ ...prev, name: e.target.value }))
+						}
+					/>
+				</FormField>
+			</FormModal>
 		</div>
 	);
 };

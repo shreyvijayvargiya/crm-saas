@@ -8,7 +8,6 @@ import {
 	ChevronRight,
 	CreditCard,
 	DollarSign,
-	TrendingUp,
 	Calendar,
 	CheckCircle2,
 	Clock,
@@ -17,14 +16,32 @@ import {
 	Plus,
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useTheme } from "../../utils/useTheme";
-import { getFocusRingClass } from "../../utils/theme";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import FormSelect from "../../lib/ui/FormSelect";
 import PaymentMethodForm from "./PaymentMethodForm";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
+
+const textareaClass =
+	"flex min-h-[80px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 
 const Payments = () => {
-	// Theme hook
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { colors } = useTheme();
 
 	const initialPayments = [
 		{
@@ -439,14 +456,11 @@ const Payments = () => {
 
 			{/* Total Funds Section */}
 			<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
-				>
+				<Card>
+					<CardContent className="p-6">
 					<div className="flex items-center justify-between">
 						<div>
-							<p
-								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
-							>
+							<p className="text-sm font-medium text-muted-foreground mb-1">
 								Net Balance
 							</p>
 							<p
@@ -456,7 +470,7 @@ const Payments = () => {
 							>
 								{formatCurrency(netBalance)}
 							</p>
-							<p className="text-xs text-zinc-400 mt-1">
+							<p className="text-xs text-muted-foreground mt-1">
 								Total funds - deductions
 							</p>
 						</div>
@@ -472,22 +486,20 @@ const Payments = () => {
 							/>
 						</div>
 					</div>
-				</div>
+					</CardContent>
+				</Card>
 
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
-				>
+				<Card>
+					<CardContent className="p-6">
 					<div className="flex items-center justify-between">
 						<div>
-							<p
-								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
-							>
+							<p className="text-sm font-medium text-muted-foreground mb-1">
 								Total Funds
 							</p>
 							<p className="text-3xl font-bold text-green-600">
 								{formatCurrency(totalFunds)}
 							</p>
-							<p className="text-xs text-zinc-400 mt-1">
+							<p className="text-xs text-muted-foreground mt-1">
 								{
 									payments.filter(
 										(p) => p.status === "Completed" && p.amount > 0
@@ -500,22 +512,20 @@ const Payments = () => {
 							<ArrowUpRight className="w-6 h-6 text-green-600" />
 						</div>
 					</div>
-				</div>
+					</CardContent>
+				</Card>
 
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
-				>
+				<Card>
+					<CardContent className="p-6">
 					<div className="flex items-center justify-between">
 						<div>
-							<p
-								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
-							>
+							<p className="text-sm font-medium text-muted-foreground mb-1">
 								Total Deductions
 							</p>
 							<p className="text-3xl font-bold text-red-600">
 								-{formatCurrency(totalDeductions)}
 							</p>
-							<p className="text-xs text-zinc-400 mt-1">
+							<p className="text-xs text-muted-foreground mt-1">
 								{
 									payments.filter(
 										(p) => p.status === "Completed" && p.amount < 0
@@ -528,22 +538,20 @@ const Payments = () => {
 							<ArrowDownRight className="w-6 h-6 text-red-600" />
 						</div>
 					</div>
-				</div>
+					</CardContent>
+				</Card>
 
-				<div
-					className={`${colors.card} border ${colors.border} rounded-xl p-6 ${colors.shadow}`}
-				>
+				<Card>
+					<CardContent className="p-6">
 					<div className="flex items-center justify-between">
 						<div>
-							<p
-								className={`text-sm font-medium ${colors.mutedForeground} mb-1`}
-							>
+							<p className="text-sm font-medium text-muted-foreground mb-1">
 								Pending
 							</p>
 							<p className={`text-3xl font-bold ${colors.foreground}`}>
 								{formatCurrency(pendingAmount - pendingDeductions)}
 							</p>
-							<p className="text-xs text-zinc-400 mt-1">
+							<p className="text-xs text-muted-foreground mt-1">
 								{pendingCount} pending transactions
 							</p>
 						</div>
@@ -551,103 +559,87 @@ const Payments = () => {
 							<Clock className="w-6 h-6 text-yellow-600" />
 						</div>
 					</div>
-				</div>
+					</CardContent>
+				</Card>
 			</div>
 
 			{/* Search and Filter Section */}
-			<div
-				
-			>
+			<div>
 				<div className="flex flex-col md:flex-row gap-4 items-center justify-between">
 					{/* Search */}
-					<div className="relative w-fit md:w-auto">
+					<div className="relative w-full md:w-auto">
 						<Search
-							className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${colors.textMuted}`}
+							size={18}
+							className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
 						/>
-						<input
+						<Input
 							type="text"
 							placeholder="Search by transaction ID, customer, email, or description..."
 							value={searchTerm}
 							onChange={(e) => setSearchTerm(e.target.value)}
-							className={`w-full pl-10 pr-4 py-2 ${colors.background} border ${
-								colors.border
-							} rounded-xl text-sm ${
-								colors.foreground
-							} focus:outline-none focus:ring-2 ${getFocusRingClass(
-								colorScheme
-							)} focus:border-transparent placeholder:${colors.textTertiary}`}
+							className="pl-9 w-full md:w-[28rem]"
 						/>
 					</div>
 
 					{/* Filter Tabs and Add Button */}
-					<div className="flex gap-2 items-center justify-between">
+					<div className="flex gap-2 items-center justify-between flex-wrap">
 						{/* Filter Tabs */}
-						<div className="flex gap-2">
-							<button
+						<div className="flex gap-2 flex-wrap">
+							<Button
+								type="button"
+								variant={filterStatus === "All" ? "default" : "outline"}
+								size="sm"
 								onClick={() => {
 									setFilterStatus("All");
 									setCurrentPage(1);
 								}}
-								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-									filterStatus === "All"
-										? `${scheme.primary} ${scheme.primaryForeground}`
-										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-								}`}
 							>
 								All ({payments.length})
-							</button>
-							<button
+							</Button>
+							<Button
+								type="button"
+								variant={filterStatus === "Completed" ? "default" : "outline"}
+								size="sm"
+								className="gap-2"
 								onClick={() => {
 									setFilterStatus("Completed");
 									setCurrentPage(1);
 								}}
-								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
-									filterStatus === "Completed"
-										? "bg-green-600 text-white"
-										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-								}`}
 							>
 								<CheckCircle2 className="w-4 h-4" />
 								Completed ({completedCount})
-							</button>
-							<button
+							</Button>
+							<Button
+								type="button"
+								variant={filterStatus === "Pending" ? "default" : "outline"}
+								size="sm"
+								className="gap-2"
 								onClick={() => {
 									setFilterStatus("Pending");
 									setCurrentPage(1);
 								}}
-								className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
-									filterStatus === "Pending"
-										? "bg-yellow-600 text-white"
-										: `${colors.secondary} ${colors.secondaryForeground} ${colors.hoverSecondary}`
-								}`}
 							>
 								<Clock className="w-4 h-4" />
 								Pending ({pendingCount})
-							</button>
+							</Button>
 						</div>
 
 						{/* Add Payment Button */}
-						<button
-							onClick={handleOpenAddModal}
-							className={`px-4 py-2 rounded-xl text-sm font-medium ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} transition-colors flex items-center gap-2`}
-						>
+						<Button type="button" onClick={handleOpenAddModal}>
 							<Plus className="w-4 h-4" />
 							Add Payment
-						</button>
+						</Button>
 					</div>
 				</div>
 			</div>
 
 			{/* Payment method + table */}
 			<div className="flex flex-col xl:flex-row gap-6 items-start">
-				<div
-					className={`flex-1 min-w-0 w-full ${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
-				>
-				<div className="overflow-x-auto">
-					<table className="w-full">
-						<thead className={`${colors.muted} border-b ${colors.border}`}>
-							<tr>
-								<th
+				<Card className="flex-1 min-w-0 w-full overflow-hidden">
+				<Table className="w-full">
+						<TableHeader className={`${colors.muted} border-b ${colors.border}`}>
+							<TableRow>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer hover:bg-zinc-100`}
 									onClick={() => requestSort("transactionId")}
 								>
@@ -663,8 +655,8 @@ const Payments = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("customer")}
 								>
@@ -680,8 +672,8 @@ const Payments = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer hover:bg-zinc-100`}
 									onClick={() => requestSort("amount")}
 								>
@@ -697,11 +689,11 @@ const Payments = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
+								</TableHead>
+								<TableHead className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
 									Payment Method
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => requestSort("date")}
 								>
@@ -717,37 +709,37 @@ const Payments = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
+								</TableHead>
+								<TableHead className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
 									Status
-								</th>
-								<th className="px-6 py-3 text-right text-xs font-medium text-zinc-500 uppercase tracking-wider">
+								</TableHead>
+								<TableHead className="px-6 py-3 text-right text-xs font-medium text-zinc-500 uppercase tracking-wider">
 									Actions
-								</th>
-							</tr>
-						</thead>
-						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+								</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody className={`${colors.card} divide-y ${colors.border}`}>
 							{paginatedPayments.length === 0 ? (
-								<tr>
-									<td colSpan="7" className="px-6 py-12 text-center">
+								<TableRow>
+									<TableCell colSpan="7" className="px-6 py-12 text-center">
 										<p className={colors.mutedForeground}>No payments found</p>
-									</td>
-								</tr>
+									</TableCell>
+								</TableRow>
 							) : (
 								paginatedPayments.map((payment) => (
-									<tr
+									<TableRow
 										key={payment.id}
 										className="hover:bg-zinc-50 transition-colors cursor-pointer"
 										onClick={() => handlePaymentClick(payment)}
 									>
-										<td className="px-6 py-4 whitespace-nowrap">
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div
 												className={`text-sm font-medium ${colors.foreground}`}
 											>
 												{payment.transactionId}
 											</div>
-										</td>
-										<td className="px-6 py-4">
+										</TableCell>
+										<TableCell className="px-6 py-4">
 											<div
 												className={`text-sm font-medium ${colors.foreground}`}
 											>
@@ -756,8 +748,8 @@ const Payments = () => {
 											<div className={`text-sm ${colors.mutedForeground}`}>
 												{payment.customerEmail}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div
 												className={`text-sm font-semibold ${
 													payment.amount >= 0
@@ -768,64 +760,65 @@ const Payments = () => {
 												{payment.amount >= 0 ? "+" : ""}
 												{formatCurrency(payment.amount)}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-2">
 												<CreditCard className="w-4 h-4 text-zinc-400" />
 												<span className={`text-sm ${colors.textSecondary}`}>
 													{payment.paymentMethod}
 												</span>
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{formatDate(payment.date)}
 											</div>
 											<div className={`text-xs ${colors.textMuted}`}>
 												{payment.time}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-2">
-												<span
-													className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+												<Badge
+													variant="secondary"
+													className={cn(
+														"gap-1",
 														payment.status === "Completed"
-															? "bg-green-100 text-green-800"
-															: "bg-yellow-100 text-yellow-800"
-													}`}
+															? "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800/50"
+															: "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800/50"
+													)}
 												>
 													{payment.status === "Completed" ? (
-														<CheckCircle2 className="w-3 h-3 mr-1" />
+														<CheckCircle2 className="w-3 h-3" />
 													) : (
-														<Clock className="w-3 h-3 mr-1" />
+														<Clock className="w-3 h-3" />
 													)}
 													{payment.status}
-												</span>
+												</Badge>
 												{payment.amount < 0 && (
-													<span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-														Deduction
-													</span>
+													<Badge variant="destructive">Deduction</Badge>
 												)}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap text-right">
-											<button
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap text-right">
+											<Button
+												type="button"
+												variant="ghost"
+												size="icon"
+												title="View payment"
 												onClick={(e) => {
 													e.stopPropagation();
 													handlePaymentClick(payment);
 												}}
-												className={`inline-flex items-center px-3 py-1.5 text-sm font-medium ${colors.secondaryForeground} ${colors.secondary} ${colors.hoverSecondary} rounded-xl transition-colors`}
 											>
-												<Eye className="w-4 h-4 mr-1" />
-												View
-											</button>
-										</td>
-									</tr>
+												<Eye className="w-4 h-4" />
+											</Button>
+										</TableCell>
+									</TableRow>
 								))
 							)}
-						</tbody>
-					</table>
-				</div>
+						</TableBody>
+					</Table>
 
 				{/* Pagination */}
 				{totalPages > 1 && (
@@ -838,386 +831,275 @@ const Payments = () => {
 							{filteredPayments.length} payments
 						</div>
 						<div className="flex items-center gap-2">
-							<button
+							<Button
+								type="button"
+								variant="outline"
+								size="icon"
 								onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
 								disabled={currentPage === 1}
-								className={`p-2 border ${colors.border} rounded-xl ${colors.hoverSecondary} disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
+								aria-label="Previous page"
 							>
 								<ChevronLeft className="w-4 h-4" />
-							</button>
+							</Button>
 							<div className="flex items-center gap-1">
 								{Array.from({ length: totalPages }, (_, i) => i + 1).map(
 									(page) => (
-										<button
+										<Button
 											key={page}
+											type="button"
+											variant={currentPage === page ? "secondary" : "ghost"}
+											size="sm"
+											className="min-w-9"
 											onClick={() => setCurrentPage(page)}
-											className={`px-3 py-1 rounded-xl text-sm ${
-												currentPage === page
-													? "bg-zinc-900 text-white"
-													: `${colors.textSecondary} ${colors.hoverSecondary}`
-											}`}
 										>
 											{page}
-										</button>
+										</Button>
 									)
 								)}
 							</div>
-							<button
+							<Button
+								type="button"
+								variant="outline"
+								size="icon"
 								onClick={() =>
 									setCurrentPage((prev) => Math.min(totalPages, prev + 1))
 								}
 								disabled={currentPage === totalPages}
-								className={`p-2 border ${colors.border} rounded-xl ${colors.hoverSecondary} disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
+								aria-label="Next page"
 							>
 								<ChevronRight className="w-4 h-4" />
-							</button>
+							</Button>
 						</div>
 					</div>
 				)}
-				</div>
+				</Card>
 				<div className="w-full xl:w-[min(100%,26rem)] shrink-0 xl:sticky xl:top-4">
 					<PaymentMethodForm />
 				</div>
 			</div>
 
-			{/* Add Payment Modal */}
-			{isAddModalOpen && (
-				<div
-					className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-					onClick={handleCloseAddModal}
-				>
-					<div
-						className={`${colors.card} rounded-xl ${colors.shadow} max-w-2xl w-full overflow-y-auto`}
-						onClick={(e) => e.stopPropagation()}
+			<FormModal
+				open={isAddModalOpen}
+				onClose={handleCloseAddModal}
+				title="Add New Payment"
+				subtitle="Create a new payment transaction"
+				onSubmit={handleAddPayment}
+				saveLabel="Add Payment"
+				maxWidth="max-w-2xl"
+			>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<FormField label="Customer Name" htmlFor="payment-customer" required>
+						<Input
+							id="payment-customer"
+							type="text"
+							name="customer"
+							value={newPayment.customer}
+							onChange={handleInputChange}
+							placeholder="Enter customer name"
+						/>
+					</FormField>
+					<FormField label="Customer Email" htmlFor="payment-email" required>
+						<Input
+							id="payment-email"
+							type="email"
+							name="customerEmail"
+							value={newPayment.customerEmail}
+							onChange={handleInputChange}
+							placeholder="customer@example.com"
+						/>
+					</FormField>
+				</div>
+
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<FormField
+						label="Amount (USD)"
+						htmlFor="payment-amount"
+						required
+						hint="Enter negative value for deductions/refunds"
 					>
-						{/* Modal Header */}
-						<div
-							className={`flex items-center justify-between p-6 border-b ${colors.border}`}
-						>
-							<div>
-								<h2 className={`text-xl font-semibold ${colors.foreground}`}>
-									Add New Payment
-								</h2>
-								<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-									Create a new payment transaction
-								</p>
-							</div>
-							<button
-								onClick={handleCloseAddModal}
-								className="p-2 hover:bg-zinc-100 rounded-xl transition-colors"
-							>
-								<X className={`w-5 h-5 ${colors.mutedForeground}`} />
-							</button>
+						<div className="relative">
+							<DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+							<Input
+								id="payment-amount"
+								type="number"
+								name="amount"
+								value={newPayment.amount}
+								onChange={(e) => {
+									const value = e.target.value;
+									if (
+										!newPayment.fee ||
+										newPayment.fee ===
+											calculateFee(Math.abs(newPayment.amount)).toFixed(2)
+									) {
+										const fee = calculateFee(Math.abs(value));
+										setNewPayment((prev) => ({
+											...prev,
+											amount: value,
+											fee: value ? fee.toFixed(2) : "",
+										}));
+									} else {
+										handleInputChange(e);
+									}
+								}}
+								placeholder="0.00 (use negative for deductions)"
+								step="0.01"
+								className="pl-9"
+							/>
 						</div>
+					</FormField>
+					<FormField label="Payment Method" htmlFor="payment-method" required>
+						<FormSelect
+							id="payment-method"
+							value={newPayment.paymentMethod}
+							onChange={(e) =>
+								handleInputChange({
+									target: { name: "paymentMethod", value: e.target.value },
+								})
+							}
+							options={[
+								"Credit Card",
+								"Debit Card",
+								"PayPal",
+								"Bank Transfer",
+								"Wire Transfer",
+								"Check",
+								"Cash",
+							]}
+						/>
+					</FormField>
+				</div>
 
-						{/* Modal Body */}
-						<div className="p-6 space-y-4">
-							{/* Customer Information */}
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-								<div>
-									<label
-										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-									>
-										Customer Name <span className="text-red-500">*</span>
-									</label>
-									<input
-										type="text"
-										name="customer"
-										value={newPayment.customer}
-										onChange={handleInputChange}
-										placeholder="Enter customer name"
-										className={`w-full px-4 py-2 ${colors.background} border ${
-											colors.border
-										} rounded-xl text-sm ${
-											colors.foreground
-										} focus:outline-none focus:ring-2 ${getFocusRingClass(
-											colorScheme
-										)} focus:border-transparent`}
-									/>
-								</div>
-								<div>
-									<label
-										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-									>
-										Customer Email <span className="text-red-500">*</span>
-									</label>
-									<input
-										type="email"
-										name="customerEmail"
-										value={newPayment.customerEmail}
-										onChange={handleInputChange}
-										placeholder="customer@example.com"
-										className={`w-full px-4 py-2 ${colors.background} border ${
-											colors.border
-										} rounded-xl text-sm ${
-											colors.foreground
-										} focus:outline-none focus:ring-2 ${getFocusRingClass(
-											colorScheme
-										)} focus:border-transparent`}
-									/>
-								</div>
-							</div>
-
-							{/* Amount and Payment Method */}
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-								<div>
-									<label
-										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-									>
-										Amount (USD) <span className="text-red-500">*</span>
-									</label>
-									<div className="relative">
-										<DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
-										<input
-											type="number"
-											name="amount"
-											value={newPayment.amount}
-											onChange={(e) => {
-												const value = e.target.value;
-												// Auto-calculate fee if not manually set (use absolute value for fee calculation)
-												if (
-													!newPayment.fee ||
-													newPayment.fee ===
-														calculateFee(Math.abs(newPayment.amount)).toFixed(2)
-												) {
-													const fee = calculateFee(Math.abs(value));
-													setNewPayment((prev) => ({
-														...prev,
-														amount: value,
-														fee: value ? fee.toFixed(2) : "",
-													}));
-												} else {
-													handleInputChange(e);
-												}
-											}}
-											placeholder="0.00 (use negative for deductions)"
-											step="0.01"
-											className={`w-full pl-10 pr-4 py-2 ${
-												colors.background
-											} border ${colors.border} rounded-xl text-sm ${
-												colors.foreground
-											} focus:outline-none focus:ring-2 ${getFocusRingClass(
-												colorScheme
-											)} focus:border-transparent`}
-										/>
-									</div>
-									<p className="text-xs text-zinc-400 mt-1">
-										Enter negative value for deductions/refunds
-									</p>
-								</div>
-								<div>
-									<label
-										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-									>
-										Payment Method <span className="text-red-500">*</span>
-									</label>
-									<select
-										name="paymentMethod"
-										value={newPayment.paymentMethod}
-										onChange={handleInputChange}
-										className={`w-full px-4 py-2 ${colors.background} border ${
-											colors.border
-										} rounded-xl text-sm ${
-											colors.foreground
-										} focus:outline-none focus:ring-2 ${getFocusRingClass(
-											colorScheme
-										)} focus:border-transparent`}
-									>
-										<option value="Credit Card">Credit Card</option>
-										<option value="Debit Card">Debit Card</option>
-										<option value="PayPal">PayPal</option>
-										<option value="Bank Transfer">Bank Transfer</option>
-										<option value="Wire Transfer">Wire Transfer</option>
-										<option value="Check">Check</option>
-										<option value="Cash">Cash</option>
-									</select>
-								</div>
-							</div>
-
-							{/* Fee and Status */}
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-								<div>
-									<label
-										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-									>
-										Processing Fee (USD)
-									</label>
-									<div className="relative">
-										<DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
-										<input
-											type="number"
-											name="fee"
-											value={newPayment.fee}
-											onChange={handleInputChange}
-											placeholder="Auto-calculated (3%)"
-											min="0"
-											step="0.01"
-											className={`w-full pl-10 pr-4 py-2 ${
-												colors.background
-											} border ${colors.border} rounded-xl text-sm ${
-												colors.foreground
-											} focus:outline-none focus:ring-2 ${getFocusRingClass(
-												colorScheme
-											)} focus:border-transparent`}
-										/>
-									</div>
-									<p className="text-xs text-zinc-400 mt-1">
-										Leave empty for auto-calculation (3% of amount)
-									</p>
-								</div>
-								<div>
-									<label
-										className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-									>
-										Status <span className="text-red-500">*</span>
-									</label>
-									<select
-										name="status"
-										value={newPayment.status}
-										onChange={handleInputChange}
-										className={`w-full px-4 py-2 ${colors.background} border ${
-											colors.border
-										} rounded-xl text-sm ${
-											colors.foreground
-										} focus:outline-none focus:ring-2 ${getFocusRingClass(
-											colorScheme
-										)} focus:border-transparent`}
-									>
-										<option value="Pending">Pending</option>
-										<option value="Completed">Completed</option>
-									</select>
-								</div>
-							</div>
-
-							{/* Invoice ID and Description */}
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Invoice ID
-								</label>
-								<input
-									type="text"
-									name="invoiceId"
-									value={newPayment.invoiceId}
-									onChange={handleInputChange}
-									placeholder="INV-2024-001 (optional)"
-									className="w-full px-4 py-2 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
-								/>
-								<p className="text-xs text-zinc-400 mt-1">
-									Leave empty to auto-generate
-								</p>
-							</div>
-
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Description <span className="text-red-500">*</span>
-								</label>
-								<textarea
-									name="description"
-									value={newPayment.description}
-									onChange={handleInputChange}
-									placeholder="Enter payment description..."
-									rows="3"
-									className="w-full px-4 py-2 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent resize-none"
-								/>
-							</div>
-
-							{/* Preview */}
-							{newPayment.amount && parseFloat(newPayment.amount) !== 0 && (
-								<div className="bg-zinc-50 rounded-xl p-4 space-y-2">
-									<p
-										className={`text-sm font-medium ${colors.textSecondary} mb-2`}
-									>
-										Payment Preview
-									</p>
-									<div className="flex items-center justify-between text-sm">
-										<span className="text-zinc-600">Gross Amount:</span>
-										<span
-											className={`font-medium ${
-												parseFloat(newPayment.amount) >= 0
-													? "text-green-600"
-													: "text-red-600"
-											}`}
-										>
-											{parseFloat(newPayment.amount) >= 0 ? "+" : ""}
-											{formatCurrency(parseFloat(newPayment.amount) || 0)}
-										</span>
-									</div>
-									<div className="flex items-center justify-between text-sm">
-										<span className="text-zinc-600">Processing Fee:</span>
-										<span className={`font-medium ${colors.foreground}`}>
-											-
-											{formatCurrency(
-												parseFloat(newPayment.fee) ||
-													calculateFee(Math.abs(newPayment.amount))
-											)}
-										</span>
-									</div>
-									<div className="border-t border-zinc-200 pt-2 mt-2">
-										<div className="flex items-center justify-between">
-											<span
-												className={`text-sm font-semibold ${colors.foreground}`}
-											>
-												Net Amount:
-											</span>
-											<span
-												className={`text-lg font-bold ${
-													(parseFloat(newPayment.amount) || 0) -
-														(parseFloat(newPayment.fee) ||
-															calculateFee(Math.abs(newPayment.amount))) >=
-													0
-														? "text-green-600"
-														: "text-red-600"
-												}`}
-											>
-												{(parseFloat(newPayment.amount) || 0) -
-													(parseFloat(newPayment.fee) ||
-														calculateFee(Math.abs(newPayment.amount))) >=
-												0
-													? "+"
-													: ""}
-												{formatCurrency(
-													(parseFloat(newPayment.amount) || 0) -
-														(parseFloat(newPayment.fee) ||
-															calculateFee(Math.abs(newPayment.amount)))
-												)}
-											</span>
-										</div>
-									</div>
-								</div>
-							)}
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<FormField
+						label="Processing Fee (USD)"
+						htmlFor="payment-fee"
+						hint="Leave empty for auto-calculation (3% of amount)"
+					>
+						<div className="relative">
+							<DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+							<Input
+								id="payment-fee"
+								type="number"
+								name="fee"
+								value={newPayment.fee}
+								onChange={handleInputChange}
+								placeholder="Auto-calculated (3%)"
+								min="0"
+								step="0.01"
+								className="pl-9"
+							/>
 						</div>
+					</FormField>
+					<FormField label="Status" htmlFor="payment-status" required>
+						<FormSelect
+							id="payment-status"
+							value={newPayment.status}
+							onChange={(e) =>
+								handleInputChange({
+									target: { name: "status", value: e.target.value },
+								})
+							}
+							options={["Pending", "Completed"]}
+						/>
+					</FormField>
+				</div>
 
-						{/* Modal Footer */}
-						<div className="flex items-center justify-end gap-3 p-6 border-t border-zinc-200">
-							<button
-								onClick={handleCloseAddModal}
-								className={`px-4 py-2 text-sm font-medium ${colors.textSecondary} ${colors.secondary} ${colors.hoverSecondary} rounded-xl transition-colors`}
+				<FormField
+					label="Invoice ID"
+					htmlFor="payment-invoice"
+					hint="Leave empty to auto-generate"
+				>
+					<Input
+						id="payment-invoice"
+						type="text"
+						name="invoiceId"
+						value={newPayment.invoiceId}
+						onChange={handleInputChange}
+						placeholder="INV-2024-001 (optional)"
+					/>
+				</FormField>
+
+				<FormField label="Description" htmlFor="payment-description" required>
+					<textarea
+						id="payment-description"
+						name="description"
+						value={newPayment.description}
+						onChange={handleInputChange}
+						placeholder="Enter payment description..."
+						rows={3}
+						className={cn(textareaClass, "resize-none")}
+					/>
+				</FormField>
+
+				{newPayment.amount && parseFloat(newPayment.amount) !== 0 && (
+					<div className="bg-muted/50 rounded-xl p-4 space-y-2">
+						<p className={`text-sm font-medium ${colors.textSecondary} mb-2`}>
+							Payment Preview
+						</p>
+						<div className="flex items-center justify-between text-sm">
+							<span className="text-muted-foreground">Gross Amount:</span>
+							<span
+								className={`font-medium ${
+									parseFloat(newPayment.amount) >= 0
+										? "text-green-600"
+										: "text-red-600"
+								}`}
 							>
-								Cancel
-							</button>
-							<button
-								onClick={handleAddPayment}
-								className={`px-4 py-2 text-sm font-medium ${scheme.primaryForeground} ${scheme.primary} ${scheme.primaryHover} rounded-xl transition-colors`}
-							>
-								Add Payment
-							</button>
+								{parseFloat(newPayment.amount) >= 0 ? "+" : ""}
+								{formatCurrency(parseFloat(newPayment.amount) || 0)}
+							</span>
+						</div>
+						<div className="flex items-center justify-between text-sm">
+							<span className="text-muted-foreground">Processing Fee:</span>
+							<span className={`font-medium ${colors.foreground}`}>
+								-
+								{formatCurrency(
+									parseFloat(newPayment.fee) ||
+										calculateFee(Math.abs(newPayment.amount))
+								)}
+							</span>
+						</div>
+						<div className="border-t pt-2 mt-2">
+							<div className="flex items-center justify-between">
+								<span className={`text-sm font-semibold ${colors.foreground}`}>
+									Net Amount:
+								</span>
+								<span
+									className={`text-lg font-bold ${
+										(parseFloat(newPayment.amount) || 0) -
+											(parseFloat(newPayment.fee) ||
+												calculateFee(Math.abs(newPayment.amount))) >=
+										0
+											? "text-green-600"
+											: "text-red-600"
+									}`}
+								>
+									{(parseFloat(newPayment.amount) || 0) -
+										(parseFloat(newPayment.fee) ||
+											calculateFee(Math.abs(newPayment.amount))) >=
+									0
+										? "+"
+										: ""}
+									{formatCurrency(
+										(parseFloat(newPayment.amount) || 0) -
+											(parseFloat(newPayment.fee) ||
+												calculateFee(Math.abs(newPayment.amount)))
+									)}
+								</span>
+							</div>
 						</div>
 					</div>
-				</div>
-			)}
+				)}
+			</FormModal>
 
 			{/* Payment Details Modal */}
 			{isModalOpen && selectedPayment && (
 				<div
-					className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+					className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
 					onClick={handleCloseModal}
 				>
 					<div
-						className={`${colors.card} rounded-xl ${colors.shadow} max-w-2xl w-full max-h-[90vh] overflow-y-auto`}
+						className={`${colors.card} rounded-xl ${colors.shadow} max-w-2xl w-full max-h-[90vh] overflow-y-auto border ${colors.border}`}
 						onClick={(e) => e.stopPropagation()}
 					>
 						{/* Modal Header */}
@@ -1232,12 +1114,15 @@ const Payments = () => {
 									{selectedPayment.transactionId}
 								</p>
 							</div>
-							<button
+							<Button
+								type="button"
+								variant="ghost"
+								size="icon"
 								onClick={handleCloseModal}
-								className="p-2 hover:bg-zinc-100 rounded-xl transition-colors"
+								aria-label="Close"
 							>
-								<X className={`w-5 h-5 ${colors.mutedForeground}`} />
-							</button>
+								<X className="w-5 h-5" />
+							</Button>
 						</div>
 
 						{/* Modal Body */}
@@ -1245,21 +1130,23 @@ const Payments = () => {
 							{/* Status and Amount */}
 							<div className="flex items-center justify-between">
 								<div>
-									<p className="text-sm text-zinc-500 mb-1">Status</p>
-									<span
-										className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+									<p className="text-sm text-muted-foreground mb-1">Status</p>
+									<Badge
+										variant="secondary"
+										className={cn(
+											"gap-1 text-sm",
 											selectedPayment.status === "Completed"
-												? "bg-green-100 text-green-800"
-												: "bg-yellow-100 text-yellow-800"
-										}`}
+												? "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800/50"
+												: "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800/50"
+										)}
 									>
 										{selectedPayment.status === "Completed" ? (
-											<CheckCircle2 className="w-4 h-4 mr-1" />
+											<CheckCircle2 className="w-4 h-4" />
 										) : (
-											<Clock className="w-4 h-4 mr-1" />
+											<Clock className="w-4 h-4" />
 										)}
 										{selectedPayment.status}
-									</span>
+									</Badge>
 								</div>
 								<div className="text-right">
 									<p className="text-sm text-zinc-500 mb-1">Amount</p>

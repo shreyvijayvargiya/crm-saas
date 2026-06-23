@@ -202,6 +202,118 @@ export const themeColors = {
 	},
 };
 
+/** HSL tokens for shadcn CSS vars — synced when navbar accent picker changes. */
+export const schemeCssVars = {
+	blue: {
+		light: {
+			primary: "221.2 83.2% 53.3%",
+			primaryForeground: "0 0% 100%",
+			ring: "221.2 83.2% 53.3%",
+		},
+		dark: {
+			primary: "217.2 91.2% 59.8%",
+			primaryForeground: "228.6 84% 4.9%",
+			ring: "217.2 91.2% 59.8%",
+		},
+	},
+	green: {
+		light: {
+			primary: "142.1 76.2% 36.3%",
+			primaryForeground: "0 0% 100%",
+			ring: "142.1 76.2% 36.3%",
+		},
+		dark: {
+			primary: "142.1 70.6% 45.3%",
+			primaryForeground: "144.9 80.4% 10%",
+			ring: "142.1 70.6% 45.3%",
+		},
+	},
+	purple: {
+		light: {
+			primary: "271.5 81.3% 55.9%",
+			primaryForeground: "0 0% 100%",
+			ring: "271.5 81.3% 55.9%",
+		},
+		dark: {
+			primary: "271.5 91% 65.1%",
+			primaryForeground: "274.3 86.8% 12.9%",
+			ring: "271.5 91% 65.1%",
+		},
+	},
+	orange: {
+		light: {
+			primary: "20.5 90.2% 48.2%",
+			primaryForeground: "0 0% 100%",
+			ring: "20.5 90.2% 48.2%",
+		},
+		dark: {
+			primary: "24.6 95% 53.1%",
+			primaryForeground: "13 81.1% 14.5%",
+			ring: "24.6 95% 53.1%",
+		},
+	},
+	red: {
+		light: {
+			primary: "0 72.2% 50.6%",
+			primaryForeground: "0 0% 100%",
+			ring: "0 72.2% 50.6%",
+		},
+		dark: {
+			primary: "0 84.2% 60.2%",
+			primaryForeground: "0 74.7% 15.5%",
+			ring: "0 84.2% 60.2%",
+		},
+	},
+	pink: {
+		light: {
+			primary: "346.8 77.2% 49.8%",
+			primaryForeground: "0 0% 100%",
+			ring: "346.8 77.2% 49.8%",
+		},
+		dark: {
+			primary: "330.4 81.2% 60.4%",
+			primaryForeground: "343.4 81.2% 14.9%",
+			ring: "330.4 81.2% 60.4%",
+		},
+	},
+	indigo: {
+		light: {
+			primary: "243.4 75.4% 58.6%",
+			primaryForeground: "0 0% 100%",
+			ring: "243.4 75.4% 58.6%",
+		},
+		dark: {
+			primary: "238.7 83.5% 66.7%",
+			primaryForeground: "244.3 47.1% 20.2%",
+			ring: "238.7 83.5% 66.7%",
+		},
+	},
+	zinc: {
+		light: {
+			primary: "240 5.9% 10%",
+			primaryForeground: "0 0% 100%",
+			ring: "240 5.9% 10%",
+		},
+		dark: {
+			primary: "0 0% 98%",
+			primaryForeground: "240 5.9% 10%",
+			ring: "0 0% 98%",
+		},
+	},
+};
+
+/** Push accent palette into shadcn CSS custom properties on :root. */
+export const applySchemeCssVars = (colorScheme, theme) => {
+	if (typeof document === "undefined") return;
+	const vars =
+		schemeCssVars[colorScheme]?.[theme] ?? schemeCssVars.blue[theme];
+	const root = document.documentElement;
+	root.style.setProperty("--primary", vars.primary);
+	root.style.setProperty("--primary-foreground", vars.primaryForeground);
+	root.style.setProperty("--ring", vars.ring);
+	root.dataset.colorScheme = colorScheme;
+};
+
 // Helper function to get focus ring class based on color scheme
 export const getFocusRingClass = (colorScheme) => {
 	const ringClasses = {

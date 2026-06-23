@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import {
 	Search,
 	Handshake,
@@ -12,9 +12,24 @@ import {
 	Trash2,
 } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
-import { getFocusRingClass } from "../../utils/theme";
 import { INITIAL_DEALS, STAGE_META } from "../CRM/dealsSeedData";
-import { FormModal, FormField, formInputClass } from "../../lib/ui/modal";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import FormSelect from "../../lib/ui/FormSelect";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
 
 const STAGE_FILTERS = [
 	{ id: "all", label: "All" },
@@ -35,7 +50,7 @@ const EMPTY_EDIT_DEAL = {
 };
 
 const Deals = () => {
-	const { colorScheme, colors, scheme } = useTheme();
+	const { colors } = useTheme();
 	const [deals, setDeals] = useState(INITIAL_DEALS);
 	const [search, setSearch] = useState("");
 	const [stageFilter, setStageFilter] = useState("all");
@@ -169,14 +184,15 @@ const Deals = () => {
 			</div>
 
 			<div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-4 px-2">
-				<div
-					className={`relative flex gap-2 items-center border ${colors.border} rounded-xl px-3 py-2 ${colors.card} flex-1 max-w-md`}
-				>
-					<Search className={colors.textSecondary} size={18} />
-					<input
+				<div className="relative flex gap-2 items-center flex-1 max-w-md">
+					<Search
+						size={18}
+						className="absolute left-3 text-muted-foreground pointer-events-none"
+					/>
+					<Input
 						type="search"
 						placeholder="Search deals, company, rep…"
-						className={`outline-none flex-1 bg-transparent ${colors.foreground} placeholder:opacity-60 ${getFocusRingClass(colorScheme)}`}
+						className="pl-9"
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
 					/>
@@ -185,31 +201,25 @@ const Deals = () => {
 					{STAGE_FILTERS.map((f) => {
 						const on = stageFilter === f.id;
 						return (
-							<button
+							<Button
 								key={f.id}
 								type="button"
+								variant={on ? "default" : "outline"}
+								size="sm"
 								onClick={() => setStageFilter(f.id)}
-								className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors border ${
-									on
-										? `${scheme.primary} ${scheme.primaryForeground} border-transparent`
-										: `${colors.border} ${colors.foreground} ${colors.hoverSecondary}`
-								}`}
 							>
 								{f.label}
-							</button>
+							</Button>
 						);
 					})}
 				</div>
 			</div>
 
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden`}
-			>
-				<div className="overflow-x-auto">
-					<table className="w-full text-sm">
-						<thead className={`${colors.muted} border-b ${colors.border}`}>
-							<tr>
-								<th
+			<Card className="overflow-hidden">
+				<Table className="w-full text-sm">
+						<TableHeader className={`${colors.muted} border-b ${colors.border}`}>
+							<TableRow>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => toggleSort("name")}
 								>
@@ -217,18 +227,18 @@ const Deals = () => {
 										Deal
 										<SortIcon column="name" />
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Company
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Status
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-right text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => toggleSort("value")}
 								>
@@ -236,8 +246,8 @@ const Deals = () => {
 										Value
 										<SortIcon column="value" />
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => toggleSort("closeDate")}
 								>
@@ -245,8 +255,8 @@ const Deals = () => {
 										Close date
 										<SortIcon column="closeDate" />
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => toggleSort("rep")}
 								>
@@ -254,88 +264,90 @@ const Deals = () => {
 										Assigned rep
 										<SortIcon column="rep" />
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Actions
-								</th>
-							</tr>
-						</thead>
-						<tbody className={`divide-y ${colors.border}`}>
+								</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody className={`divide-y ${colors.border}`}>
 							{filtered.map((row) => {
 								const sm = STAGE_META[row.stage] || STAGE_META.prospect;
 								return (
-									<tr
+									<TableRow
 										key={row.id}
 										className={`${colors.hover} transition-colors`}
 									>
-										<td
+										<TableCell
 											className={`px-6 py-4 font-medium ${colors.foreground}`}
 										>
 											{row.name}
-										</td>
-										<td className={`px-6 py-4 ${colors.textSecondary}`}>
+										</TableCell>
+										<TableCell className={`px-6 py-4 ${colors.textSecondary}`}>
 											{row.company}
-										</td>
-										<td className="px-6 py-4">
-											<span
-												className={`inline-flex text-xs font-medium px-2.5 py-1 rounded-md border ${sm.className}`}
-											>
-												{sm.label}
-											</span>
-										</td>
-										<td
+										</TableCell>
+										<TableCell className="px-6 py-4">
+											<Badge className={sm.className}>{sm.label}</Badge>
+										</TableCell>
+										<TableCell
 											className={`px-6 py-4 text-right tabular-nums font-medium ${colors.foreground}`}
 										>
 											${row.value.toLocaleString()}
-										</td>
-										<td className={`px-6 py-4 ${colors.textSecondary}`}>
+										</TableCell>
+										<TableCell className={`px-6 py-4 ${colors.textSecondary}`}>
 											{row.closeDate}
-										</td>
-										<td className={`px-6 py-4 ${colors.textSecondary}`}>
+										</TableCell>
+										<TableCell className={`px-6 py-4 ${colors.textSecondary}`}>
 											{row.rep}
-										</td>
-										<td className="px-6 py-4">
+										</TableCell>
+										<TableCell className="px-6 py-4">
 											<div className="flex items-center gap-1">
-												<Link href={`/deals/${row.id}`} passHref>
-													<a
-														className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors inline-flex`}
-														title="View deal"
-													>
-														<Eye size={16} className={colors.textSecondary} />
-													</a>
-												</Link>
-												<button
+												<Button
+													variant="ghost"
+													size="icon"
+													asChild
+													title="View deal"
+												>
+													<Link href={`/deals/${row.id}`}>
+														<a>
+															<Eye size={16} />
+														</a>
+													</Link>
+												</Button>
+												<Button
 													type="button"
+													variant="ghost"
+													size="icon"
 													onClick={() => openEdit(row)}
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
 													title="Edit deal"
 												>
-													<Pen size={16} className={colors.textSecondary} />
-												</button>
-												<button
+													<Pen size={16} />
+												</Button>
+												<Button
 													type="button"
+													variant="ghost"
+													size="icon"
 													onClick={() => handleDelete(row.id)}
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors text-rose-600 dark:text-rose-400`}
+													className="text-rose-600 dark:text-rose-400"
 													title="Delete deal"
 												>
 													<Trash2 size={16} />
-												</button>
+												</Button>
 											</div>
-										</td>
-									</tr>
+										</TableCell>
+									</TableRow>
 								);
 							})}
-						</tbody>
-					</table>
-				</div>
+						</TableBody>
+					</Table>
 				{filtered.length === 0 && (
 					<p className={`px-6 py-12 text-center text-sm ${colors.mutedForeground}`}>
 						No deals match your search or filter.
 					</p>
 				)}
-			</div>
+			</Card>
 
 			<FormModal
 				open={isEditOpen}
@@ -347,7 +359,7 @@ const Deals = () => {
 				maxWidth="max-w-md"
 			>
 				<FormField label="Deal name" htmlFor="edit-deal-name" required>
-					<input
+					<Input
 						id="edit-deal-name"
 						type="text"
 						value={editDeal.name}
@@ -355,23 +367,21 @@ const Deals = () => {
 							setEditDeal((p) => ({ ...p, name: e.target.value }))
 						}
 						required
-						className={formInputClass(colorScheme, colors)}
 					/>
 				</FormField>
 				<FormField label="Company" htmlFor="edit-deal-company">
-					<input
+					<Input
 						id="edit-deal-company"
 						type="text"
 						value={editDeal.company}
 						onChange={(e) =>
 							setEditDeal((p) => ({ ...p, company: e.target.value }))
 						}
-						className={formInputClass(colorScheme, colors)}
 					/>
 				</FormField>
 				<div className="grid grid-cols-2 gap-4">
 					<FormField label="Value ($)" htmlFor="edit-deal-value">
-						<input
+						<Input
 							id="edit-deal-value"
 							type="number"
 							min="0"
@@ -379,48 +389,42 @@ const Deals = () => {
 							onChange={(e) =>
 								setEditDeal((p) => ({ ...p, value: e.target.value }))
 							}
-							className={formInputClass(colorScheme, colors)}
 						/>
 					</FormField>
 					<FormField label="Stage" htmlFor="edit-deal-stage">
-						<select
+						<FormSelect
 							id="edit-deal-stage"
 							value={editDeal.stage}
 							onChange={(e) =>
 								setEditDeal((p) => ({ ...p, stage: e.target.value }))
 							}
-							className={formInputClass(colorScheme, colors)}
-						>
-							{STAGE_FILTERS.filter((f) => f.id !== "all").map((f) => (
-								<option key={f.id} value={f.id}>
-									{f.label}
-								</option>
-							))}
-						</select>
+							options={STAGE_FILTERS.filter((f) => f.id !== "all").map((f) => ({
+								value: f.id,
+								label: f.label,
+							}))}
+						/>
 					</FormField>
 				</div>
 				<div className="grid grid-cols-2 gap-4">
 					<FormField label="Close date" htmlFor="edit-deal-close">
-						<input
+						<Input
 							id="edit-deal-close"
 							type="text"
 							value={editDeal.closeDate}
 							onChange={(e) =>
 								setEditDeal((p) => ({ ...p, closeDate: e.target.value }))
 							}
-							className={formInputClass(colorScheme, colors)}
 							placeholder="Apr 28, 2026"
 						/>
 					</FormField>
 					<FormField label="Assigned rep" htmlFor="edit-deal-rep">
-						<input
+						<Input
 							id="edit-deal-rep"
 							type="text"
 							value={editDeal.rep}
 							onChange={(e) =>
 								setEditDeal((p) => ({ ...p, rep: e.target.value }))
 							}
-							className={formInputClass(colorScheme, colors)}
 						/>
 					</FormField>
 				</div>

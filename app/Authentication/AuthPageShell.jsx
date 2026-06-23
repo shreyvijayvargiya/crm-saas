@@ -2,6 +2,9 @@ import React from "react";
 import Link from "next/link";
 import { Shield } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 /**
  * Centered auth layout with optional marketing column on large screens.
@@ -13,16 +16,18 @@ const AuthPageShell = ({
 	footer,
 	badge = "Secure authentication",
 }) => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 
 	return (
 		<div className="mx-auto w-full max-w-6xl px-3 py-6 sm:px-4 sm:py-8">
-			<div
-				className={`overflow-hidden rounded-2xl border ${colors.border} ${colors.card} shadow-sm`}
-			>
+			<Card className="overflow-hidden shadow-sm">
 				<div className="grid min-h-[min(100%,32rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] xl:grid-cols-[minmax(0,1.1fr)_minmax(0,26rem)]">
 					<div
-						className={`relative hidden flex-col justify-between p-6 sm:p-8 lg:flex ${colors.muted} border-b lg:border-b-0 lg:border-r ${colors.border}`}
+						className={cn(
+							"relative hidden flex-col justify-between p-6 sm:p-8 lg:flex border-b lg:border-b-0 lg:border-r",
+							colors.muted,
+							colors.border
+						)}
 					>
 						<div
 							aria-hidden
@@ -33,12 +38,10 @@ const AuthPageShell = ({
 							}}
 						/>
 						<div className="relative z-[1] space-y-4">
-							<div
-								className={`inline-flex items-center gap-2 rounded-full border ${colors.border} ${colors.card} px-3 py-1 text-xs font-medium ${colors.mutedForeground}`}
-							>
+							<Badge variant="outline" className="gap-2 px-3 py-1 text-xs font-medium">
 								<Shield className="h-3.5 w-3.5" />
 								{badge}
-							</div>
+							</Badge>
 							<div>
 								<p className={`text-xs font-medium uppercase tracking-wider ${colors.textMuted}`}>
 									CRM SaaS
@@ -48,18 +51,14 @@ const AuthPageShell = ({
 									your auth provider.
 								</p>
 							</div>
-							<ul
-								className={`space-y-2.5 text-sm ${colors.textSecondary}`}
-							>
+							<ul className={`space-y-2.5 text-sm ${colors.textSecondary}`}>
 								{[
 									"Email & password UI ready for your API or OAuth handoff",
 									"Password reset and rotation flows for compliance checklists",
 									"Components match your global theme and dark mode out of the box",
 								].map((line) => (
 									<li key={line} className="flex gap-2">
-										<span
-											className={`mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full ${scheme.primary}`}
-										/>
+										<span className="mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
 										<span className="leading-relaxed">{line}</span>
 									</li>
 								))}
@@ -77,7 +76,10 @@ const AuthPageShell = ({
 					</div>
 
 					<div
-						className={`flex flex-col justify-center p-5 sm:p-7 lg:min-h-[28rem] ${colors.primaryBackground}`}
+						className={cn(
+							"flex flex-col justify-center p-5 sm:p-7 lg:min-h-[28rem]",
+							colors.primaryBackground
+						)}
 					>
 						<div className="mx-auto w-full max-w-sm">
 							<header className="mb-6 space-y-1">
@@ -99,7 +101,7 @@ const AuthPageShell = ({
 						</div>
 					</div>
 				</div>
-			</div>
+			</Card>
 
 			<p className={`mt-4 text-center text-xs ${colors.textMuted}`}>
 				By continuing you agree to the{" "}

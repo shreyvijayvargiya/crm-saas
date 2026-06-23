@@ -5,11 +5,31 @@ import {
 	PackagePlus,
 	Search,
 	Plus,
-	X,
 	TrendingUp,
 } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useTheme } from "../../utils/useTheme";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import FormSelect from "../../lib/ui/FormSelect";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
+
+const textareaClass = cn(
+	"flex min-h-24 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+);
 
 const initialProducts = [
 	{
@@ -87,7 +107,7 @@ const initialProducts = [
 ];
 
 const Products = () => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 
 	const [products, setProducts] = useState(initialProducts);
 	const [searchTerm, setSearchTerm] = useState("");
@@ -236,110 +256,105 @@ const Products = () => {
 			</div>
 
 			<div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
-				<div className={`rounded-xl border ${colors.border} ${colors.card} p-4`}>
-					<div className="flex items-center justify-between">
-						<p className={`text-xs ${colors.mutedForeground}`}>Total Products</p>
-						<Box className={`h-4 w-4 ${colors.mutedForeground}`} />
-					</div>
-					<p className={`mt-2 text-2xl font-semibold ${colors.foreground}`}>
-						{totalProducts}
-					</p>
-				</div>
-				<div className={`rounded-xl border ${colors.border} ${colors.card} p-4`}>
-					<div className="flex items-center justify-between">
-						<p className={`text-xs ${colors.mutedForeground}`}>Active</p>
-						<PackagePlus className={`h-4 w-4 ${colors.mutedForeground}`} />
-					</div>
-					<p className={`mt-2 text-2xl font-semibold ${colors.foreground}`}>
-						{activeProducts}
-					</p>
-				</div>
-				<div className={`rounded-xl border ${colors.border} ${colors.card} p-4`}>
-					<div className="flex items-center justify-between">
-						<p className={`text-xs ${colors.mutedForeground}`}>Archived</p>
-						<BadgeDollarSign className={`h-4 w-4 ${colors.mutedForeground}`} />
-					</div>
-					<p className={`mt-2 text-2xl font-semibold ${colors.foreground}`}>
-						{archivedProducts}
-					</p>
-				</div>
-				<div className={`rounded-xl border ${colors.border} ${colors.card} p-4`}>
-					<div className="flex items-center justify-between">
-						<p className={`text-xs ${colors.mutedForeground}`}>MRR (Demo)</p>
-						<TrendingUp className={`h-4 w-4 ${colors.mutedForeground}`} />
-					</div>
-					<p className={`mt-2 text-2xl font-semibold ${colors.foreground}`}>
-						${monthlyRevenue.toLocaleString()}
-					</p>
-				</div>
+				<Card>
+					<CardContent className="p-4">
+						<div className="flex items-center justify-between">
+							<p className="text-xs text-muted-foreground">Total Products</p>
+							<Box className="h-4 w-4 text-muted-foreground" />
+						</div>
+						<p className={`mt-2 text-2xl font-semibold ${colors.foreground}`}>{totalProducts}</p>
+					</CardContent>
+				</Card>
+				<Card>
+					<CardContent className="p-4">
+						<div className="flex items-center justify-between">
+							<p className="text-xs text-muted-foreground">Active</p>
+							<PackagePlus className="h-4 w-4 text-muted-foreground" />
+						</div>
+						<p className={`mt-2 text-2xl font-semibold ${colors.foreground}`}>{activeProducts}</p>
+					</CardContent>
+				</Card>
+				<Card>
+					<CardContent className="p-4">
+						<div className="flex items-center justify-between">
+							<p className="text-xs text-muted-foreground">Archived</p>
+							<BadgeDollarSign className="h-4 w-4 text-muted-foreground" />
+						</div>
+						<p className={`mt-2 text-2xl font-semibold ${colors.foreground}`}>{archivedProducts}</p>
+					</CardContent>
+				</Card>
+				<Card>
+					<CardContent className="p-4">
+						<div className="flex items-center justify-between">
+							<p className="text-xs text-muted-foreground">MRR (Demo)</p>
+							<TrendingUp className="h-4 w-4 text-muted-foreground" />
+						</div>
+						<p className={`mt-2 text-2xl font-semibold ${colors.foreground}`}>
+							${monthlyRevenue.toLocaleString()}
+						</p>
+					</CardContent>
+				</Card>
 			</div>
 
-			<div className={`rounded-xl border ${colors.border} ${colors.card} p-3`}>
+			<Card className="p-3">
 				<div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
 					<div className="relative w-full md:max-w-sm">
-						<Search className={`absolute left-3 top-2.5 h-4 w-4 ${colors.mutedForeground}`} />
-						<input
+						<Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
+						<Input
 							type="text"
 							value={searchTerm}
 							onChange={(e) => setSearchTerm(e.target.value)}
 							placeholder="Search by name, SKU, tier, or category"
-							className={`h-9 w-full rounded-xl border ${colors.border} ${colors.primaryBackground} ${colors.foreground} pl-9 pr-3 text-sm outline-none`}
+							className="pl-9"
 						/>
 					</div>
 
 					<div className="flex items-center gap-2">
-						<select
+						<FormSelect
 							value={statusFilter}
 							onChange={(e) => setStatusFilter(e.target.value)}
-							className={`h-9 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 text-sm ${colors.foreground} outline-none`}
-						>
-							<option>All</option>
-							<option>Active</option>
-							<option>Archived</option>
-						</select>
+							options={["All", "Active", "Archived"]}
+						/>
 
-						<button
-							onClick={() => setIsAddModalOpen(true)}
-							className={`inline-flex items-center gap-1 rounded-xl px-3 py-2 text-sm font-medium ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`}
-						>
+						<Button onClick={() => setIsAddModalOpen(true)}>
 							<Plus className="h-4 w-4" />
 							Add Product
-						</button>
+						</Button>
 					</div>
 				</div>
 
-				<div className={`mt-3 overflow-x-auto rounded-xl border ${colors.border}`}>
-					<table className="min-w-full text-left text-sm">
-						<thead className={`${colors.hoverSecondary}`}>
-							<tr className={`${colors.textSecondary}`}>
-								<th className="px-4 py-3 font-medium">Product</th>
-								<th className="px-4 py-3 font-medium">Tier</th>
-								<th className="px-4 py-3 font-medium">Pricing</th>
-								<th className="px-4 py-3 font-medium">Trial / Seats</th>
-								<th className="px-4 py-3 font-medium">Visibility</th>
-								<th className="px-4 py-3 font-medium">Status</th>
-								<th className="px-4 py-3 font-medium">Updated</th>
-							</tr>
-						</thead>
-						<tbody className={`${colors.foreground}`}>
+				<div className={`mt-3 rounded-xl border ${colors.border}`}>
+					<Table className="min-w-full text-left text-sm">
+						<TableHeader className={`${colors.hoverSecondary}`}>
+							<TableRow className={`${colors.textSecondary}`}>
+								<TableHead className="px-4 py-3 font-medium">Product</TableHead>
+								<TableHead className="px-4 py-3 font-medium">Tier</TableHead>
+								<TableHead className="px-4 py-3 font-medium">Pricing</TableHead>
+								<TableHead className="px-4 py-3 font-medium">Trial / Seats</TableHead>
+								<TableHead className="px-4 py-3 font-medium">Visibility</TableHead>
+								<TableHead className="px-4 py-3 font-medium">Status</TableHead>
+								<TableHead className="px-4 py-3 font-medium">Updated</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody className={`${colors.foreground}`}>
 							{filteredProducts.length > 0 ? (
 								filteredProducts.map((product) => (
-									<tr
+									<TableRow
 										key={product.id}
 										className={`border-t ${colors.border} ${colors.hoverSecondary}`}
 									>
-										<td className="px-4 py-3">
+										<TableCell className="px-4 py-3">
 											<div className="flex flex-col">
 												<span className="font-medium">{product.name}</span>
 												<span className={`text-xs ${colors.mutedForeground}`}>
 													{product.sku} . {product.category}
 												</span>
 											</div>
-										</td>
-										<td className="px-4 py-3">
+										</TableCell>
+										<TableCell className="px-4 py-3">
 											{product.planTier}
-										</td>
-										<td className="px-4 py-3">
+										</TableCell>
+										<TableCell className="px-4 py-3">
 											<div className="flex flex-col">
 												<span>
 													{product.currency} {product.price}
@@ -348,306 +363,248 @@ const Products = () => {
 													{product.billingInterval}
 												</span>
 											</div>
-										</td>
-										<td className="px-4 py-3">
+										</TableCell>
+										<TableCell className="px-4 py-3">
 											<div className="flex flex-col">
 												<span>{product.trialDays}d trial</span>
 												<span className={`text-xs ${colors.mutedForeground}`}>
 													{product.maxSeats > 0 ? `${product.maxSeats} seats` : "Custom seats"}
 												</span>
 											</div>
-										</td>
-										<td className="px-4 py-3">
+										</TableCell>
+										<TableCell className="px-4 py-3">
 											<span className={`text-xs ${colors.mutedForeground}`}>
 												{product.visibility}
 											</span>
-										</td>
-										<td className="px-4 py-3">
-											<span
-												className={`rounded-full px-2 py-1 text-xs ${
+										</TableCell>
+										<TableCell className="px-4 py-3">
+											<Badge
+												variant="secondary"
+												className={cn(
 													product.status === "Active"
-														? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
-														: "bg-zinc-500/15 text-zinc-600 dark:text-zinc-300"
-												}`}
+														? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-transparent"
+														: "bg-zinc-500/15 text-zinc-600 dark:text-zinc-300 border-transparent"
+												)}
 											>
 												{product.status}
-											</span>
-										</td>
-										<td className={`px-4 py-3 text-xs ${colors.mutedForeground}`}>
+											</Badge>
+										</TableCell>
+										<TableCell className={`px-4 py-3 text-xs ${colors.mutedForeground}`}>
 											{product.updatedAt}
-										</td>
-									</tr>
+										</TableCell>
+									</TableRow>
 								))
 							) : (
-								<tr>
-									<td
+								<TableRow>
+									<TableCell
 										colSpan={7}
 										className={`px-4 py-8 text-center text-sm ${colors.mutedForeground}`}
 									>
 										No products found for selected filters.
-									</td>
-								</tr>
+									</TableCell>
+								</TableRow>
 							)}
-						</tbody>
-					</table>
+						</TableBody>
+					</Table>
 				</div>
-			</div>
+			</Card>
 
-			{isAddModalOpen && (
-				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-					<div className={`w-full max-w-4xl rounded-2xl border ${colors.border} ${colors.card} p-0 shadow-2xl`}>
-						<div className={`flex items-start justify-between border-b ${colors.border} p-5`}>
-							<div>
-								<h2 className={`text-lg font-semibold ${colors.foreground}`}>
-									Add SaaS Product
-								</h2>
-								<p className={`mt-1 text-xs ${colors.mutedForeground}`}>
-									Define pricing, billing, seats, and visibility before publishing.
-								</p>
-							</div>
-							<button
-								onClick={() => {
-									setIsAddModalOpen(false);
-									resetForm();
-								}}
-								className={`rounded-xl p-1.5 ${colors.hoverSecondary}`}
-							>
-								<X className={`h-4 w-4 ${colors.foreground}`} />
-							</button>
+			<FormModal
+				open={isAddModalOpen}
+				onClose={() => {
+					setIsAddModalOpen(false);
+					resetForm();
+				}}
+				onSubmit={handleAddProduct}
+				title="Add SaaS Product"
+				subtitle="Define pricing, billing, seats, and visibility before publishing."
+				saveLabel="Create Product"
+				maxWidth="max-w-4xl"
+			>
+				<Card className="p-4">
+					<p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+						Basic Details
+					</p>
+					<div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
+						<FormField label="Product name" htmlFor="product-name">
+							<Input
+								id="product-name"
+								type="text"
+								placeholder="e.g. Growth CRM"
+								value={newProduct.name}
+								onChange={(e) =>
+									setNewProduct((prev) => ({ ...prev, name: e.target.value }))
+								}
+							/>
+						</FormField>
+						<FormField label="SKU" htmlFor="product-sku">
+							<Input
+								id="product-sku"
+								type="text"
+								placeholder="e.g. CRM-GROWTH-002"
+								value={newProduct.sku}
+								onChange={(e) =>
+									setNewProduct((prev) => ({ ...prev, sku: e.target.value }))
+								}
+							/>
+						</FormField>
+						<FormField label="Plan tier" htmlFor="product-tier">
+							<FormSelect
+								id="product-tier"
+								value={newProduct.planTier}
+								onChange={(e) =>
+									setNewProduct((prev) => ({ ...prev, planTier: e.target.value }))
+								}
+								options={[
+									"Starter",
+									"Growth",
+									"Business",
+									"Enterprise",
+									"One-time",
+								]}
+							/>
+						</FormField>
+						<div className="md:col-span-3">
+							<FormField label="Category" htmlFor="product-category">
+								<Input
+									id="product-category"
+									type="text"
+									placeholder="e.g. CRM Suite, Service, Add-on"
+									value={newProduct.category}
+									onChange={(e) =>
+										setNewProduct((prev) => ({ ...prev, category: e.target.value }))
+									}
+								/>
+							</FormField>
 						</div>
-
-						<form onSubmit={handleAddProduct} className="space-y-5 p-5">
-							<div className={`rounded-xl border ${colors.border} p-4`}>
-								<p className={`text-xs font-semibold uppercase tracking-wide ${colors.mutedForeground}`}>
-									Basic Details
-								</p>
-								<div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
-									<label className="flex flex-col gap-1.5">
-										<span className={`text-xs ${colors.mutedForeground}`}>Product name</span>
-										<input
-											type="text"
-											placeholder="e.g. Growth CRM"
-											value={newProduct.name}
-											onChange={(e) =>
-												setNewProduct((prev) => ({ ...prev, name: e.target.value }))
-											}
-											className={`h-10 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 text-sm ${colors.foreground} outline-none`}
-										/>
-									</label>
-									<label className="flex flex-col gap-1.5">
-										<span className={`text-xs ${colors.mutedForeground}`}>SKU</span>
-										<input
-											type="text"
-											placeholder="e.g. CRM-GROWTH-002"
-											value={newProduct.sku}
-											onChange={(e) =>
-												setNewProduct((prev) => ({ ...prev, sku: e.target.value }))
-											}
-											className={`h-10 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 text-sm ${colors.foreground} outline-none`}
-										/>
-									</label>
-									<label className="flex flex-col gap-1.5">
-										<span className={`text-xs ${colors.mutedForeground}`}>Plan tier</span>
-										<select
-											value={newProduct.planTier}
-											onChange={(e) =>
-												setNewProduct((prev) => ({ ...prev, planTier: e.target.value }))
-											}
-											className={`h-10 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 text-sm ${colors.foreground} outline-none`}
-										>
-											<option>Starter</option>
-											<option>Growth</option>
-											<option>Business</option>
-											<option>Enterprise</option>
-											<option>One-time</option>
-										</select>
-									</label>
-									<label className="md:col-span-3 flex flex-col gap-1.5">
-										<span className={`text-xs ${colors.mutedForeground}`}>Category</span>
-										<input
-											type="text"
-											placeholder="e.g. CRM Suite, Service, Add-on"
-											value={newProduct.category}
-											onChange={(e) =>
-												setNewProduct((prev) => ({ ...prev, category: e.target.value }))
-											}
-											className={`h-10 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 text-sm ${colors.foreground} outline-none`}
-										/>
-									</label>
-								</div>
-							</div>
-
-							<div className={`rounded-xl border ${colors.border} p-4`}>
-								<p className={`text-xs font-semibold uppercase tracking-wide ${colors.mutedForeground}`}>
-									Pricing and Billing
-								</p>
-								<div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
-									<label className="flex flex-col gap-1.5">
-										<span className={`text-xs ${colors.mutedForeground}`}>Billing interval</span>
-										<select
-											value={newProduct.billingInterval}
-											onChange={(e) =>
-												setNewProduct((prev) => ({ ...prev, billingInterval: e.target.value }))
-											}
-											className={`h-10 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 text-sm ${colors.foreground} outline-none`}
-										>
-											<option>Monthly</option>
-											<option>Quarterly</option>
-											<option>Yearly</option>
-											<option>One-time</option>
-										</select>
-									</label>
-									<label className="flex flex-col gap-1.5">
-										<span className={`text-xs ${colors.mutedForeground}`}>Price</span>
-										<input
-											type="number"
-											placeholder="0.00"
-											value={newProduct.price}
-											onChange={(e) =>
-												setNewProduct((prev) => ({ ...prev, price: e.target.value }))
-											}
-											className={`h-10 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 text-sm ${colors.foreground} outline-none`}
-										/>
-									</label>
-									<label className="flex flex-col gap-1.5">
-										<span className={`text-xs ${colors.mutedForeground}`}>Currency</span>
-										<select
-											value={newProduct.currency}
-											onChange={(e) =>
-												setNewProduct((prev) => ({ ...prev, currency: e.target.value }))
-											}
-											className={`h-10 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 text-sm ${colors.foreground} outline-none`}
-										>
-											<option>USD</option>
-											<option>INR</option>
-											<option>EUR</option>
-										</select>
-									</label>
-								</div>
-							</div>
-
-							<div className={`rounded-xl border ${colors.border} p-4`}>
-								<p className={`text-xs font-semibold uppercase tracking-wide ${colors.mutedForeground}`}>
-									Access and Limits
-								</p>
-								<div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-4">
-									<label className="flex flex-col gap-1.5">
-										<span className={`text-xs ${colors.mutedForeground}`}>Visibility</span>
-										<select
-											value={newProduct.visibility}
-											onChange={(e) =>
-												setNewProduct((prev) => ({ ...prev, visibility: e.target.value }))
-											}
-											className={`h-10 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 text-sm ${colors.foreground} outline-none`}
-										>
-											<option>Public</option>
-											<option>Private</option>
-											<option>Internal</option>
-										</select>
-									</label>
-									<label className="flex flex-col gap-1.5">
-										<span className={`text-xs ${colors.mutedForeground}`}>Trial days</span>
-										<input
-											type="number"
-											placeholder="0"
-											value={newProduct.trialDays}
-											onChange={(e) =>
-												setNewProduct((prev) => ({ ...prev, trialDays: e.target.value }))
-											}
-											className={`h-10 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 text-sm ${colors.foreground} outline-none`}
-										/>
-									</label>
-									<label className="flex flex-col gap-1.5">
-										<span className={`text-xs ${colors.mutedForeground}`}>Max seats</span>
-										<input
-											type="number"
-											placeholder="0 for unlimited"
-											value={newProduct.maxSeats}
-											onChange={(e) =>
-												setNewProduct((prev) => ({ ...prev, maxSeats: e.target.value }))
-											}
-											className={`h-10 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 text-sm ${colors.foreground} outline-none`}
-										/>
-									</label>
-									<label className="flex flex-col gap-1.5">
-										<span className={`text-xs ${colors.mutedForeground}`}>Tax rate %</span>
-										<input
-											type="number"
-											placeholder="18"
-											value={newProduct.taxRate}
-											onChange={(e) =>
-												setNewProduct((prev) => ({ ...prev, taxRate: e.target.value }))
-											}
-											className={`h-10 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 text-sm ${colors.foreground} outline-none`}
-										/>
-									</label>
-								</div>
-							</div>
-
-							<div className={`rounded-xl border ${colors.border} p-4`}>
-								<p className={`text-xs font-semibold uppercase tracking-wide ${colors.mutedForeground}`}>
-									Product Features
-								</p>
-								<div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
-									<label className="md:col-span-2 flex flex-col gap-1.5">
-										<span className={`text-xs ${colors.mutedForeground}`}>
-											Key features (comma separated)
-										</span>
-										<textarea
-											placeholder="Leads, Pipelines, Automation, Reporting"
-											value={newProduct.featureInput}
-											onChange={(e) =>
-												setNewProduct((prev) => ({ ...prev, featureInput: e.target.value }))
-											}
-											className={`min-h-24 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 py-2 text-sm ${colors.foreground} outline-none`}
-										/>
-									</label>
-									<label className="flex flex-col gap-1.5">
-										<span className={`text-xs ${colors.mutedForeground}`}>Status</span>
-										<select
-											value={newProduct.status}
-											onChange={(e) =>
-												setNewProduct((prev) => ({ ...prev, status: e.target.value }))
-											}
-											className={`h-10 rounded-xl border ${colors.border} ${colors.primaryBackground} px-3 text-sm ${colors.foreground} outline-none`}
-										>
-											<option>Active</option>
-											<option>Archived</option>
-										</select>
-										<p className={`mt-1 text-xs ${colors.mutedForeground}`}>
-											Active products are available for checkout.
-										</p>
-									</label>
-								</div>
-							</div>
-
-							<div className={`flex items-center justify-between border-t ${colors.border} pt-4`}>
-								<p className={`text-xs ${colors.mutedForeground}`}>
-									All fields can be edited later from product settings.
-								</p>
-								<div className="flex items-center gap-2">
-									<button
-										type="button"
-										onClick={() => {
-											setIsAddModalOpen(false);
-											resetForm();
-										}}
-										className={`rounded-xl border px-3 py-2 text-sm ${colors.border} ${colors.foreground} ${colors.hoverSecondary}`}
-									>
-										Cancel
-									</button>
-								<button
-									type="submit"
-									className={`rounded-xl px-3 py-2 text-sm font-medium ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`}
-								>
-									Create Product
-								</button>
-								</div>
-							</div>
-						</form>
 					</div>
-				</div>
-			)}
+				</Card>
+
+				<Card className="p-4">
+					<p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+						Pricing and Billing
+					</p>
+					<div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
+						<FormField label="Billing interval" htmlFor="product-interval">
+							<FormSelect
+								id="product-interval"
+								value={newProduct.billingInterval}
+								onChange={(e) =>
+									setNewProduct((prev) => ({ ...prev, billingInterval: e.target.value }))
+								}
+								options={["Monthly", "Quarterly", "Yearly", "One-time"]}
+							/>
+						</FormField>
+						<FormField label="Price" htmlFor="product-price">
+							<Input
+								id="product-price"
+								type="number"
+								placeholder="0.00"
+								value={newProduct.price}
+								onChange={(e) =>
+									setNewProduct((prev) => ({ ...prev, price: e.target.value }))
+								}
+							/>
+						</FormField>
+						<FormField label="Currency" htmlFor="product-currency">
+							<FormSelect
+								id="product-currency"
+								value={newProduct.currency}
+								onChange={(e) =>
+									setNewProduct((prev) => ({ ...prev, currency: e.target.value }))
+								}
+								options={["USD", "INR", "EUR"]}
+							/>
+						</FormField>
+					</div>
+				</Card>
+
+				<Card className="p-4">
+					<p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+						Access and Limits
+					</p>
+					<div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-4">
+						<FormField label="Visibility" htmlFor="product-visibility">
+							<FormSelect
+								id="product-visibility"
+								value={newProduct.visibility}
+								onChange={(e) =>
+									setNewProduct((prev) => ({ ...prev, visibility: e.target.value }))
+								}
+								options={["Public", "Private", "Internal"]}
+							/>
+						</FormField>
+						<FormField label="Trial days" htmlFor="product-trial">
+							<Input
+								id="product-trial"
+								type="number"
+								placeholder="0"
+								value={newProduct.trialDays}
+								onChange={(e) =>
+									setNewProduct((prev) => ({ ...prev, trialDays: e.target.value }))
+								}
+							/>
+						</FormField>
+						<FormField label="Max seats" htmlFor="product-seats">
+							<Input
+								id="product-seats"
+								type="number"
+								placeholder="0 for unlimited"
+								value={newProduct.maxSeats}
+								onChange={(e) =>
+									setNewProduct((prev) => ({ ...prev, maxSeats: e.target.value }))
+								}
+							/>
+						</FormField>
+						<FormField label="Tax rate %" htmlFor="product-tax">
+							<Input
+								id="product-tax"
+								type="number"
+								placeholder="18"
+								value={newProduct.taxRate}
+								onChange={(e) =>
+									setNewProduct((prev) => ({ ...prev, taxRate: e.target.value }))
+								}
+							/>
+						</FormField>
+					</div>
+				</Card>
+
+				<Card className="p-4">
+					<p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+						Product Features
+					</p>
+					<div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
+						<div className="md:col-span-2">
+							<FormField label="Key features (comma separated)" htmlFor="product-features">
+								<textarea
+									id="product-features"
+									placeholder="Leads, Pipelines, Automation, Reporting"
+									value={newProduct.featureInput}
+									onChange={(e) =>
+										setNewProduct((prev) => ({ ...prev, featureInput: e.target.value }))
+									}
+									className={textareaClass}
+								/>
+							</FormField>
+						</div>
+						<FormField
+							label="Status"
+							htmlFor="product-status"
+							hint="Active products are available for checkout."
+						>
+							<FormSelect
+								id="product-status"
+								value={newProduct.status}
+								onChange={(e) =>
+									setNewProduct((prev) => ({ ...prev, status: e.target.value }))
+								}
+								options={["Active", "Archived"]}
+							/>
+						</FormField>
+					</div>
+				</Card>
+			</FormModal>
 		</div>
 	);
 };

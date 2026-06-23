@@ -15,13 +15,16 @@ import EntityDetailShell from "../CRM/EntityDetailShell";
 import EntityRecordTabs from "../CRM/EntityRecordTabs";
 import { findPipelineDeal } from "../CRM/pipelineDealsSeedData";
 import { STAGE_META } from "../CRM/dealsSeedData";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 const PRIORITY_LABEL = { high: "High", medium: "Medium", low: "Low" };
 
 const PipelineDealDetail = () => {
 	const router = useRouter();
 	const { id } = router.query;
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 
 	const deal = useMemo(() => {
 		if (!id) return null;
@@ -39,13 +42,10 @@ const PipelineDealDetail = () => {
 	const sm = STAGE_META[deal.stage] || STAGE_META.prospect;
 
 	const sidebar = (
-		<div
-			className={`rounded-xl border ${colors.border} ${colors.card} ${colors.shadow} p-6`}
-		>
+		<Card className={colors.shadow}>
+			<CardContent className="p-6">
 			<div className="flex items-center gap-3 mb-4">
-				<span
-					className={`w-12 h-12 rounded-xl flex items-center justify-center ${scheme.primary} ${scheme.primaryForeground}`}
-				>
+				<span className="w-12 h-12 rounded-xl flex items-center justify-center bg-primary text-primary-foreground">
 					<Handshake className="w-6 h-6" />
 				</span>
 				<div className="min-w-0">
@@ -59,17 +59,13 @@ const PipelineDealDetail = () => {
 			</div>
 
 			<div className="flex flex-wrap gap-2">
-				<span
-					className={`inline-flex text-xs font-medium px-2.5 py-1 rounded-md border ${sm.className}`}
-				>
+				<Badge className={cn("border", sm.className)}>
 					{sm.label}
-				</span>
+				</Badge>
 				{deal.tag && (
-					<span
-						className={`inline-flex text-xs font-medium px-2.5 py-1 rounded-md border ${colors.border} ${colors.muted} ${colors.foreground}`}
-					>
+					<Badge variant="secondary">
 						{deal.tag}
-					</span>
+					</Badge>
 				)}
 			</div>
 
@@ -119,7 +115,8 @@ const PipelineDealDetail = () => {
 					</a>
 				</Link>
 			</p>
-		</div>
+			</CardContent>
+		</Card>
 	);
 
 	return (

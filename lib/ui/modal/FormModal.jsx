@@ -1,6 +1,8 @@
 import React from "react";
 import { X, Trash2 } from "lucide-react";
 import { useTheme } from "../../../utils/useTheme";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 /**
  * Reusable form modal — overlay, header, scrollable body, footer with cancel / save / delete.
@@ -19,7 +21,7 @@ const FormModal = ({
 	cancelLabel = "Cancel",
 	maxWidth = "max-w-xl",
 }) => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 
 	if (!open) return null;
 
@@ -52,14 +54,16 @@ const FormModal = ({
 							</p>
 						)}
 					</div>
-					<button
+					<Button
 						type="button"
+						variant="ghost"
+						size="icon"
 						onClick={onClose}
-						className={`p-2 ${colors.hoverSecondary} rounded-xl transition-colors shrink-0`}
+						className="shrink-0"
 						aria-label="Close"
 					>
-						<X className={`w-5 h-5 ${colors.mutedForeground}`} />
-					</button>
+						<X className="w-5 h-5" />
+					</Button>
 				</div>
 
 				<form
@@ -75,28 +79,20 @@ const FormModal = ({
 						className={`flex flex-wrap items-center justify-end gap-2 p-6 border-t ${colors.border} shrink-0`}
 					>
 						{showDelete && onDelete && (
-							<button
+							<Button
 								type="button"
+								variant="destructive"
 								onClick={onDelete}
-								className="mr-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium bg-rose-600 hover:bg-rose-700 text-white transition-colors"
+								className="mr-auto gap-2"
 							>
 								<Trash2 className="w-4 h-4" />
 								{deleteLabel}
-							</button>
+							</Button>
 						)}
-						<button
-							type="button"
-							onClick={onClose}
-							className={`px-4 py-2 rounded-xl text-sm font-medium border ${colors.border} ${colors.foreground} ${colors.hoverSecondary} transition-colors`}
-						>
+						<Button type="button" variant="outline" onClick={onClose}>
 							{cancelLabel}
-						</button>
-						<button
-							type="submit"
-							className={`px-4 py-2 rounded-xl text-sm font-medium ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} transition-colors`}
-						>
-							{saveLabel}
-						</button>
+						</Button>
+						<Button type="submit">{saveLabel}</Button>
 					</div>
 				</form>
 			</div>

@@ -20,6 +20,20 @@ import {
 } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
 import { getRecordBundle } from "./recordDetailData";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
 
 const STAGE_META = {
 	prospect: {
@@ -90,7 +104,7 @@ const TABS = [
  * @param {string} props.backLabel
  */
 const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
-	const { colors, scheme } = useTheme();
+	const { colors } = useTheme();
 	const [activeTab, setActiveTab] = useState("activity");
 	const bundle = useMemo(
 		() => getRecordBundle(kind, record.id),
@@ -131,21 +145,20 @@ const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 		>
 			<div className="flex flex-wrap items-center gap-3 mb-6">
 				<Link href={backHref} passHref>
-					<a
-						className={`inline-flex items-center gap-1.5 text-sm font-medium ${colors.textSecondary} ${colors.hoverSecondary} rounded-xl px-2 py-1`}
-					>
-						<ArrowLeft className="w-4 h-4" />
-						{backLabel}
-					</a>
+					<Button variant="ghost" size="sm" asChild className="gap-1.5">
+						<a>
+							<ArrowLeft className="w-4 h-4" />
+							{backLabel}
+						</a>
+					</Button>
 				</Link>
 			</div>
 
 			<div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
 				{/* Profile column */}
 				<div className="xl:col-span-4 space-y-4">
-					<div
-						className={`rounded-xl border ${colors.border} ${colors.card} ${colors.shadow} p-6`}
-					>
+					<Card className={colors.shadow}>
+						<CardContent className="p-6">
 						<div className="flex flex-col sm:flex-row xl:flex-col items-center sm:items-start xl:items-center text-center xl:text-center gap-4">
 							<img
 								src={record.image}
@@ -170,50 +183,37 @@ const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 									{subtitle}
 								</p>
 								{kind === "lead" && (
-									<span
-										className={`mt-3 inline-flex text-xs font-medium px-2.5 py-1 rounded-full ${
-											scheme.chip || "bg-zinc-100 dark:bg-zinc-800"
-										} ${colors.foreground}`}
-									>
+									<Badge variant="secondary" className="mt-3">
 										{record.status}
-									</span>
+									</Badge>
 								)}
 							</div>
 						</div>
 
-						<div
-							className={`mt-6 flex flex-wrap gap-2 justify-center xl:justify-center`}
-						>
-							<a
-								href={`mailto:${record.email}`}
-								className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-xl border ${colors.border} ${colors.hoverSecondary} ${colors.foreground}`}
-							>
-								<Mail className="w-3.5 h-3.5" />
-								Email
-							</a>
-							{record.phone && record.phone !== "—" ? (
-								<a
-									href={`tel:${String(record.phone).replace(/\D/g, "")}`}
-									className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-xl border ${colors.border} ${colors.hoverSecondary} ${colors.foreground}`}
-								>
-									<Phone className="w-3.5 h-3.5" />
-									Call
+						<div className="mt-6 flex flex-wrap gap-2 justify-center xl:justify-center">
+							<Button variant="outline" size="sm" asChild>
+								<a href={`mailto:${record.email}`}>
+									<Mail className="w-3.5 h-3.5" />
+									Email
 								</a>
+							</Button>
+							{record.phone && record.phone !== "—" ? (
+								<Button variant="outline" size="sm" asChild>
+									<a href={`tel:${String(record.phone).replace(/\D/g, "")}`}>
+										<Phone className="w-3.5 h-3.5" />
+										Call
+									</a>
+								</Button>
 							) : (
-								<span
-									className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-xl border ${colors.border} opacity-50 cursor-not-allowed`}
-								>
+								<Button variant="outline" size="sm" disabled>
 									<Phone className="w-3.5 h-3.5" />
 									Call
-								</span>
+								</Button>
 							)}
-							<button
-								type="button"
-								className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-xl ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`}
-							>
+							<Button size="sm">
 								<Plus className="w-3.5 h-3.5" />
 								Log activity
-							</button>
+							</Button>
 						</div>
 
 						<ul
@@ -274,38 +274,36 @@ const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 								</Link>
 							</p>
 						</div>
-					</div>
+						</CardContent>
+					</Card>
 				</div>
 
 				{/* Main: tabs */}
 				<div className="xl:col-span-8 space-y-4">
-					<div
-						className={`flex flex-wrap gap-1 p-1 rounded-xl border ${colors.border} ${colors.card}`}
-					>
+					<Card className="p-1">
+						<div className="flex flex-wrap gap-1">
 						{TABS.map(({ id, label, icon: Icon }) => {
 							const on = activeTab === id;
 							return (
-								<button
+								<Button
 									key={id}
 									type="button"
+									variant={on ? "default" : "ghost"}
+									size="sm"
 									onClick={() => setActiveTab(id)}
-									className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
-										on
-											? `${scheme.primary} ${scheme.primaryForeground}`
-											: `${colors.mutedForeground} ${colors.hoverSecondary} ${colors.foreground}`
-									}`}
+									className="gap-2"
 								>
 									<Icon className="w-4 h-4 shrink-0" />
 									{label}
-								</button>
+								</Button>
 							);
 						})}
-					</div>
+						</div>
+					</Card>
 
 					{activeTab === "activity" && (
-						<div
-							className={`rounded-xl border ${colors.border} ${colors.card} ${colors.shadow} p-5 sm:p-6`}
-						>
+						<Card className={colors.shadow}>
+							<CardContent className="p-5 sm:p-6">
 							<h2
 								className={`text-sm font-semibold ${colors.foreground} flex items-center gap-2`}
 							>
@@ -337,13 +335,13 @@ const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 									</li>
 								))}
 							</ul>
-						</div>
+							</CardContent>
+						</Card>
 					)}
 
 					{activeTab === "notes" && (
-						<div
-							className={`rounded-xl border ${colors.border} ${colors.card} ${colors.shadow} p-5 sm:p-6`}
-						>
+						<Card className={colors.shadow}>
+							<CardContent className="p-5 sm:p-6">
 							<h2
 								className={`text-sm font-semibold ${colors.foreground} flex items-center gap-2`}
 							>
@@ -356,15 +354,14 @@ const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 									onChange={(e) => setDraftNote(e.target.value)}
 									rows={3}
 									placeholder="Add a note…"
-									className={`w-full rounded-xl border ${colors.border} ${colors.background} ${colors.foreground} px-3 py-2 text-sm placeholder:opacity-50`}
+									className={cn(
+										"flex min-h-[80px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+										colors.foreground
+									)}
 								/>
-								<button
-									type="button"
-									onClick={addNote}
-									className={`mt-2 text-xs font-medium px-3 py-2 rounded-xl ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`}
-								>
+								<Button type="button" size="sm" onClick={addNote} className="mt-2">
 									Save note
-								</button>
+								</Button>
 							</div>
 							<ul className="mt-6 space-y-3">
 								{notes.map((n) => (
@@ -379,13 +376,12 @@ const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 									</li>
 								))}
 							</ul>
-						</div>
+							</CardContent>
+						</Card>
 					)}
 
 					{activeTab === "deals" && (
-						<div
-							className={`rounded-xl border ${colors.border} ${colors.card} ${colors.shadow} overflow-hidden`}
-						>
+						<Card className={cn("overflow-hidden", colors.shadow)}>
 							<div className={`px-5 py-4 border-b ${colors.border}`}>
 								<h2
 									className={`text-sm font-semibold ${colors.foreground} flex items-center gap-2`}
@@ -397,8 +393,7 @@ const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 									Opportunities associated with this record.
 								</p>
 							</div>
-							<div className="overflow-x-auto">
-								{bundle.deals.length === 0 ? (
+							{bundle.deals.length === 0 ? (
 									<p
 										className={`px-5 py-10 text-sm text-center ${colors.mutedForeground}`}
 									>
@@ -411,66 +406,62 @@ const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 										.
 									</p>
 								) : (
-									<table className="w-full text-sm">
-										<thead>
-											<tr
+									<Table className="w-full text-sm">
+										<TableHeader>
+											<TableRow
 												className={`text-left text-xs uppercase tracking-wide ${colors.mutedForeground} border-b ${colors.border}`}
 											>
-												<th className="px-5 py-3 font-medium">Deal</th>
-												<th className="px-5 py-3 font-medium">Stage</th>
-												<th className="px-5 py-3 font-medium text-right">
+												<TableHead className="px-5 py-3 font-medium">Deal</TableHead>
+												<TableHead className="px-5 py-3 font-medium">Stage</TableHead>
+												<TableHead className="px-5 py-3 font-medium text-right">
 													Value
-												</th>
-												<th className="px-5 py-3 font-medium">Close</th>
-												<th className="px-5 py-3 font-medium">Rep</th>
-											</tr>
-										</thead>
-										<tbody className={`divide-y ${colors.border}`}>
+												</TableHead>
+												<TableHead className="px-5 py-3 font-medium">Close</TableHead>
+												<TableHead className="px-5 py-3 font-medium">Rep</TableHead>
+											</TableRow>
+										</TableHeader>
+										<TableBody className={`divide-y ${colors.border}`}>
 											{bundle.deals.map((row) => {
 												const sm =
 													STAGE_META[row.stage] || STAGE_META.prospect;
 												return (
-													<tr
+													<TableRow
 														key={row.id}
 														className={`${colors.hoverSecondary} transition-colors`}
 													>
-														<td
+														<TableCell
 															className={`px-5 py-3 font-medium ${colors.foreground}`}
 														>
 															{row.name}
-														</td>
-														<td className="px-5 py-3">
-															<span
-																className={`inline-flex text-xs font-medium px-2 py-0.5 rounded-md border ${sm.className}`}
-															>
+														</TableCell>
+														<TableCell className="px-5 py-3">
+															<Badge className={cn("border", sm.className)}>
 																{sm.label}
-															</span>
-														</td>
-														<td
+															</Badge>
+														</TableCell>
+														<TableCell
 															className={`px-5 py-3 text-right tabular-nums ${colors.textSecondary}`}
 														>
 															${row.amount.toLocaleString()}
-														</td>
-														<td className={`px-5 py-3 ${colors.textMuted}`}>
+														</TableCell>
+														<TableCell className={`px-5 py-3 ${colors.textMuted}`}>
 															{row.closeDate}
-														</td>
-														<td className={`px-5 py-3 ${colors.textSecondary}`}>
+														</TableCell>
+														<TableCell className={`px-5 py-3 ${colors.textSecondary}`}>
 															{row.rep}
-														</td>
-													</tr>
+														</TableCell>
+													</TableRow>
 												);
 											})}
-										</tbody>
-									</table>
+										</TableBody>
+									</Table>
 								)}
-							</div>
-						</div>
+						</Card>
 					)}
 
 					{activeTab === "files" && (
-						<div
-							className={`rounded-xl border ${colors.border} ${colors.card} ${colors.shadow} p-5 sm:p-6`}
-						>
+						<Card className={colors.shadow}>
+							<CardContent className="p-5 sm:p-6">
 							<h2
 								className={`text-sm font-semibold ${colors.foreground} flex items-center gap-2`}
 							>
@@ -500,19 +491,22 @@ const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 												<span className={`text-xs ${colors.textMuted}`}>
 													{f.size}
 												</span>
-												<button
+												<Button
 													type="button"
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} ${colors.mutedForeground}`}
+													variant="ghost"
+													size="icon"
+													className="h-8 w-8"
 													title="Download"
 												>
 													<Download className="w-4 h-4" />
-												</button>
+												</Button>
 											</span>
 										</li>
 									))}
 								</ul>
 							)}
-						</div>
+							</CardContent>
+						</Card>
 					)}
 				</div>
 			</div>

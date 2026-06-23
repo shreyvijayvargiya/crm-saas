@@ -15,17 +15,37 @@ import {
 	Search,
 } from "lucide-react";
 import React, { useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useTheme } from "../../utils/useTheme";
-import { getFocusRingClass } from "../../utils/theme";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import FormSelect from "../../lib/ui/FormSelect";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
+
+const textareaClassName = cn(
+	"flex min-h-[80px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+);
 
 const Settings = () => {
-	// Theme hook
-	const { theme, colorScheme, colors, scheme } = useTheme();
+	const { colors } = useTheme();
 
 	const [activeTab, setActiveTab] = useState("profile");
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [memberRole, setMemberRole] = useState("");
 
 	const [profileSettings, setProfileSettings] = useState({
 		name: "John Doe",
@@ -197,18 +217,19 @@ const Settings = () => {
 	];
 
 	const renderProfileSettings = () => (
-		<div className={`${colors.card} border ${colors.border} rounded-xl p-6`}>
+		<Card className="p-6">
 			<div className="flex justify-between items-center mb-6">
 				<h2 className={`text-xl font-semibold ${colors.foreground}`}>
 					Profile Information
 				</h2>
-				<button
+				<Button
+					size="sm"
+					variant={isEditMode ? "outline" : "default"}
 					onClick={() => setIsEditMode(!isEditMode)}
-					className={`flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
 				>
 					<Edit size={16} />
 					{isEditMode ? "Cancel" : "Edit"}
-				</button>
+				</Button>
 			</div>
 			<div className="flex items-center gap-6 mb-6">
 				<img
@@ -217,11 +238,9 @@ const Settings = () => {
 					className={`w-24 h-24 rounded-full border-2 ${colors.border}`}
 				/>
 				<div>
-					<button
-						className={`${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in`}
-					>
+					<Button variant="outline" size="sm">
 						Change Avatar
-					</button>
+					</Button>
 				</div>
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -231,20 +250,13 @@ const Settings = () => {
 					>
 						Full Name
 					</label>
-					<input
+					<Input
 						type="text"
 						value={profileSettings.name}
 						onChange={(e) =>
 							handleInputChange("profile", "name", e.target.value)
 						}
 						disabled={!isEditMode}
-						className={`w-full border ${colors.border} ${
-							colors.input
-						} rounded px-3 py-2 outline-none ${colors.background} ${
-							colors.foreground
-						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-							colorScheme
-						)} disabled:${colors.muted}`}
 					/>
 				</div>
 				<div>
@@ -253,20 +265,13 @@ const Settings = () => {
 					>
 						Email
 					</label>
-					<input
+					<Input
 						type="email"
 						value={profileSettings.email}
 						onChange={(e) =>
 							handleInputChange("profile", "email", e.target.value)
 						}
 						disabled={!isEditMode}
-						className={`w-full border ${colors.border} ${
-							colors.input
-						} rounded px-3 py-2 outline-none ${colors.background} ${
-							colors.foreground
-						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-							colorScheme
-						)} disabled:${colors.muted}`}
 					/>
 				</div>
 				<div>
@@ -275,20 +280,13 @@ const Settings = () => {
 					>
 						Phone
 					</label>
-					<input
+					<Input
 						type="tel"
 						value={profileSettings.phone}
 						onChange={(e) =>
 							handleInputChange("profile", "phone", e.target.value)
 						}
 						disabled={!isEditMode}
-						className={`w-full border ${colors.border} ${
-							colors.input
-						} rounded px-3 py-2 outline-none ${colors.background} ${
-							colors.foreground
-						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-							colorScheme
-						)} disabled:${colors.muted}`}
 					/>
 				</div>
 				<div>
@@ -297,20 +295,13 @@ const Settings = () => {
 					>
 						Company
 					</label>
-					<input
+					<Input
 						type="text"
 						value={profileSettings.company}
 						onChange={(e) =>
 							handleInputChange("profile", "company", e.target.value)
 						}
 						disabled={!isEditMode}
-						className={`w-full border ${colors.border} ${
-							colors.input
-						} rounded px-3 py-2 outline-none ${colors.background} ${
-							colors.foreground
-						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-							colorScheme
-						)} disabled:${colors.muted}`}
 					/>
 				</div>
 				<div>
@@ -319,20 +310,13 @@ const Settings = () => {
 					>
 						Role
 					</label>
-					<input
+					<Input
 						type="text"
 						value={profileSettings.role}
 						onChange={(e) =>
 							handleInputChange("profile", "role", e.target.value)
 						}
 						disabled={!isEditMode}
-						className={`w-full border ${colors.border} ${
-							colors.input
-						} rounded px-3 py-2 outline-none ${colors.background} ${
-							colors.foreground
-						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-							colorScheme
-						)} disabled:${colors.muted}`}
 					/>
 				</div>
 				<div>
@@ -348,31 +332,26 @@ const Settings = () => {
 						}
 						disabled={!isEditMode}
 						rows={3}
-						className={`w-full border ${colors.border} ${
-							colors.input
-						} rounded px-3 py-2 outline-none ${colors.background} ${
-							colors.foreground
-						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-							colorScheme
-						)} disabled:${colors.muted}`}
+						className={textareaClassName}
 					/>
 				</div>
 			</div>
 			{isEditMode && (
-				<button
+				<Button
+					size="sm"
+					className="mt-4"
 					onClick={() => handleSave("profile")}
-					className={`mt-4 flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
 				>
 					<Save size={16} />
 					Save Changes
-				</button>
+				</Button>
 			)}
-		</div>
+		</Card>
 	);
 
 	const renderAccountSettings = () => (
 		<div className="space-y-6">
-			<div className={`${colors.card} border ${colors.border} rounded-xl p-6`}>
+			<Card className="p-6">
 				<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 					Change Password
 				</h2>
@@ -383,19 +362,12 @@ const Settings = () => {
 						>
 							Current Password
 						</label>
-						<input
+						<Input
 							type="password"
 							value={accountSettings.currentPassword}
 							onChange={(e) =>
 								handleInputChange("account", "currentPassword", e.target.value)
 							}
-							className={`w-full border ${colors.border} ${
-								colors.input
-							} rounded px-3 py-2 outline-none ${colors.background} ${
-								colors.foreground
-							} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-								colorScheme
-							)}`}
 							placeholder="Enter current password"
 						/>
 					</div>
@@ -405,19 +377,12 @@ const Settings = () => {
 						>
 							New Password
 						</label>
-						<input
+						<Input
 							type="password"
 							value={accountSettings.newPassword}
 							onChange={(e) =>
 								handleInputChange("account", "newPassword", e.target.value)
 							}
-							className={`w-full border ${colors.border} ${
-								colors.input
-							} rounded px-3 py-2 outline-none ${colors.background} ${
-								colors.foreground
-							} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-								colorScheme
-							)}`}
 							placeholder="Enter new password"
 						/>
 					</div>
@@ -427,32 +392,22 @@ const Settings = () => {
 						>
 							Confirm New Password
 						</label>
-						<input
+						<Input
 							type="password"
 							value={accountSettings.confirmPassword}
 							onChange={(e) =>
 								handleInputChange("account", "confirmPassword", e.target.value)
 							}
-							className={`w-full border ${colors.border} ${
-								colors.input
-							} rounded px-3 py-2 outline-none ${colors.background} ${
-								colors.foreground
-							} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-								colorScheme
-							)}`}
 							placeholder="Confirm new password"
 						/>
 					</div>
-					<button
-						onClick={handlePasswordChange}
-						className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
-					>
+					<Button size="sm" onClick={handlePasswordChange}>
 						Update Password
-					</button>
+					</Button>
 				</div>
-			</div>
+			</Card>
 
-			<div className={`${colors.card} border ${colors.border} rounded-xl p-6`}>
+			<Card className="p-6">
 				<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 					Two-Factor Authentication
 				</h2>
@@ -465,22 +420,21 @@ const Settings = () => {
 							Add an extra layer of security to your account
 						</p>
 					</div>
-					<button
+					<Button
+						size="sm"
+						variant={accountSettings.twoFactorEnabled ? "default" : "outline"}
+						className={cn(
+							accountSettings.twoFactorEnabled &&
+								"bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800/50"
+						)}
 						onClick={handleToggle2FA}
-						className={`px-4 py-2 rounded text-xs transition-all duration-100 ease-in ${
-							accountSettings.twoFactorEnabled
-								? theme === "dark"
-									? "bg-green-900/30 text-green-400 hover:bg-green-900/40 border border-green-800/50"
-									: "bg-green-100 text-green-800 hover:bg-green-200"
-								: `${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground}`
-						}`}
 					>
 						{accountSettings.twoFactorEnabled ? "Enabled" : "Disabled"}
-					</button>
+					</Button>
 				</div>
-			</div>
+			</Card>
 
-			<div className={`${colors.card} border ${colors.border} rounded-xl p-6`}>
+			<Card className="p-6">
 				<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 					API Key
 				</h2>
@@ -492,28 +446,29 @@ const Settings = () => {
 							Your API Key
 						</label>
 						<div className="flex items-center gap-2">
-							<input
+							<Input
 								type="text"
 								value={accountSettings.apiKey}
 								readOnly
-								className={`w-full border ${colors.border} rounded px-3 py-2 outline-none ${colors.muted} font-mono text-sm ${colors.foreground}`}
+								className="font-mono text-sm"
 							/>
-							<button
+							<Button
+								size="sm"
+								className="whitespace-nowrap shrink-0"
 								onClick={handleRegenerateAPIKey}
-								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in  whitespace-nowrap`}
 							>
-								<Key size={16} className="inline mr-1" />
+								<Key size={16} />
 								Regenerate
-							</button>
+							</Button>
 						</div>
 					</div>
 				</div>
-			</div>
+			</Card>
 		</div>
 	);
 
 	const renderNotificationSettings = () => (
-		<div className={`${colors.card} border ${colors.border} rounded-xl p-6`}>
+		<Card className="p-6">
 			<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 				Notification Preferences
 			</h2>
@@ -537,33 +492,33 @@ const Settings = () => {
 									.trim()}
 							</p>
 						</div>
-						<button
+						<Button
+							size="sm"
+							variant={value ? "default" : "outline"}
+							className={cn(
+								value &&
+									"bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800/50"
+							)}
 							onClick={() => handleInputChange("notifications", key, !value)}
-							className={`px-4 py-2 rounded text-xs transition-all duration-100 ease-in ${
-								value
-									? theme === "dark"
-										? "bg-green-900/30 text-green-400 hover:bg-green-900/40 border border-green-800/50"
-										: "bg-green-100 text-green-800 hover:bg-green-200"
-									: `${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground}`
-							}`}
 						>
 							{value ? "On" : "Off"}
-						</button>
+						</Button>
 					</div>
 				))}
-				<button
+				<Button
+					size="sm"
+					className="mt-4"
 					onClick={() => handleSave("notifications")}
-					className={`mt-4 flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
 				>
 					<Save size={16} />
 					Save Preferences
-				</button>
+				</Button>
 			</div>
-		</div>
+		</Card>
 	);
 
 	const renderPreferenceSettings = () => (
-		<div className={`${colors.card} border ${colors.border} rounded-xl p-6`}>
+		<Card className="p-6">
 			<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 				Application Preferences
 			</h2>
@@ -574,21 +529,17 @@ const Settings = () => {
 					>
 						Theme
 					</label>
-					<select
+					<FormSelect
 						value={preferenceSettings.theme}
 						onChange={(e) =>
 							handleInputChange("preferences", "theme", e.target.value)
 						}
-						className={`w-full border ${colors.border} ${
-							colors.input
-						} rounded px-3 py-2 outline-none ${colors.background} ${
-							colors.foreground
-						} ${getFocusRingClass(colorScheme)}`}
-					>
-						<option value="light">Light</option>
-						<option value="dark">Dark</option>
-						<option value="auto">Auto</option>
-					</select>
+						options={[
+							{ value: "light", label: "Light" },
+							{ value: "dark", label: "Dark" },
+							{ value: "auto", label: "Auto" },
+						]}
+					/>
 				</div>
 				<div>
 					<label
@@ -596,22 +547,18 @@ const Settings = () => {
 					>
 						Language
 					</label>
-					<select
+					<FormSelect
 						value={preferenceSettings.language}
 						onChange={(e) =>
 							handleInputChange("preferences", "language", e.target.value)
 						}
-						className={`w-full border ${colors.border} ${
-							colors.input
-						} rounded px-3 py-2 outline-none ${colors.background} ${
-							colors.foreground
-						} ${getFocusRingClass(colorScheme)}`}
-					>
-						<option value="en">English</option>
-						<option value="es">Spanish</option>
-						<option value="fr">French</option>
-						<option value="de">German</option>
-					</select>
+						options={[
+							{ value: "en", label: "English" },
+							{ value: "es", label: "Spanish" },
+							{ value: "fr", label: "French" },
+							{ value: "de", label: "German" },
+						]}
+					/>
 				</div>
 				<div>
 					<label
@@ -619,22 +566,18 @@ const Settings = () => {
 					>
 						Timezone
 					</label>
-					<select
+					<FormSelect
 						value={preferenceSettings.timezone}
 						onChange={(e) =>
 							handleInputChange("preferences", "timezone", e.target.value)
 						}
-						className={`w-full border ${colors.border} ${
-							colors.input
-						} rounded px-3 py-2 outline-none ${colors.background} ${
-							colors.foreground
-						} ${getFocusRingClass(colorScheme)}`}
-					>
-						<option value="America/New_York">Eastern Time (ET)</option>
-						<option value="America/Chicago">Central Time (CT)</option>
-						<option value="America/Denver">Mountain Time (MT)</option>
-						<option value="America/Los_Angeles">Pacific Time (PT)</option>
-					</select>
+						options={[
+							{ value: "America/New_York", label: "Eastern Time (ET)" },
+							{ value: "America/Chicago", label: "Central Time (CT)" },
+							{ value: "America/Denver", label: "Mountain Time (MT)" },
+							{ value: "America/Los_Angeles", label: "Pacific Time (PT)" },
+						]}
+					/>
 				</div>
 				<div>
 					<label
@@ -642,21 +585,17 @@ const Settings = () => {
 					>
 						Date Format
 					</label>
-					<select
+					<FormSelect
 						value={preferenceSettings.dateFormat}
 						onChange={(e) =>
 							handleInputChange("preferences", "dateFormat", e.target.value)
 						}
-						className={`w-full border ${colors.border} ${
-							colors.input
-						} rounded px-3 py-2 outline-none ${colors.background} ${
-							colors.foreground
-						} ${getFocusRingClass(colorScheme)}`}
-					>
-						<option value="MM/DD/YYYY">MM/DD/YYYY</option>
-						<option value="DD/MM/YYYY">DD/MM/YYYY</option>
-						<option value="YYYY-MM-DD">YYYY-MM-DD</option>
-					</select>
+						options={[
+							{ value: "MM/DD/YYYY", label: "MM/DD/YYYY" },
+							{ value: "DD/MM/YYYY", label: "DD/MM/YYYY" },
+							{ value: "YYYY-MM-DD", label: "YYYY-MM-DD" },
+						]}
+					/>
 				</div>
 				<div>
 					<label
@@ -664,37 +603,34 @@ const Settings = () => {
 					>
 						Currency
 					</label>
-					<select
+					<FormSelect
 						value={preferenceSettings.currency}
 						onChange={(e) =>
 							handleInputChange("preferences", "currency", e.target.value)
 						}
-						className={`w-full border ${colors.border} ${
-							colors.input
-						} rounded px-3 py-2 outline-none ${colors.background} ${
-							colors.foreground
-						} ${getFocusRingClass(colorScheme)}`}
-					>
-						<option value="USD">USD ($)</option>
-						<option value="EUR">EUR (€)</option>
-						<option value="GBP">GBP (£)</option>
-						<option value="JPY">JPY (¥)</option>
-					</select>
+						options={[
+							{ value: "USD", label: "USD ($)" },
+							{ value: "EUR", label: "EUR (€)" },
+							{ value: "GBP", label: "GBP (£)" },
+							{ value: "JPY", label: "JPY (¥)" },
+						]}
+					/>
 				</div>
 			</div>
-			<button
+			<Button
+				size="sm"
+				className="mt-4"
 				onClick={() => handleSave("preferences")}
-				className={`mt-4 flex items-center gap-2 ${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
 			>
 				<Save size={16} />
 				Save Preferences
-			</button>
-		</div>
+			</Button>
+		</Card>
 	);
 
 	const renderBillingSettings = () => (
 		<div className="space-y-6">
-			<div className={`${colors.card} border ${colors.border} rounded-xl p-6`}>
+			<Card className="p-6">
 				<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 					Subscription Details
 				</h2>
@@ -715,13 +651,12 @@ const Settings = () => {
 						<span className={`text-sm font-medium ${colors.textSecondary}`}>
 							Status
 						</span>
-						<span
-							className={`text-sm ${
-								theme === "dark" ? "text-green-400" : "text-green-600"
-							} font-semibold`}
+						<Badge
+							variant="secondary"
+							className="bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800/50"
 						>
 							{billingSettings.status}
-						</span>
+						</Badge>
 					</div>
 					<div
 						className={`flex justify-between items-center py-3 border-b ${colors.border}`}
@@ -743,62 +678,49 @@ const Settings = () => {
 					</div>
 				</div>
 				<div className="mt-6 flex gap-2">
-					<button
-						className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
-					>
-						Upgrade Plan
-					</button>
-					<button
-						className={`border ${colors.border} ${scheme.primaryHover} ${scheme.primaryForeground} ${colors.hoverSecondary} rounded ${colors.foreground} px-4 py-2 transition-all duration-100 ease-in  text-xs`}
-					>
+					<Button size="sm">Upgrade Plan</Button>
+					<Button size="sm" variant="outline">
 						Manage Payment
-					</button>
+					</Button>
 				</div>
-			</div>
+			</Card>
 		</div>
 	);
 
 	const renderTeamSettings = () => (
-		<div className={`${colors.card} border ${colors.border} rounded-xl p-6`}>
+		<Card className="p-6">
 			<div className="flex justify-between items-center mb-6">
 				<h2 className={`text-xl font-semibold ${colors.foreground}`}>
 					Team Members
 				</h2>
-				<button
-					onClick={() => setIsModalOpen(true)}
-					className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
-				>
+				<Button size="sm" onClick={() => setIsModalOpen(true)}>
 					Add Member
-				</button>
+				</Button>
 			</div>
 			<div className="mb-4">
-				<div
-					className={`flex gap-2 items-center border ${colors.border} rounded px-2 py-1 w-full md:w-auto ${colors.card}`}
-				>
-					<Search size={18} className={colors.textSecondary} />
-					<input
+				<div className="relative w-full md:w-auto">
+					<Search
+						size={18}
+						className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
+					/>
+					<Input
 						type="text"
 						placeholder="Search team members..."
+						className="pl-9"
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
-						className={`outline-none ${colors.background} ${
-							colors.foreground
-						} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-							colorScheme
-						)}`}
 					/>
 				</div>
 			</div>
-			<div className="overflow-x-auto">
-				<table className={`min-w-full ${colors.card} border ${colors.border}`}>
-					<thead className={colors.hover}>
-						<tr>
-							<th
+			<Table className={`min-w-full ${colors.card} border ${colors.border}`}>
+					<TableHeader className={colors.hover}>
+						<TableRow>
+							<TableHead
 								className={`py-2 px-4 border-b ${colors.border} text-left ${colors.mutedForeground}`}
 							>
 								User Info
-							</th>
-							<th
+							</TableHead>
+							<TableHead
 								className={`py-2 px-4 border-b ${colors.border} text-left cursor-pointer ${colors.mutedForeground} transition-colors`}
 								onClick={() => requestSort("email")}
 							>
@@ -811,8 +733,8 @@ const Settings = () => {
 											<ChevronDown size={16} className={colors.textMuted} />
 										))}
 								</div>
-							</th>
-							<th
+							</TableHead>
+							<TableHead
 								className={`py-2 px-4 border-b ${colors.border} text-left cursor-pointer ${colors.mutedForeground} transition-colors`}
 								onClick={() => requestSort("role")}
 							>
@@ -825,8 +747,8 @@ const Settings = () => {
 											<ChevronDown size={16} className={colors.textMuted} />
 										))}
 								</div>
-							</th>
-							<th
+							</TableHead>
+							<TableHead
 								className={`py-2 px-4 border-b ${colors.border} text-left cursor-pointer ${colors.mutedForeground} transition-colors`}
 								onClick={() => requestSort("status")}
 							>
@@ -839,18 +761,18 @@ const Settings = () => {
 											<ChevronDown size={16} className={colors.textMuted} />
 										))}
 								</div>
-							</th>
-							<th
+							</TableHead>
+							<TableHead
 								className={`py-2 px-4 border-b ${colors.border} text-left ${colors.mutedForeground}`}
 							>
 								Actions
-							</th>
-						</tr>
-					</thead>
-					<tbody>
+							</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
 						{filteredTeamMembers.map((member) => (
-							<tr key={member.id} className={colors.hover}>
-								<td
+							<TableRow key={member.id} className={colors.hover}>
+								<TableCell
 									className={`py-2 px-4 flex items-center gap-2 ${colors.foreground}`}
 								>
 									<img
@@ -859,47 +781,44 @@ const Settings = () => {
 										className={`w-10 h-10 rounded-full mr-2 border ${colors.border}`}
 									/>
 									<span>{member.name}</span>
-								</td>
-								<td className={`py-2 px-4 ${colors.foreground}`}>
+								</TableCell>
+								<TableCell className={`py-2 px-4 ${colors.foreground}`}>
 									{member.email}
-								</td>
-								<td className={`py-2 px-4 ${colors.foreground}`}>
+								</TableCell>
+								<TableCell className={`py-2 px-4 ${colors.foreground}`}>
 									{member.role}
-								</td>
-								<td className={`py-2 px-4 ${colors.foreground}`}>
-									<span
-										className={`px-2 py-1 rounded text-xs border ${
-											member.status === "Active"
-												? theme === "dark"
-													? "bg-green-900/30 text-green-400 border-green-800/50"
-													: "bg-green-100 text-green-800"
-												: scheme.chip
-										}`}
+								</TableCell>
+								<TableCell className={`py-2 px-4 ${colors.foreground}`}>
+									<Badge
+										variant={
+											member.status === "Active" ? "secondary" : "outline"
+										}
+										className={cn(
+											member.status === "Active" &&
+												"bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800/50"
+										)}
 									>
 										{member.status}
-									</span>
-								</td>
-								<td className="py-1 px-4 flex items-center gap-2">
-									<Edit
-										size={16}
-										className={`cursor-pointer ${colors.textSecondary} transition-colors ${colors.hoverSecondary}`}
-									/>
-									<X
-										size={16}
-										className={`cursor-pointer ${colors.textSecondary} transition-colors ${colors.hoverSecondary}`}
-									/>
-								</td>
-							</tr>
+									</Badge>
+								</TableCell>
+								<TableCell className="py-1 px-4 flex items-center gap-2">
+									<Button variant="ghost" size="icon" title="Edit">
+										<Edit size={16} />
+									</Button>
+									<Button variant="ghost" size="icon" title="Delete">
+										<X size={16} />
+									</Button>
+								</TableCell>
+							</TableRow>
 						))}
-					</tbody>
-				</table>
-			</div>
-		</div>
+					</TableBody>
+				</Table>
+		</Card>
 	);
 
 	const renderSecuritySettings = () => (
 		<div className="space-y-6">
-			<div className={`${colors.card} border ${colors.border} rounded-xl p-6`}>
+			<Card className="p-6">
 				<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 					Active Sessions
 				</h2>
@@ -915,13 +834,13 @@ const Settings = () => {
 								Current Session • New York, USA
 							</p>
 						</div>
-						<button
-							className={`text-red-600 ${
-								theme === "dark" ? "hover:text-red-400" : "hover:text-red-800"
-							} text-xs hover:underline transition-colors`}
+						<Button
+							variant="ghost"
+							size="sm"
+							className="text-destructive hover:text-destructive"
 						>
 							Revoke
-						</button>
+						</Button>
 					</div>
 					<div
 						className={`flex justify-between items-center py-3 border-b ${colors.border}`}
@@ -934,18 +853,18 @@ const Settings = () => {
 								2 hours ago • New York, USA
 							</p>
 						</div>
-						<button
-							className={`text-red-600 ${
-								theme === "dark" ? "hover:text-red-400" : "hover:text-red-800"
-							} text-xs hover:underline transition-colors`}
+						<Button
+							variant="ghost"
+							size="sm"
+							className="text-destructive hover:text-destructive"
 						>
 							Revoke
-						</button>
+						</Button>
 					</div>
 				</div>
-			</div>
+			</Card>
 
-			<div className={`${colors.card} border ${colors.border} rounded-xl p-6`}>
+			<Card className="p-6">
 				<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
 					Login History
 				</h2>
@@ -961,11 +880,7 @@ const Settings = () => {
 								Today at 10:30 AM • Chrome on MacOS
 							</p>
 						</div>
-						<span
-							className={`${
-								theme === "dark" ? "text-green-400" : "text-green-600"
-							} text-xs`}
-						>
+						<span className="text-green-600 dark:text-green-400 text-xs">
 							✓
 						</span>
 					</div>
@@ -980,16 +895,12 @@ const Settings = () => {
 								Yesterday at 3:45 PM • Safari on iPhone
 							</p>
 						</div>
-						<span
-							className={`${
-								theme === "dark" ? "text-green-400" : "text-green-600"
-							} text-xs`}
-						>
+						<span className="text-green-600 dark:text-green-400 text-xs">
 							✓
 						</span>
 					</div>
 				</div>
-			</div>
+			</Card>
 		</div>
 	);
 
@@ -1003,29 +914,24 @@ const Settings = () => {
 
 			<div className="flex flex-col md:flex-row gap-6">
 				<div className="md:w-60 w-full">
-					<div
-						className={`${colors.card} border ${colors.border} rounded-xl p-4`}
-					>
+					<Card className="p-4">
 						<nav className="space-y-1">
 							{tabs.map((tab) => {
 								const Icon = tab.icon;
 								return (
-									<button
+									<Button
 										key={tab.id}
+										variant={activeTab === tab.id ? "default" : "ghost"}
+										className="w-full justify-start gap-3"
 										onClick={() => setActiveTab(tab.id)}
-										className={`w-full flex items-center gap-3 p-2 rounded transition-all duration-100 ease-in ${
-											activeTab === tab.id
-												? `${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover}`
-												: `${colors.foreground} ${colors.hoverSecondary}`
-										}`}
 									>
 										<Icon size={18} />
 										<span className="text-sm">{tab.label}</span>
-									</button>
+									</Button>
 								);
 							})}
 						</nav>
-					</div>
+					</Card>
 				</div>
 
 				<div className="md:w-3/4 w-full">
@@ -1039,78 +945,33 @@ const Settings = () => {
 				</div>
 			</div>
 
-			{isModalOpen && (
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-					<div
-						className={`${colors.card} p-6 rounded ${colors.shadow} max-w-md w-full border ${colors.border}`}
-					>
-						<div className="flex justify-between items-center mb-4">
-							<h2 className={`text-lg font-semibold ${colors.foreground}`}>
-								Add Team Member
-							</h2>
-							<button
-								onClick={() => setIsModalOpen(false)}
-								className={`${colors.hoverSecondary} ${colors.foreground} p-1 rounded transition-colors`}
-							>
-								<X size={16} />
-							</button>
-						</div>
-						<div className="space-y-4">
-							<input
-								type="text"
-								placeholder="Name"
-								className={`w-full border ${colors.border} ${
-									colors.input
-								} rounded px-3 py-2 outline-none ${colors.background} ${
-									colors.foreground
-								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-									colorScheme
-								)}`}
-							/>
-							<input
-								type="email"
-								placeholder="Email"
-								className={`w-full border ${colors.border} ${
-									colors.input
-								} rounded px-3 py-2 outline-none ${colors.background} ${
-									colors.foreground
-								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-									colorScheme
-								)}`}
-							/>
-							<select
-								className={`w-full border ${colors.border} ${
-									colors.input
-								} rounded px-3 py-2 outline-none ${colors.background} ${
-									colors.foreground
-								} ${getFocusRingClass(colorScheme)}`}
-							>
-								<option value="">Select Role</option>
-								<option value="Admin">Admin</option>
-								<option value="Manager">Manager</option>
-								<option value="User">User</option>
-							</select>
-							<div className="flex gap-2">
-								<button
-									onClick={() => {
-										toast.success("Team member added successfully!");
-										setIsModalOpen(false);
-									}}
-									className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} text-xs px-4 py-2 rounded transition-all duration-100 ease-in `}
-								>
-									Add Member
-								</button>
-								<button
-									onClick={() => setIsModalOpen(false)}
-									className={`${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground} text-xs px-4 py-2 rounded transition-colors`}
-								>
-									Cancel
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			)}
+			<FormModal
+				open={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				onSubmit={() => {
+					toast.success("Team member added successfully!");
+					setIsModalOpen(false);
+				}}
+				title="Add Team Member"
+				saveLabel="Add Member"
+				maxWidth="max-w-md"
+			>
+				<FormField label="Name" htmlFor="member-name" required>
+					<Input id="member-name" type="text" placeholder="Name" />
+				</FormField>
+				<FormField label="Email" htmlFor="member-email" required>
+					<Input id="member-email" type="email" placeholder="Email" />
+				</FormField>
+				<FormField label="Role" htmlFor="member-role" required>
+					<FormSelect
+						id="member-role"
+						value={memberRole}
+						onChange={(e) => setMemberRole(e.target.value)}
+						placeholder="Select Role"
+						options={["Admin", "Manager", "User"]}
+					/>
+				</FormField>
+			</FormModal>
 		</div>
 	);
 };

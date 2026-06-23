@@ -5,7 +5,6 @@ import {
 	Users,
 	PenIcon,
 	Trash,
-	X,
 	Search,
 	PlusCircle,
 	ChevronUp,
@@ -14,13 +13,27 @@ import {
 } from "lucide-react";
 import { Pagination } from "../../modules";
 import { useTheme } from "../../utils/useTheme";
-import { getFocusRingClass } from "../../utils/theme";
 import { INITIAL_CONTACTS } from "../CRM/contactsSeedData";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { FormModal, FormField } from "../../lib/ui/modal";
+import {
+	Table,
+	TableHeader,
+	TableBody,
+	TableFooter,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableCaption,
+} from "@/components/ui/table";
 
 const Contacts = () => {
 	const router = useRouter();
-	// Theme hook
-	const { colorScheme, colors, scheme } = useTheme();
+	const { colors } = useTheme();
 
 	const [contacts, setContacts] = useState(INITIAL_CONTACTS);
 
@@ -39,6 +52,11 @@ const Contacts = () => {
 
 	const handleSearch = (event) => {
 		setSearchTerm(event.target.value);
+	};
+
+	const handleModalClose = () => {
+		setIsAddContactModalOpen(false);
+		setNewContact({ name: "", email: "", phone: "", company: "" });
 	};
 
 	const handleAddContact = () => {
@@ -99,55 +117,48 @@ const Contacts = () => {
 					</div>
 					<div className="flex items-center gap-4 flex-wrap w-full md:w-auto">
 						{/* Total Contacts Card */}
-						<div
-							className={`flex items-center ${colors.card} border ${colors.border} rounded-xl py-2 px-2 gap-2 transition-all duration-100 ease-in`}
-						>
-								<Users className={``} size={16} />
+						<Card className={cn("py-2 px-3 shadow-none")}>
+							<div className="flex items-center gap-2">
+								<Users size={16} />
 								<p className={`text-xs ${colors.mutedForeground}`}>
 									Total Contacts
 								</p>
-								<p className={`text-sm font-semibold ${colors.foreground}`}>
+								<Badge variant="secondary" className="font-semibold">
 									{contacts.length}
-								</p>
-						</div>
+								</Badge>
+							</div>
+						</Card>
 						{/* Search */}
-						<div
-							className={`relative flex gap-2 items-center border ${colors.border} rounded-xl px-3 py-2 ${colors.card} w-full md:w-auto`}
-						>
-							<Search className={colors.textSecondary} size={18} />
-							<input
+						<div className="relative flex gap-2 items-center w-full md:w-auto">
+							<Search
+								size={18}
+								className="absolute left-3 text-muted-foreground pointer-events-none"
+							/>
+							<Input
 								type="text"
 								placeholder="Search contacts..."
-								className={`outline-none flex-1 dark:bg-transparent placeholder:${colors.mutedForeground} ${getFocusRingClass(
-									colorScheme
-								)}`}
 								name="search-contacts"
+								className="pl-9"
 								value={searchTerm}
 								onChange={handleSearch}
 							/>
 						</div>
 						{/* Add Contact Button */}
-						<button
-							onClick={() => setIsAddContactModalOpen(true)}
-							className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded-xl text-sm px-4 py-2 transition-all duration-200 font-medium flex items-center gap-2`}
-						>
+						<Button onClick={() => setIsAddContactModalOpen(true)}>
 							<PlusCircle size={16} />
 							Add Contact
-						</button>
+						</Button>
 					</div>
 				</div>
 			{/* Contacts Table - Improved */}
-			<div
-				className={`${colors.card} border ${colors.border} rounded-xl ${colors.shadow} overflow-hidden my-4`}
-			>
+			<Card className="overflow-hidden my-4">
 				
 
 				{/* Table */}
-				<div className="overflow-x-auto">
-					<table className="w-full">
-						<thead className={`${colors.muted} border-b ${colors.border}`}>
-							<tr>
-								<th
+				<Table className="w-full">
+						<TableHeader className={`${colors.muted} border-b ${colors.border}`}>
+							<TableRow>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => handleSort("name")}
 								>
@@ -163,8 +174,8 @@ const Contacts = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => handleSort("email")}
 								>
@@ -180,13 +191,13 @@ const Contacts = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Phone
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => handleSort("company")}
 								>
@@ -202,8 +213,8 @@ const Contacts = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
 									onClick={() => handleSort("createdAt")}
 								>
@@ -219,29 +230,29 @@ const Contacts = () => {
 											</>
 										)}
 									</div>
-								</th>
-								<th
+								</TableHead>
+								<TableHead
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
 								>
 									Actions
-								</th>
-							</tr>
-						</thead>
-						<tbody className={`${colors.card} divide-y ${colors.border}`}>
+								</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody className={`${colors.card} divide-y ${colors.border}`}>
 							{filteredContacts.length === 0 ? (
-								<tr>
-									<td colSpan="6" className="px-6 py-12 text-center">
+								<TableRow>
+									<TableCell colSpan="6" className="px-6 py-12 text-center">
 										<p className={colors.mutedForeground}>No contacts found</p>
-									</td>
-								</tr>
+									</TableCell>
+								</TableRow>
 							) : (
 								filteredContacts.map((contact) => (
-									<tr
+									<TableRow
 										key={contact.id}
 										className={`${colors.hover} transition-colors cursor-pointer`}
 										onClick={() => router.push(`/contacts/${contact.id}`)}
 									>
-										<td className="px-6 py-4 whitespace-nowrap">
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-3">
 												<img
 													src={contact.image}
@@ -254,212 +265,119 @@ const Contacts = () => {
 													{contact.name}
 												</div>
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{contact.email}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{contact.phone}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{contact.company}
 											</div>
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										</TableCell>
+										<TableCell className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
 												{formatDate(contact.createdAt)}
 											</div>
-										</td>
-										<td
+										</TableCell>
+										<TableCell
 											className="px-6 py-4 whitespace-nowrap"
 											onClick={(e) => e.stopPropagation()}
 										>
 											<div className="flex items-center gap-2">
-												<Link href={`/contacts/${contact.id}`} passHref>
-													<a
-														className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors inline-flex`}
-														title="View profile"
-													>
-														<Eye size={16} className={colors.textSecondary} />
-													</a>
-												</Link>
-												<button
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
+												<Button
+													variant="ghost"
+													size="icon"
+													asChild
+													title="View profile"
+												>
+													<Link href={`/contacts/${contact.id}`}>
+														<a>
+															<Eye size={16} />
+														</a>
+													</Link>
+												</Button>
+												<Button
+													variant="ghost"
+													size="icon"
 													title="Edit"
 												>
-													<PenIcon size={16} className={colors.textSecondary} />
-												</button>
-												<button
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
+													<PenIcon size={16} />
+												</Button>
+												<Button
+													variant="ghost"
+													size="icon"
 													title="Delete"
 												>
-													<Trash size={16} className={colors.textSecondary} />
-												</button>
+													<Trash size={16} />
+												</Button>
 											</div>
-										</td>
-									</tr>
+										</TableCell>
+									</TableRow>
 								))
 							)}
-						</tbody>
-					</table>
-				</div>
-			</div>
-			{/* Add New Contact Modal */}
-			{isAddContactModalOpen && (
-				<div
-					className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-					onClick={() => setIsAddContactModalOpen(false)}
-				>
-					<div
-						className={`${colors.card} rounded-xl ${colors.shadow} max-w-xl w-full overflow-y-auto`}
-						onClick={(e) => e.stopPropagation()}
-					>
-						{/* Modal Header */}
-						<div
-							className={`flex items-center justify-between p-6 border-b ${colors.border}`}
-						>
-							<div>
-								<h2 className={`text-xl font-semibold ${colors.foreground}`}>
-									Add New Contact
-								</h2>
-								<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-									Create a new contact in your database
-								</p>
-							</div>
-							<button
-								onClick={() => setIsAddContactModalOpen(false)}
-								className={`p-2 ${colors.hoverSecondary} rounded-xl transition-colors`}
-							>
-								<X className={`w-5 h-5 ${colors.mutedForeground}`} />
-							</button>
-						</div>
-
-						{/* Modal Body */}
-						<div className="p-6 space-y-4">
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Name <span className="text-red-500">*</span>
-								</label>
-								<input
-									type="text"
-									placeholder="Enter contact name"
-									value={newContact.name}
-									onChange={(e) =>
-										setNewContact({ ...newContact, name: e.target.value })
-									}
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${getFocusRingClass(
-										colorScheme
-									)} focus:border-transparent placeholder:${
-										colors.mutedForeground
-									}`}
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Email <span className="text-red-500">*</span>
-								</label>
-								<input
-									type="email"
-									placeholder="contact@example.com"
-									value={newContact.email}
-									onChange={(e) =>
-										setNewContact({ ...newContact, email: e.target.value })
-									}
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${getFocusRingClass(
-										colorScheme
-									)} focus:border-transparent placeholder:${
-										colors.mutedForeground
-									}`}
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Phone
-								</label>
-								<input
-									type="text"
-									placeholder="+1 (555) 123-4567"
-									value={newContact.phone}
-									onChange={(e) =>
-										setNewContact({ ...newContact, phone: e.target.value })
-									}
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${getFocusRingClass(
-										colorScheme
-									)} focus:border-transparent placeholder:${
-										colors.mutedForeground
-									}`}
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.textSecondary} mb-2`}
-								>
-									Company
-								</label>
-								<input
-									type="text"
-									placeholder="Company name"
-									value={newContact.company}
-									onChange={(e) =>
-										setNewContact({ ...newContact, company: e.target.value })
-									}
-									className={`w-full px-4 py-2 ${colors.background} border ${
-										colors.border
-									} rounded-xl text-sm ${
-										colors.foreground
-									} focus:outline-none focus:ring-2 ${getFocusRingClass(
-										colorScheme
-									)} focus:border-transparent placeholder:${
-										colors.mutedForeground
-									}`}
-								/>
-							</div>
-						</div>
-
-						{/* Modal Footer */}
-						<div
-							className={`flex items-center justify-end gap-3 p-6 border-t ${colors.border}`}
-						>
-							<button
-								onClick={() => setIsAddContactModalOpen(false)}
-								className={`px-4 py-2 text-sm font-medium ${colors.textSecondary} ${colors.secondary} ${colors.hoverSecondary} rounded-xl transition-colors`}
-							>
-								Cancel
-							</button>
-							<button
-								onClick={handleAddContact}
-								className={`px-4 py-2 text-sm font-medium ${scheme.primaryForeground} ${scheme.primary} ${scheme.primaryHover} rounded-xl transition-colors flex items-center gap-2`}
-							>
-								<PlusCircle size={16} />
-								Add Contact
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
+						</TableBody>
+					</Table>
+			</Card>
+			<FormModal
+				open={isAddContactModalOpen}
+				onClose={handleModalClose}
+				title="Add New Contact"
+				subtitle="Create a new contact in your database"
+				onSubmit={handleAddContact}
+				saveLabel="Add Contact"
+			>
+				<FormField label="Name" htmlFor="contact-name" required>
+					<Input
+						id="contact-name"
+						type="text"
+						placeholder="Enter contact name"
+						value={newContact.name}
+						onChange={(e) =>
+							setNewContact({ ...newContact, name: e.target.value })
+						}
+					/>
+				</FormField>
+				<FormField label="Email" htmlFor="contact-email" required>
+					<Input
+						id="contact-email"
+						type="email"
+						placeholder="contact@example.com"
+						value={newContact.email}
+						onChange={(e) =>
+							setNewContact({ ...newContact, email: e.target.value })
+						}
+					/>
+				</FormField>
+				<FormField label="Phone" htmlFor="contact-phone">
+					<Input
+						id="contact-phone"
+						type="text"
+						placeholder="+1 (555) 123-4567"
+						value={newContact.phone}
+						onChange={(e) =>
+							setNewContact({ ...newContact, phone: e.target.value })
+						}
+					/>
+				</FormField>
+				<FormField label="Company" htmlFor="contact-company">
+					<Input
+						id="contact-company"
+						type="text"
+						placeholder="Company name"
+						value={newContact.company}
+						onChange={(e) =>
+							setNewContact({ ...newContact, company: e.target.value })
+						}
+					/>
+				</FormField>
+			</FormModal>
 			<Pagination />
 		</div>
 	);
