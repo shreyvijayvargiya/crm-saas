@@ -5,13 +5,13 @@ import {
 	ChevronDown,
 	Plus,
 	GripVertical,
-	Trash2,
 	Paperclip,
 	MessageCircle,
 	PlusIcon,
 } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
 import { getFocusRingClass } from "../../utils/theme";
+import { FormModal, FormField, formInputClass } from "../../lib/ui/modal";
 
 const defaultTaskExtras = () => ({
 	description: "",
@@ -258,7 +258,13 @@ const Tasks = () => {
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [editingTaskId, setEditingTaskId] = useState(null);
 	const [editingSectionId, setEditingSectionId] = useState(null);
-	const [newTask, setNewTask] = useState({ name: "", icon: "", progress: "" });
+	const [newTask, setNewTask] = useState({
+		name: "",
+		icon: "",
+		progress: "",
+		description: "",
+		priority: "Medium",
+	});
 	const [targetSectionId, setTargetSectionId] = useState(null);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [filterStatus, setFilterStatus] = useState("all");
@@ -338,7 +344,13 @@ const Tasks = () => {
 	const handleAddNewTask = (sectionId = null) => {
 		setIsEditMode(false);
 		setTargetSectionId(sectionId);
-		setNewTask({ name: "", icon: "", progress: "" });
+		setNewTask({
+			name: "",
+			icon: "",
+			progress: "",
+			description: "",
+			priority: "Medium",
+		});
 		setIsModalOpen(true);
 	};
 
@@ -350,6 +362,8 @@ const Tasks = () => {
 			name: task.name,
 			icon: task.icon,
 			progress: task.progress,
+			description: task.description || "",
+			priority: task.priority || "Medium",
 		});
 		setIsModalOpen(true);
 	};
@@ -373,74 +387,89 @@ const Tasks = () => {
 	const handleCloseModal = () => {
 		setIsModalOpen(false);
 		setIsEditMode(false);
-		setNewTask({ name: "", icon: "", progress: "" });
+		setNewTask({
+			name: "",
+			icon: "",
+			progress: "",
+			description: "",
+			priority: "Medium",
+		});
 		setTargetSectionId(null);
 		setEditingTaskId(null);
 		setEditingSectionId(null);
 	};
 
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		if (newTask.name && newTask.icon) {
-			if (isEditMode) {
-				// Update existing task
-				setTaskSections((prevSections) => {
-					const updatedSections = prevSections.map((section) => {
-						if (section.id === editingSectionId) {
-							return {
-								...section,
-								tasks: section.tasks.map((task) =>
-									task.id === editingTaskId ? { ...task, ...newTask } : task
-								),
-							};
-						}
-						return section;
-					});
-					return updatedSections;
-				});
-				toast.success(`Task "${newTask.name}" updated!`);
-			} else {
-				// Add new task
-				const newTaskId = Date.now().toString();
-				const sectionToAddTo = targetSectionId || "to-do";
-				const progressValue =
-					newTask.progress ||
-					(sectionToAddTo === "to-do"
-						? "Not Started"
-						: sectionToAddTo === "in-progress"
-						? "In Progress"
-						: "Completed");
-				const progressPercent =
-					progressValue === "Completed"
-						? 100
-						: progressValue === "In Progress"
-						? 40
-						: 0;
-				setTaskSections((prevSections) => {
-					const updatedSections = prevSections.map((section) => {
-						if (section.id === sectionToAddTo) {
-							return {
-								...section,
-								tasks: [
-									...section.tasks,
-									{
-										id: newTaskId,
-										...defaultTaskExtras(),
-										...newTask,
-										progress: progressValue,
-										progressPercent,
-									},
-								],
-							};
-						}
-						return section;
-					});
-					return updatedSections;
-				});
-				toast.success(`Task "${newTask.name}" added!`);
-			}
-			handleCloseModal();
+	const progressPercentFor = (progressValue) => {
+		if (progressValue === "Completed") return 100;
+		if (progressValue === "In Progress") return 40;
+		return 0;
+	};
+
+	const handleSubmit = () => {
+		if (!newTask.name?.trim() || !newTask.icon?.trim()) return;
+
+		if (isEditMode) {
+			const progressValue = newTask.progress || "Not Started";
+			setTaskSections((prevSections) =>
+				prevSections.map((section) => {
+					if (section.id === editingSectionId) {
+						return {
+							...section,
+							tasks: section.tasks.map((task) =>
+								task.id === editingTaskId
+									? {
+											...task,
+											...newTask,
+											progress: progressValue,
+											progressPercent: progressPercentFor(progressValue),
+									  }
+									: task
+							),
+						};
+					}
+					return section;
+				})
+			);
+			toast.success(`Task "${newTask.name}" updated!`);
+		} else {
+			const newTaskId = Date.now().toString();
+			const sectionToAddTo = targetSectionId || "to-do";
+			const progressValue =
+				newTask.progress ||
+				(sectionToAddTo === "to-do"
+					? "Not Started"
+					: sectionToAddTo === "in-progress"
+					? "In Progress"
+					: "Completed");
+			setTaskSections((prevSections) =>
+				prevSections.map((section) => {
+					if (section.id === sectionToAddTo) {
+						return {
+							...section,
+							tasks: [
+								...section.tasks,
+								{
+									id: newTaskId,
+									...defaultTaskExtras(),
+									...newTask,
+									progress: progressValue,
+									progressPercent: progressPercentFor(progressValue),
+								},
+							],
+						};
+					}
+					return section;
+				})
+			);
+			toast.success(`Task "${newTask.name}" added!`);
 		}
+		handleCloseModal();
+	};
+
+	const handleDeleteFromModal = () => {
+		if (!editingTaskId || !editingSectionId) return;
+		handleDeleteTask(editingTaskId, editingSectionId);
+		handleCloseModal();
 	};
 
 	// Filter and search logic
@@ -611,107 +640,93 @@ const Tasks = () => {
 				</div>
 			</div>
 
-			{isModalOpen && (
-				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-					<div
-						className={`modal-content ${colors.card} rounded-xl ${colors.shadow} p-6 border ${colors.border} w-full max-w-md`}
-					>
-						<div className="flex justify-between items-center mb-4">
-							<p className={colors.foreground}>
-								{isEditMode ? "Edit task" : "Add new task"}
-								{targetSectionId && !isEditMode && (
-									<span className={`text-sm ${colors.textSecondary} ml-2`}>
-										to{" "}
-										{taskSections.find((s) => s.id === targetSectionId)?.name}
-									</span>
-								)}
-							</p>
-							<span
-								className={`close cursor-pointer px-2.5 py-1 rounded-xl ${colors.textMuted} ${colors.hoverSecondary} transition-colors`}
-								onClick={handleCloseModal}
-							>
-								&times;
-							</span>
-						</div>
-						<form onSubmit={handleSubmit} className="mt-4">
-							<input
-								type="text"
-								placeholder="Task Name"
-								value={newTask.name}
-								onChange={(e) =>
-									setNewTask({ ...newTask, name: e.target.value })
-								}
-								required
-								className={`border ${colors.border} ${
-									colors.input
-								} rounded px-2 py-1 ${
-									colors.hoverSecondary
-								} w-full mb-4 outline-none ${colors.background} ${
-									colors.foreground
-								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-									colorScheme
-								)}`}
-							/>
-							<input
-								type="text"
-								placeholder="Task Icon"
-								value={newTask.icon}
-								onChange={(e) =>
-									setNewTask({ ...newTask, icon: e.target.value })
-								}
-								required
-								className={`border ${colors.border} ${
-									colors.input
-								} rounded px-2 py-1 ${
-									colors.hoverSecondary
-								} w-full mb-4 outline-none ${colors.background} ${
-									colors.foreground
-								} placeholder:${colors.mutedForeground} ${getFocusRingClass(
-									colorScheme
-								)}`}
-							/>
-							<select
-								value={newTask.progress}
-								onChange={(e) =>
-									setNewTask({ ...newTask, progress: e.target.value })
-								}
-								className={`border ${colors.border} ${
-									colors.input
-								} rounded px-2 py-1 ${
-									colors.hoverSecondary
-								} w-full mb-4 outline-none ${colors.background} ${
-									colors.foreground
-								} ${getFocusRingClass(colorScheme)}`}
-							>
-								<option value="Not Started">Not Started</option>
-								<option value="In Progress">In Progress</option>
-								<option value="Completed">Completed</option>
-							</select>
-							<div className="flex items-center justify-end gap-3">
-								<button
-									type="submit"
-									className={`border ${colors.border} rounded text-xs px-4 py-2 transition-all duration-100 ease-in`}
-								>
-									{isEditMode ? "Update" : "Submit"}
-								</button>
-								{isEditMode && (
-									<button
-										type="button"
-										onClick={() => {
-											handleDeleteTask(editingTaskId, editingSectionId);
-											handleCloseModal();
-										}}
-										className={`flex items-center gap-2 px-4 py-2 rounded text-xs transition-all duration-100 ease-in bg-red-500 hover:bg-red-600 text-white`}
-									>
-										<Trash2 className="w-4 h-4" />
-										Delete
-									</button>
-								)}
-							</div>
-						</form>
-					</div>
+			<FormModal
+				open={isModalOpen}
+				onClose={handleCloseModal}
+				title={isEditMode ? "Edit task" : "Add new task"}
+				subtitle={
+					targetSectionId && !isEditMode
+						? `Adding to ${taskSections.find((s) => s.id === targetSectionId)?.name}`
+						: isEditMode
+						? "Update details or delete this task"
+						: "Create a task for your board"
+				}
+				onSubmit={handleSubmit}
+				saveLabel={isEditMode ? "Save changes" : "Add task"}
+				showDelete={isEditMode}
+				onDelete={handleDeleteFromModal}
+				deleteLabel="Delete task"
+				maxWidth="max-w-lg"
+			>
+				<FormField label="Task name" htmlFor="task-name" required>
+					<input
+						id="task-name"
+						type="text"
+						placeholder="e.g. Prepare presentation"
+						value={newTask.name}
+						onChange={(e) =>
+							setNewTask({ ...newTask, name: e.target.value })
+						}
+						required
+						className={formInputClass(colorScheme, colors)}
+					/>
+				</FormField>
+				<FormField label="Icon" htmlFor="task-icon" required hint="Emoji or short label">
+					<input
+						id="task-icon"
+						type="text"
+						placeholder="📝"
+						value={newTask.icon}
+						onChange={(e) =>
+							setNewTask({ ...newTask, icon: e.target.value })
+						}
+						required
+						className={formInputClass(colorScheme, colors)}
+					/>
+				</FormField>
+				<FormField label="Description" htmlFor="task-description">
+					<textarea
+						id="task-description"
+						rows={3}
+						placeholder="What needs to be done?"
+						value={newTask.description}
+						onChange={(e) =>
+							setNewTask({ ...newTask, description: e.target.value })
+						}
+						className={formInputClass(colorScheme, colors)}
+					/>
+				</FormField>
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<FormField label="Status" htmlFor="task-progress">
+						<select
+							id="task-progress"
+							value={newTask.progress}
+							onChange={(e) =>
+								setNewTask({ ...newTask, progress: e.target.value })
+							}
+							className={formInputClass(colorScheme, colors)}
+						>
+							<option value="Not Started">Not Started</option>
+							<option value="In Progress">In Progress</option>
+							<option value="Completed">Completed</option>
+						</select>
+					</FormField>
+					<FormField label="Priority" htmlFor="task-priority">
+						<select
+							id="task-priority"
+							value={newTask.priority}
+							onChange={(e) =>
+								setNewTask({ ...newTask, priority: e.target.value })
+							}
+							className={formInputClass(colorScheme, colors)}
+						>
+							<option value="High">High</option>
+							<option value="Medium">Medium</option>
+							<option value="Low">Low</option>
+						</select>
+					</FormField>
 				</div>
-			)}
+			</FormModal>
 
 			<div className="flex flex-col lg:flex-row gap-5 px-4 pb-10 max-w-7xl items-start">
 				{filteredSections.map((section) => (
@@ -766,11 +781,11 @@ const Tasks = () => {
 								return (
 									<div
 										key={task.id}
-										className={`rounded-2xl border ${colors.border} ${colors.card} shadow-sm p-4 transition-all duration-200 cursor-grab active:cursor-grabbing hover:shadow-md`}
+										className={`rounded-2xl border ${colors.border} ${colors.card} shadow-sm p-4 transition-all duration-200 cursor-pointer hover:shadow-md`}
 										draggable
 										onDragStart={(event) => handleDragStart(event, task)}
 										onDragEnd={handleDragEnd}
-										onClick={(e) => {
+										onClick={() => {
 											if (!isDragging) {
 												handleEditTask(task, section.id);
 											}

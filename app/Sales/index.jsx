@@ -11,6 +11,8 @@ import {
 	X,
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { BsCalendarMonth } from "react-icons/bs";
 import {
 	AreaChart,
@@ -23,8 +25,10 @@ import {
 } from "recharts";
 import { useTheme } from "../../utils/useTheme";
 import { getFocusRingClass } from "../../utils/theme";
+import { INITIAL_SALES } from "../CRM/salesSeedData";
 
 const Sales = () => {
+	const router = useRouter();
 	// Theme hook
 	const { theme, colorScheme, colors, scheme } = useTheme();
 
@@ -61,50 +65,8 @@ const Sales = () => {
 
 	const [activeTab, setActiveTab] = useState("daily");
 
-	const [products, setProducts] = useState([
-		{
-			id: 1,
-			name: "Product A",
-			soldAt: "October 1, 2023",
-			price: 20,
-			category: "Electronics",
-			description: "High-quality headphones",
-		},
-		{
-			id: 2,
-			name: "Product B",
-			soldAt: "October 2, 2023",
-			price: 15,
-			category: "Books",
-			description: "A thrilling mystery novel",
-		},
-		{
-			id: 3,
-			name: "Product C",
-			soldAt: "October 3, 2023",
-			price: 30,
-			category: "Clothing",
-			description: "Stylish winter jacket",
-		},
-		{
-			id: 4,
-			name: "Product D",
-			soldAt: "October 4, 2023",
-			price: 25,
-			category: "Home",
-			description: "Comfortable sofa",
-		},
-		{
-			id: 5,
-			name: "Product E",
-			soldAt: "October 5, 2023",
-			price: 50,
-			category: "Sports",
-			description: "Durable running shoes",
-		},
-	]);
-
-	const [sortOrder, setSortOrder] = useState("asc");
+	const [products, setProducts] = useState(INITIAL_SALES);
+	const [sortConfig, setSortConfig] = useState({ key: "soldAt", direction: "descending" });
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [newProduct, setNewProduct] = useState({
 		name: "",
@@ -113,21 +75,60 @@ const Sales = () => {
 		description: "",
 	});
 
-	const handleSort = () => {
-		setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-		setProducts(
-			[...products].sort((a, b) =>
-				sortOrder === "asc" ? a.price - b.price : b.price - a.price
-			)
-		);
+	const requestSort = (key) => {
+		setSortConfig((prev) => {
+			if (prev?.key === key) {
+				return {
+					key,
+					direction: prev.direction === "ascending" ? "descending" : "ascending",
+				};
+			}
+			return { key, direction: "ascending" };
+		});
 	};
+
+	const sortedProducts = useMemo(() => {
+		const rows = [...products];
+		if (!sortConfig) return rows;
+		const mul = sortConfig.direction === "ascending" ? 1 : -1;
+		return rows.sort((a, b) => {
+			if (sortConfig.key === "name") {
+				return a.name.localeCompare(b.name) * mul;
+			}
+			if (sortConfig.key === "price") {
+				return (a.price - b.price) * mul;
+			}
+			if (sortConfig.key === "soldAt") {
+				return String(a.soldAt).localeCompare(String(b.soldAt)) * mul;
+			}
+			return 0;
+		});
+	}, [products, sortConfig]);
+
+	const SortIcon = ({ column }) =>
+		sortConfig?.key === column ? (
+			sortConfig.direction === "ascending" ? (
+				<ChevronUp className="w-4 h-4" />
+			) : (
+				<ChevronDown className="w-4 h-4" />
+			)
+		) : null;
 
 	const handleAddProduct = (e) => {
 		e.preventDefault();
 		const productToAdd = {
 			...newProduct,
-			id: products.length + 1,
-			soldAt: new Date().toLocaleDateString(),
+			id: String(products.length + 1),
+			soldAt: new Date().toISOString().slice(0, 10),
+			soldAtLabel: new Date().toLocaleDateString("en-US", {
+				month: "long",
+				day: "numeric",
+				year: "numeric",
+			}),
+			price: Number(newProduct.price) || 0,
+			customer: "New customer",
+			quantity: 1,
+			invoiceId: null,
 		};
 		setProducts([...products, productToAdd]);
 		setNewProduct({ name: "", category: "", price: "", description: "" });
@@ -585,27 +586,31 @@ const Sales = () => {
 									ID
 								</th>
 								<th
-									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
-								>
-									Name
-								</th>
-								<th
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
-									onClick={handleSort}
+									onClick={() => requestSort("name")}
 								>
 									<div className="flex items-center gap-2">
-										Price (USD)
-										{sortOrder === "asc" ? (
-											<ChevronUp className="w-4 h-4" />
-										) : (
-											<ChevronDown className="w-4 h-4" />
-										)}
+										Name
+										<SortIcon column="name" />
 									</div>
 								</th>
 								<th
-									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
+									onClick={() => requestSort("price")}
 								>
-									Sold At
+									<div className="flex items-center gap-2">
+										Price (USD)
+										<SortIcon column="price" />
+									</div>
+								</th>
+								<th
+									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
+									onClick={() => requestSort("soldAt")}
+								>
+									<div className="flex items-center gap-2">
+										Sold At
+										<SortIcon column="soldAt" />
+									</div>
 								</th>
 								<th
 									className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
@@ -620,17 +625,18 @@ const Sales = () => {
 							</tr>
 						</thead>
 						<tbody className={`${colors.card} divide-y ${colors.border}`}>
-							{products.length === 0 ? (
+							{sortedProducts.length === 0 ? (
 								<tr>
 									<td colSpan="6" className="px-6 py-12 text-center">
 										<p className={colors.mutedForeground}>No products found</p>
 									</td>
 								</tr>
 							) : (
-								products.map((product) => (
+								sortedProducts.map((product) => (
 									<tr
 										key={product.id}
 										className={`${colors.hover} transition-colors cursor-pointer`}
+										onClick={() => router.push(`/sales/${product.id}`)}
 									>
 										<td className="px-6 py-4 whitespace-nowrap">
 											<div
@@ -640,11 +646,13 @@ const Sales = () => {
 											</div>
 										</td>
 										<td className="px-6 py-4">
-											<div
-												className={`text-sm font-medium ${colors.foreground}`}
-											>
-												{product.name}
-											</div>
+											<Link href={`/sales/${product.id}`} passHref>
+												<a
+													className={`text-sm font-medium ${colors.foreground} hover:underline`}
+												>
+													{product.name}
+												</a>
+											</Link>
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
 											<div
@@ -655,7 +663,7 @@ const Sales = () => {
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
-												{product.soldAt}
+												{product.soldAtLabel || product.soldAt}
 											</div>
 										</td>
 										<td className="px-6 py-4">

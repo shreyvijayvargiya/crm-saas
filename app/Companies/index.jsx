@@ -1,4 +1,6 @@
 import React, { useState, useMemo } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import {
 	PlusCircle,
@@ -10,6 +12,7 @@ import {
 	Star,
 	Layers,
 	MapPin,
+	Eye,
 } from "lucide-react";
 import {
 	Bar,
@@ -26,102 +29,18 @@ import { Pagination } from "../../modules";
 import { useTheme } from "../../utils/useTheme";
 import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { getFocusRingClass } from "../../utils/theme";
+import {
+	INITIAL_COMPANIES,
+	companySlug,
+} from "../CRM/companiesSeedData";
 
 const Companies = () => {
+	const router = useRouter();
 	// Theme hook
 	const { theme, colorScheme, colors, scheme } = useTheme();
 	const chartTooltipProps = useChartTooltipProps();
 
-	const [companies, setCompanies] = useState([
-		{
-			name: "HubSpot",
-			owner: "Alice Johnson",
-			logo: "./companies/hubspot.png",
-			industry: "Technology",
-			rating: 4.5,
-			location: "New York",
-		},
-		{
-			name: "Slack",
-			owner: "Bob Brown",
-			logo: "./companies/slack.png",
-			industry: "Communication",
-			rating: 4.0,
-			location: "San Francisco",
-		},
-		{
-			name: "Stripe",
-			owner: "Charlie Smith",
-			logo: "./companies/stripe.png",
-			industry: "Finance",
-			rating: 4.8,
-			location: "Los Angeles",
-		},
-		{
-			name: "TikTok",
-			owner: "David Wilson",
-			logo: "./companies/tiktok.png",
-			industry: "Entertainment",
-			rating: 4.7,
-			location: "Los Angeles",
-		},
-		{
-			name: "Zendesk",
-			owner: "Eve Davis",
-			logo: "./companies/zendesk.png",
-			industry: "Customer Service",
-			rating: 4.6,
-			location: "Chicago",
-		},
-		{
-			name: "Zapier",
-			owner: "Frank Miller",
-			logo: "./companies/slack.png",
-			industry: "Automation",
-			rating: 4.9,
-			location: "Austin",
-		},
-		{
-			name: "Airbnb",
-			owner: "Grace Lee",
-			logo: "./companies/slack.png",
-			industry: "Hospitality",
-			rating: 4.5,
-			location: "San Francisco",
-		},
-		{
-			name: "Spotify",
-			owner: "Henry Adams",
-			logo: "./companies/hubspot.png",
-			industry: "Music",
-			rating: 4.8,
-			location: "Stockholm",
-		},
-		{
-			name: "LinkedIn",
-			owner: "Ivy Green",
-			logo: "./companies/zendesk.png",
-			industry: "Social Media",
-			rating: 4.3,
-			location: "Sunnyvale",
-		},
-		{
-			name: "Adobe",
-			owner: "Jack White",
-			logo: "./companies/stripe.png",
-			industry: "Software",
-			rating: 4.6,
-			location: "San Jose",
-		},
-		{
-			name: "Netflix",
-			owner: "Kathy Brown",
-			logo: "./companies/tiktok.png",
-			industry: "Entertainment",
-			rating: 4.7,
-			location: "Los Gatos",
-		},
-	]);
+	const [companies, setCompanies] = useState(INITIAL_COMPANIES);
 
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isAddCompanyModalOpen, setIsAddCompanyModalOpen] = useState(false);
@@ -141,7 +60,11 @@ const Companies = () => {
 	const handleAddCompany = () => {
 		setCompanies((prevCompanies) => [
 			...prevCompanies,
-			{ ...newCompany, rating: parseFloat(newCompany.rating) },
+			{
+				...newCompany,
+				id: companySlug(newCompany.name) || `company-${Date.now()}`,
+				rating: parseFloat(newCompany.rating),
+			},
 		]);
 		setNewCompany({
 			name: "",
@@ -565,10 +488,11 @@ const Companies = () => {
 									</td>
 								</tr>
 							) : (
-								sortedCompanies.map((company, index) => (
+								sortedCompanies.map((company) => (
 									<tr
-										key={index}
-										className={`${colors.hover} transition-colors`}
+										key={company.id}
+										className={`${colors.hover} transition-colors cursor-pointer`}
+										onClick={() => router.push(`/companies/${company.id}`)}
 									>
 										<td className="px-6 py-4 whitespace-nowrap">
 											<img
@@ -578,11 +502,13 @@ const Companies = () => {
 											/>
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
-											<div
-												className={`text-sm font-medium ${colors.foreground}`}
-											>
-												{company.name}
-											</div>
+											<Link href={`/companies/${company.id}`} passHref>
+												<a
+													className={`text-sm font-medium ${colors.foreground} hover:underline`}
+												>
+													{company.name}
+												</a>
+											</Link>
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
 											<div className={`text-sm ${colors.textSecondary}`}>
@@ -609,8 +535,19 @@ const Companies = () => {
 												{company.location}
 											</div>
 										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										<td
+											className="px-6 py-4 whitespace-nowrap"
+											onClick={(e) => e.stopPropagation()}
+										>
 											<div className="flex items-center gap-2">
+												<Link href={`/companies/${company.id}`} passHref>
+													<a
+														className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors inline-flex`}
+														title="View company"
+													>
+														<Eye size={16} className={colors.textSecondary} />
+													</a>
+												</Link>
 												<button
 													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
 													title="Edit"

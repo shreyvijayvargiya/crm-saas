@@ -1,4 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import {
 	Briefcase,
 	TrendingUp,
@@ -15,6 +17,7 @@ import {
 	CheckCircle2,
 	Clock,
 	XCircle,
+	Eye,
 } from "lucide-react";
 import {
 	AreaChart,
@@ -27,8 +30,10 @@ import {
 } from "recharts";
 import { useTheme } from "../../utils/useTheme";
 import { getFocusRingClass } from "../../utils/theme";
+import { INITIAL_PROJECTS } from "../CRM/projectsSeedData";
 
 const Projects = () => {
+	const router = useRouter();
 	// Theme hook
 	const { theme, colorScheme, colors, scheme } = useTheme();
 
@@ -46,70 +51,7 @@ const Projects = () => {
 	const [calendarMonth, setCalendarMonth] = useState(new Date(2025, 10, 1)); // November 2025
 	const [selectedPreset, setSelectedPreset] = useState("Last 28 Days");
 
-	const initialProjects = [
-		{
-			id: 1,
-			projectName: "Product Development",
-			clientName: "Kevin Heal",
-			clientAvatarColor: "bg-blue-500",
-			startDate: "20/03/2024",
-			deadline: "05/04/2024",
-			status: "Active",
-			progress: 30,
-		},
-		{
-			id: 2,
-			projectName: "New Office Building",
-			clientName: "Sarah Johnson",
-			clientAvatarColor: "bg-purple-500",
-			startDate: "15/03/2024",
-			deadline: "10/04/2024",
-			status: "Cancel",
-			progress: 60,
-		},
-		{
-			id: 3,
-			projectName: "Mobile app design",
-			clientName: "Michael Chen",
-			clientAvatarColor: "bg-orange-500",
-			startDate: "10/03/2024",
-			deadline: "01/04/2024",
-			status: "Completed",
-			progress: 100,
-		},
-		{
-			id: 4,
-			projectName: "Website & Blog",
-			clientName: "Emily Rodriguez",
-			clientAvatarColor: "bg-amber-700",
-			startDate: "05/03/2024",
-			deadline: "20/03/2024",
-			status: "Pending",
-			progress: 50,
-		},
-		{
-			id: 5,
-			projectName: "Marketing Campaign",
-			clientName: "David Wilson",
-			clientAvatarColor: "bg-blue-700",
-			startDate: "01/03/2024",
-			deadline: "15/04/2024",
-			status: "Active",
-			progress: 45,
-		},
-		{
-			id: 6,
-			projectName: "E-commerce Platform",
-			clientName: "Jessica Lee",
-			clientAvatarColor: "bg-cyan-500",
-			startDate: "25/02/2024",
-			deadline: "10/05/2024",
-			status: "Pending",
-			progress: 20,
-		},
-	];
-
-	const [projects] = useState(initialProjects);
+	const [projects] = useState(INITIAL_PROJECTS);
 
 	// Generate data for the last 3 months (Aug 18 to Nov 8)
 	const generateData = (period) => {
@@ -982,9 +924,13 @@ const Projects = () => {
 								paginatedProjects.map((project) => (
 									<tr
 										key={project.id}
-										className={`${colors.hover} transition-colors`}
+										className={`${colors.hover} transition-colors cursor-pointer`}
+										onClick={() => router.push(`/projects/${project.id}`)}
 									>
-										<td className="px-6 py-4">
+										<td
+											className="px-6 py-4"
+											onClick={(e) => e.stopPropagation()}
+										>
 											<input
 												type="checkbox"
 												checked={selectedRows.includes(project.id)}
@@ -997,11 +943,13 @@ const Projects = () => {
 											/>
 										</td>
 										<td className="px-6 py-4">
-											<div
-												className={`text-sm font-medium ${colors.foreground}`}
-											>
-												{project.projectName}
-											</div>
+											<Link href={`/projects/${project.id}`} passHref>
+												<a
+													className={`text-sm font-medium ${colors.foreground} hover:underline`}
+												>
+													{project.projectName}
+												</a>
+											</Link>
 										</td>
 										<td className="px-6 py-4">
 											<div className="flex items-center gap-3">
@@ -1051,10 +999,18 @@ const Projects = () => {
 												</span>
 											</div>
 										</td>
-										<td className="px-6 py-4 text-right">
-											<button className="p-1 hover:bg-zinc-100 rounded transition-colors">
-												<MoreHorizontal className="w-5 h-5 text-zinc-500" />
-											</button>
+										<td
+											className="px-6 py-4 text-right"
+											onClick={(e) => e.stopPropagation()}
+										>
+											<Link href={`/projects/${project.id}`} passHref>
+												<a
+													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors inline-flex`}
+													title="View project"
+												>
+													<Eye className={`w-4 h-4 ${colors.textSecondary}`} />
+												</a>
+											</Link>
 										</td>
 									</tr>
 								))

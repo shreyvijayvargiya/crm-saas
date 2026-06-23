@@ -16,6 +16,8 @@ import {
 	Wallet,
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import { toast } from "react-toastify";
 import {
 	Bar,
@@ -29,160 +31,20 @@ import {
 import { useTheme } from "../../utils/useTheme";
 import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { getFocusRingClass } from "../../utils/theme";
+import {
+	INITIAL_INVOICES,
+	formatCurrency,
+	getInvoiceStatusColor,
+} from "../CRM/invoicesSeedData";
 
 const Invoices = () => {
+	const router = useRouter();
 	// Theme hook
 	const { theme, colorScheme, colors, scheme } = useTheme();
 	const chartTooltipProps = useChartTooltipProps();
 
-	const initialInvoices = [
-		{
-			id: "INV-001",
-			invoiceNumber: "INV-2024-001",
-			client: "Cloud Corp",
-			clientEmail: "contact@cloudcorp.com",
-			amount: 5000.0,
-			status: "Paid",
-			issueDate: "06/01/2024",
-			dueDate: "06/15/2024",
-			description: "Monthly subscription service",
-			items: [{ name: "Premium Plan", quantity: 1, price: 5000.0 }],
-		},
-		{
-			id: "INV-002",
-			invoiceNumber: "INV-2024-002",
-			client: "Tech Innovations",
-			clientEmail: "billing@techinnovations.com",
-			amount: 12000.0,
-			status: "Pending",
-			issueDate: "06/05/2024",
-			dueDate: "06/20/2024",
-			description: "Q2 software license",
-			items: [{ name: "Enterprise License", quantity: 3, price: 12000.0 }],
-		},
-		{
-			id: "INV-003",
-			invoiceNumber: "INV-2024-003",
-			client: "AI Labs",
-			clientEmail: "finance@ailabs.io",
-			amount: 8500.0,
-			status: "Overdue",
-			issueDate: "05/20/2024",
-			dueDate: "06/05/2024",
-			description: "Custom development services",
-			items: [{ name: "Development Hours", quantity: 40, price: 8500.0 }],
-		},
-		{
-			id: "INV-004",
-			invoiceNumber: "INV-2024-004",
-			client: "Marketing Solutions",
-			clientEmail: "payments@marketingsolutions.com",
-			amount: 3200.0,
-			status: "Paid",
-			issueDate: "06/10/2024",
-			dueDate: "06/25/2024",
-			description: "Marketing campaign setup",
-			items: [{ name: "Campaign Setup", quantity: 1, price: 3200.0 }],
-		},
-		{
-			id: "INV-005",
-			invoiceNumber: "INV-2024-005",
-			client: "Finance Corp",
-			clientEmail: "accounts@financecorp.com",
-			amount: 15000.0,
-			status: "Pending",
-			issueDate: "06/15/2024",
-			dueDate: "06/30/2024",
-			description: "Annual enterprise package",
-			items: [{ name: "Enterprise Package", quantity: 1, price: 15000.0 }],
-		},
-		{
-			id: "INV-006",
-			invoiceNumber: "INV-2024-006",
-			client: "Amazon",
-			clientEmail: "procurement@amazon.com",
-			amount: 25000.0,
-			status: "Paid",
-			issueDate: "05/25/2024",
-			dueDate: "06/10/2024",
-			description: "Cloud infrastructure services",
-			items: [{ name: "Infrastructure Services", quantity: 1, price: 25000.0 }],
-		},
-		{
-			id: "INV-007",
-			invoiceNumber: "INV-2024-007",
-			client: "Startup Inc.",
-			clientEmail: "billing@startupinc.com",
-			amount: 1800.0,
-			status: "Pending",
-			issueDate: "06/18/2024",
-			dueDate: "07/03/2024",
-			description: "Basic plan subscription",
-			items: [{ name: "Basic Plan", quantity: 1, price: 1800.0 }],
-		},
-		{
-			id: "INV-008",
-			invoiceNumber: "INV-2024-008",
-			client: "Global Solutions",
-			clientEmail: "finance@globalsolutions.com",
-			amount: 9500.0,
-			status: "Overdue",
-			issueDate: "05/15/2024",
-			dueDate: "05/30/2024",
-			description: "Consulting services",
-			items: [{ name: "Consulting Hours", quantity: 30, price: 9500.0 }],
-		},
-		{
-			id: "INV-009",
-			invoiceNumber: "INV-2024-009",
-			client: "Innovatech LLC",
-			clientEmail: "accounts@innovatech.com",
-			amount: 4200.0,
-			status: "Paid",
-			issueDate: "06/12/2024",
-			dueDate: "06/27/2024",
-			description: "API integration services",
-			items: [{ name: "API Integration", quantity: 1, price: 4200.0 }],
-		},
-		{
-			id: "INV-010",
-			invoiceNumber: "INV-2024-010",
-			client: "GreenTech Innovations",
-			clientEmail: "billing@greentech.com",
-			amount: 6800.0,
-			status: "Pending",
-			issueDate: "06/20/2024",
-			dueDate: "07/05/2024",
-			description: "Sustainability platform license",
-			items: [{ name: "Platform License", quantity: 2, price: 6800.0 }],
-		},
-		{
-			id: "INV-011",
-			invoiceNumber: "INV-2024-011",
-			client: "Future Solutions",
-			clientEmail: "payments@futuresolutions.com",
-			amount: 11000.0,
-			status: "Paid",
-			issueDate: "06/08/2024",
-			dueDate: "06/23/2024",
-			description: "Custom software development",
-			items: [{ name: "Development Services", quantity: 1, price: 11000.0 }],
-		},
-		{
-			id: "INV-012",
-			invoiceNumber: "INV-2024-012",
-			client: "Tech Innovators",
-			clientEmail: "finance@techinnovators.com",
-			amount: 7500.0,
-			status: "Pending",
-			issueDate: "06/22/2024",
-			dueDate: "07/07/2024",
-			description: "Training and onboarding",
-			items: [{ name: "Training Sessions", quantity: 5, price: 7500.0 }],
-		},
-	];
-
-	const [invoices, setInvoices] = useState(initialInvoices);
+	const [invoices, setInvoices] = useState(INITIAL_INVOICES);
+	const [selectedInvoiceIds, setSelectedInvoiceIds] = useState([]);
 	const [sortConfig, setSortConfig] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -372,37 +234,26 @@ const Invoices = () => {
 		);
 	}, [sortedInvoices, searchTerm]);
 
-	const getStatusColor = (status) => {
-		if (theme === "dark") {
-			switch (status) {
-				case "Paid":
-					return "bg-green-900/30 text-green-400 border border-green-800/50";
-				case "Pending":
-					return "bg-yellow-900/30 text-yellow-400 border border-yellow-800/50";
-				case "Overdue":
-					return "bg-red-900/30 text-red-400 border border-red-800/50";
-				default:
-					return scheme.chipDark;
-			}
+	const allInvoicesSelected =
+		filteredInvoices.length > 0 &&
+		filteredInvoices.every((inv) => selectedInvoiceIds.includes(inv.id));
+
+	const toggleSelectAllInvoices = () => {
+		if (allInvoicesSelected) {
+			const visible = new Set(filteredInvoices.map((i) => i.id));
+			setSelectedInvoiceIds((prev) => prev.filter((id) => !visible.has(id)));
 		} else {
-			switch (status) {
-				case "Paid":
-					return "bg-green-100 text-green-800";
-				case "Pending":
-					return "bg-yellow-100 text-yellow-800";
-				case "Overdue":
-					return "bg-red-100 text-red-800";
-				default:
-					return scheme.chip;
-			}
+			const ids = filteredInvoices.map((i) => i.id);
+			setSelectedInvoiceIds((prev) => [...new Set([...prev, ...ids])]);
 		}
 	};
 
-	const formatCurrency = (amount) => {
-		return new Intl.NumberFormat("en-US", {
-			style: "currency",
-			currency: "USD",
-		}).format(amount);
+	const toggleInvoiceSelection = (invoiceId) => {
+		setSelectedInvoiceIds((prev) =>
+			prev.includes(invoiceId)
+				? prev.filter((id) => id !== invoiceId)
+				: [...prev, invoiceId]
+		);
 	};
 
 	const invoiceStats = useMemo(() => {
@@ -677,7 +528,10 @@ const Invoices = () => {
 								>
 									<input
 										type="checkbox"
+										checked={allInvoicesSelected}
+										onChange={toggleSelectAllInvoices}
 										className={getFocusRingClass(colorScheme)}
+										aria-label="Select all invoices"
 									/>
 								</th>
 								<th
@@ -800,22 +654,31 @@ const Invoices = () => {
 								filteredInvoices.map((invoice) => (
 									<tr
 										key={invoice.id}
-										className={`${colors.hover} transition-colors`}
+										className={`${colors.hover} transition-colors cursor-pointer`}
+										onClick={() => router.push(`/invoices/${invoice.id}`)}
 									>
-										<td className="px-6 py-4 whitespace-nowrap">
+										<td
+											className="px-6 py-4 whitespace-nowrap"
+											onClick={(e) => e.stopPropagation()}
+										>
 											<input
 												type="checkbox"
+												checked={selectedInvoiceIds.includes(invoice.id)}
+												onChange={() => toggleInvoiceSelection(invoice.id)}
 												className={getFocusRingClass(colorScheme)}
+												aria-label={`Select ${invoice.invoiceNumber}`}
 											/>
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-2">
 												<FileText size={16} className={colors.textSecondary} />
-												<span
-													className={`text-sm font-medium ${colors.foreground}`}
-												>
-													{invoice.invoiceNumber}
-												</span>
+												<Link href={`/invoices/${invoice.id}`} passHref>
+													<a
+														className={`text-sm font-medium ${colors.foreground} hover:underline`}
+													>
+														{invoice.invoiceNumber}
+													</a>
+												</Link>
 											</div>
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
@@ -839,7 +702,7 @@ const Invoices = () => {
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
 											<span
-												className={`px-2.5 py-1 rounded-md text-xs font-medium border ${getStatusColor(
+												className={`px-2.5 py-1 rounded-md text-xs font-medium border ${getInvoiceStatusColor(
 													invoice.status
 												)}`}
 											>
@@ -856,15 +719,19 @@ const Invoices = () => {
 												{invoice.dueDate}
 											</div>
 										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										<td
+											className="px-6 py-4 whitespace-nowrap"
+											onClick={(e) => e.stopPropagation()}
+										>
 											<div className="flex items-center gap-2">
-												<button
-													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
-													title="View"
-													onClick={() => handleViewInvoice(invoice)}
-												>
-													<Eye size={16} className={colors.textSecondary} />
-												</button>
+												<Link href={`/invoices/${invoice.id}`} passHref>
+													<a
+														className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors inline-flex`}
+														title="View invoice"
+													>
+														<Eye size={16} className={colors.textSecondary} />
+													</a>
+												</Link>
 												<button
 													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
 													title="Edit"
@@ -1289,7 +1156,7 @@ const Invoices = () => {
 											Status:
 										</span>
 										<span
-											className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(
+											className={`px-2 py-1 rounded text-xs font-medium border ${getInvoiceStatusColor(
 												selectedInvoice.status
 											)}`}
 										>

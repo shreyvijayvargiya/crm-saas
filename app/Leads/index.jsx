@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import {
 	Bar,
@@ -35,6 +36,27 @@ import { useTheme } from "../../utils/useTheme";
 import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { getFocusRingClass } from "../../utils/theme";
 import { ExportDropdown } from "../../lib/ui/dropdown";
+import { INITIAL_LEADS, INITIAL_PIPELINES } from "../CRM/leadsSeedData";
+import { FormModal, FormField, formInputClass } from "../../lib/ui/modal";
+
+const LEAD_AVATARS = [
+	"./people/person-1.png",
+	"./people/person-2.png",
+	"./people/person-3.png",
+	"./people/person-4.png",
+];
+
+const EMPTY_LEAD_FORM = {
+	name: "",
+	email: "",
+	company: "",
+	phone: "",
+	source: "Website",
+	status: "New",
+	notes: "",
+	image: LEAD_AVATARS[0],
+	files: [],
+};
 
 function initialsFromName(name) {
 	const p = String(name ?? "").trim().split(/\s+/);
@@ -125,211 +147,56 @@ function RingProgress({ percent, complete }) {
 
 const Leads = () => {
 	// Theme hook
+	const router = useRouter();
 	const { theme, colorScheme, colors, scheme } = useTheme();
 	const chartTooltipProps = useChartTooltipProps();
 
-	const initialPipelines = [
-		{
-			id: "new",
-			name: "Backlog",
-			leads: [
-				{
-					id: "101",
-					name: "Alice Brown",
-					email: "alice@company.com",
-					company: "Cloud Corp",
-					image: "./people/person-1.png",
-				},
-				{
-					id: "103",
-					name: "Charlie Green",
-					email: "charlie@company.com",
-					company: "Tech Innovations",
-					image: "./people/person-2.png",
-				},
-				{
-					id: "104",
-					name: "Diana Prince",
-					email: "diana@company.com",
-					company: "Amazon",
-					image: "./people/person-3.png",
-				},
-			],
-		},
-		{
-			id: "contacted",
-			name: "In Progress",
-			leads: [
-				{
-					id: "102",
-					name: "Bob Wilson",
-					email: "bob@startup.io",
-					company: "AI Labs",
-					image: "./people/person-4.png",
-				},
-				{
-					id: "105",
-					name: "Eve Adams",
-					email: "eve@company.com",
-					company: "Marketing Solutions",
-					image: "./people/person-1.png",
-				},
-				{
-					id: "106",
-					name: "Frank Castle",
-					email: "frank@company.com",
-					company: "Finance Corp",
-					image: "./people/person-2.png",
-				},
-			],
-		},
-		{
-			id: "rejected",
-			name: "Done",
-			leads: [
-				{
-					id: "107",
-					name: "John Doe",
-					email: "john@company.com",
-					company: "Failed Ventures",
-					image: "./people/person-2.png",
-				},
-				{
-					id: "108",
-					name: "Jane Smith",
-					email: "jane@company.com",
-					company: "Unsuccessful Inc.",
-					image: "./people/person-4.png",
-				},
-			],
-		},
-	];
-
-	const initialLeads = [
-		{
-			id: "101",
-			name: "Alice Brown",
-			email: "alice@company.com",
-			lastContacted: "06/25/2024",
-			image: "./people/person-1.png",
-		},
-		{
-			id: "102",
-			name: "Bob Wilson",
-			email: "bob@startup.io",
-			lastContacted: "06/24/2024",
-			image: "./people/person-4.png",
-		},
-		{
-			id: "103",
-			name: "Charlie Green",
-			email: "charlie@company.com",
-			lastContacted: "06/23/2024",
-			image: "./people/person-2.png",
-		},
-		{
-			id: "104",
-			name: "Diana Prince",
-			email: "diana@company.com",
-			lastContacted: "06/22/2024",
-			image: "./people/person-3.png",
-		},
-		{
-			id: "105",
-			name: "Eve Adams",
-			email: "eve@company.com",
-			lastContacted: "06/21/2024",
-			image: "./people/person-1.png",
-		},
-		{
-			id: "106",
-			name: "Frank Castle",
-			email: "frank@company.com",
-			lastContacted: "06/20/2024",
-			image: "./people/person-2.png",
-		},
-		{
-			id: "107",
-			name: "Grace Hopper",
-			email: "grace@company.com",
-			lastContacted: "06/19/2024",
-			image: "./people/person-3.png",
-		},
-		{
-			id: "108",
-			name: "Hank Pym",
-			email: "hank@company.com",
-			lastContacted: "06/18/2024",
-			image: "./people/person-1.png",
-		},
-		{
-			id: "109",
-			name: "Irene Adler",
-			email: "irene@company.com",
-			lastContacted: "06/17/2024",
-			image: "./people/person-4.png",
-		},
-		{
-			id: "110",
-			name: "Jack Sparrow",
-			email: "jack@company.com",
-			lastContacted: "06/16/2024",
-			image: "./people/person-2.png",
-		},
-		{
-			id: "111",
-			name: "Lara Croft",
-			email: "lara@company.com",
-			lastContacted: "06/15/2024",
-			image: "./people/person-1.png",
-		},
-		{
-			id: "112",
-			name: "John Doe",
-			email: "john@company.com",
-			lastContacted: "06/14/2024",
-			image: "./people/person-2.png",
-		},
-		{
-			id: "113",
-			name: "Jane Smith",
-			email: "jane@company.com",
-			lastContacted: "06/13/2024",
-			image: "./people/person-4.png",
-		},
-	];
-
-	const [pipelines, setPipelines] = useState(initialPipelines);
-	const [allLeads, setAllLeads] = useState(initialLeads);
+	const [pipelines, setPipelines] = useState(INITIAL_PIPELINES);
+	const [allLeads, setAllLeads] = useState(INITIAL_LEADS);
 	const [sortConfig, setSortConfig] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [newLead, setNewLead] = useState({ name: "", email: "", image: "" });
+	const [newLead, setNewLead] = useState(EMPTY_LEAD_FORM);
+	const [selectedLeadIds, setSelectedLeadIds] = useState([]);
 	const [dragOverColumn, setDragOverColumn] = useState(null);
 	const handleAddLead = () => setIsModalOpen(true);
 
 	const handleModalClose = () => {
 		setIsModalOpen(false);
-		setNewLead({ name: "", email: "", image: "" });
+		setNewLead(EMPTY_LEAD_FORM);
 	};
 
-	const handleInputChange = (e) => {
-		const { name, value } = e.target;
-		setNewLead((prev) => ({ ...prev, [name]: value }));
+	const toggleLeadSelection = (leadId) => {
+		setSelectedLeadIds((prev) =>
+			prev.includes(leadId)
+				? prev.filter((id) => id !== leadId)
+				: [...prev, leadId]
+		);
+	};
+
+	const handleLeadFileChange = (e) => {
+		const names = Array.from(e.target.files || []).map((f) => f.name);
+		if (names.length) {
+			setNewLead((prev) => ({
+				...prev,
+				files: [...prev.files, ...names],
+			}));
+		}
 	};
 
 	const handleSubmit = () => {
-		const domain =
-			newLead.email?.includes("@") &&
-			newLead.email.split("@")[1]?.split(".")[0];
+		if (!newLead.name?.trim() || !newLead.email?.trim()) return;
 		const leadToAdd = {
-			id: (Math.random() * 1000).toString(),
-			name: newLead.name,
-			email: newLead.email,
-			image: newLead.image,
-			company: domain
-				? domain.charAt(0).toUpperCase() + domain.slice(1)
-				: "",
-			lastContacted: new Date().toISOString().split("T")[0],
+			id: String(Date.now()),
+			name: newLead.name.trim(),
+			email: newLead.email.trim(),
+			image: newLead.image || LEAD_AVATARS[0],
+			company: newLead.company?.trim() || leadDisplayCompany({ email: newLead.email }),
+			phone: newLead.phone,
+			source: newLead.source,
+			status: newLead.status,
+			notes: newLead.notes,
+			files: newLead.files,
+			lastContacted: new Date().toLocaleDateString("en-US"),
 		};
 		setAllLeads((prevLeads) => [...prevLeads, leadToAdd]);
 		toast.success(`Added Lead: ${leadToAdd.name}`);
@@ -431,6 +298,20 @@ const Leads = () => {
 		}
 		return sortableLeads;
 	}, [allLeads, sortConfig]);
+
+	const allVisibleSelected =
+		sortedLeads.length > 0 &&
+		sortedLeads.every((l) => selectedLeadIds.includes(l.id));
+
+	const toggleSelectAllLeads = () => {
+		if (allVisibleSelected) {
+			const visible = new Set(sortedLeads.map((l) => l.id));
+			setSelectedLeadIds((prev) => prev.filter((id) => !visible.has(id)));
+		} else {
+			const ids = sortedLeads.map((l) => l.id);
+			setSelectedLeadIds((prev) => [...new Set([...prev, ...ids])]);
+		}
+	};
 
 	const leadStats = useMemo(() => {
 		const total = allLeads.length;
@@ -712,7 +593,10 @@ const Leads = () => {
 								>
 									<input
 										type="checkbox"
+										checked={allVisibleSelected}
+										onChange={toggleSelectAllLeads}
 										className={getFocusRingClass(colorScheme)}
+										aria-label="Select all leads"
 									/>
 								</th>
 								<th
@@ -760,12 +644,19 @@ const Leads = () => {
 								sortedLeads.map((lead) => (
 									<tr
 										key={lead.id}
-										className={`${colors.hover} transition-colors`}
+										className={`${colors.hover} transition-colors cursor-pointer`}
+										onClick={() => router.push(`/leads/${lead.id}`)}
 									>
-										<td className="px-6 py-4 whitespace-nowrap">
+										<td
+											className="px-6 py-4 whitespace-nowrap"
+											onClick={(e) => e.stopPropagation()}
+										>
 											<input
 												type="checkbox"
+												checked={selectedLeadIds.includes(lead.id)}
+												onChange={() => toggleLeadSelection(lead.id)}
 												className={getFocusRingClass(colorScheme)}
+												aria-label={`Select ${lead.name}`}
 											/>
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
@@ -794,7 +685,10 @@ const Leads = () => {
 												{lead.lastContacted}
 											</div>
 										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										<td
+											className="px-6 py-4 whitespace-nowrap"
+											onClick={(e) => e.stopPropagation()}
+										>
 											<div className="flex items-center gap-2">
 												<button
 													className={`p-1.5 rounded-xl ${colors.hoverSecondary} transition-colors`}
@@ -1000,73 +894,150 @@ const Leads = () => {
 				})}
 			</div>
 
-			{isModalOpen && (
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-					<div
-						className={`${colors.card} p-6 rounded ${colors.shadow} border ${colors.border}`}
-					>
-						<h2 className={`text-lg mb-4 ${colors.foreground}`}>
-							Add new lead
-						</h2>
-						<input
-							type="text"
-							name="name"
-							placeholder="Name"
-							value={newLead.name}
-							onChange={handleInputChange}
-							className={`border ${colors.border} ${
-								colors.input
-							} rounded px-2 py-1 mb-2 w-full outline-none ${
-								colors.background
-							} ${colors.foreground} placeholder:${
-								colors.mutedForeground
-							} ${getFocusRingClass(colorScheme)}`}
-						/>
-						<input
-							type="email"
-							name="email"
-							placeholder="Email"
-							value={newLead.email}
-							onChange={handleInputChange}
-							className={`border ${colors.border} ${
-								colors.input
-							} rounded px-2 py-1 mb-2 w-full outline-none ${
-								colors.background
-							} ${colors.foreground} placeholder:${
-								colors.mutedForeground
-							} ${getFocusRingClass(colorScheme)}`}
-						/>
-						<input
-							type="text"
-							name="image"
-							placeholder="Image URL"
-							value={newLead.image}
-							onChange={handleInputChange}
-							className={`border ${colors.border} ${
-								colors.input
-							} rounded px-2 py-1 mb-4 w-full outline-none ${
-								colors.background
-							} ${colors.foreground} placeholder:${
-								colors.mutedForeground
-							} ${getFocusRingClass(colorScheme)}`}
-						/>
-						<div className="flex justify-start">
+			<FormModal
+				open={isModalOpen}
+				onClose={handleModalClose}
+				title="Add new lead"
+				subtitle="Capture contact details, source, and attachments"
+				onSubmit={handleSubmit}
+				saveLabel="Add lead"
+				maxWidth="max-w-lg"
+			>
+				<FormField label="Avatar" hint="Pick a profile image">
+					<div className="flex flex-wrap gap-2">
+						{LEAD_AVATARS.map((src) => (
 							<button
-								onClick={handleSubmit}
-								className={`${scheme.primary} ${scheme.primaryHover} ${scheme.primaryForeground} rounded px-2 py-1 mr-2 text-sm transition-colors`}
+								key={src}
+								type="button"
+								onClick={() => setNewLead((p) => ({ ...p, image: src }))}
+								className={`rounded-full p-0.5 border-2 transition-colors ${
+									newLead.image === src
+										? `${scheme.primary} border-current`
+										: `${colors.border} ${colors.hoverSecondary}`
+								}`}
 							>
-								Submit
+								<img
+									src={src}
+									alt=""
+									className="w-10 h-10 rounded-full object-cover"
+								/>
 							</button>
-							<button
-								onClick={handleModalClose}
-								className={`${colors.secondary} ${colors.hoverSecondary} ${colors.secondaryForeground} rounded px-2 py-1 text-sm transition-colors`}
-							>
-								Cancel
-							</button>
-						</div>
+						))}
 					</div>
+				</FormField>
+				<FormField label="Name" htmlFor="lead-name" required>
+					<input
+						id="lead-name"
+						type="text"
+						value={newLead.name}
+						onChange={(e) =>
+							setNewLead((p) => ({ ...p, name: e.target.value }))
+						}
+						required
+						className={formInputClass(colorScheme, colors)}
+						placeholder="Full name"
+					/>
+				</FormField>
+				<FormField label="Email" htmlFor="lead-email" required>
+					<input
+						id="lead-email"
+						type="email"
+						value={newLead.email}
+						onChange={(e) =>
+							setNewLead((p) => ({ ...p, email: e.target.value }))
+						}
+						required
+						className={formInputClass(colorScheme, colors)}
+						placeholder="email@company.com"
+					/>
+				</FormField>
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<FormField label="Company" htmlFor="lead-company">
+						<input
+							id="lead-company"
+							type="text"
+							value={newLead.company}
+							onChange={(e) =>
+								setNewLead((p) => ({ ...p, company: e.target.value }))
+							}
+							className={formInputClass(colorScheme, colors)}
+							placeholder="Company name"
+						/>
+					</FormField>
+					<FormField label="Phone" htmlFor="lead-phone">
+						<input
+							id="lead-phone"
+							type="tel"
+							value={newLead.phone}
+							onChange={(e) =>
+								setNewLead((p) => ({ ...p, phone: e.target.value }))
+							}
+							className={formInputClass(colorScheme, colors)}
+							placeholder="+1 (555) 000-0000"
+						/>
+					</FormField>
 				</div>
-			)}
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<FormField label="Source" htmlFor="lead-source">
+						<select
+							id="lead-source"
+							value={newLead.source}
+							onChange={(e) =>
+								setNewLead((p) => ({ ...p, source: e.target.value }))
+							}
+							className={formInputClass(colorScheme, colors)}
+						>
+							<option value="Website">Website</option>
+							<option value="Referral">Referral</option>
+							<option value="Outbound">Outbound</option>
+							<option value="Event">Event</option>
+						</select>
+					</FormField>
+					<FormField label="Status" htmlFor="lead-status">
+						<select
+							id="lead-status"
+							value={newLead.status}
+							onChange={(e) =>
+								setNewLead((p) => ({ ...p, status: e.target.value }))
+							}
+							className={formInputClass(colorScheme, colors)}
+						>
+							<option value="New">New</option>
+							<option value="Qualified">Qualified</option>
+							<option value="Contacted">Contacted</option>
+							<option value="Nurture">Nurture</option>
+						</select>
+					</FormField>
+				</div>
+				<FormField label="Notes" htmlFor="lead-notes">
+					<textarea
+						id="lead-notes"
+						rows={3}
+						value={newLead.notes}
+						onChange={(e) =>
+							setNewLead((p) => ({ ...p, notes: e.target.value }))
+						}
+						className={formInputClass(colorScheme, colors)}
+						placeholder="Context, next steps, competitor info…"
+					/>
+				</FormField>
+				<FormField label="Attachments" htmlFor="lead-files">
+					<input
+						id="lead-files"
+						type="file"
+						multiple
+						onChange={handleLeadFileChange}
+						className={`text-sm ${colors.foreground} file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-sm file:font-medium ${scheme.primary} file:${scheme.primaryForeground}`}
+					/>
+					{newLead.files.length > 0 && (
+						<ul className={`mt-2 text-xs ${colors.textSecondary} space-y-1`}>
+							{newLead.files.map((f) => (
+								<li key={f}>📎 {f}</li>
+							))}
+						</ul>
+					)}
+				</FormField>
+			</FormModal>
 		</div>
 	);
 };

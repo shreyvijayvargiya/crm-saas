@@ -1,5 +1,73 @@
 /** Mock CRM record data for lead & contact detail pages (keyed by id string). */
 
+import {
+	findLeadSeed,
+	getLeadCompanyFromPipelines,
+	companyFromEmail,
+} from "./leadsSeedData";
+import {
+	findContactSeed,
+	formatContactDate,
+} from "./contactsSeedData";
+
+const OWNERS = ["Alex Chen", "Sam Rivera", "Jordan Lee"];
+const LEAD_SOURCES = ["Website", "Referral", "Outbound", "Event"];
+const LEAD_STATUSES = ["New", "Qualified", "Contacted", "Nurture"];
+const LIFECYCLES = ["Customer", "Prospect", "Qualified", "Nurture"];
+
+function buildLeadFromSeed(id) {
+	const row = findLeadSeed(id);
+	if (!row) return null;
+	const n = parseInt(String(id), 10) || 0;
+	const company =
+		getLeadCompanyFromPipelines(id) || companyFromEmail(row.email);
+	return {
+		id: String(id),
+		name: row.name,
+		email: row.email,
+		phone: `+1 (555) 010-${String(1000 + (n % 9000)).padStart(4, "0")}`,
+		company,
+		title: "—",
+		location: "—",
+		image: row.image,
+		source: LEAD_SOURCES[n % LEAD_SOURCES.length],
+		status: LEAD_STATUSES[n % LEAD_STATUSES.length],
+		value: ((n % 7) + 1) * 4000,
+		owner: OWNERS[n % OWNERS.length],
+	};
+}
+
+function buildContactFromSeed(id) {
+	const row = findContactSeed(id);
+	if (!row) return null;
+	const n = parseInt(String(id), 10) || 0;
+	return {
+		id: String(id),
+		name: row.name,
+		email: row.email,
+		phone: row.phone,
+		company: row.company,
+		title: "—",
+		location: "—",
+		image: row.image,
+		owner: OWNERS[n % OWNERS.length],
+		lifecycle: LIFECYCLES[n % LIFECYCLES.length],
+		createdAt: formatContactDate(row.createdAt),
+	};
+}
+
+function emailsToTimeline(emails) {
+	if (!emails?.length) return null;
+	return emails.map((e, i) => ({
+		id: `email-${i}`,
+		type: "email",
+		title: `Email: ${e.subject}`,
+		body: e.body,
+		at: formatContactDate(e.date),
+		user: "You",
+	}));
+}
+
 export const DEFAULT_TIMELINE = [
 	{
 		id: "t1",
@@ -225,7 +293,8 @@ export const LEAD_DB = {
 export function getLeadRecord(id) {
 	const s = String(id);
 	return (
-		LEAD_DB[s] || {
+		LEAD_DB[s] ||
+		buildLeadFromSeed(s) || {
 			id: s,
 			name: "Lead",
 			email: "lead@example.com",
@@ -300,28 +369,34 @@ export const CONTACT_DB = {
 
 export function getContactRecord(id) {
 	const s = String(id);
-	const row = CONTACT_DB[s];
-	if (row) return row;
-	return {
-		id: s,
-		name: "Contact",
-		email: "—",
-		phone: "—",
-		company: "—",
-		title: "—",
-		location: "—",
-		image: "./people/person-2.png",
-		owner: "—",
-		lifecycle: "Contact",
-		createdAt: "—",
-	};
+	return (
+		CONTACT_DB[s] ||
+		buildContactFromSeed(s) || {
+			id: s,
+			name: "Contact",
+			email: "—",
+			phone: "—",
+			company: "—",
+			title: "—",
+			location: "—",
+			image: "./people/person-2.png",
+			owner: "—",
+			lifecycle: "Contact",
+			createdAt: "—",
+		}
+	);
 }
 
 export function getRecordBundle(kind, id) {
 	const key = `${kind}:${String(id)}`;
+	let timeline = TIMELINES[key];
+	if (!timeline && kind === "contact") {
+		const seed = findContactSeed(id);
+		timeline = emailsToTimeline(seed?.emails);
+	}
 	return {
 		key,
-		timeline: TIMELINES[key] || DEFAULT_TIMELINE,
+		timeline: timeline || DEFAULT_TIMELINE,
 		notesSeed: NOTES_SEED[key] || [],
 		deals: DEALS_BY_RECORD[key] || [],
 		files: FILES_BY_RECORD[key] || [],

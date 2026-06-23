@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useRouter } from "next/router";
 import {
 	DndContext,
 	PointerSensor,
@@ -17,7 +18,13 @@ import {
 	Zap,
 	CircleDot,
 } from "lucide-react";
+import { toast } from "react-toastify";
 import { useTheme } from "../../utils/useTheme";
+import { FormModal, FormField, formInputClass } from "../../lib/ui/modal";
+import {
+	INITIAL_PIPELINE_DEALS,
+	PIPELINE_STAGES,
+} from "../CRM/pipelineDealsSeedData";
 
 const STAGES = [
 	{
@@ -78,104 +85,13 @@ const PRIORITY_META = {
 	},
 };
 
-const INITIAL_DEALS = [
-	{
-		id: "d1",
-		title: "Northwind expansion",
-		company: "Northwind Ltd",
-		value: 42000,
-		owner: "AC",
-		stage: "qualified",
-		priority: "high",
-		lastActivity: "Apr 14 · Call logged",
-		daysInStage: 5,
-		tag: "Enterprise",
-	},
-	{
-		id: "d2",
-		title: "API enterprise tier",
-		company: "Cloud Corp",
-		value: 89000,
-		owner: "SR",
-		stage: "prospect",
-		priority: "high",
-		lastActivity: "Apr 15 · Email opened",
-		daysInStage: 2,
-		tag: "Hot",
-	},
-	{
-		id: "d3",
-		title: "Retail rollout",
-		company: "ShopCo",
-		value: 120000,
-		owner: "JL",
-		stage: "qualified",
-		priority: "medium",
-		lastActivity: "Apr 12 · Deck sent",
-		daysInStage: 8,
-		tag: "Q2",
-	},
-	{
-		id: "d4",
-		title: "Manufacturing pilot",
-		company: "Fabrikam",
-		value: 54000,
-		owner: "MP",
-		stage: "prospect",
-		priority: "low",
-		lastActivity: "Apr 10 · Intro",
-		daysInStage: 12,
-		tag: null,
-	},
-	{
-		id: "d5",
-		title: "FinTech integration",
-		company: "Stripe-ish",
-		value: 210000,
-		owner: "AC",
-		stage: "proposal",
-		priority: "high",
-		lastActivity: "Apr 15 · Legal review",
-		daysInStage: 3,
-		tag: "Legal",
-	},
-	{
-		id: "d6",
-		title: "Healthcare RFP",
-		company: "Medline",
-		value: 175000,
-		owner: "SR",
-		stage: "proposal",
-		priority: "medium",
-		lastActivity: "Apr 11 · RFP submitted",
-		daysInStage: 14,
-		tag: "RFP",
-	},
-	{
-		id: "d7",
-		title: "Logistics Q4",
-		company: "FastShip",
-		value: 67000,
-		owner: "JL",
-		stage: "won",
-		priority: "medium",
-		lastActivity: "Apr 9 · Closed won",
-		daysInStage: 0,
-		tag: "Closed",
-	},
-	{
-		id: "d8",
-		title: "Startup pilot",
-		company: "TinyApps",
-		value: 8000,
-		owner: "MP",
-		stage: "lost",
-		priority: "low",
-		lastActivity: "Apr 8 · No budget",
-		daysInStage: 0,
-		tag: "Nurture",
-	},
-];
+const EMPTY_DEAL_FORM = {
+	title: "",
+	company: "",
+	value: "",
+	priority: "medium",
+	stage: "prospect",
+};
 
 function formatMoney(n) {
 	if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
@@ -187,7 +103,7 @@ function formatMoneyFull(n) {
 	return `$ ${n.toLocaleString()}`;
 }
 
-function DealCard({ deal, stageAccent, colors }) {
+function DealCard({ deal, stageAccent, colors, onOpen }) {
 	const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
 		id: deal.id,
 	});
@@ -203,16 +119,20 @@ function DealCard({ deal, stageAccent, colors }) {
 		<div
 			ref={setNodeRef}
 			style={style}
-			{...listeners}
-			{...attributes}
-			className={`group relative rounded-xl border ${colors.card} overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing ${
+			className={`group relative rounded-xl border ${colors.card} overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer ${
 				isDragging ? "opacity-90 ring-2 ring-offset-2 ring-zinc-400/80 dark:ring-zinc-500 scale-[1.02] shadow-lg z-10" : ""
 			} border-l-[3px] ${stageAccent} border-y border-r ${colors.border}`}
+			onClick={() => {
+				if (!isDragging) onOpen(deal.id);
+			}}
 		>
 			<div className="p-3">
 				<div className="flex gap-2">
 					<div
-						className={`shrink-0 mt-0.5 p-1 rounded-md text-zinc-400 group-hover:text-zinc-500 dark:group-hover:text-zinc-400`}
+						{...listeners}
+						{...attributes}
+						className={`shrink-0 mt-0.5 p-1 rounded-md text-zinc-400 cursor-grab active:cursor-grabbing`}
+						onClick={(e) => e.stopPropagation()}
 						aria-hidden
 					>
 						<GripVertical className="w-4 h-4" />
@@ -286,7 +206,7 @@ function DealCard({ deal, stageAccent, colors }) {
 	);
 }
 
-function StageColumn({ stage, deals, colors, totalValue }) {
+function StageColumn({ stage, deals, colors, totalValue, onOpen, onAddDeal }) {
 	const { setNodeRef, isOver } = useDroppable({ id: stage.id });
 
 	return (
@@ -316,7 +236,13 @@ function StageColumn({ stage, deals, colors, totalValue }) {
 				}`}
 			>
 				{deals.map((deal) => (
-					<DealCard key={deal.id} deal={deal} stageAccent={stage.accent} colors={colors} />
+					<DealCard
+						key={deal.id}
+						deal={deal}
+						stageAccent={stage.accent}
+						colors={colors}
+						onOpen={onOpen}
+					/>
 				))}
 				{deals.length === 0 && (
 					<div className={`flex flex-col items-center justify-center py-10 px-2 text-center`}>
@@ -325,6 +251,7 @@ function StageColumn({ stage, deals, colors, totalValue }) {
 				)}
 				<button
 					type="button"
+					onClick={() => onAddDeal(stage.id)}
 					className={`w-full mt-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-medium border border-dashed ${colors.border} ${colors.hoverSecondary} ${colors.mutedForeground} transition-colors`}
 				>
 					<Plus className="w-3.5 h-3.5" />
@@ -336,8 +263,11 @@ function StageColumn({ stage, deals, colors, totalValue }) {
 }
 
 const Pipelines = () => {
-	const { colors } = useTheme();
-	const [deals, setDeals] = useState(INITIAL_DEALS);
+	const router = useRouter();
+	const { colors, colorScheme } = useTheme();
+	const [deals, setDeals] = useState(INITIAL_PIPELINE_DEALS);
+	const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+	const [newDeal, setNewDeal] = useState(EMPTY_DEAL_FORM);
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -389,14 +319,44 @@ const Pipelines = () => {
 		);
 	};
 
+	const openDealDetail = (id) => router.push(`/pipelines/${id}`);
+
+	const openAddDeal = (stageId) => {
+		setNewDeal({ ...EMPTY_DEAL_FORM, stage: stageId });
+		setIsAddModalOpen(true);
+	};
+
+	const closeAddModal = () => {
+		setIsAddModalOpen(false);
+		setNewDeal(EMPTY_DEAL_FORM);
+	};
+
+	const handleAddDeal = () => {
+		if (!newDeal.title?.trim() || !newDeal.company?.trim()) return;
+		const deal = {
+			id: `d${Date.now()}`,
+			title: newDeal.title.trim(),
+			company: newDeal.company.trim(),
+			value: Number(newDeal.value) || 0,
+			owner: "You",
+			stage: newDeal.stage,
+			priority: newDeal.priority,
+			lastActivity: "Just now · Created",
+			daysInStage: 0,
+			tag: null,
+		};
+		setDeals((prev) => [...prev, deal]);
+		toast.success(`Deal "${deal.title}" added`);
+		closeAddModal();
+	};
+
 	return (
 		<div className={`p-6 min-h-screen transition-all duration-100 ease-in`}>
 			<div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-8">
 				<div>
 					<h1 className={`text-2xl font-semibold tracking-tight ${colors.foreground}`}>Pipeline</h1>
 					<p className={`text-sm mt-1 max-w-xl ${colors.mutedForeground}`}>
-						Drag deals between stages — Prospect → Qualified → Proposal → Won / Lost. Totals update as you
-						move cards.
+						Drag deals between stages — click a card for details. Totals update as you move cards.
 					</p>
 				</div>
 				<div
@@ -436,11 +396,85 @@ const Pipelines = () => {
 								deals={byStage[stage.id] || []}
 								colors={colors}
 								totalValue={columnTotals[stage.id] || 0}
+								onOpen={openDealDetail}
+								onAddDeal={openAddDeal}
 							/>
 						</div>
 					))}
 				</div>
 			</DndContext>
+
+			<FormModal
+				open={isAddModalOpen}
+				onClose={closeAddModal}
+				title="Add deal"
+				subtitle={`New deal in ${
+					PIPELINE_STAGES.find((s) => s.id === newDeal.stage)?.label || "stage"
+				}`}
+				onSubmit={handleAddDeal}
+				saveLabel="Add deal"
+				maxWidth="max-w-md"
+			>
+				<FormField label="Deal title" htmlFor="deal-title" required>
+					<input
+						id="deal-title"
+						type="text"
+						value={newDeal.title}
+						onChange={(e) => setNewDeal((p) => ({ ...p, title: e.target.value }))}
+						required
+						className={formInputClass(colorScheme, colors)}
+						placeholder="e.g. Enterprise expansion"
+					/>
+				</FormField>
+				<FormField label="Company" htmlFor="deal-company" required>
+					<input
+						id="deal-company"
+						type="text"
+						value={newDeal.company}
+						onChange={(e) => setNewDeal((p) => ({ ...p, company: e.target.value }))}
+						required
+						className={formInputClass(colorScheme, colors)}
+					/>
+				</FormField>
+				<div className="grid grid-cols-2 gap-4">
+					<FormField label="Value ($)" htmlFor="deal-value">
+						<input
+							id="deal-value"
+							type="number"
+							min="0"
+							value={newDeal.value}
+							onChange={(e) => setNewDeal((p) => ({ ...p, value: e.target.value }))}
+							className={formInputClass(colorScheme, colors)}
+						/>
+					</FormField>
+					<FormField label="Priority" htmlFor="deal-priority">
+						<select
+							id="deal-priority"
+							value={newDeal.priority}
+							onChange={(e) => setNewDeal((p) => ({ ...p, priority: e.target.value }))}
+							className={formInputClass(colorScheme, colors)}
+						>
+							<option value="high">High</option>
+							<option value="medium">Medium</option>
+							<option value="low">Low</option>
+						</select>
+					</FormField>
+				</div>
+				<FormField label="Stage" htmlFor="deal-stage">
+					<select
+						id="deal-stage"
+						value={newDeal.stage}
+						onChange={(e) => setNewDeal((p) => ({ ...p, stage: e.target.value }))}
+						className={formInputClass(colorScheme, colors)}
+					>
+						{PIPELINE_STAGES.map((s) => (
+							<option key={s.id} value={s.id}>
+								{s.label}
+							</option>
+						))}
+					</select>
+				</FormField>
+			</FormModal>
 		</div>
 	);
 };

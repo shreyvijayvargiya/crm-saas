@@ -8,7 +8,7 @@ import {
 	Calendar as CalendarIcon,
 } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
-import { getFocusRingClass } from "../../utils/theme";
+import { FormModal, FormField, formInputClass } from "../../lib/ui/modal";
 import {
 	DndContext,
 	closestCenter,
@@ -22,6 +22,17 @@ import {
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
+const EVENT_COLOR_OPTIONS = [
+	{ value: "blue", label: "Blue" },
+	{ value: "green", label: "Green" },
+	{ value: "purple", label: "Purple" },
+	{ value: "pink", label: "Pink" },
+	{ value: "orange", label: "Orange" },
+	{ value: "indigo", label: "Indigo" },
+	{ value: "teal", label: "Teal" },
+	{ value: "yellow", label: "Yellow" },
+];
+
 const Calendar = () => {
 	const { theme, colorScheme, colors, scheme } = useTheme();
 	const [currentDate, setCurrentDate] = useState(new Date());
@@ -31,7 +42,6 @@ const Calendar = () => {
 	const [isNewEventModalOpen, setIsNewEventModalOpen] = useState(false);
 	const [isEventDetailsModalOpen, setIsEventDetailsModalOpen] = useState(false);
 	const [selectedEvent, setSelectedEvent] = useState(null);
-	const [isEditingEvent, setIsEditingEvent] = useState(false);
 	const [editEvent, setEditEvent] = useState({
 		title: "",
 		time: "",
@@ -375,51 +385,26 @@ const Calendar = () => {
 			date: event.date,
 			color: event.color,
 		});
-		setIsEditingEvent(false);
 		setIsEventDetailsModalOpen(true);
 	};
 
 	const closeEventDetails = () => {
 		setIsEventDetailsModalOpen(false);
 		setSelectedEvent(null);
-		setIsEditingEvent(false);
 		setEditEvent({ title: "", time: "", date: "", color: "blue" });
-	};
-
-	const startEditingEvent = () => {
-		if (!selectedEvent) return;
-		setEditEvent({
-			title: selectedEvent.title,
-			time: selectedEvent.time,
-			date: selectedEvent.date,
-			color: selectedEvent.color,
-		});
-		setIsEditingEvent(true);
-	};
-
-	const cancelEditingEvent = () => {
-		setIsEditingEvent(false);
-		if (selectedEvent) {
-			setEditEvent({
-				title: selectedEvent.title,
-				time: selectedEvent.time,
-				date: selectedEvent.date,
-				color: selectedEvent.color,
-			});
-		}
 	};
 
 	const handleSaveEventDetails = () => {
 		if (!selectedEvent) return;
-		if (!editEvent.title || !editEvent.time || !editEvent.date) {
+		if (!editEvent.title?.trim() || !editEvent.time?.trim() || !editEvent.date) {
 			toast.error("Please fill title, time, and date.");
 			return;
 		}
 
 		const updatedEvent = {
 			...selectedEvent,
-			title: editEvent.title,
-			time: editEvent.time,
+			title: editEvent.title.trim(),
+			time: editEvent.time.trim(),
 			date: editEvent.date,
 			color: editEvent.color,
 		};
@@ -430,8 +415,17 @@ const Calendar = () => {
 			)
 		);
 		setSelectedEvent(updatedEvent);
-		setIsEditingEvent(false);
 		toast.success("Event updated successfully!");
+		closeEventDetails();
+	};
+
+	const handleDeleteEvent = () => {
+		if (!selectedEvent) return;
+		setEvents((prevEvents) =>
+			prevEvents.filter((event) => event.id !== selectedEvent.id)
+		);
+		toast.success("Event deleted.");
+		closeEventDetails();
 	};
 
 	const EventItem = ({ event, dateString }) => {
@@ -657,305 +651,155 @@ const Calendar = () => {
 				</DragOverlay>
 			</DndContext>
 
-			{/* New Event Modal */}
-			{isNewEventModalOpen && (
-				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3">
-					<div
-						className={`${colors.card} rounded-xl ${colors.shadow} p-4 sm:p-6 border ${colors.border} w-full max-w-md max-h-[90vh] overflow-y-auto`}
+			<FormModal
+				open={isNewEventModalOpen}
+				onClose={() => {
+					setIsNewEventModalOpen(false);
+					setNewEvent({ title: "", time: "", date: "", color: "blue" });
+				}}
+				title="New event"
+				subtitle="Add an event to your calendar"
+				onSubmit={handleAddEvent}
+				saveLabel="Add event"
+				maxWidth="max-w-md"
+			>
+				<FormField label="Event title" htmlFor="new-event-title" required>
+					<input
+						id="new-event-title"
+						type="text"
+						value={newEvent.title}
+						onChange={(e) =>
+							setNewEvent({ ...newEvent, title: e.target.value })
+						}
+						required
+						placeholder="Enter event title"
+						className={formInputClass(colorScheme, colors)}
+					/>
+				</FormField>
+				<FormField label="Time" htmlFor="new-event-time" required>
+					<input
+						id="new-event-time"
+						type="text"
+						value={newEvent.time}
+						onChange={(e) =>
+							setNewEvent({ ...newEvent, time: e.target.value })
+						}
+						required
+						placeholder="e.g., 10am, 2:30pm"
+						className={formInputClass(colorScheme, colors)}
+					/>
+				</FormField>
+				<FormField label="Date" htmlFor="new-event-date" required>
+					<input
+						id="new-event-date"
+						type="date"
+						value={newEvent.date}
+						onChange={(e) =>
+							setNewEvent({ ...newEvent, date: e.target.value })
+						}
+						required
+						className={formInputClass(colorScheme, colors)}
+					/>
+				</FormField>
+				<FormField label="Color" htmlFor="new-event-color">
+					<select
+						id="new-event-color"
+						value={newEvent.color}
+						onChange={(e) =>
+							setNewEvent({ ...newEvent, color: e.target.value })
+						}
+						className={formInputClass(colorScheme, colors)}
 					>
-						<div className="flex justify-between items-center mb-4">
-							<h3 className={`text-lg font-semibold ${colors.foreground}`}>
-								New Event
-							</h3>
-							<button
-								onClick={() => setIsNewEventModalOpen(false)}
-								className={`${colors.mutedForeground} hover:${colors.hoverSecondary} transition-colors text-2xl`}
-							>
-								&times;
-							</button>
-						</div>
-						<form
-							onSubmit={(e) => {
-								e.preventDefault();
-								handleAddEvent();
-							}}
-							className="space-y-4"
-						>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.foreground} mb-2`}
-								>
-									Event Title
-								</label>
-								<input
-									type="text"
-									value={newEvent.title}
-									onChange={(e) =>
-										setNewEvent({ ...newEvent, title: e.target.value })
-									}
-									required
-									className={`w-full px-3 py-2 border ${colors.border} ${
-										colors.input
-									} rounded-xl ${
-										colors.foreground
-									} focus:outline-none ${getFocusRingClass(colorScheme)}`}
-									placeholder="Enter event title"
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.foreground} mb-2`}
-								>
-									Time
-								</label>
-								<input
-									type="text"
-									value={newEvent.time}
-									onChange={(e) =>
-										setNewEvent({ ...newEvent, time: e.target.value })
-									}
-									required
-									className={`w-full px-3 py-2 border ${colors.border} ${
-										colors.input
-									} rounded-xl ${
-										colors.foreground
-									} focus:outline-none ${getFocusRingClass(colorScheme)}`}
-									placeholder="e.g., 10am, 2:30pm"
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.foreground} mb-2`}
-								>
-									Date
-								</label>
-								<input
-									type="date"
-									value={newEvent.date}
-									onChange={(e) =>
-										setNewEvent({ ...newEvent, date: e.target.value })
-									}
-									required
-									className={`w-full px-3 py-2 border ${colors.border} ${
-										colors.input
-									} rounded-xl ${
-										colors.foreground
-									} focus:outline-none ${getFocusRingClass(colorScheme)}`}
-								/>
-							</div>
-							<div>
-								<label
-									className={`block text-sm font-medium ${colors.foreground} mb-2`}
-								>
-									Color
-								</label>
-								<select
-									value={newEvent.color}
-									onChange={(e) =>
-										setNewEvent({ ...newEvent, color: e.target.value })
-									}
-									className={`w-full px-3 py-2 border ${colors.border} ${
-										colors.input
-									} rounded-xl ${
-										colors.foreground
-									} focus:outline-none ${getFocusRingClass(colorScheme)}`}
-								>
-									<option value="blue">Blue</option>
-									<option value="green">Green</option>
-									<option value="purple">Purple</option>
-									<option value="pink">Pink</option>
-									<option value="orange">Orange</option>
-									<option value="indigo">Indigo</option>
-									<option value="teal">Teal</option>
-									<option value="yellow">Yellow</option>
-								</select>
-							</div>
-							<div className="flex gap-3 justify-end">
-								<button
-									type="button"
-									onClick={() => setIsNewEventModalOpen(false)}
-									className={`px-4 py-2 ${colors.card} border ${colors.border} rounded-xl ${colors.foreground} hover:${colors.hoverSecondary} transition-colors`}
-								>
-									Cancel
-								</button>
-								<button
-									type="submit"
-									className={`px-4 py-2 ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} rounded-xl transition-colors`}
-								>
-									Add Event
-								</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			)}
+						{EVENT_COLOR_OPTIONS.map((opt) => (
+							<option key={opt.value} value={opt.value}>
+								{opt.label}
+							</option>
+						))}
+					</select>
+				</FormField>
+			</FormModal>
 
-			{/* Event Details Modal */}
-			{isEventDetailsModalOpen && selectedEvent && (
-				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3">
+			<FormModal
+				open={isEventDetailsModalOpen && !!selectedEvent}
+				onClose={closeEventDetails}
+				title="Event details"
+				subtitle={
+					selectedEvent
+						? formatDisplayDate(selectedEvent.date)
+						: undefined
+				}
+				onSubmit={handleSaveEventDetails}
+				saveLabel="Save changes"
+				showDelete
+				onDelete={handleDeleteEvent}
+				deleteLabel="Delete event"
+				maxWidth="max-w-md"
+			>
+				{selectedEvent && (
 					<div
-						className={`${colors.card} rounded-xl ${colors.shadow} p-4 sm:p-6 border ${colors.border} w-full max-w-md`}
+						className={`mb-2 inline-flex rounded-xl px-2.5 py-1 text-xs capitalize ${getColorClasses(
+							editEvent.color
+						)}`}
 					>
-						<div className="flex justify-between items-center mb-4">
-							<h3 className={`text-lg font-semibold ${colors.foreground}`}>
-								Event Details
-							</h3>
-							<button
-								onClick={closeEventDetails}
-								className={`${colors.mutedForeground} hover:${colors.hoverSecondary} transition-colors text-2xl`}
-							>
-								&times;
-							</button>
-						</div>
-
-						{isEditingEvent ? (
-							<div className="space-y-3">
-								<div>
-									<label
-										className={`block text-xs font-medium ${colors.mutedForeground} mb-1`}
-									>
-										Title
-									</label>
-									<input
-										type="text"
-										value={editEvent.title}
-										onChange={(e) =>
-											setEditEvent((prev) => ({ ...prev, title: e.target.value }))
-										}
-										className={`w-full px-3 py-2 border ${colors.border} ${colors.input} rounded-xl ${colors.foreground} focus:outline-none ${getFocusRingClass(colorScheme)}`}
-									/>
-								</div>
-								<div className="grid grid-cols-2 gap-3">
-									<div>
-										<label
-											className={`block text-xs font-medium ${colors.mutedForeground} mb-1`}
-										>
-											Time
-										</label>
-										<input
-											type="text"
-											value={editEvent.time}
-											onChange={(e) =>
-												setEditEvent((prev) => ({ ...prev, time: e.target.value }))
-											}
-											className={`w-full px-3 py-2 border ${colors.border} ${colors.input} rounded-xl ${colors.foreground} focus:outline-none ${getFocusRingClass(colorScheme)}`}
-										/>
-									</div>
-									<div>
-										<label
-											className={`block text-xs font-medium ${colors.mutedForeground} mb-1`}
-										>
-											Date
-										</label>
-										<input
-											type="date"
-											value={editEvent.date}
-											onChange={(e) =>
-												setEditEvent((prev) => ({ ...prev, date: e.target.value }))
-											}
-											className={`w-full px-3 py-2 border ${colors.border} ${colors.input} rounded-xl ${colors.foreground} focus:outline-none ${getFocusRingClass(colorScheme)}`}
-										/>
-									</div>
-								</div>
-								<div>
-									<label
-										className={`block text-xs font-medium ${colors.mutedForeground} mb-1`}
-									>
-										Color
-									</label>
-									<select
-										value={editEvent.color}
-										onChange={(e) =>
-											setEditEvent((prev) => ({ ...prev, color: e.target.value }))
-										}
-										className={`w-full px-3 py-2 border ${colors.border} ${colors.input} rounded-xl ${colors.foreground} focus:outline-none ${getFocusRingClass(colorScheme)}`}
-									>
-										<option value="blue">Blue</option>
-										<option value="green">Green</option>
-										<option value="purple">Purple</option>
-										<option value="pink">Pink</option>
-										<option value="orange">Orange</option>
-										<option value="indigo">Indigo</option>
-										<option value="teal">Teal</option>
-										<option value="yellow">Yellow</option>
-									</select>
-								</div>
-							</div>
-						) : (
-							<div className="space-y-3">
-								<div>
-									<p className={`text-xs ${colors.mutedForeground}`}>Title</p>
-									<p className={`text-sm font-medium ${colors.foreground}`}>
-										{selectedEvent.title}
-									</p>
-								</div>
-								<div className="grid grid-cols-2 gap-3">
-									<div>
-										<p className={`text-xs ${colors.mutedForeground}`}>Time</p>
-										<p className={`text-sm ${colors.foreground}`}>{selectedEvent.time}</p>
-									</div>
-									<div>
-										<p className={`text-xs ${colors.mutedForeground}`}>Date</p>
-										<p className={`text-sm ${colors.foreground}`}>
-											{formatDisplayDate(selectedEvent.date)}
-										</p>
-									</div>
-								</div>
-								<div>
-									<p className={`text-xs ${colors.mutedForeground}`}>Color Label</p>
-									<div className="mt-1">
-										<span
-											className={`${getColorClasses(
-												selectedEvent.color
-											)} inline-flex rounded-xl px-2.5 py-1 text-xs capitalize`}
-										>
-											{selectedEvent.color}
-										</span>
-									</div>
-								</div>
-							</div>
-						)}
-
-						<div className="mt-5 flex justify-end gap-2">
-							{isEditingEvent ? (
-								<>
-									<button
-										type="button"
-										onClick={cancelEditingEvent}
-										className={`p-1 rounded text-xs ${colors.card} border ${colors.border} ${colors.foreground} hover:${colors.hoverSecondary} transition-all duration-100 ease-in`}
-									>
-										Cancel
-									</button>
-									<button
-										type="button"
-										onClick={handleSaveEventDetails}
-										className={`p-1 rounded text-xs ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} transition-all duration-100 ease-in`}
-									>
-										Save
-									</button>
-								</>
-							) : (
-								<>
-									<button
-										type="button"
-										onClick={startEditingEvent}
-										className={`p-1 rounded text-xs ${colors.card} border ${colors.border} ${colors.foreground} hover:${colors.hoverSecondary} transition-all duration-100 ease-in`}
-									>
-										Edit
-									</button>
-									<button
-										type="button"
-										onClick={closeEventDetails}
-										className={`p-1 rounded text-xs ${scheme.primary} ${scheme.primaryForeground} ${scheme.primaryHover} transition-all duration-100 ease-in`}
-									>
-										Close
-									</button>
-								</>
-							)}
-						</div>
+						{editEvent.color}
 					</div>
+				)}
+				<FormField label="Title" htmlFor="edit-event-title" required>
+					<input
+						id="edit-event-title"
+						type="text"
+						value={editEvent.title}
+						onChange={(e) =>
+							setEditEvent((prev) => ({ ...prev, title: e.target.value }))
+						}
+						required
+						className={formInputClass(colorScheme, colors)}
+					/>
+				</FormField>
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<FormField label="Time" htmlFor="edit-event-time" required>
+						<input
+							id="edit-event-time"
+							type="text"
+							value={editEvent.time}
+							onChange={(e) =>
+								setEditEvent((prev) => ({ ...prev, time: e.target.value }))
+							}
+							required
+							placeholder="10am"
+							className={formInputClass(colorScheme, colors)}
+						/>
+					</FormField>
+					<FormField label="Date" htmlFor="edit-event-date" required>
+						<input
+							id="edit-event-date"
+							type="date"
+							value={editEvent.date}
+							onChange={(e) =>
+								setEditEvent((prev) => ({ ...prev, date: e.target.value }))
+							}
+							required
+							className={formInputClass(colorScheme, colors)}
+						/>
+					</FormField>
 				</div>
-			)}
+				<FormField label="Color" htmlFor="edit-event-color">
+					<select
+						id="edit-event-color"
+						value={editEvent.color}
+						onChange={(e) =>
+							setEditEvent((prev) => ({ ...prev, color: e.target.value }))
+						}
+						className={formInputClass(colorScheme, colors)}
+					>
+						{EVENT_COLOR_OPTIONS.map((opt) => (
+							<option key={opt.value} value={opt.value}>
+								{opt.label}
+							</option>
+						))}
+					</select>
+				</FormField>
+			</FormModal>
 		</div>
 	);
 };
