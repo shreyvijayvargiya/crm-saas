@@ -103,6 +103,7 @@ const About = ({
 	designMd = "",
 	dataJson = "",
 	firestoreSchemas = [],
+	supabaseSchemas = [],
 	zodSchemas = [],
 	sqlSchema = "",
 }) => {
@@ -183,6 +184,30 @@ const About = ({
 							) : (
 								<p className="text-sm text-muted-foreground">
 									No Firestore schema files were loaded.
+								</p>
+							)}
+						</CardContent>
+					</Card>
+
+					<Card>
+						<CardHeader>
+							<CardTitle className="text-base">Supabase</CardTitle>
+							<CardDescription>
+								Auth, app tables, and RLS under{" "}
+								<code className="text-xs">schemas/supabase-schemas/</code> — PostgreSQL migrations aligned
+								with Drizzle tables and tenant isolation.
+							</CardDescription>
+						</CardHeader>
+						<CardContent>
+							{supabaseSchemas.length ? (
+								<div className="space-y-2">
+									{supabaseSchemas.map(({ name, content }) => (
+										<CollapsibleFilePanel key={name} name={name} content={content} />
+									))}
+								</div>
+							) : (
+								<p className="text-sm text-muted-foreground">
+									No Supabase schema files were loaded.
 								</p>
 							)}
 						</CardContent>

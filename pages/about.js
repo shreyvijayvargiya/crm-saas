@@ -17,20 +17,24 @@ export async function getStaticProps() {
 	const sqlSchema = readUtf8("schemas/sql-schemas/drizzle/schema.ts");
 	const dataJson = readUtf8("data.json");
 
-	let firestoreSchemas = [];
-	try {
-		const fsDir = path.join(root, "schemas/firestore-schemas");
-		const entries = fs.readdirSync(fsDir, { withFileTypes: true });
-		firestoreSchemas = entries
-			.filter((e) => e.isFile() && !e.name.startsWith("."))
-			.sort((a, b) => a.name.localeCompare(b.name))
-			.map((e) => ({
-				name: e.name,
-				content: fs.readFileSync(path.join(fsDir, e.name), "utf8"),
-			}));
-	} catch {
-		firestoreSchemas = [];
-	}
+	const loadSchemaDir = (relativeDir) => {
+		try {
+			const dir = path.join(root, relativeDir);
+			const entries = fs.readdirSync(dir, { withFileTypes: true });
+			return entries
+				.filter((e) => e.isFile() && !e.name.startsWith("."))
+				.sort((a, b) => a.name.localeCompare(b.name))
+				.map((e) => ({
+					name: e.name,
+					content: fs.readFileSync(path.join(dir, e.name), "utf8"),
+				}));
+		} catch {
+			return [];
+		}
+	};
+
+	const firestoreSchemas = loadSchemaDir("schemas/firestore-schemas");
+	const supabaseSchemas = loadSchemaDir("schemas/supabase-schemas");
 
 	let zodSchemas = [];
 	try {
@@ -49,6 +53,7 @@ export async function getStaticProps() {
 			designMd,
 			dataJson,
 			firestoreSchemas,
+			supabaseSchemas,
 			zodSchemas,
 			sqlSchema,
 		},

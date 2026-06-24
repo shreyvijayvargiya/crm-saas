@@ -1,0 +1,511 @@
+-- CRM app tables (all pages)
+-- Run after 01-auth.sql. Mirrors schemas/sql-schemas/drizzle/schema.ts with tenant_id on every table.
+
+-- ---------------------------------------------------------------------------
+-- Enums
+-- ---------------------------------------------------------------------------
+
+do $$ begin
+  create type public.deal_stage as enum ('prospect', 'qualified', 'proposal', 'won', 'lost');
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  create type public.invoice_status as enum ('Paid', 'Pending', 'Overdue');
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  create type public.payment_status as enum ('Completed', 'Pending', 'Failed');
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  create type public.task_progress as enum ('NotStarted', 'InProgress', 'Completed');
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  create type public.task_priority as enum ('Low', 'Medium', 'High');
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  create type public.team_member_status as enum ('Active', 'Invited', 'Inactive');
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  create type public.blog_post_status as enum ('Published', 'Draft');
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  create type public.api_key_status as enum ('Active', 'Revoked');
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  create type public.webhook_status as enum ('Active', 'Inactive');
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  create type public.activity_type as enum ('note', 'email', 'deal', 'call');
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  create type public.notification_category as enum ('Ticket', 'Team', 'Message');
+exception when duplicate_object then null;
+end $$;
+
+-- ---------------------------------------------------------------------------
+-- CRM core
+-- ---------------------------------------------------------------------------
+
+create table if not exists public.companies (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  name text not null,
+  industry text,
+  rating numeric(3, 1),
+  location text,
+  logo_url text,
+  owner_id uuid references public.profiles (id) on delete set null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists companies_tenant_id_idx on public.companies (tenant_id);
+create index if not exists companies_owner_id_idx on public.companies (owner_id);
+
+create table if not exists public.pipelines (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  name text not null default 'Default',
+  created_at timestamptz not null default now()
+);
+
+create index if not exists pipelines_tenant_id_idx on public.pipelines (tenant_id);
+
+create table if not exists public.pipeline_stages (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  pipeline_id varchar(32) not null references public.pipelines (id) on delete cascade,
+  slug text not null,
+  label text not null,
+  sort_order integer not null default 0,
+  unique (pipeline_id, slug)
+);
+
+create index if not exists pipeline_stages_tenant_id_idx on public.pipeline_stages (tenant_id);
+create index if not exists pipeline_stages_pipeline_id_idx on public.pipeline_stages (pipeline_id);
+
+create table if not exists public.contacts (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  company_id varchar(32) references public.companies (id) on delete set null,
+  owner_id uuid references public.profiles (id) on delete set null,
+  name text not null,
+  email text not null,
+  phone text,
+  title text,
+  lifecycle text,
+  image_url text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists contacts_tenant_id_idx on public.contacts (tenant_id);
+create index if not exists contacts_company_id_idx on public.contacts (company_id);
+create index if not exists contacts_email_idx on public.contacts (email);
+
+create table if not exists public.leads (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  company_id varchar(32) references public.companies (id) on delete set null,
+  owner_id uuid references public.profiles (id) on delete set null,
+  pipeline_stage_id varchar(32) references public.pipeline_stages (id) on delete set null,
+  name text not null,
+  email text not null,
+  phone text,
+  title text,
+  source text,
+  status text,
+  estimated_value numeric(14, 2),
+  image_url text,
+  last_contacted_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists leads_tenant_id_idx on public.leads (tenant_id);
+create index if not exists leads_company_id_idx on public.leads (company_id);
+create index if not exists leads_pipeline_stage_id_idx on public.leads (pipeline_stage_id);
+create index if not exists leads_email_idx on public.leads (email);
+
+create table if not exists public.deals (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  company_id varchar(32) references public.companies (id) on delete set null,
+  lead_id varchar(32) references public.leads (id) on delete set null,
+  rep_id uuid references public.profiles (id) on delete set null,
+  name text not null,
+  value numeric(14, 2) not null,
+  stage public.deal_stage not null,
+  close_date timestamptz,
+  priority text,
+  tag text,
+  last_activity text,
+  days_in_stage integer,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists deals_tenant_id_idx on public.deals (tenant_id);
+create index if not exists deals_company_id_idx on public.deals (company_id);
+create index if not exists deals_stage_idx on public.deals (stage);
+create index if not exists deals_lead_id_idx on public.deals (lead_id);
+
+-- ---------------------------------------------------------------------------
+-- Tasks
+-- ---------------------------------------------------------------------------
+
+create table if not exists public.tasks (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  section_slug text not null,
+  section_label text,
+  title text not null,
+  description text,
+  progress public.task_progress,
+  priority public.task_priority,
+  progress_percent integer not null default 0,
+  icon text,
+  attachments integer not null default 0,
+  comments_count integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists tasks_tenant_id_idx on public.tasks (tenant_id);
+
+create table if not exists public.task_assignees (
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  task_id varchar(32) not null references public.tasks (id) on delete cascade,
+  user_id uuid not null references public.profiles (id) on delete cascade,
+  primary key (task_id, user_id)
+);
+
+create index if not exists task_assignees_tenant_id_idx on public.task_assignees (tenant_id);
+
+-- ---------------------------------------------------------------------------
+-- Finance — invoices & payments
+-- ---------------------------------------------------------------------------
+
+create table if not exists public.invoices (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  invoice_number text not null,
+  client_label text not null,
+  client_email text,
+  client_id varchar(32),
+  amount numeric(14, 2) not null,
+  status public.invoice_status not null,
+  issue_date timestamptz not null,
+  due_date timestamptz not null,
+  description text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique (tenant_id, invoice_number)
+);
+
+create index if not exists invoices_tenant_id_idx on public.invoices (tenant_id);
+create index if not exists invoices_status_idx on public.invoices (status);
+
+create table if not exists public.invoice_line_items (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  invoice_id varchar(32) not null references public.invoices (id) on delete cascade,
+  name text not null,
+  quantity integer not null default 1,
+  price numeric(14, 2) not null
+);
+
+create index if not exists invoice_line_items_tenant_id_idx on public.invoice_line_items (tenant_id);
+create index if not exists invoice_line_items_invoice_id_idx on public.invoice_line_items (invoice_id);
+
+create table if not exists public.payments (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  transaction_id text not null,
+  invoice_id varchar(32) references public.invoices (id) on delete set null,
+  amount numeric(14, 2) not null,
+  currency text not null default 'USD',
+  status public.payment_status not null,
+  payment_method text not null,
+  customer_label text not null,
+  customer_email text not null,
+  description text,
+  fee numeric(14, 2),
+  net_amount numeric(14, 2),
+  occurred_at timestamptz not null,
+  occurred_time text,
+  created_at timestamptz not null default now(),
+  unique (tenant_id, transaction_id)
+);
+
+create index if not exists payments_tenant_id_idx on public.payments (tenant_id);
+create index if not exists payments_invoice_id_idx on public.payments (invoice_id);
+create index if not exists payments_status_idx on public.payments (status);
+
+-- ---------------------------------------------------------------------------
+-- Ops / misc pages
+-- ---------------------------------------------------------------------------
+
+create table if not exists public.projects (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  project_name text not null,
+  client_name text not null,
+  client_avatar_color text,
+  start_date timestamptz,
+  deadline timestamptz,
+  status text,
+  progress integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists projects_tenant_id_idx on public.projects (tenant_id);
+
+create table if not exists public.calendar_events (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  title text not null,
+  time_label text,
+  color text,
+  starts_at timestamptz,
+  day_of_month integer,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists calendar_events_tenant_id_idx on public.calendar_events (tenant_id);
+
+create table if not exists public.email_threads (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  subject text not null,
+  preview text,
+  from_name text not null,
+  from_email text not null,
+  last_time text,
+  unread boolean not null default true,
+  starred boolean not null default false,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists email_threads_tenant_id_idx on public.email_threads (tenant_id);
+
+create table if not exists public.email_messages (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  thread_id varchar(32) not null references public.email_threads (id) on delete cascade,
+  from_name text not null,
+  from_email text not null,
+  to_address text,
+  sent_at_label text,
+  body text not null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists email_messages_tenant_id_idx on public.email_messages (tenant_id);
+create index if not exists email_messages_thread_id_idx on public.email_messages (thread_id);
+
+create table if not exists public.notifications (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  user_id uuid references public.profiles (id) on delete cascade,
+  type text not null,
+  title text not null,
+  body text not null,
+  category public.notification_category not null,
+  time_label text,
+  unread boolean not null default true,
+  avatar_url text,
+  has_actions boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists notifications_tenant_id_idx on public.notifications (tenant_id);
+create index if not exists notifications_user_id_idx on public.notifications (user_id);
+
+create table if not exists public.team_members (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  name text not null,
+  email text not null,
+  role text not null,
+  status public.team_member_status not null default 'Active',
+  joined_at timestamptz,
+  image_url text,
+  unique (tenant_id, email)
+);
+
+create index if not exists team_members_tenant_id_idx on public.team_members (tenant_id);
+
+-- ---------------------------------------------------------------------------
+-- Integrations, API keys, webhooks
+-- ---------------------------------------------------------------------------
+
+create table if not exists public.integrations (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  name text not null,
+  enabled boolean not null default false,
+  tag text,
+  last_updated timestamptz,
+  created_at timestamptz not null default now(),
+  unique (tenant_id, name)
+);
+
+create index if not exists integrations_tenant_id_idx on public.integrations (tenant_id);
+
+create table if not exists public.api_keys (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  name text not null,
+  key_hash text,
+  status public.api_key_status not null default 'Active',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists api_keys_tenant_id_idx on public.api_keys (tenant_id);
+create index if not exists api_keys_status_idx on public.api_keys (status);
+
+create table if not exists public.webhooks (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  name text not null,
+  url text not null,
+  events jsonb not null default '[]'::jsonb,
+  secret_hash text,
+  status public.webhook_status not null default 'Active',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists webhooks_tenant_id_idx on public.webhooks (tenant_id);
+
+-- ---------------------------------------------------------------------------
+-- CMS
+-- ---------------------------------------------------------------------------
+
+create table if not exists public.blog_posts (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  title text not null,
+  author_name text not null,
+  author_avatar text,
+  category text,
+  status public.blog_post_status not null default 'Draft',
+  publish_date timestamptz,
+  views integer not null default 0,
+  likes integer not null default 0,
+  content text not null,
+  tags text[] not null default '{}',
+  featured_image text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists blog_posts_tenant_id_idx on public.blog_posts (tenant_id);
+create index if not exists blog_posts_status_idx on public.blog_posts (status);
+
+create table if not exists public.blog_subscribers (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  email text not null,
+  name text,
+  subscribed_date timestamptz,
+  status text,
+  avatar_color text,
+  unique (tenant_id, email)
+);
+
+create index if not exists blog_subscribers_tenant_id_idx on public.blog_subscribers (tenant_id);
+
+-- ---------------------------------------------------------------------------
+-- Record detail (leads / contacts)
+-- ---------------------------------------------------------------------------
+
+create table if not exists public.activities (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  type public.activity_type not null,
+  title text not null,
+  body text not null,
+  occurred_at timestamptz,
+  actor_label text,
+  lead_id varchar(32) references public.leads (id) on delete cascade,
+  contact_id varchar(32) references public.contacts (id) on delete cascade,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists activities_tenant_id_idx on public.activities (tenant_id);
+create index if not exists activities_lead_id_idx on public.activities (lead_id);
+create index if not exists activities_contact_id_idx on public.activities (contact_id);
+
+create table if not exists public.lead_notes (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  lead_id varchar(32) not null references public.leads (id) on delete cascade,
+  body text not null,
+  authored_at timestamptz,
+  author text
+);
+
+create index if not exists lead_notes_tenant_id_idx on public.lead_notes (tenant_id);
+create index if not exists lead_notes_lead_id_idx on public.lead_notes (lead_id);
+
+create table if not exists public.contact_notes (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  contact_id varchar(32) not null references public.contacts (id) on delete cascade,
+  body text not null,
+  authored_at timestamptz,
+  author text
+);
+
+create index if not exists contact_notes_tenant_id_idx on public.contact_notes (tenant_id);
+create index if not exists contact_notes_contact_id_idx on public.contact_notes (contact_id);
+
+create table if not exists public.record_files (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  name text not null,
+  size_label text,
+  mime_family text,
+  lead_id varchar(32) references public.leads (id) on delete cascade,
+  contact_id varchar(32) references public.contacts (id) on delete cascade
+);
+
+create index if not exists record_files_tenant_id_idx on public.record_files (tenant_id);
+create index if not exists record_files_lead_id_idx on public.record_files (lead_id);
+create index if not exists record_files_contact_id_idx on public.record_files (contact_id);
+
+create table if not exists public.contact_embedded_emails (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  contact_id varchar(32) not null references public.contacts (id) on delete cascade,
+  subject text,
+  body text,
+  sent_at timestamptz
+);
+
+create index if not exists contact_embedded_emails_tenant_id_idx on public.contact_embedded_emails (tenant_id);
+create index if not exists contact_embedded_emails_contact_id_idx on public.contact_embedded_emails (contact_id);
