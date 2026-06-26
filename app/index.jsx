@@ -1,5 +1,7 @@
 export { default as LandingPage } from "./Home";
 export { default as Analytics } from "./Analytics";
+export { default as ECommerce } from "./ECommerce";
+export { default as ECommerceProductDetail } from "./ECommerce/ProductDetail";
 export { default as Teams } from "./Teams";
 export { default as Leads } from "./Leads";
 export { default as Contacts } from "./Contacts";

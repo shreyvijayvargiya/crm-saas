@@ -22,6 +22,10 @@ Maps SQL/Drizzle entities to suggested Firestore paths. Use **`tenants/{tenantId
 | `webhooks` | webhook id | |
 | `team_members` | membership id | |
 | `blog_posts` / `blog_subscribers` | id | CMS module |
+| `ecommerce_products` | product id | Catalog rows for `/e-commerce` |
+| `ecommerce_orders` | order id | Delivery tracking; `product_id` → product |
+| `ecommerce_metrics` | metric id | Dashboard KPI cards (optional denormalized doc) |
+| `ecommerce_earnings` | doc id | Weekly chart + earning/profit/expense breakdown |
 | `activities` | activity id | Polymorphic `activityType` |
 | `lead_notes` / `contact_notes` | note id | |
 | `record_files` | file id | |

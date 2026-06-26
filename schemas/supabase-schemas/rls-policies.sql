@@ -34,6 +34,8 @@ alter table public.lead_notes enable row level security;
 alter table public.contact_notes enable row level security;
 alter table public.record_files enable row level security;
 alter table public.contact_embedded_emails enable row level security;
+alter table public.ecommerce_products enable row level security;
+alter table public.ecommerce_orders enable row level security;
 
 -- ---------------------------------------------------------------------------
 -- Macro: tenant-scoped CRUD for tables with tenant_id
@@ -194,3 +196,14 @@ create policy "contact_embedded_emails_tenant_select" on public.contact_embedded
 create policy "contact_embedded_emails_tenant_insert" on public.contact_embedded_emails for insert with check (tenant_id in (select public.user_tenant_ids()));
 create policy "contact_embedded_emails_tenant_update" on public.contact_embedded_emails for update using (tenant_id in (select public.user_tenant_ids()));
 create policy "contact_embedded_emails_tenant_delete" on public.contact_embedded_emails for delete using (tenant_id in (select public.user_tenant_ids()));
+
+-- E-commerce
+create policy "ecommerce_products_tenant_select" on public.ecommerce_products for select using (tenant_id in (select public.user_tenant_ids()));
+create policy "ecommerce_products_tenant_insert" on public.ecommerce_products for insert with check (tenant_id in (select public.user_tenant_ids()));
+create policy "ecommerce_products_tenant_update" on public.ecommerce_products for update using (tenant_id in (select public.user_tenant_ids()));
+create policy "ecommerce_products_tenant_delete" on public.ecommerce_products for delete using (tenant_id in (select public.user_tenant_ids()));
+
+create policy "ecommerce_orders_tenant_select" on public.ecommerce_orders for select using (tenant_id in (select public.user_tenant_ids()));
+create policy "ecommerce_orders_tenant_insert" on public.ecommerce_orders for insert with check (tenant_id in (select public.user_tenant_ids()));
+create policy "ecommerce_orders_tenant_update" on public.ecommerce_orders for update using (tenant_id in (select public.user_tenant_ids()));
+create policy "ecommerce_orders_tenant_delete" on public.ecommerce_orders for delete using (tenant_id in (select public.user_tenant_ids()));

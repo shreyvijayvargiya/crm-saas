@@ -36,6 +36,7 @@ Supabase Auth (`auth.users`) handles sign-up, sign-in, OAuth, and sessions. `pro
 | API keys — `appApiKeys` | `api_keys` (store **hashes** only) |
 | Webhooks — `appWebhooks` | `webhooks` (store **secret hashes** only) |
 | CMS — `appCms` | `blog_posts`, `blog_subscribers` |
+| E-commerce — `appEcommerce` | `ecommerce_products`, `ecommerce_orders`, `ecommerce_metrics`, `ecommerce_earnings` |
 
 **`data.json`:** Top-level `app*` keys describe **API-shaped** payloads for each route; column names should align when you model rows (e.g. invoice `client` in JSON → `client_label` in SQL).
 

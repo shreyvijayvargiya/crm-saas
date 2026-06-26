@@ -509,3 +509,46 @@ create table if not exists public.contact_embedded_emails (
 
 create index if not exists contact_embedded_emails_tenant_id_idx on public.contact_embedded_emails (tenant_id);
 create index if not exists contact_embedded_emails_contact_id_idx on public.contact_embedded_emails (contact_id);
+
+-- E-commerce (`appEcommerce`)
+create type public.ecommerce_product_category as enum (
+  'Smartphone', 'Laptop', 'Headphone', 'Smartwatch'
+);
+create type public.ecommerce_product_status as enum ('Publish', 'Inactive');
+create type public.ecommerce_order_tab as enum ('New', 'Pending', 'Shipping');
+
+create table if not exists public.ecommerce_products (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  name text not null,
+  brand text not null,
+  image_url text,
+  category public.ecommerce_product_category not null,
+  in_stock boolean not null default true,
+  price numeric(12, 2) not null,
+  quantity integer not null default 0,
+  status public.ecommerce_product_status not null default 'Publish',
+  description text,
+  sku text,
+  visitors_label text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists ecommerce_products_tenant_id_idx on public.ecommerce_products (tenant_id);
+create index if not exists ecommerce_products_category_idx on public.ecommerce_products (category);
+
+create table if not exists public.ecommerce_orders (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  product_id varchar(32) not null references public.ecommerce_products (id) on delete cascade,
+  tab public.ecommerce_order_tab not null default 'New',
+  sender_name text not null,
+  sender_address text not null,
+  receiver_name text not null,
+  receiver_address text not null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists ecommerce_orders_tenant_id_idx on public.ecommerce_orders (tenant_id);
+create index if not exists ecommerce_orders_product_id_idx on public.ecommerce_orders (product_id);

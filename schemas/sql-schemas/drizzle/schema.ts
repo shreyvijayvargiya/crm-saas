@@ -517,3 +517,67 @@ export const contactEmbeddedEmails = pgTable(
 	},
 	(t) => [index("contact_embedded_emails_contact_id_idx").on(t.contactId)]
 );
+
+export const ecommerceProductCategoryEnum = pgEnum("ecommerce_product_category", [
+	"Smartphone",
+	"Laptop",
+	"Headphone",
+	"Smartwatch",
+]);
+
+export const ecommerceProductStatusEnum = pgEnum("ecommerce_product_status", [
+	"Publish",
+	"Inactive",
+]);
+
+export const ecommerceOrderTabEnum = pgEnum("ecommerce_order_tab", [
+	"New",
+	"Pending",
+	"Shipping",
+]);
+
+export const ecommerceProducts = pgTable(
+	"ecommerce_products",
+	{
+		id: varchar("id", { length: 32 }).primaryKey(),
+		tenantId: varchar("tenant_id", { length: 32 }).notNull(),
+		name: text("name").notNull(),
+		brand: text("brand").notNull(),
+		imageUrl: text("image_url"),
+		category: ecommerceProductCategoryEnum("category").notNull(),
+		inStock: boolean("in_stock").default(true).notNull(),
+		price: decimal("price", { precision: 12, scale: 2 }).notNull(),
+		quantity: integer("quantity").default(0).notNull(),
+		status: ecommerceProductStatusEnum("status").default("Publish").notNull(),
+		description: text("description"),
+		sku: text("sku"),
+		visitorsLabel: text("visitors_label"),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
+	},
+	(t) => [
+		index("ecommerce_products_tenant_id_idx").on(t.tenantId),
+		index("ecommerce_products_category_idx").on(t.category),
+	]
+);
+
+export const ecommerceOrders = pgTable(
+	"ecommerce_orders",
+	{
+		id: varchar("id", { length: 32 }).primaryKey(),
+		tenantId: varchar("tenant_id", { length: 32 }).notNull(),
+		productId: varchar("product_id", { length: 32 })
+			.notNull()
+			.references(() => ecommerceProducts.id, { onDelete: "cascade" }),
+		tab: ecommerceOrderTabEnum("tab").default("New").notNull(),
+		senderName: text("sender_name").notNull(),
+		senderAddress: text("sender_address").notNull(),
+		receiverName: text("receiver_name").notNull(),
+		receiverAddress: text("receiver_address").notNull(),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+	},
+	(t) => [
+		index("ecommerce_orders_tenant_id_idx").on(t.tenantId),
+		index("ecommerce_orders_product_id_idx").on(t.productId),
+	]
+);

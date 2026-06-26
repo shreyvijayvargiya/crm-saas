@@ -55,6 +55,13 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 			section: "main",
 		},
 		{
+			id: 24,
+			label: "E-commerce",
+			route: "/e-commerce",
+			icon: "ShoppingCart",
+			section: "main",
+		},
+		{
 			id: 2,
 			label: "Leads",
 			route: "/leads",
