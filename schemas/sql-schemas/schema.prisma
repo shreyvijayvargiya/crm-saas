@@ -551,3 +551,57 @@ model EmbeddedEmailStub {
   @@index([contactId])
   @@map("contact_embedded_emails")
 }
+
+enum EcommerceProductCategory {
+  Smartphone
+  Laptop
+  Headphone
+  Smartwatch
+}
+
+enum EcommerceProductStatus {
+  Publish
+  Inactive
+}
+
+enum EcommerceOrderTab {
+  New
+  Pending
+  Shipping
+}
+
+model EcommerceProduct {
+  id            String                   @id @default(cuid())
+  name          String
+  brand         String
+  imageUrl      String?                  @map("image_url")
+  category      EcommerceProductCategory
+  inStock       Boolean                  @default(true) @map("in_stock")
+  price         Decimal                  @db.Decimal(12, 2)
+  quantity      Int                      @default(0)
+  status        EcommerceProductStatus   @default(Publish)
+  description   String?                  @db.Text
+  sku           String?
+  visitorsLabel String?                  @map("visitors_label")
+  createdAt     DateTime                 @default(now()) @map("created_at")
+  updatedAt     DateTime                 @updatedAt @map("updated_at")
+  orders        EcommerceOrder[]
+
+  @@index([category])
+  @@map("ecommerce_products")
+}
+
+model EcommerceOrder {
+  id              String            @id @default(cuid())
+  productId       String            @map("product_id")
+  product         EcommerceProduct  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  tab             EcommerceOrderTab @default(New)
+  senderName      String            @map("sender_name")
+  senderAddress   String            @map("sender_address")
+  receiverName    String            @map("receiver_name")
+  receiverAddress String            @map("receiver_address")
+  createdAt       DateTime          @default(now()) @map("created_at")
+
+  @@index([productId])
+  @@map("ecommerce_orders")
+}

@@ -362,7 +362,7 @@ const LayoutWrapper = ({ children }) => {
 											<code className="rounded bg-black/10 px-1 text-[11px] dark:bg-white/10">
 												data.json
 											</code>{" "}
-											and SQL/Firestore schema folders document payloads and persistence models.
+											and SQL/Firestore/Supabase schema folders document payloads and persistence models.
 										</li>
 									</ul>
 								</section>

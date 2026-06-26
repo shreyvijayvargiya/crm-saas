@@ -94,6 +94,12 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					route: "/companies",
 					icon: "Users",
 				},
+				{
+					id: 24,
+					label: "E-commerce",
+					route: "/e-commerce",
+					icon: "ShoppingCart",
+				},
 			],
 		},
 		{
@@ -278,15 +284,15 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align="start" className="w-56">
 									<DropdownMenuLabel>Projects</DropdownMenuLabel>
-									<DropdownMenuItem>
+									<DropdownMenuItem onClick={() => router.push("/")}>
 										<lucideIcons.Rocket className="w-4 h-4" />
 										CRM pages
 									</DropdownMenuItem>
-									<DropdownMenuItem>
+									<DropdownMenuItem onClick={() => router.push("/e-commerce")}>
 										<lucideIcons.ShoppingCart className="w-4 h-4" />
 										E-commerce
 									</DropdownMenuItem>
-									<DropdownMenuItem>
+									<DropdownMenuItem onClick={() => router.push("/cms")}>
 										<lucideIcons.Book className="w-4 h-4" />
 										Blog
 									</DropdownMenuItem>

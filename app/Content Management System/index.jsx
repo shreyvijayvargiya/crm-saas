@@ -15,7 +15,11 @@ import {
 import { toast } from "sonner";
 import { useCms } from "./CmsContext";
 import { CmsField } from "./CmsField";
-import { BLOG_CATEGORIES, BLOG_STATUSES } from "./cmsSeedData";
+import {
+	BLOG_CATEGORIES,
+	BLOG_STATUSES,
+	NEWSLETTER_STATUSES,
+} from "./cmsSeedData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -64,11 +68,12 @@ function newsletterStatusVariant(status) {
 
 const ContentManagementSystem = () => {
 	const router = useRouter();
-	const { blogs, newsletters, subscribers, addBlog } = useCms();
+	const { blogs, newsletters, subscribers, addBlog, addNewsletter } = useCms();
 
 	const [searchTerm, setSearchTerm] = useState("");
 	const [newsletterSearch, setNewsletterSearch] = useState("");
 	const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+	const [isAddNewsletterModalOpen, setIsAddNewsletterModalOpen] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 5;
 	const [newBlog, setNewBlog] = useState({
@@ -81,6 +86,14 @@ const ContentManagementSystem = () => {
 		publishDate: "",
 		status: "Draft",
 		excerpt: "",
+	});
+	const [newNewsletter, setNewNewsletter] = useState({
+		title: "",
+		subject: "",
+		content: "",
+		excerpt: "",
+		sendDate: "",
+		status: "Draft",
 	});
 
 	const stats = useMemo(() => {
@@ -177,6 +190,50 @@ const ContentManagementSystem = () => {
 			publishDate: "",
 			status: "Draft",
 			excerpt: "",
+		});
+	};
+
+	const handleNewsletterInputChange = (e) => {
+		const { name, value } = e.target;
+		setNewNewsletter((prev) => ({ ...prev, [name]: value }));
+	};
+
+	const handleAddNewsletter = () => {
+		if (
+			!newNewsletter.title.trim() ||
+			!newNewsletter.subject.trim() ||
+			!newNewsletter.content.trim()
+		) {
+			toast.error("Title, subject, and content are required.");
+			return;
+		}
+
+		const newsletterToAdd = {
+			id: Date.now(),
+			title: newNewsletter.title.trim(),
+			subject: newNewsletter.subject.trim(),
+			status: newNewsletter.status,
+			sendDate: newNewsletter.sendDate,
+			recipientCount: 0,
+			content: newNewsletter.content.trim(),
+			excerpt: newNewsletter.excerpt.trim(),
+		};
+
+		addNewsletter(newsletterToAdd);
+		toast.success(`Newsletter "${newsletterToAdd.title}" added.`);
+		handleCloseNewsletterModal();
+		router.push(`/cms/newsletter/${newsletterToAdd.id}`);
+	};
+
+	const handleCloseNewsletterModal = () => {
+		setIsAddNewsletterModalOpen(false);
+		setNewNewsletter({
+			title: "",
+			subject: "",
+			content: "",
+			excerpt: "",
+			sendDate: "",
+			status: "Draft",
 		});
 	};
 
@@ -350,13 +407,19 @@ const ContentManagementSystem = () => {
 
 			{/* Newsletters */}
 			<Card>
-				<CardHeader className="space-y-4 pb-4">
+				<CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3 space-y-0 pb-4">
 					<div>
 						<CardTitle className="text-lg text-foreground">Newsletters</CardTitle>
 						<p className="text-sm text-muted-foreground">
-							Email campaigns — open to view and edit content
+							Email campaigns — click a row to view and edit
 						</p>
 					</div>
+					<Button onClick={() => setIsAddNewsletterModalOpen(true)}>
+						<Plus className="h-4 w-4" />
+						Add Newsletter
+					</Button>
+				</CardHeader>
+				<CardContent className="space-y-4">
 					<div className="relative max-w-sm">
 						<Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 						<Input
@@ -366,8 +429,6 @@ const ContentManagementSystem = () => {
 							className="pl-10"
 						/>
 					</div>
-				</CardHeader>
-				<CardContent>
 					<Table>
 						<TableHeader>
 							<TableRow>
@@ -420,7 +481,7 @@ const ContentManagementSystem = () => {
 				<CardHeader>
 					<CardTitle className="text-lg text-foreground">Newsletter Subscribers</CardTitle>
 					<p className="text-sm text-muted-foreground">
-						Users subscribed to your newsletter
+						Read-only list — view subscribers; no add, unsubscribe, or detail page
 					</p>
 				</CardHeader>
 				<CardContent>
@@ -561,6 +622,79 @@ const ContentManagementSystem = () => {
 								})
 							}
 							options={BLOG_STATUSES}
+						/>
+					</CmsField>
+				</div>
+			</FormModal>
+
+			<FormModal
+				open={isAddNewsletterModalOpen}
+				onClose={handleCloseNewsletterModal}
+				title="Add New Newsletter"
+				subtitle="Create a new email campaign"
+				onSubmit={handleAddNewsletter}
+				saveLabel="Add Newsletter"
+				maxWidth="max-w-4xl"
+			>
+				<CmsField label="Internal Title" htmlFor="nl-title" required>
+					<Input
+						id="nl-title"
+						name="title"
+						value={newNewsletter.title}
+						onChange={handleNewsletterInputChange}
+						placeholder="June Product Updates"
+					/>
+				</CmsField>
+				<CmsField label="Email Subject" htmlFor="nl-subject" required>
+					<Input
+						id="nl-subject"
+						name="subject"
+						value={newNewsletter.subject}
+						onChange={handleNewsletterInputChange}
+						placeholder="What's new this month"
+					/>
+				</CmsField>
+				<CmsField label="Content" htmlFor="nl-content" required>
+					<Textarea
+						id="nl-content"
+						name="content"
+						value={newNewsletter.content}
+						onChange={handleNewsletterInputChange}
+						placeholder="Write your newsletter content here..."
+						rows={10}
+						className="min-h-56 font-mono"
+					/>
+				</CmsField>
+				<CmsField label="Excerpt" htmlFor="nl-excerpt">
+					<Textarea
+						id="nl-excerpt"
+						name="excerpt"
+						value={newNewsletter.excerpt}
+						onChange={handleNewsletterInputChange}
+						placeholder="Short summary for internal reference..."
+						rows={3}
+					/>
+				</CmsField>
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+					<CmsField label="Send Date" htmlFor="nl-send-date">
+						<Input
+							id="nl-send-date"
+							type="date"
+							name="sendDate"
+							value={newNewsletter.sendDate}
+							onChange={handleNewsletterInputChange}
+						/>
+					</CmsField>
+					<CmsField label="Status" htmlFor="nl-status" required>
+						<FormSelect
+							id="nl-status"
+							value={newNewsletter.status}
+							onChange={(e) =>
+								handleNewsletterInputChange({
+									target: { name: "status", value: e.target.value },
+								})
+							}
+							options={NEWSLETTER_STATUSES}
 						/>
 					</CmsField>
 				</div>

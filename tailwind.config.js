@@ -20,6 +20,16 @@ module.exports = {
 				md: "calc(var(--radius) - 2px)",
 				sm: "calc(var(--radius) - 4px)",
 			},
+			height: {
+				ui: "calc(2.5rem * var(--ui-scale, 1))",
+				"ui-sm": "calc(2.25rem * var(--ui-scale, 1))",
+				"ui-xs": "calc(2rem * var(--ui-scale, 1))",
+				"ui-lg": "calc(2.75rem * var(--ui-scale, 1))",
+				"ui-icon": "calc(2.25rem * var(--ui-scale, 1))",
+			},
+			minHeight: {
+				ui: "calc(2.5rem * var(--ui-scale, 1))",
+			},
 			colors: {
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",

@@ -1,7 +1,6 @@
 # CRM SaaS Template
 
 ## Overview
-
 A **dual-surface** product: a **marketing landing** with violet–indigo gradients, grid texture, and editorial hero copy; and a **dense CRM application shell** built on zinc neutrals with user-selectable accent schemes (blue default). The app mood is **modern SaaS operational**—clear hierarchy, bordered cards, rounded panels, subtle motion (Framer Motion), and **Lucide** icons throughout. Information density is high in modules (leads, pipeline, email, finance); the landing balances that with more whitespace and marquee CTAs.
 
 **Implementation anchors for designers / vibe coders / agents**

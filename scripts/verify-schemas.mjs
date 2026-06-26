@@ -1,30 +1,31 @@
 import fs from "fs";
 
-import { AppLeadsDataSchema } from "../schemas/leads.js";
-import { CrmRecordDetailDataSchema } from "../schemas/crm-record-detail.js";
-import { AppCompaniesDataSchema } from "../schemas/companies.js";
-import { AppContactsDataSchema } from "../schemas/contacts.js";
-import { AppInvoicesDataSchema, AppPaymentsDataSchema } from "../schemas/finance.js";
-import { AppDealsDataSchema, AppPipelinesDataSchema } from "../schemas/deals-pipelines.js";
-import { AppAnalyticsDataSchema } from "../schemas/analytics.js";
+import { AppLeadsDataSchema } from "../schemas/zod-schemas/leads.js";
+import { CrmRecordDetailDataSchema } from "../schemas/zod-schemas/crm-record-detail.js";
+import { AppCompaniesDataSchema } from "../schemas/zod-schemas/companies.js";
+import { AppContactsDataSchema } from "../schemas/zod-schemas/contacts.js";
+import { AppInvoicesDataSchema, AppPaymentsDataSchema } from "../schemas/zod-schemas/finance.js";
+import { AppDealsDataSchema, AppPipelinesDataSchema } from "../schemas/zod-schemas/deals-pipelines.js";
+import { AppAnalyticsDataSchema } from "../schemas/zod-schemas/analytics.js";
 import {
 	AppNotificationsDataSchema,
 	AppTeamsDataSchema,
-} from "../schemas/notifications-teams.js";
-import { AppTasksDataSchema } from "../schemas/tasks.js";
-import { AppHomeDataSchema, AppSalesDataSchema } from "../schemas/home-sales.js";
+} from "../schemas/zod-schemas/notifications-teams.js";
+import { AppTasksDataSchema } from "../schemas/zod-schemas/tasks.js";
+import { AppHomeDataSchema, AppSalesDataSchema } from "../schemas/zod-schemas/home-sales.js";
 import {
 	AppCalendarDataSchema,
 	AppEmailDataSchema,
-} from "../schemas/calendar-email.js";
-import { AppProjectsDataSchema } from "../schemas/projects.js";
-import { AppSettingsDataSchema } from "../schemas/settings.js";
+} from "../schemas/zod-schemas/calendar-email.js";
+import { AppProjectsDataSchema } from "../schemas/zod-schemas/projects.js";
+import { AppSettingsDataSchema } from "../schemas/zod-schemas/settings.js";
 import {
 	AppIntegrationsDataSchema,
 	AppApiKeysDataSchema,
 	AppWebhooksDataSchema,
-} from "../schemas/integrations-api.js";
-import { AppCmsDataSchema } from "../schemas/cms.js";
+} from "../schemas/zod-schemas/integrations-api.js";
+import { AppCmsDataSchema } from "../schemas/zod-schemas/cms.js";
+import { AppEcommerceDataSchema } from "../schemas/zod-schemas/ecommerce.js";
 
 const dataPath = new URL("../data.json", import.meta.url);
 const data = JSON.parse(fs.readFileSync(dataPath, "utf8"));
@@ -53,6 +54,7 @@ const SCHEMA_BY_SECTION = {
 	appApiKeys: AppApiKeysDataSchema,
 	appWebhooks: AppWebhooksDataSchema,
 	appCms: AppCmsDataSchema,
+	appEcommerce: AppEcommerceDataSchema,
 };
 
 const appKeys = Object.keys(data).filter((k) => k.startsWith("app"));

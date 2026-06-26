@@ -1,7 +1,7 @@
 {
   "meta": {
     "purpose": "Static snapshot of mock / hardcoded data shapes used in this CRM app. For developer reference and schema discovery only — the running app does not import this file.",
-    "summary": "22 top-level `app*` sections cover all main pages in `pages/` (see `pageRouteMap`). Detail routes `/leads/[id]` and `/contacts/[id]` share `appCrmRecordDetail`. Sections `appLeads`, `appCompanies`, and `appInvoices` include `dashboardStats` and `chartSeries` snapshots matching the stats grids and Recharts data derived in those pages.",
+    "summary": "23 top-level `app*` sections cover all main pages in `pages/` (see `pageRouteMap`). Detail routes `/leads/[id]` and `/contacts/[id]` share `appCrmRecordDetail`. Sections `appLeads`, `appCompanies`, and `appInvoices` include `dashboardStats` and `chartSeries` snapshots matching the stats grids and Recharts data derived in those pages.",
     "notes": [
       "Paths like ./people/ and ./companies/ match public/ asset URLs in Next.js.",
       "Some UI-only keys (e.g. React icon components) are omitted; use string ids where applicable.",
@@ -32,7 +32,9 @@
       "/settings": "appSettings",
       "/tasks": "appTasks",
       "/teams": "appTeams",
-      "/webhooks": "appWebhooks"
+      "/webhooks": "appWebhooks",
+      "/e-commerce": "appEcommerce",
+      "/e-commerce/products/[id]": "appEcommerce (product rows)"
     }
   },
   "appLeads": {
@@ -216,13 +218,28 @@
     "chartSeries": {
       "description": "Bar chart inputs: leadsByPipelineStage from pipeline column names and lead counts; leadsByAccountTop from aggregating leadDisplayCompany on initialLeadsTable (top 10, table rows lack company so most map to email domain segment).",
       "leadsByPipelineStage": [
-        { "name": "Backlog", "count": 3 },
-        { "name": "In Progress", "count": 3 },
-        { "name": "Done", "count": 2 }
+        {
+          "name": "Backlog",
+          "count": 3
+        },
+        {
+          "name": "In Progress",
+          "count": 3
+        },
+        {
+          "name": "Done",
+          "count": 2
+        }
       ],
       "leadsByAccountTop": [
-        { "name": "Company", "count": 12 },
-        { "name": "Startup", "count": 1 }
+        {
+          "name": "Company",
+          "count": 12
+        },
+        {
+          "name": "Startup",
+          "count": 1
+        }
       ]
     }
   },
@@ -633,27 +650,84 @@
     "chartSeries": {
       "description": "Bar chart inputs for Companies page: companiesByIndustry sorted by count desc; companiesByLocationTop top 10 cities by count.",
       "companiesByIndustry": [
-        { "name": "Entertainment", "count": 2 },
-        { "name": "Automation", "count": 1 },
-        { "name": "Communication", "count": 1 },
-        { "name": "Customer Service", "count": 1 },
-        { "name": "Finance", "count": 1 },
-        { "name": "Hospitality", "count": 1 },
-        { "name": "Music", "count": 1 },
-        { "name": "Social Media", "count": 1 },
-        { "name": "Software", "count": 1 },
-        { "name": "Technology", "count": 1 }
+        {
+          "name": "Entertainment",
+          "count": 2
+        },
+        {
+          "name": "Automation",
+          "count": 1
+        },
+        {
+          "name": "Communication",
+          "count": 1
+        },
+        {
+          "name": "Customer Service",
+          "count": 1
+        },
+        {
+          "name": "Finance",
+          "count": 1
+        },
+        {
+          "name": "Hospitality",
+          "count": 1
+        },
+        {
+          "name": "Music",
+          "count": 1
+        },
+        {
+          "name": "Social Media",
+          "count": 1
+        },
+        {
+          "name": "Software",
+          "count": 1
+        },
+        {
+          "name": "Technology",
+          "count": 1
+        }
       ],
       "companiesByLocationTop": [
-        { "name": "Los Angeles", "count": 2 },
-        { "name": "San Francisco", "count": 2 },
-        { "name": "Austin", "count": 1 },
-        { "name": "Chicago", "count": 1 },
-        { "name": "Los Gatos", "count": 1 },
-        { "name": "New York", "count": 1 },
-        { "name": "San Jose", "count": 1 },
-        { "name": "Stockholm", "count": 1 },
-        { "name": "Sunnyvale", "count": 1 }
+        {
+          "name": "Los Angeles",
+          "count": 2
+        },
+        {
+          "name": "San Francisco",
+          "count": 2
+        },
+        {
+          "name": "Austin",
+          "count": 1
+        },
+        {
+          "name": "Chicago",
+          "count": 1
+        },
+        {
+          "name": "Los Gatos",
+          "count": 1
+        },
+        {
+          "name": "New York",
+          "count": 1
+        },
+        {
+          "name": "San Jose",
+          "count": 1
+        },
+        {
+          "name": "Stockholm",
+          "count": 1
+        },
+        {
+          "name": "Sunnyvale",
+          "count": 1
+        }
       ]
     }
   },
@@ -1212,14 +1286,32 @@
     "chartSeries": {
       "description": "Bar chart inputs: invoiceCountByStatus and amountUsdByStatus from initialInvoices grouped by Paid | Pending | Overdue.",
       "invoiceCountByStatus": [
-        { "name": "Paid", "count": 5 },
-        { "name": "Pending", "count": 5 },
-        { "name": "Overdue", "count": 2 }
+        {
+          "name": "Paid",
+          "count": 5
+        },
+        {
+          "name": "Pending",
+          "count": 5
+        },
+        {
+          "name": "Overdue",
+          "count": 2
+        }
       ],
       "amountUsdByStatus": [
-        { "name": "Paid", "amount": 48400 },
-        { "name": "Pending", "amount": 43100 },
-        { "name": "Overdue", "amount": 18000 }
+        {
+          "name": "Paid",
+          "amount": 48400
+        },
+        {
+          "name": "Pending",
+          "amount": 43100
+        },
+        {
+          "name": "Overdue",
+          "amount": 18000
+        }
       ]
     }
   },
@@ -3267,5 +3359,626 @@
       "status": "Draft",
       "excerpt": ""
     }
+  },
+  "appEcommerce": {
+    "source": "app/ECommerce/index.jsx",
+    "metrics": [
+      {
+        "id": "total-sales",
+        "label": "Total Sales",
+        "value": "$13.4k",
+        "change": 38,
+        "positive": true,
+        "period": "Last 6 months",
+        "icon": "Ticket"
+      },
+      {
+        "id": "total-orders",
+        "label": "Total Orders",
+        "value": "155K",
+        "change": 22,
+        "positive": true,
+        "period": "Last 4 months",
+        "icon": "ShoppingCart"
+      },
+      {
+        "id": "total-profit",
+        "label": "Total Profit",
+        "value": "$89.34k",
+        "change": 16,
+        "positive": false,
+        "period": "Last One year",
+        "icon": "DollarSign"
+      },
+      {
+        "id": "bookmarks",
+        "label": "Bookmarks",
+        "value": "$1,200",
+        "change": 38,
+        "positive": true,
+        "period": "Last 6 months",
+        "icon": "Bookmark"
+      }
+    ],
+    "weeklyEarnings": [
+      {
+        "day": "Mo",
+        "value": 3200
+      },
+      {
+        "day": "Tu",
+        "value": 4100
+      },
+      {
+        "day": "We",
+        "value": 3800
+      },
+      {
+        "day": "Th",
+        "value": 4600,
+        "highlight": true
+      },
+      {
+        "day": "Fr",
+        "value": 3900
+      },
+      {
+        "day": "Sa",
+        "value": 2800
+      },
+      {
+        "day": "Su",
+        "value": 2400
+      }
+    ],
+    "earningBreakdown": [
+      {
+        "label": "Earning",
+        "value": "$1,236",
+        "pct": 0.55,
+        "icon": "Wallet"
+      },
+      {
+        "label": "Profit",
+        "value": "$2,300",
+        "pct": 0.82,
+        "icon": "DollarSign"
+      },
+      {
+        "label": "Expense",
+        "value": "$1,500",
+        "pct": 0.48,
+        "icon": "CreditCard"
+      }
+    ],
+    "orderStatusProfile": {
+      "handle": "@jackwilliams",
+      "role": "Business",
+      "avatar": "./people/person-1.png",
+      "totalOrders": 4689
+    },
+    "orderStatusTabs": {
+      "Packed": [
+        {
+          "label": "Packing Pending",
+          "value": 4250,
+          "pct": 0.91
+        },
+        {
+          "label": "Packing in Progress",
+          "value": 2150,
+          "pct": 0.46
+        },
+        {
+          "label": "Packing Complete",
+          "value": 1750,
+          "pct": 0.37
+        }
+      ],
+      "Shipped": [
+        {
+          "label": "In Transit",
+          "value": 3120,
+          "pct": 0.67
+        },
+        {
+          "label": "Out for Delivery",
+          "value": 980,
+          "pct": 0.21
+        },
+        {
+          "label": "Delivered",
+          "value": 589,
+          "pct": 0.13
+        }
+      ],
+      "Received": [
+        {
+          "label": "Awaiting Review",
+          "value": 420,
+          "pct": 0.09
+        },
+        {
+          "label": "Reviewed",
+          "value": 890,
+          "pct": 0.19
+        },
+        {
+          "label": "Archived",
+          "value": 210,
+          "pct": 0.04
+        }
+      ]
+    },
+    "deliveryOrders": {
+      "New": [
+        {
+          "id": "ord_001",
+          "productId": "ec_prd_001",
+          "sender": {
+            "name": "Myrtie Ullrich",
+            "address": "101 Boulder, California(CA), 95959"
+          },
+          "receiver": {
+            "name": "Barry Schowalter",
+            "address": "939 orange, California(CA), 92118"
+          }
+        },
+        {
+          "id": "ord_002",
+          "productId": "ec_prd_002",
+          "sender": {
+            "name": "Lena Ortiz",
+            "address": "44 Maple Ave, Texas(TX), 73301"
+          },
+          "receiver": {
+            "name": "Chris Nolan",
+            "address": "12 River Rd, Oregon(OR), 97201"
+          }
+        }
+      ],
+      "Pending": [
+        {
+          "id": "ord_003",
+          "productId": "ec_prd_003",
+          "sender": {
+            "name": "Sam Rivera",
+            "address": "88 Pine St, New York(NY), 10001"
+          },
+          "receiver": {
+            "name": "Dana Brooks",
+            "address": "5 Lakeview, Florida(FL), 33101"
+          }
+        }
+      ],
+      "Shipping": [
+        {
+          "id": "ord_004",
+          "productId": "ec_prd_004",
+          "sender": {
+            "name": "Alex Kim",
+            "address": "200 Market St, Washington(WA), 98101"
+          },
+          "receiver": {
+            "name": "Jordan Lee",
+            "address": "77 Cedar Ln, Colorado(CO), 80202"
+          }
+        }
+      ]
+    },
+    "popularProducts": [
+      {
+        "id": "ec_prd_005",
+        "name": "Nike Vision Low Shoes",
+        "price": 5600,
+        "visitors": "10.8K",
+        "image": "./people/person-2.png"
+      },
+      {
+        "id": "ec_prd_006",
+        "name": "Adidas Ultraboost 21",
+        "price": 4500,
+        "visitors": "4.5K",
+        "image": "./people/person-3.png"
+      },
+      {
+        "id": "ec_prd_007",
+        "name": "Puma RS-X Toys",
+        "price": 3200,
+        "visitors": "2K",
+        "image": "./people/person-4.png"
+      },
+      {
+        "id": "ec_prd_008",
+        "name": "New Balance 550",
+        "price": 2800,
+        "visitors": "1.8K",
+        "image": "./people/person-1.png"
+      },
+      {
+        "id": "ec_prd_009",
+        "name": "Reebok Classic Leather",
+        "price": 2200,
+        "visitors": "1.2K",
+        "image": "./people/person-2.png"
+      }
+    ],
+    "products": [
+      {
+        "id": "ec_prd_001",
+        "name": "Samsung galaxy s35",
+        "brand": "Samsung",
+        "imageURL": "./people/person-1.png",
+        "category": "Smartphone",
+        "inStock": false,
+        "price": 199,
+        "quantity": 12,
+        "status": "Inactive",
+        "description": "Samsung galaxy s35 by Samsung — premium smartphone for modern retail.",
+        "sku": "SAM-1000",
+        "visitors": "1.2K",
+        "createdAt": "2026-01-01"
+      },
+      {
+        "id": "ec_prd_002",
+        "name": "MacBook Pro 16",
+        "brand": "Apple",
+        "imageURL": "./people/person-2.png",
+        "category": "Laptop",
+        "inStock": true,
+        "price": 312,
+        "quantity": 16,
+        "status": "Publish",
+        "description": "MacBook Pro 16 by Apple — premium laptop for modern retail.",
+        "sku": "APP-1001",
+        "visitors": "1.5K",
+        "createdAt": "2026-02-02"
+      },
+      {
+        "id": "ec_prd_003",
+        "name": "Sony WH-1000XM5",
+        "brand": "Sony",
+        "imageURL": "./people/person-3.png",
+        "category": "Headphone",
+        "inStock": true,
+        "price": 425,
+        "quantity": 20,
+        "status": "Publish",
+        "description": "Sony WH-1000XM5 by Sony — premium headphone for modern retail.",
+        "sku": "SON-1002",
+        "visitors": "1.8K",
+        "createdAt": "2026-03-03"
+      },
+      {
+        "id": "ec_prd_004",
+        "name": "Apple Watch Ultra",
+        "brand": "Apple",
+        "imageURL": "./people/person-4.png",
+        "category": "Smartwatch",
+        "inStock": true,
+        "price": 538,
+        "quantity": 24,
+        "status": "Publish",
+        "description": "Apple Watch Ultra by Apple — premium smartwatch for modern retail.",
+        "sku": "APP-1003",
+        "visitors": "2.1K",
+        "createdAt": "2026-04-04"
+      },
+      {
+        "id": "ec_prd_005",
+        "name": "iPhone 16 Pro",
+        "brand": "Apple",
+        "imageURL": "./people/person-1.png",
+        "category": "Smartphone",
+        "inStock": true,
+        "price": 651,
+        "quantity": 28,
+        "status": "Inactive",
+        "description": "iPhone 16 Pro by Apple — premium smartphone for modern retail.",
+        "sku": "APP-1004",
+        "visitors": "2.4K",
+        "createdAt": "2026-05-05"
+      },
+      {
+        "id": "ec_prd_006",
+        "name": "Dell XPS 15",
+        "brand": "Dell",
+        "imageURL": "./people/person-2.png",
+        "category": "Laptop",
+        "inStock": false,
+        "price": 764,
+        "quantity": 32,
+        "status": "Publish",
+        "description": "Dell XPS 15 by Dell — premium laptop for modern retail.",
+        "sku": "DEL-1005",
+        "visitors": "2.7K",
+        "createdAt": "2026-06-06"
+      },
+      {
+        "id": "ec_prd_007",
+        "name": "Bose QuietComfort",
+        "brand": "Bose",
+        "imageURL": "./people/person-3.png",
+        "category": "Headphone",
+        "inStock": true,
+        "price": 877,
+        "quantity": 36,
+        "status": "Publish",
+        "description": "Bose QuietComfort by Bose — premium headphone for modern retail.",
+        "sku": "BOS-1006",
+        "visitors": "3.0K",
+        "createdAt": "2026-01-07"
+      },
+      {
+        "id": "ec_prd_008",
+        "name": "Galaxy Watch 7",
+        "brand": "Samsung",
+        "imageURL": "./people/person-4.png",
+        "category": "Smartwatch",
+        "inStock": true,
+        "price": 990,
+        "quantity": 40,
+        "status": "Publish",
+        "description": "Galaxy Watch 7 by Samsung — premium smartwatch for modern retail.",
+        "sku": "SAM-1007",
+        "visitors": "3.3K",
+        "createdAt": "2026-02-08"
+      },
+      {
+        "id": "ec_prd_009",
+        "name": "Pixel 9 Pro",
+        "brand": "Google",
+        "imageURL": "./people/person-1.png",
+        "category": "Smartphone",
+        "inStock": true,
+        "price": 199,
+        "quantity": 44,
+        "status": "Inactive",
+        "description": "Pixel 9 Pro by Google — premium smartphone for modern retail.",
+        "sku": "GOO-1008",
+        "visitors": "3.6K",
+        "createdAt": "2026-03-09"
+      },
+      {
+        "id": "ec_prd_010",
+        "name": "ThinkPad X1 Carbon",
+        "brand": "Lenovo",
+        "imageURL": "./people/person-2.png",
+        "category": "Laptop",
+        "inStock": true,
+        "price": 312,
+        "quantity": 12,
+        "status": "Publish",
+        "description": "ThinkPad X1 Carbon by Lenovo — premium laptop for modern retail.",
+        "sku": "LEN-1009",
+        "visitors": "3.9K",
+        "createdAt": "2026-04-10"
+      },
+      {
+        "id": "ec_prd_011",
+        "name": "AirPods Max",
+        "brand": "Apple",
+        "imageURL": "./people/person-3.png",
+        "category": "Headphone",
+        "inStock": false,
+        "price": 425,
+        "quantity": 16,
+        "status": "Publish",
+        "description": "AirPods Max by Apple — premium headphone for modern retail.",
+        "sku": "APP-1010",
+        "visitors": "4.2K",
+        "createdAt": "2026-05-11"
+      },
+      {
+        "id": "ec_prd_012",
+        "name": "Garmin Fenix 8",
+        "brand": "Garmin",
+        "imageURL": "./people/person-4.png",
+        "category": "Smartwatch",
+        "inStock": true,
+        "price": 538,
+        "quantity": 20,
+        "status": "Publish",
+        "description": "Garmin Fenix 8 by Garmin — premium smartwatch for modern retail.",
+        "sku": "GAR-1011",
+        "visitors": "4.5K",
+        "createdAt": "2026-06-12"
+      },
+      {
+        "id": "ec_prd_013",
+        "name": "OnePlus 13",
+        "brand": "OnePlus",
+        "imageURL": "./people/person-1.png",
+        "category": "Smartphone",
+        "inStock": true,
+        "price": 651,
+        "quantity": 24,
+        "status": "Inactive",
+        "description": "OnePlus 13 by OnePlus — premium smartphone for modern retail.",
+        "sku": "ONE-1012",
+        "visitors": "4.8K",
+        "createdAt": "2026-01-13"
+      },
+      {
+        "id": "ec_prd_014",
+        "name": "HP Spectre x360",
+        "brand": "HP",
+        "imageURL": "./people/person-2.png",
+        "category": "Laptop",
+        "inStock": true,
+        "price": 764,
+        "quantity": 28,
+        "status": "Publish",
+        "description": "HP Spectre x360 by HP — premium laptop for modern retail.",
+        "sku": "HP-1013",
+        "visitors": "5.1K",
+        "createdAt": "2026-02-14"
+      },
+      {
+        "id": "ec_prd_015",
+        "name": "Sennheiser Momentum 4",
+        "brand": "Sennheiser",
+        "imageURL": "./people/person-3.png",
+        "category": "Headphone",
+        "inStock": true,
+        "price": 877,
+        "quantity": 32,
+        "status": "Publish",
+        "description": "Sennheiser Momentum 4 by Sennheiser — premium headphone for modern retail.",
+        "sku": "SEN-1014",
+        "visitors": "5.4K",
+        "createdAt": "2026-03-15"
+      },
+      {
+        "id": "ec_prd_016",
+        "name": "Fitbit Sense 2",
+        "brand": "Fitbit",
+        "imageURL": "./people/person-4.png",
+        "category": "Smartwatch",
+        "inStock": false,
+        "price": 990,
+        "quantity": 36,
+        "status": "Publish",
+        "description": "Fitbit Sense 2 by Fitbit — premium smartwatch for modern retail.",
+        "sku": "FIT-1015",
+        "visitors": "5.7K",
+        "createdAt": "2026-04-16"
+      },
+      {
+        "id": "ec_prd_017",
+        "name": "Xiaomi 14 Ultra",
+        "brand": "Xiaomi",
+        "imageURL": "./people/person-1.png",
+        "category": "Smartphone",
+        "inStock": true,
+        "price": 199,
+        "quantity": 40,
+        "status": "Inactive",
+        "description": "Xiaomi 14 Ultra by Xiaomi — premium smartphone for modern retail.",
+        "sku": "XIA-1016",
+        "visitors": "6.0K",
+        "createdAt": "2026-05-17"
+      },
+      {
+        "id": "ec_prd_018",
+        "name": "ASUS ROG Zephyrus",
+        "brand": "ASUS",
+        "imageURL": "./people/person-2.png",
+        "category": "Laptop",
+        "inStock": true,
+        "price": 312,
+        "quantity": 44,
+        "status": "Publish",
+        "description": "ASUS ROG Zephyrus by ASUS — premium laptop for modern retail.",
+        "sku": "ASU-1017",
+        "visitors": "6.3K",
+        "createdAt": "2026-06-18"
+      },
+      {
+        "id": "ec_prd_019",
+        "name": "JBL Tour One M2",
+        "brand": "JBL",
+        "imageURL": "./people/person-3.png",
+        "category": "Headphone",
+        "inStock": true,
+        "price": 425,
+        "quantity": 12,
+        "status": "Publish",
+        "description": "JBL Tour One M2 by JBL — premium headphone for modern retail.",
+        "sku": "JBL-1018",
+        "visitors": "6.6K",
+        "createdAt": "2026-01-19"
+      },
+      {
+        "id": "ec_prd_020",
+        "name": "Huawei Watch GT 5",
+        "brand": "Huawei",
+        "imageURL": "./people/person-4.png",
+        "category": "Smartwatch",
+        "inStock": true,
+        "price": 538,
+        "quantity": 16,
+        "status": "Publish",
+        "description": "Huawei Watch GT 5 by Huawei — premium smartwatch for modern retail.",
+        "sku": "HUA-1019",
+        "visitors": "6.9K",
+        "createdAt": "2026-02-20"
+      },
+      {
+        "id": "ec_prd_021",
+        "name": "Motorola Edge 50",
+        "brand": "Motorola",
+        "imageURL": "./people/person-1.png",
+        "category": "Smartphone",
+        "inStock": false,
+        "price": 651,
+        "quantity": 20,
+        "status": "Inactive",
+        "description": "Motorola Edge 50 by Motorola — premium smartphone for modern retail.",
+        "sku": "MOT-1020",
+        "visitors": "7.2K",
+        "createdAt": "2026-03-21"
+      },
+      {
+        "id": "ec_prd_022",
+        "name": "MSI Stealth 16",
+        "brand": "MSI",
+        "imageURL": "./people/person-2.png",
+        "category": "Laptop",
+        "inStock": true,
+        "price": 764,
+        "quantity": 24,
+        "status": "Publish",
+        "description": "MSI Stealth 16 by MSI — premium laptop for modern retail.",
+        "sku": "MSI-1021",
+        "visitors": "7.5K",
+        "createdAt": "2026-04-22"
+      },
+      {
+        "id": "ec_prd_023",
+        "name": "Beats Studio Pro",
+        "brand": "Beats",
+        "imageURL": "./people/person-3.png",
+        "category": "Headphone",
+        "inStock": true,
+        "price": 877,
+        "quantity": 28,
+        "status": "Publish",
+        "description": "Beats Studio Pro by Beats — premium headphone for modern retail.",
+        "sku": "BEA-1022",
+        "visitors": "7.8K",
+        "createdAt": "2026-05-23"
+      },
+      {
+        "id": "ec_prd_024",
+        "name": "Amazfit GTR 4",
+        "brand": "Amazfit",
+        "imageURL": "./people/person-4.png",
+        "category": "Smartwatch",
+        "inStock": true,
+        "price": 990,
+        "quantity": 32,
+        "status": "Publish",
+        "description": "Amazfit GTR 4 by Amazfit — premium smartwatch for modern retail.",
+        "sku": "AMA-1023",
+        "visitors": "8.1K",
+        "createdAt": "2026-06-24"
+      },
+      {
+        "id": "ec_prd_025",
+        "name": "Nothing Phone 3",
+        "brand": "Nothing",
+        "imageURL": "./people/person-1.png",
+        "category": "Smartphone",
+        "inStock": true,
+        "price": 199,
+        "quantity": 36,
+        "status": "Inactive",
+        "description": "Nothing Phone 3 by Nothing — premium smartphone for modern retail.",
+        "sku": "NOT-1024",
+        "visitors": "8.4K",
+        "createdAt": "2026-01-25"
+      }
+    ]
   }
 }

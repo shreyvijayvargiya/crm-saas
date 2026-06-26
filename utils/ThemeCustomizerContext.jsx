@@ -9,6 +9,8 @@ import {
 	applyFontVars,
 	applyChartColorVar,
 	applyStylePreset,
+	applyFontSizeVar,
+	applyUiScaleVar,
 	accentToColorScheme,
 	stylePresets,
 	radiusPresets,
@@ -43,6 +45,8 @@ export function ThemeCustomizerProvider({ children }) {
 			applyRadiusVar(next.radius);
 			applyFontVars(next.bodyFont, next.headingFont);
 			applyChartColorVar(next.chartColor);
+			applyFontSizeVar(next.fontSize);
+			applyUiScaleVar(next.uiScale);
 			const schemeKey = accentToColorScheme[next.accent] ?? "blue";
 			setColorScheme(schemeKey);
 		},

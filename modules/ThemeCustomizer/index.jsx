@@ -9,6 +9,8 @@ import {
 	chartColorPresets,
 	radiusPresets,
 	fontPresets,
+	fontSizePresets,
+	uiScalePresets,
 } from "../../utils/themeCustomizer";
 import {
 	DropdownMenu,
@@ -103,6 +105,33 @@ function RadiusIcon({ radiusKey }) {
 			<CornerDownRight
 				className="h-3.5 w-3.5 text-zinc-600"
 				style={{ borderBottomRightRadius: radius }}
+			/>
+		</span>
+	);
+}
+
+function FontSizeIcon({ fontSizeKey }) {
+	const size = fontSizePresets[fontSizeKey]?.value ?? "16px";
+	return (
+		<span
+			className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-zinc-200 bg-zinc-50 font-semibold text-zinc-700"
+			style={{ fontSize: `calc(${size} * 0.55)` }}
+		>
+			Aa
+		</span>
+	);
+}
+
+function UiScaleIcon({ uiScaleKey }) {
+	const scale = Number(uiScalePresets[uiScaleKey]?.value ?? 1);
+	return (
+		<span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-zinc-200 bg-zinc-50">
+			<span
+				className="rounded-sm bg-zinc-600"
+				style={{
+					width: `${Math.round(14 * scale)}px`,
+					height: `${Math.round(8 * scale)}px`,
+				}}
 			/>
 		</span>
 	);
@@ -292,6 +321,55 @@ const ThemeCustomizer = () => {
 										>
 											{preset.label}
 											{settings.bodyFont === key && <Check className="h-4 w-4" />}
+										</CustomizerDropdownItem>
+									))}
+								</CustomizerDropdownContent>
+							</CustomizerRow>
+
+							<CustomizerRow
+								label="Font Size"
+								value={fontSizePresets[settings.fontSize]?.label}
+								icon={<FontSizeIcon fontSizeKey={settings.fontSize} />}
+							>
+								<CustomizerDropdownContent>
+									{Object.entries(fontSizePresets).map(([key, preset]) => (
+										<CustomizerDropdownItem
+											key={key}
+											onClick={() => updateSetting("fontSize", key)}
+											className="justify-between gap-2"
+										>
+											<span className="flex items-center gap-2">
+												<FontSizeIcon fontSizeKey={key} />
+												{preset.label}
+											</span>
+											{settings.fontSize === key && <Check className="h-4 w-4" />}
+										</CustomizerDropdownItem>
+									))}
+								</CustomizerDropdownContent>
+							</CustomizerRow>
+
+							<CustomizerRow
+								label="UI Density"
+								value={uiScalePresets[settings.uiScale]?.label}
+								icon={<UiScaleIcon uiScaleKey={settings.uiScale} />}
+							>
+								<CustomizerDropdownContent>
+									{Object.entries(uiScalePresets).map(([key, preset]) => (
+										<CustomizerDropdownItem
+											key={key}
+											onClick={() => updateSetting("uiScale", key)}
+											className="justify-between gap-2"
+										>
+											<span className="flex min-w-0 flex-col gap-0.5">
+												<span className="flex items-center gap-2">
+													<UiScaleIcon uiScaleKey={key} />
+													{preset.label}
+												</span>
+												<span className="pl-7 text-[10px] text-zinc-500">
+													{preset.description}
+												</span>
+											</span>
+											{settings.uiScale === key && <Check className="h-4 w-4 shrink-0" />}
 										</CustomizerDropdownItem>
 									))}
 								</CustomizerDropdownContent>
