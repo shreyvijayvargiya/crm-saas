@@ -293,6 +293,22 @@ export const radiusPresets = {
 	xl: { label: "Extra Large", value: "1.5rem" },
 };
 
+export const fontSizePresets = {
+	"2xl": { label: "Extra Large", value: "20px", preview: "Aa" },
+	lg: { label: "Large", value: "18px", preview: "Aa" },
+	default: { label: "Default", value: "16px", preview: "Aa" },
+	sm: { label: "Small", value: "14px", preview: "Aa" },
+	xs: { label: "Extra Small", value: "13px", preview: "Aa" },
+	compact: { label: "Compact", value: "12px", preview: "Aa" },
+};
+
+export const uiScalePresets = {
+	default: { label: "Default", value: "1", description: "Standard buttons & inputs" },
+	compact: { label: "Compact", value: "0.925", description: "Slightly smaller controls" },
+	dense: { label: "Dense", value: "0.85", description: "Tighter buttons & inputs" },
+	mini: { label: "Mini", value: "0.8", description: "Smallest controls" },
+};
+
 export const fontPresets = {
 	inter: {
 		label: "Inter",
@@ -415,6 +431,20 @@ export function applyChartColorVar(chartColorKey) {
 	root.dataset.chartColor = chartColorKey;
 }
 
+export function applyFontSizeVar(fontSizeKey) {
+	if (typeof document === "undefined") return;
+	const preset = fontSizePresets[fontSizeKey] ?? fontSizePresets.default;
+	document.documentElement.style.setProperty("--font-size-base", preset.value);
+	document.documentElement.dataset.fontSize = fontSizeKey;
+}
+
+export function applyUiScaleVar(uiScaleKey) {
+	if (typeof document === "undefined") return;
+	const preset = uiScalePresets[uiScaleKey] ?? uiScalePresets.default;
+	document.documentElement.style.setProperty("--ui-scale", preset.value);
+	document.documentElement.dataset.uiScale = uiScaleKey;
+}
+
 export function applyStylePreset(styleKey) {
 	const preset = stylePresets[styleKey] ?? stylePresets.vega;
 	if (typeof document === "undefined") return;
@@ -432,4 +462,6 @@ export const defaultCustomizerState = {
 	radius: "default",
 	bodyFont: "inter",
 	headingFont: "figtree",
+	fontSize: "default",
+	uiScale: "default",
 };

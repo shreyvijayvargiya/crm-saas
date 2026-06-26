@@ -65,6 +65,10 @@ export function CmsProvider({ children }) {
 		setBlogs((prev) => [blog, ...prev]);
 	};
 
+	const addNewsletter = (newsletter) => {
+		setNewsletters((prev) => [newsletter, ...prev]);
+	};
+
 	const updateNewsletter = (id, patch) => {
 		setNewsletters((prev) =>
 			prev.map((n) => (n.id === Number(id) ? { ...n, ...patch } : n))
@@ -82,6 +86,7 @@ export function CmsProvider({ children }) {
 				getNewsletter,
 				updateBlog,
 				addBlog,
+				addNewsletter,
 				updateNewsletter,
 			}}
 		>
