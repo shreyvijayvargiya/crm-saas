@@ -15,10 +15,38 @@ module.exports = {
 				sans: ["var(--font-sans)"],
 				heading: ["var(--font-heading)"],
 			},
+			lineHeight: {
+				base: "var(--line-height-base)",
+			},
+			letterSpacing: {
+				base: "var(--letter-spacing)",
+			},
 			borderRadius: {
 				lg: "var(--radius)",
 				md: "calc(var(--radius) - 2px)",
 				sm: "calc(var(--radius) - 4px)",
+				xl: "calc(var(--radius) + 4px)",
+				"2xl": "calc(var(--radius) + 8px)",
+				"3xl": "calc(var(--radius) + 12px)",
+			},
+			boxShadow: {
+				sm: "var(--shadow-elevation)",
+				DEFAULT: "var(--shadow-elevation)",
+				md: "var(--shadow-elevation)",
+				lg: "var(--shadow-elevation)",
+				xl: "var(--shadow-elevation)",
+				"2xl": "var(--shadow-elevation)",
+			},
+			ringWidth: {
+				DEFAULT: "var(--ring-width)",
+				0: "0px",
+				1: "calc(var(--ring-width) * 0.5)",
+				2: "var(--ring-width)",
+				4: "calc(var(--ring-width) * 2)",
+			},
+			spacing: {
+				page: "var(--page-padding)",
+				section: "var(--section-gap)",
 			},
 			height: {
 				ui: "calc(2.5rem * var(--ui-scale, 1))",

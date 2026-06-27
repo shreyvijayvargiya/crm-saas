@@ -5,8 +5,33 @@ import {
 	ChevronDown,
 	MoreHorizontal,
 	Download,
+	Search,
+	ArrowUp,
+	DollarSign,
+	Eye,
+	Pause,
+	Megaphone,
+	Repeat,
 } from "lucide-react";
+import {
+	Area,
+	AreaChart,
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Cell,
+	Line,
+	LineChart,
+	Pie,
+	PieChart,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+	Legend,
+} from "recharts";
 import { cn } from "@/lib/utils";
+import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -76,12 +101,20 @@ const NAV_ITEMS = [
 	{ id: "date-range", label: "Date range" },
 	{ id: "modal", label: "Form modal" },
 	{ id: "table", label: "Table" },
+	{ id: "table-advanced", label: "Table + actions" },
 	{ id: "card", label: "Card" },
+	{ id: "metric-cards", label: "Metric cards" },
+	{ id: "charts", label: "Charts" },
+	{ id: "module-tabs", label: "Module tabs" },
+	{ id: "timeline", label: "Timeline" },
+	{ id: "toolbar", label: "List toolbar" },
+	{ id: "status-badges", label: "Status badges" },
+	{ id: "empty-state", label: "Empty state" },
 ];
 
 function Section({ id, title, description, path, children }) {
 	return (
-		<section id={id} className="scroll-mt-24 space-y-4 border-b border-border pb-10 last:border-0">
+		<section id={id} className="scroll-mt-24 space-y-4 border-b border-border p-4 last:border-0 rounded-lg bg-white dark:bg-transparent">
 			<div>
 				<h2 className="text-lg font-semibold text-foreground">{title}</h2>
 				{description ? (
@@ -112,6 +145,11 @@ const UiShowcase = () => {
 	const [customFrom, setCustomFrom] = useState("");
 	const [customTo, setCustomTo] = useState("");
 	const [activeNav, setActiveNav] = useState("breadcrumbs");
+	const [toolbarSearch, setToolbarSearch] = useState("");
+	const [toolbarStatus, setToolbarStatus] = useState("All");
+	const [tableSelected, setTableSelected] = useState([]);
+	const [moduleTab, setModuleTab] = useState("overview");
+	const chartTooltipProps = useChartTooltipProps();
 
 	const scrollTo = (id) => {
 		setActiveNav(id);
@@ -142,7 +180,7 @@ const UiShowcase = () => {
 							<CardHeader className="pb-2">
 								<CardTitle className="text-sm">Components</CardTitle>
 							</CardHeader>
-							<CardContent className="max-h-[70vh] space-y-0.5 overflow-y-auto p-2 pt-0">
+							<CardContent className="max-h-[70vh] space-y-0.5 overflow-y-auto hidescrollbar p-2 pt-0">
 								{NAV_ITEMS.map((item) => (
 									<button
 										key={item.id}
@@ -515,6 +553,370 @@ const UiShowcase = () => {
 										</Button>
 									</CardContent>
 								</Card>
+							</div>
+						</Section>
+
+						<Section
+							id="metric-cards"
+							title="Metric cards"
+							description="KPI strip used on Marketing, Subscriptions, E-commerce, and Analytics."
+							path="app/Marketing/index.jsx · app/Subscriptions/index.jsx"
+						>
+							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+								{[
+									{ label: "MRR", value: "$48.2k", change: 6, positive: true },
+									{ label: "Active subs", value: "312", change: 4, positive: true },
+									{ label: "Churn", value: "2.1%", change: 0.3, positive: false },
+									{ label: "Open rate", value: "32.4%", change: 4, positive: true },
+								].map((m) => (
+									<Card key={m.label}>
+										<CardContent className="p-5">
+											<div className="flex items-start justify-between gap-2">
+												<span className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted">
+													<DollarSign className="h-4 w-4" />
+												</span>
+												<Badge
+													className={cn(
+														"gap-0.5 border-transparent",
+														m.positive
+															? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
+															: "bg-rose-500/15 text-rose-600 dark:text-rose-400"
+													)}
+												>
+													<ArrowUp className="h-3.5 w-3.5" />
+													{m.positive ? "+" : "−"}
+													{m.change}%
+												</Badge>
+											</div>
+											<p className="mt-4 text-2xl font-bold">{m.value}</p>
+											<p className="text-sm text-muted-foreground">{m.label}</p>
+										</CardContent>
+									</Card>
+								))}
+							</div>
+						</Section>
+
+						<Section
+							id="charts"
+							title="Charts"
+							description="Recharts patterns from Marketing, Subscriptions, Invoices, and Analytics."
+							path="recharts + utils/chartTooltip.js"
+						>
+							<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+								<div className="h-56">
+									<p className="mb-2 text-sm font-medium">Bar — campaign performance</p>
+									<ResponsiveContainer width="100%" height="100%">
+										<BarChart
+											data={[
+												{ month: "Apr", sent: 4600, opens: 1520 },
+												{ month: "May", sent: 5200, opens: 1680 },
+												{ month: "Jun", sent: 4900, opens: 1590 },
+											]}
+										>
+											<CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+											<XAxis dataKey="month" tick={{ fontSize: 12 }} />
+											<YAxis tick={{ fontSize: 12 }} />
+											<Tooltip {...chartTooltipProps} />
+											<Bar dataKey="sent" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+											<Bar dataKey="opens" fill="hsl(var(--chart-2))" radius={[4, 4, 0, 0]} />
+										</BarChart>
+									</ResponsiveContainer>
+								</div>
+								<div className="h-56">
+									<p className="mb-2 text-sm font-medium">Area — MRR trend</p>
+									<ResponsiveContainer width="100%" height="100%">
+										<AreaChart
+											data={[
+												{ month: "Apr", mrr: 45300 },
+												{ month: "May", mrr: 46900 },
+												{ month: "Jun", mrr: 48200 },
+											]}
+										>
+											<CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+											<XAxis dataKey="month" tick={{ fontSize: 12 }} />
+											<YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => `$${v / 1000}k`} />
+											<Tooltip {...chartTooltipProps} />
+											<Area
+												type="monotone"
+												dataKey="mrr"
+												stroke="hsl(var(--primary))"
+												fill="hsl(var(--primary))"
+												fillOpacity={0.15}
+											/>
+										</AreaChart>
+									</ResponsiveContainer>
+								</div>
+								<div className="h-56">
+									<p className="mb-2 text-sm font-medium">Line — engagement</p>
+									<ResponsiveContainer width="100%" height="100%">
+										<LineChart
+											data={[
+												{ day: "Mon", opens: 42, clicks: 12 },
+												{ day: "Wed", opens: 51, clicks: 15 },
+												{ day: "Fri", opens: 49, clicks: 14 },
+											]}
+										>
+											<CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+											<XAxis dataKey="day" tick={{ fontSize: 12 }} />
+											<YAxis tick={{ fontSize: 12 }} />
+											<Tooltip {...chartTooltipProps} />
+											<Line type="monotone" dataKey="opens" stroke="hsl(var(--primary))" strokeWidth={2} />
+											<Line type="monotone" dataKey="clicks" stroke="hsl(var(--chart-2))" strokeWidth={2} />
+										</LineChart>
+									</ResponsiveContainer>
+								</div>
+								<div className="h-56">
+									<p className="mb-2 text-sm font-medium">Pie — subscription status</p>
+									<ResponsiveContainer width="100%" height="100%">
+										<PieChart>
+											<Pie
+												data={[
+													{ status: "Active", count: 248 },
+													{ status: "Trialing", count: 34 },
+													{ status: "Past Due", count: 12 },
+												]}
+												dataKey="count"
+												nameKey="status"
+												cx="50%"
+												cy="50%"
+												innerRadius={45}
+												outerRadius={70}
+											>
+												{[0, 1, 2].map((i) => (
+													<Cell
+														key={i}
+														fill={`hsl(var(--chart-${i + 1}))`}
+													/>
+												))}
+											</Pie>
+											<Tooltip {...chartTooltipProps} />
+											<Legend />
+										</PieChart>
+									</ResponsiveContainer>
+								</div>
+							</div>
+						</Section>
+
+						<Section
+							id="module-tabs"
+							title="Module tabs"
+							description="Sub-navigation for multi-route modules (Marketing, Subscriptions, CMS)."
+							path="app/Marketing/MarketingLayout.jsx"
+						>
+							<nav className="flex gap-1 border-b">
+								{[
+									{ id: "overview", label: "Overview", icon: Megaphone },
+									{ id: "segments", label: "Segments", icon: Search },
+									{ id: "billing", label: "Billing", icon: Repeat },
+								].map((tab) => {
+									const Icon = tab.icon;
+									return (
+										<button
+											key={tab.id}
+											type="button"
+											onClick={() => setModuleTab(tab.id)}
+											className={cn(
+												"flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px",
+												moduleTab === tab.id
+													? "border-primary text-primary"
+													: "border-transparent text-muted-foreground hover:text-foreground"
+											)}
+										>
+											<Icon className="h-4 w-4" />
+											{tab.label}
+										</button>
+									);
+								})}
+							</nav>
+							<p className="mt-4 text-sm text-muted-foreground">
+								Active tab: <span className="font-medium text-foreground">{moduleTab}</span>
+							</p>
+						</Section>
+
+						<Section
+							id="timeline"
+							title="Timeline"
+							description="Billing / activity history on subscription and CRM detail pages."
+							path="app/Subscriptions/SubscriptionDetail/index.jsx"
+						>
+							<ol className="relative border-l border-border ml-3 space-y-6">
+								{[
+									{ title: "Renewed", desc: "Subscription renewed for $129.00", time: "Jun 1, 2025" },
+									{ title: "Upgraded", desc: "Upgraded from Starter to Growth", time: "Mar 15, 2025" },
+									{ title: "Created", desc: "Subscription created", time: "Jan 15, 2025" },
+								].map((event) => (
+									<li key={event.title} className="ml-6">
+										<span className="absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border-2 border-primary bg-background" />
+										<div className="flex flex-wrap items-start justify-between gap-2">
+											<div>
+												<p className="font-medium text-sm">{event.title}</p>
+												<p className="text-sm text-muted-foreground">{event.desc}</p>
+											</div>
+											<time className="text-xs text-muted-foreground">{event.time}</time>
+										</div>
+									</li>
+								))}
+							</ol>
+						</Section>
+
+						<Section
+							id="toolbar"
+							title="List toolbar"
+							description="Search, filter, and export row above data tables."
+							path="app/Marketing/index.jsx · app/Subscriptions/index.jsx"
+						>
+							<div className="flex flex-wrap items-center gap-3">
+								<div className="relative flex-1 min-w-[200px] max-w-sm">
+									<Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+									<Input
+										placeholder="Search records…"
+										value={toolbarSearch}
+										onChange={(e) => setToolbarSearch(e.target.value)}
+										className="pl-9"
+									/>
+								</div>
+								<FormSelect
+									value={toolbarStatus}
+									onChange={(e) => setToolbarStatus(e.target.value)}
+									options={["All", "Active", "Draft", "Canceled"]}
+									className="w-32"
+								/>
+								<ExportDropdown
+									onExportCsv={() => toast.success("CSV export (demo)")}
+									onExportPdf={() => toast.success("PDF export (demo)")}
+									onExportJson={() => toast.success("JSON export (demo)")}
+								/>
+							</div>
+						</Section>
+
+						<Section
+							id="table-advanced"
+							title="Table + actions"
+							description="Selectable rows with per-row dropdown menus."
+							path="app/Marketing/index.jsx"
+						>
+							<Table>
+								<TableHeader>
+									<TableRow>
+										<TableHead className="w-10">
+											<Checkbox
+												checked={tableSelected.length === 2}
+												onCheckedChange={(checked) =>
+													setTableSelected(checked ? ["1", "2"] : [])
+												}
+											/>
+										</TableHead>
+										<TableHead>Name</TableHead>
+										<TableHead>Status</TableHead>
+										<TableHead className="w-10" />
+									</TableRow>
+								</TableHeader>
+								<TableBody>
+									{[
+										{ id: "1", name: "Onboarding Drip", status: "Active" },
+										{ id: "2", name: "Win-back Campaign", status: "Scheduled" },
+									].map((row) => (
+										<TableRow key={row.id}>
+											<TableCell>
+												<Checkbox
+													checked={tableSelected.includes(row.id)}
+													onCheckedChange={() =>
+														setTableSelected((prev) =>
+															prev.includes(row.id)
+																? prev.filter((x) => x !== row.id)
+																: [...prev, row.id]
+														)
+													}
+												/>
+											</TableCell>
+											<TableCell className="font-medium">{row.name}</TableCell>
+											<TableCell>
+												<Badge>{row.status}</Badge>
+											</TableCell>
+											<TableCell>
+												<DropdownMenu>
+													<DropdownMenuTrigger asChild>
+														<Button variant="ghost" size="icon" className="h-8 w-8">
+															<MoreHorizontal className="h-4 w-4" />
+														</Button>
+													</DropdownMenuTrigger>
+													<DropdownMenuContent align="end">
+														<DropdownMenuItem onClick={() => toast.info("Open (demo)")}>
+															<Eye className="h-4 w-4" />
+															View
+														</DropdownMenuItem>
+														<DropdownMenuItem onClick={() => toast.info("Paused (demo)")}>
+															<Pause className="h-4 w-4" />
+															Pause
+														</DropdownMenuItem>
+													</DropdownMenuContent>
+												</DropdownMenu>
+											</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
+						</Section>
+
+						<Section
+							id="status-badges"
+							title="Status badges"
+							description="Semantic variants for CRM entity states."
+						>
+							<div className="space-y-4">
+								<div>
+									<p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+										Campaigns
+									</p>
+									<div className="flex flex-wrap gap-2">
+										<Badge>Active</Badge>
+										<Badge variant="secondary">Scheduled</Badge>
+										<Badge variant="outline">Completed</Badge>
+									</div>
+								</div>
+								<div>
+									<p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+										Subscriptions
+									</p>
+									<div className="flex flex-wrap gap-2">
+										<Badge>Active</Badge>
+										<Badge variant="secondary">Trialing</Badge>
+										<Badge variant="destructive">Past Due</Badge>
+										<Badge variant="outline">Canceled</Badge>
+									</div>
+								</div>
+								<div>
+									<p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+										Finance
+									</p>
+									<div className="flex flex-wrap gap-2">
+										<Badge>Paid</Badge>
+										<Badge variant="secondary">Pending</Badge>
+										<Badge variant="destructive">Overdue</Badge>
+									</div>
+								</div>
+							</div>
+						</Section>
+
+						<Section
+							id="empty-state"
+							title="Empty state"
+							description="Placeholder when filters return no results."
+						>
+							<div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-12 text-center">
+								<Search className="h-10 w-10 text-muted-foreground/50" />
+								<p className="mt-4 font-medium text-foreground">No results found</p>
+								<p className="mt-1 text-sm text-muted-foreground">
+									Try adjusting your search or filters.
+								</p>
+								<Button
+									variant="outline"
+									size="sm"
+									className="mt-4"
+									onClick={() => toast.info("Filters cleared (demo)")}
+								>
+									Clear filters
+								</Button>
 							</div>
 						</Section>
 					</div>

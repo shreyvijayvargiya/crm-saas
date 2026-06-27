@@ -293,6 +293,89 @@ export const radiusPresets = {
 	xl: { label: "Extra Large", value: "1.5rem" },
 };
 
+export const borderStylePresets = {
+	solid: { label: "Solid", value: "solid", preview: "border-solid" },
+	dashed: { label: "Dashed", value: "dashed", preview: "border-dashed" },
+	dotted: { label: "Dotted", value: "dotted", preview: "border-dotted" },
+	double: { label: "Double", value: "double", preview: "border-double" },
+	none: { label: "None", value: "none", preview: "border-none" },
+};
+
+export const borderWidthPresets = {
+	hairline: { label: "Hairline", value: "0.5px", description: "0.5px — subtle dividers" },
+	thin: { label: "Thin", value: "1px", description: "1px — default UI" },
+	medium: { label: "Medium", value: "2px", description: "2px — emphasis" },
+	thick: { label: "Thick", value: "3px", description: "3px — strong outlines" },
+};
+
+export const shadowPresets = {
+	none: {
+		label: "None",
+		value: "none",
+		description: "Flat surfaces",
+	},
+	xs: {
+		label: "Extra Small",
+		value: "0 1px 2px 0 rgb(0 0 0 / 0.04)",
+		description: "Subtle lift",
+	},
+	sm: {
+		label: "Small",
+		value: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+		description: "Cards default",
+	},
+	md: {
+		label: "Medium",
+		value: "0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06)",
+		description: "Dropdowns, popovers",
+	},
+	lg: {
+		label: "Large",
+		value: "0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.06)",
+		description: "Modals, panels",
+	},
+	xl: {
+		label: "Extra Large",
+		value: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.08)",
+		description: "Floating overlays",
+	},
+};
+
+export const spacingPresets = {
+	compact: { label: "Compact", value: "0.875", description: "Tighter page rhythm" },
+	default: { label: "Default", value: "1", description: "Standard spacing" },
+	comfortable: { label: "Comfortable", value: "1.125", description: "More breathing room" },
+	spacious: { label: "Spacious", value: "1.25", description: "Airy layouts" },
+};
+
+export const lineHeightPresets = {
+	tight: { label: "Tight", value: "1.35", description: "Headings, dense UI" },
+	normal: { label: "Normal", value: "1.5", description: "Body default" },
+	relaxed: { label: "Relaxed", value: "1.625", description: "Readable prose" },
+	loose: { label: "Loose", value: "1.75", description: "Marketing copy" },
+};
+
+export const letterSpacingPresets = {
+	tighter: { label: "Tighter", value: "-0.02em" },
+	normal: { label: "Normal", value: "0em" },
+	wide: { label: "Wide", value: "0.025em" },
+	wider: { label: "Wider", value: "0.05em" },
+};
+
+export const ringWidthPresets = {
+	thin: { label: "Thin", value: "1px", description: "Subtle focus ring" },
+	default: { label: "Default", value: "2px", description: "Standard focus" },
+	thick: { label: "Thick", value: "3px", description: "High-contrast focus" },
+};
+
+export const backdropBlurPresets = {
+	none: { label: "None", value: "0px" },
+	sm: { label: "Small", value: "4px" },
+	md: { label: "Medium", value: "8px" },
+	lg: { label: "Large", value: "16px" },
+	xl: { label: "Extra Large", value: "24px" },
+};
+
 export const fontSizePresets = {
 	"2xl": { label: "Extra Large", value: "20px", preview: "Aa" },
 	lg: { label: "Large", value: "18px", preview: "Aa" },
@@ -445,6 +528,62 @@ export function applyUiScaleVar(uiScaleKey) {
 	document.documentElement.dataset.uiScale = uiScaleKey;
 }
 
+export function applyBorderStyleVar(borderStyleKey) {
+	if (typeof document === "undefined") return;
+	const preset = borderStylePresets[borderStyleKey] ?? borderStylePresets.solid;
+	document.documentElement.style.setProperty("--border-style", preset.value);
+	document.documentElement.dataset.borderStyle = borderStyleKey;
+}
+
+export function applyBorderWidthVar(borderWidthKey) {
+	if (typeof document === "undefined") return;
+	const preset = borderWidthPresets[borderWidthKey] ?? borderWidthPresets.thin;
+	document.documentElement.style.setProperty("--border-width", preset.value);
+	document.documentElement.dataset.borderWidth = borderWidthKey;
+}
+
+export function applyShadowVar(shadowKey) {
+	if (typeof document === "undefined") return;
+	const preset = shadowPresets[shadowKey] ?? shadowPresets.sm;
+	document.documentElement.style.setProperty("--shadow-elevation", preset.value);
+	document.documentElement.dataset.shadow = shadowKey;
+}
+
+export function applySpacingVar(spacingKey) {
+	if (typeof document === "undefined") return;
+	const preset = spacingPresets[spacingKey] ?? spacingPresets.default;
+	document.documentElement.style.setProperty("--spacing-scale", preset.value);
+	document.documentElement.dataset.spacing = spacingKey;
+}
+
+export function applyLineHeightVar(lineHeightKey) {
+	if (typeof document === "undefined") return;
+	const preset = lineHeightPresets[lineHeightKey] ?? lineHeightPresets.normal;
+	document.documentElement.style.setProperty("--line-height-base", preset.value);
+	document.documentElement.dataset.lineHeight = lineHeightKey;
+}
+
+export function applyLetterSpacingVar(letterSpacingKey) {
+	if (typeof document === "undefined") return;
+	const preset = letterSpacingPresets[letterSpacingKey] ?? letterSpacingPresets.normal;
+	document.documentElement.style.setProperty("--letter-spacing", preset.value);
+	document.documentElement.dataset.letterSpacing = letterSpacingKey;
+}
+
+export function applyRingWidthVar(ringWidthKey) {
+	if (typeof document === "undefined") return;
+	const preset = ringWidthPresets[ringWidthKey] ?? ringWidthPresets.default;
+	document.documentElement.style.setProperty("--ring-width", preset.value);
+	document.documentElement.dataset.ringWidth = ringWidthKey;
+}
+
+export function applyBackdropBlurVar(backdropBlurKey) {
+	if (typeof document === "undefined") return;
+	const preset = backdropBlurPresets[backdropBlurKey] ?? backdropBlurPresets.none;
+	document.documentElement.style.setProperty("--backdrop-blur", preset.value);
+	document.documentElement.dataset.backdropBlur = backdropBlurKey;
+}
+
 export function applyStylePreset(styleKey) {
 	const preset = stylePresets[styleKey] ?? stylePresets.vega;
 	if (typeof document === "undefined") return;
@@ -464,4 +603,12 @@ export const defaultCustomizerState = {
 	headingFont: "figtree",
 	fontSize: "default",
 	uiScale: "default",
+	borderStyle: "solid",
+	borderWidth: "thin",
+	shadow: "sm",
+	spacing: "default",
+	lineHeight: "normal",
+	letterSpacing: "normal",
+	ringWidth: "default",
+	backdropBlur: "none",
 };

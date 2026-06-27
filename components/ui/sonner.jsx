@@ -1,5 +1,7 @@
 import { Toaster as Sonner } from "sonner";
 import { useTheme } from "@/utils/useTheme";
+import { toastSurface } from "@/lib/themeTokens";
+import { cn } from "@/lib/utils";
 
 const Toaster = ({ ...props }) => {
 	const { theme } = useTheme();
@@ -11,8 +13,10 @@ const Toaster = ({ ...props }) => {
 			position="bottom-right"
 			toastOptions={{
 				classNames: {
-					toast:
-						"group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
+					toast: cn(
+						"group toast group-[.toaster]:border-border",
+						toastSurface
+					),
 					description: "group-[.toast]:text-muted-foreground",
 					actionButton:
 						"group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",

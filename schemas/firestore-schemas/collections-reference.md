@@ -26,6 +26,14 @@ Maps SQL/Drizzle entities to suggested Firestore paths. Use **`tenants/{tenantId
 | `ecommerce_orders` | order id | Delivery tracking; `product_id` → product |
 | `ecommerce_metrics` | metric id | Dashboard KPI cards (optional denormalized doc) |
 | `ecommerce_earnings` | doc id | Weekly chart + earning/profit/expense breakdown |
+| `segments` | segment id | Audience filters for campaigns |
+| `campaigns` | campaign id | `segment_id` → segment |
+| `campaign_steps` | step id | Subcollection under campaign or flat with `campaign_id` |
+| `marketing_forms` | form id | Lead capture forms with embed codes |
+| `form_submissions` | submission id | `form_id` → marketing form |
+| `subscription_plans` | plan id | Pricing tiers and features |
+| `subscriptions` | subscription id | `plan_id` → subscription plan |
+| `subscription_events` | event id | Billing history; `subscription_id` → subscription |
 | `api_request_logs` | log id | API Logs module — method, path, status, latency |
 | `support_tickets` | ticket id | Subcollection `messages` for thread |
 | `audit_log_entries` | entry id | Immutable audit trail |

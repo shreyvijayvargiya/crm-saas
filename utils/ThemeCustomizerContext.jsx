@@ -11,6 +11,14 @@ import {
 	applyStylePreset,
 	applyFontSizeVar,
 	applyUiScaleVar,
+	applyBorderStyleVar,
+	applyBorderWidthVar,
+	applyShadowVar,
+	applySpacingVar,
+	applyLineHeightVar,
+	applyLetterSpacingVar,
+	applyRingWidthVar,
+	applyBackdropBlurVar,
 	accentToColorScheme,
 	stylePresets,
 	radiusPresets,
@@ -47,6 +55,14 @@ export function ThemeCustomizerProvider({ children }) {
 			applyChartColorVar(next.chartColor);
 			applyFontSizeVar(next.fontSize);
 			applyUiScaleVar(next.uiScale);
+			applyBorderStyleVar(next.borderStyle);
+			applyBorderWidthVar(next.borderWidth);
+			applyShadowVar(next.shadow);
+			applySpacingVar(next.spacing);
+			applyLineHeightVar(next.lineHeight);
+			applyLetterSpacingVar(next.letterSpacing);
+			applyRingWidthVar(next.ringWidth);
+			applyBackdropBlurVar(next.backdropBlur);
 			const schemeKey = accentToColorScheme[next.accent] ?? "blue";
 			setColorScheme(schemeKey);
 		},

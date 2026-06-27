@@ -37,6 +37,8 @@ Supabase Auth (`auth.users`) handles sign-up, sign-in, OAuth, and sessions. `pro
 | Webhooks — `appWebhooks` | `webhooks` (store **secret hashes** only) |
 | CMS — `appCms` | `blog_posts`, `blog_subscribers` |
 | E-commerce — `appEcommerce` | `ecommerce_products`, `ecommerce_orders`, `ecommerce_metrics`, `ecommerce_earnings` |
+| Marketing — `appMarketing` | `segments`, `campaigns`, `campaign_steps`, `marketing_forms`, `form_submissions` |
+| Subscriptions — `appSubscriptions` | `subscription_plans`, `subscriptions`, `subscription_events` |
 | API logs — `appApiLogs` | `api_request_logs` (reference) |
 | Support — `appSupport` | `support_tickets`, `support_messages` |
 | Users — `appUsers` | `tenant_members`, `profiles` |

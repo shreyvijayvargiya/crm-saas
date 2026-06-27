@@ -30,6 +30,17 @@
 		--ui-scale: 1;
 		--chart-1: 221.2 83.2% 53.3%;
 		--chart-2: 221.2 83.2% 53.3%;
+		/* Figma-style layout & effect tokens (theme customizer) */
+		--border-style: solid;
+		--border-width: 1px;
+		--shadow-elevation: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+		--spacing-scale: 1;
+		--line-height-base: 1.5;
+		--letter-spacing: 0em;
+		--ring-width: 2px;
+		--backdrop-blur: 0px;
+		--page-padding: calc(1.5rem * var(--spacing-scale));
+		--section-gap: calc(1.5rem * var(--spacing-scale));
 	}
 
 	.dark {
@@ -58,6 +69,7 @@
 @layer base {
 	* {
 		@apply border-border;
+		border-style: var(--border-style);
 	}
 	html {
 		font-size: var(--font-size-base);
@@ -65,6 +77,8 @@
 	body {
 		@apply font-sans antialiased bg-background text-foreground;
 		font-family: var(--font-sans);
+		line-height: var(--line-height-base);
+		letter-spacing: var(--letter-spacing);
 	}
 	h1,
 	h2,
@@ -76,6 +90,42 @@
 	}
 	[data-theme-customizer] {
 		color-scheme: light;
+	}
+}
+
+@layer utilities {
+	.border,
+	.border-x,
+	.border-y,
+	.border-t,
+	.border-b,
+	.border-l,
+	.border-r {
+		border-width: var(--border-width);
+		border-style: var(--border-style);
+	}
+	.border-2 {
+		border-width: calc(var(--border-width) * 2);
+		border-style: var(--border-style);
+	}
+	.divide-border > :not([hidden]) ~ :not([hidden]) {
+		border-style: var(--border-style);
+	}
+	.shadow-elevation {
+		box-shadow: var(--shadow-elevation);
+	}
+	.backdrop-themed {
+		backdrop-filter: blur(var(--backdrop-blur));
+		-webkit-backdrop-filter: blur(var(--backdrop-blur));
+	}
+	.ring-themed {
+		--tw-ring-width: var(--ring-width);
+	}
+	.tracking-base {
+		letter-spacing: var(--letter-spacing);
+	}
+	.leading-base {
+		line-height: var(--line-height-base);
 	}
 }
 

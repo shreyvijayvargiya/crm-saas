@@ -2,6 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { overlayBackdrop } from "@/lib/themeTokens";
 
 /**
  * Slide-over panel (sheet). Side: right | left | bottom (drawer).
@@ -20,7 +21,7 @@ export function Sheet({ open, onOpenChange, side = "right", title, description, 
 		<div className="fixed inset-0 z-50">
 			<button
 				type="button"
-				className="absolute inset-0 bg-black/50"
+				className={cn("absolute inset-0", overlayBackdrop)}
 				aria-label="Close panel"
 				onClick={() => onOpenChange(false)}
 			/>
@@ -34,7 +35,7 @@ export function Sheet({ open, onOpenChange, side = "right", title, description, 
 					<div>
 						{title ? <h2 className="text-lg font-semibold text-foreground">{title}</h2> : null}
 						{description ? (
-							<p className="mt-1 text-sm text-muted-foreground">{description}</p>
+							<p className="mt-1 text-sm text-muted-foreground leading-base">{description}</p>
 						) : null}
 					</div>
 					<Button variant="ghost" size="icon" onClick={() => onOpenChange(false)}>

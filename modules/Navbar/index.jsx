@@ -28,6 +28,11 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+	filterSearchNavItems,
+	getSearchNavItems,
+	groupSearchNavItems,
+} from "../navConfig";
 
 const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) => {
 	const router = useRouter();
@@ -39,197 +44,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 	const { theme, toggleTheme, colors } = useTheme();
 	const { open: customizerOpen, toggleCustomizer } = useThemeCustomizer();
 
-	const navItems = [
-		{
-			id: 1,
-			label: "Dashboard",
-			route: "/",
-			icon: "Home",
-			section: "main",
-		},
-		{
-			id: 16,
-			label: "Analytics",
-			route: "/analytics",
-			icon: "BarChart3",
-			section: "main",
-		},
-		{
-			id: 24,
-			label: "E-commerce",
-			route: "/e-commerce",
-			icon: "ShoppingCart",
-			section: "main",
-		},
-		{
-			id: 2,
-			label: "Leads",
-			route: "/leads",
-			icon: "User",
-			section: "sales",
-		},
-		{
-			id: 3,
-			label: "Sales",
-			route: "/sales",
-			icon: "DollarSign",
-			section: "sales",
-		},
-		{
-			id: 18,
-			label: "Pipeline",
-			route: "/pipelines",
-			icon: "Layers",
-			section: "sales",
-		},
-		{
-			id: 21,
-			label: "Deals",
-			route: "/deals",
-			icon: "CircleDollarSign",
-			section: "sales",
-		},
-		{
-			id: 4,
-			label: "Contacts",
-			route: "/contacts",
-			icon: "Contact",
-			section: "sales",
-		},
-		{
-			id: 7,
-			label: "Companies",
-			route: "/companies",
-			icon: "Users",
-			section: "sales",
-		},
-		{
-			id: 6,
-			label: "Tasks",
-			route: "/tasks",
-			icon: "ListTodo",
-			section: "operations",
-		},
-		{
-			id: 15,
-			label: "Calendar",
-			route: "/calendar",
-			icon: "Calendar",
-			section: "operations",
-		},
-		{
-			id: 19,
-			label: "Email",
-			route: "/email",
-			icon: "Mail",
-			section: "operations",
-		},
-		{
-			id: 12,
-			label: "Projects",
-			route: "/projects",
-			icon: "FolderClosed",
-			section: "operations",
-		},
-		{
-			id: 8,
-			label: "Invoices",
-			route: "/invoices",
-			icon: "FileText",
-			section: "finance",
-		},
-		{
-			id: 11,
-			label: "Payments",
-			route: "/payments",
-			icon: "CreditCard",
-			section: "finance",
-		},
-		{
-			id: 5,
-			label: "Integrations",
-			route: "/integrations",
-			icon: "Cable",
-			section: "developer",
-		},
-		{
-			id: 9,
-			label: "Webhooks",
-			route: "/webhooks",
-			icon: "Webhook",
-			section: "developer",
-		},
-		{
-			id: 10,
-			label: "Api Keys",
-			route: "/api-keys",
-			icon: "Key",
-			section: "developer",
-		},
-		{
-			id: 13,
-			label: "CMS",
-			route: "/cms",
-			icon: "LayoutTemplate",
-			section: "developer",
-		},
-		{
-			id: 101,
-			label: "Login",
-			route: "/login",
-			icon: "LogIn",
-			section: "authentication",
-		},
-		{
-			id: 102,
-			label: "Sign up",
-			route: "/signup",
-			icon: "UserPlus",
-			section: "authentication",
-		},
-		{
-			id: 103,
-			label: "Forgot password",
-			route: "/forgot-password",
-			icon: "KeyRound",
-			section: "authentication",
-		},
-		{
-			id: 104,
-			label: "Change password",
-			route: "/change-password",
-			icon: "Lock",
-			section: "authentication",
-		},
-		{
-			id: 17,
-			label: "Teams",
-			route: "/teams",
-			icon: "UsersRound",
-			section: "system",
-		},
-		{
-			id: 20,
-			label: "Notifications",
-			route: "/notifications",
-			icon: "Bell",
-			section: "system",
-		},
-		{
-			id: 14,
-			label: "Settings",
-			route: "/settings",
-			icon: "Settings",
-			section: "system",
-		},
-		{
-			id: 22,
-			label: "About",
-			route: "/about",
-			icon: "Info",
-			section: "system",
-		},
-	];
+	const searchNavItems = getSearchNavItems();
 
 	const handleKeyDown = (event) => {
 		if ((event.ctrlKey || event.metaKey) && event.key === "k") {
@@ -267,28 +82,8 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 		handleCloseModal();
 	};
 
-	const q = searchTerm.trim().toLowerCase();
-	const filteredNavItems = navItems.filter((item) => {
-		if (!q) return true;
-		return (
-			item.label.toLowerCase().includes(q) ||
-			item.route.toLowerCase().includes(q)
-		);
-	});
-	const navSections = [
-		{ key: "main", label: "Main" },
-		{ key: "sales", label: "Sales & CRM" },
-		{ key: "operations", label: "Operations" },
-		{ key: "finance", label: "Finance" },
-		{ key: "developer", label: "Developer" },
-		{ key: "authentication", label: "Authentication" },
-		{ key: "system", label: "System" },
-	];
-	const groupedFilteredNavItems = navSections.map((section) => ({
-		...section,
-		items: filteredNavItems.filter((item) => item.section === section.key),
-	}))
-		.filter((section) => section.items.length > 0);
+	const filteredNavItems = filterSearchNavItems(searchNavItems, searchTerm);
+	const groupedFilteredNavItems = groupSearchNavItems(filteredNavItems);
 
 	return (
 		<div

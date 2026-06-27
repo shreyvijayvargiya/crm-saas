@@ -26,6 +26,8 @@ import {
 } from "../schemas/zod-schemas/integrations-api.js";
 import { AppCmsDataSchema } from "../schemas/zod-schemas/cms.js";
 import { AppEcommerceDataSchema } from "../schemas/zod-schemas/ecommerce.js";
+import { AppMarketingDataSchema } from "../schemas/zod-schemas/marketing.js";
+import { AppSubscriptionsDataSchema } from "../schemas/zod-schemas/subscriptions.js";
 import {
 	AppApiLogsDataSchema,
 	AppSupportDataSchema,
@@ -66,6 +68,8 @@ const SCHEMA_BY_SECTION = {
 	appWebhooks: AppWebhooksDataSchema,
 	appCms: AppCmsDataSchema,
 	appEcommerce: AppEcommerceDataSchema,
+	appMarketing: AppMarketingDataSchema,
+	appSubscriptions: AppSubscriptionsDataSchema,
 	appApiLogs: AppApiLogsDataSchema,
 	appSupport: AppSupportDataSchema,
 	appUsers: AppUsersDataSchema,

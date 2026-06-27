@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { menuItemInteractive } from "@/lib/themeTokens";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -54,7 +55,10 @@ export default function MultiSelect({
 							<button
 								key={option.value}
 								type="button"
-								className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-accent"
+								className={cn(
+									"flex w-full items-center gap-2 px-2 py-2 text-sm hover:bg-accent",
+									menuItemInteractive
+								)}
 								onClick={() => toggle(option.value)}
 							>
 								<Checkbox checked={checked} onCheckedChange={() => toggle(option.value)} />

@@ -1,7 +1,7 @@
 {
   "meta": {
     "purpose": "Static snapshot of mock / hardcoded data shapes used in this CRM app. For developer reference and schema discovery only — the running app does not import this file.",
-    "summary": "33 top-level `app*` sections cover all main pages in `pages/` (see `pageRouteMap`). Detail routes `/leads/[id]` and `/contacts/[id]` share `appCrmRecordDetail`. E-commerce store orders live under `appEcommerce.storeOrders` (nested route `/e-commerce/orders`, not a separate sidebar item).",
+    "summary": "35 top-level `app*` sections cover all main pages in `pages/` (see `pageRouteMap`). Detail routes `/leads/[id]` and `/contacts/[id]` share `appCrmRecordDetail`. E-commerce store orders live under `appEcommerce.storeOrders` (nested route `/e-commerce/orders`, not a separate sidebar item). Marketing sub-routes (`/marketing/segments`, `/marketing/forms`, `/marketing/campaigns/[id]`) share `appMarketing`. Subscription detail `/subscriptions/[id]` shares `appSubscriptions`.",
     "notes": [
       "Paths like ./people/ and ./companies/ match public/ asset URLs in Next.js.",
       "Some UI-only keys (e.g. React icon components) are omitted; use string ids where applicable.",
@@ -47,7 +47,14 @@
       "/e-commerce": "appEcommerce",
       "/e-commerce/products/[id]": "appEcommerce (product rows)",
       "/e-commerce/orders": "appEcommerce (storeOrders)",
-      "/e-commerce/orders/[id]": "appEcommerce (storeOrders)"
+      "/e-commerce/orders/[id]": "appEcommerce (storeOrders)",
+      "/marketing": "appMarketing",
+      "/marketing/campaigns/[id]": "appMarketing (campaign rows)",
+      "/marketing/segments": "appMarketing (segments)",
+      "/marketing/forms": "appMarketing (forms, formSubmissions)",
+      "/subscriptions": "appSubscriptions",
+      "/subscriptions/plans": "appSubscriptions (plans)",
+      "/subscriptions/[id]": "appSubscriptions (subscription rows, subscriptionEvents)"
     }
   },
   "appLeads": {
@@ -4469,6 +4476,527 @@
         "uploadDate": "Apr 13, 2025",
         "uploadedBy": "John Doe",
         "description": "Customer onboarding screen recording."
+      }
+    ]
+  },
+  "appMarketing": {
+    "source": "app/Marketing/index.jsx",
+    "metrics": [
+      {
+        "id": "total-sent",
+        "label": "Emails Sent",
+        "value": "24.8k",
+        "change": 18,
+        "positive": true,
+        "period": "Last 30 days",
+        "icon": "Send"
+      },
+      {
+        "id": "open-rate",
+        "label": "Avg. Open Rate",
+        "value": "32.4%",
+        "change": 4,
+        "positive": true,
+        "period": "Last 30 days",
+        "icon": "MailOpen"
+      },
+      {
+        "id": "click-rate",
+        "label": "Avg. Click Rate",
+        "value": "8.7%",
+        "change": 2,
+        "positive": true,
+        "period": "Last 30 days",
+        "icon": "MousePointerClick"
+      },
+      {
+        "id": "form-submissions",
+        "label": "Form Submissions",
+        "value": "1,284",
+        "change": 12,
+        "positive": true,
+        "period": "Last 30 days",
+        "icon": "FileInput"
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "cmp_001",
+        "name": "Onboarding Drip",
+        "description": "3-step welcome sequence for new trial users",
+        "status": "Active",
+        "segmentId": "seg_004",
+        "segmentName": "Trial Users",
+        "scheduledAt": null,
+        "startedAt": "2025-05-01T09:00:00Z",
+        "completedAt": null,
+        "sentCount": 412,
+        "deliveredCount": 398,
+        "openRate": 38.2,
+        "clickRate": 12.5,
+        "bounceRate": 1.8,
+        "createdAt": "2025-04-20T10:00:00Z",
+        "updatedAt": "2025-06-22T08:00:00Z"
+      },
+      {
+        "id": "cmp_002",
+        "name": "Win-back Campaign",
+        "description": "Re-engage inactive contacts with a special offer",
+        "status": "Scheduled",
+        "segmentId": "seg_003",
+        "segmentName": "Inactive Contacts",
+        "scheduledAt": "2025-07-01T10:00:00Z",
+        "startedAt": null,
+        "completedAt": null,
+        "sentCount": 0,
+        "deliveredCount": 0,
+        "openRate": null,
+        "clickRate": null,
+        "bounceRate": null,
+        "createdAt": "2025-06-15T14:00:00Z",
+        "updatedAt": "2025-06-20T11:30:00Z"
+      },
+      {
+        "id": "cmp_003",
+        "name": "Product Launch",
+        "description": "Announce CRM Pro 2.0 to enterprise leads",
+        "status": "Completed",
+        "segmentId": "seg_001",
+        "segmentName": "Enterprise Leads",
+        "scheduledAt": "2025-06-01T08:00:00Z",
+        "startedAt": "2025-06-01T08:00:00Z",
+        "completedAt": "2025-06-15T18:00:00Z",
+        "sentCount": 342,
+        "deliveredCount": 335,
+        "openRate": 41.6,
+        "clickRate": 9.3,
+        "bounceRate": 2.1,
+        "createdAt": "2025-05-10T09:00:00Z",
+        "updatedAt": "2025-06-15T18:00:00Z"
+      },
+      {
+        "id": "cmp_004",
+        "name": "Monthly Newsletter",
+        "description": "June product updates and tips",
+        "status": "Draft",
+        "segmentId": "seg_002",
+        "segmentName": "Newsletter Subscribers",
+        "scheduledAt": null,
+        "startedAt": null,
+        "completedAt": null,
+        "sentCount": 0,
+        "deliveredCount": 0,
+        "openRate": null,
+        "clickRate": null,
+        "bounceRate": null,
+        "createdAt": "2025-06-25T16:00:00Z",
+        "updatedAt": "2025-06-25T16:00:00Z"
+      }
+    ],
+    "segments": [
+      {
+        "id": "seg_001",
+        "name": "Enterprise Leads",
+        "description": "Leads from companies with 500+ employees",
+        "entityType": "lead",
+        "filters": [
+          { "field": "company_size", "operator": "gte", "value": "500" },
+          { "field": "status", "operator": "eq", "value": "Qualified" }
+        ],
+        "contactCount": 342,
+        "createdAt": "2025-03-01T10:00:00Z",
+        "updatedAt": "2025-06-10T14:30:00Z"
+      },
+      {
+        "id": "seg_002",
+        "name": "Newsletter Subscribers",
+        "description": "Contacts who opted in to marketing emails",
+        "entityType": "contact",
+        "filters": [
+          { "field": "tags", "operator": "contains", "value": "newsletter" },
+          { "field": "email_opt_in", "operator": "eq", "value": "true" }
+        ],
+        "contactCount": 1847,
+        "createdAt": "2025-01-15T08:00:00Z",
+        "updatedAt": "2025-06-20T09:15:00Z"
+      },
+      {
+        "id": "seg_003",
+        "name": "Inactive Contacts",
+        "description": "No activity in the last 90 days",
+        "entityType": "both",
+        "filters": [{ "field": "last_activity", "operator": "lt", "value": "90d" }],
+        "contactCount": 521,
+        "createdAt": "2025-02-20T12:00:00Z",
+        "updatedAt": "2025-06-18T16:45:00Z"
+      },
+      {
+        "id": "seg_004",
+        "name": "Trial Users",
+        "description": "Contacts on free trial plan",
+        "entityType": "contact",
+        "filters": [
+          { "field": "plan", "operator": "eq", "value": "trial" },
+          { "field": "trial_days_left", "operator": "lte", "value": "14" }
+        ],
+        "contactCount": 198,
+        "createdAt": "2025-04-05T11:00:00Z",
+        "updatedAt": "2025-06-22T10:00:00Z"
+      }
+    ],
+    "forms": [
+      {
+        "id": "form_001",
+        "name": "Contact Us",
+        "description": "General inquiry form for the website",
+        "fields": [
+          { "id": "f1", "label": "Full Name", "type": "text", "required": true },
+          { "id": "f2", "label": "Email", "type": "email", "required": true },
+          { "id": "f3", "label": "Message", "type": "textarea", "required": true }
+        ],
+        "embedCode": "<script src=\"https://cdn.example.com/forms/form_001.js\" async></script>\n<div id=\"crm-form-form_001\"></div>",
+        "status": "Active",
+        "submissionCount": 847,
+        "createdAt": "2025-01-10T08:00:00Z",
+        "updatedAt": "2025-06-01T12:00:00Z"
+      },
+      {
+        "id": "form_002",
+        "name": "Demo Request",
+        "description": "Schedule a product demo",
+        "fields": [
+          { "id": "f1", "label": "Work Email", "type": "email", "required": true },
+          { "id": "f2", "label": "Company", "type": "text", "required": true },
+          { "id": "f3", "label": "Team Size", "type": "select", "required": false }
+        ],
+        "embedCode": "<script src=\"https://cdn.example.com/forms/form_002.js\" async></script>\n<div id=\"crm-form-form_002\"></div>",
+        "status": "Active",
+        "submissionCount": 312,
+        "createdAt": "2025-02-05T10:00:00Z",
+        "updatedAt": "2025-05-20T14:00:00Z"
+      },
+      {
+        "id": "form_003",
+        "name": "Newsletter Signup",
+        "description": "Simple email capture for blog sidebar",
+        "fields": [{ "id": "f1", "label": "Email", "type": "email", "required": true }],
+        "embedCode": "<script src=\"https://cdn.example.com/forms/form_003.js\" async></script>\n<div id=\"crm-form-form_003\"></div>",
+        "status": "Active",
+        "submissionCount": 125,
+        "createdAt": "2025-03-15T09:00:00Z",
+        "updatedAt": "2025-06-10T11:00:00Z"
+      }
+    ],
+    "formSubmissions": [
+      {
+        "id": "sub_001",
+        "formId": "form_001",
+        "payload": {
+          "name": "Sarah Chen",
+          "email": "sarah@acme.io",
+          "message": "Interested in enterprise plan"
+        },
+        "sourceUrl": "https://example.com/contact",
+        "createdAt": "2025-06-26T14:22:00Z"
+      },
+      {
+        "id": "sub_002",
+        "formId": "form_002",
+        "payload": {
+          "email": "john@startup.co",
+          "company": "Startup Co",
+          "teamSize": "10-50"
+        },
+        "sourceUrl": "https://example.com/demo",
+        "createdAt": "2025-06-26T11:05:00Z"
+      },
+      {
+        "id": "sub_003",
+        "formId": "form_003",
+        "payload": { "email": "alex@mail.com" },
+        "sourceUrl": "https://example.com/blog",
+        "createdAt": "2025-06-25T18:40:00Z"
+      }
+    ]
+  },
+  "appSubscriptions": {
+    "source": "app/Subscriptions/index.jsx",
+    "metrics": [
+      {
+        "id": "mrr",
+        "label": "Monthly Recurring Revenue",
+        "value": "$48.2k",
+        "change": 6,
+        "positive": true,
+        "period": "vs last month",
+        "icon": "DollarSign"
+      },
+      {
+        "id": "active-subs",
+        "label": "Active Subscriptions",
+        "value": "312",
+        "change": 4,
+        "positive": true,
+        "period": "vs last month",
+        "icon": "Users"
+      },
+      {
+        "id": "churn-rate",
+        "label": "Churn Rate",
+        "value": "2.1%",
+        "change": 0.3,
+        "positive": false,
+        "period": "vs last month",
+        "icon": "TrendingDown"
+      },
+      {
+        "id": "renewals",
+        "label": "Renewals This Month",
+        "value": "28",
+        "change": 12,
+        "positive": true,
+        "period": "vs last month",
+        "icon": "RefreshCw"
+      }
+    ],
+    "plans": [
+      {
+        "id": "plan_001",
+        "name": "Starter CRM",
+        "sku": "CRM-STARTER-001",
+        "tier": "Starter",
+        "price": 49,
+        "currency": "USD",
+        "billingInterval": "Monthly",
+        "features": ["Leads", "Pipelines", "Email Sync"],
+        "maxSeats": 5,
+        "trialDays": 7,
+        "status": "Active",
+        "activeSubscriptions": 142,
+        "createdAt": "2025-01-10T08:00:00Z",
+        "updatedAt": "2025-06-01T12:00:00Z"
+      },
+      {
+        "id": "plan_002",
+        "name": "Growth CRM",
+        "sku": "CRM-GROWTH-002",
+        "tier": "Growth",
+        "price": 129,
+        "currency": "USD",
+        "billingInterval": "Monthly",
+        "features": ["Automation", "Advanced Reports", "Priority Support"],
+        "maxSeats": 20,
+        "trialDays": 14,
+        "status": "Active",
+        "activeSubscriptions": 98,
+        "createdAt": "2025-01-10T08:00:00Z",
+        "updatedAt": "2025-06-01T12:00:00Z"
+      },
+      {
+        "id": "plan_003",
+        "name": "Enterprise CRM",
+        "sku": "CRM-ENT-003",
+        "tier": "Enterprise",
+        "price": 699,
+        "currency": "USD",
+        "billingInterval": "Yearly",
+        "features": ["SSO", "Audit Logs", "Dedicated CSM"],
+        "maxSeats": 200,
+        "trialDays": 30,
+        "status": "Active",
+        "activeSubscriptions": 42,
+        "createdAt": "2025-01-10T08:00:00Z",
+        "updatedAt": "2025-06-01T12:00:00Z"
+      },
+      {
+        "id": "plan_004",
+        "name": "Legacy Pro",
+        "sku": "CRM-LEGACY-004",
+        "tier": "Legacy",
+        "price": 79,
+        "currency": "USD",
+        "billingInterval": "Monthly",
+        "features": ["Basic CRM", "Reports"],
+        "maxSeats": 10,
+        "trialDays": 0,
+        "status": "Archived",
+        "activeSubscriptions": 30,
+        "createdAt": "2024-06-01T08:00:00Z",
+        "updatedAt": "2025-03-15T10:00:00Z"
+      }
+    ],
+    "subscriptions": [
+      {
+        "id": "sub_001",
+        "planId": "plan_002",
+        "planName": "Growth CRM",
+        "customerName": "Sarah Chen",
+        "customerEmail": "sarah@acme.io",
+        "companyName": "Acme Corp",
+        "status": "Active",
+        "mrr": 129,
+        "billingInterval": "Monthly",
+        "currentPeriodStart": "2025-06-01T00:00:00Z",
+        "currentPeriodEnd": "2025-07-01T00:00:00Z",
+        "cancelAtPeriodEnd": false,
+        "canceledAt": null,
+        "startedAt": "2025-01-15T10:00:00Z",
+        "createdAt": "2025-01-15T10:00:00Z",
+        "updatedAt": "2025-06-01T00:00:00Z"
+      },
+      {
+        "id": "sub_002",
+        "planId": "plan_003",
+        "planName": "Enterprise CRM",
+        "customerName": "John Martinez",
+        "customerEmail": "john@cloudcorp.com",
+        "companyName": "Cloud Corp",
+        "status": "Active",
+        "mrr": 58.25,
+        "billingInterval": "Yearly",
+        "currentPeriodStart": "2025-06-01T00:00:00Z",
+        "currentPeriodEnd": "2026-06-01T00:00:00Z",
+        "cancelAtPeriodEnd": false,
+        "canceledAt": null,
+        "startedAt": "2024-08-20T14:00:00Z",
+        "createdAt": "2024-08-20T14:00:00Z",
+        "updatedAt": "2025-06-01T00:00:00Z"
+      },
+      {
+        "id": "sub_003",
+        "planId": "plan_001",
+        "planName": "Starter CRM",
+        "customerName": "Alex Rivera",
+        "customerEmail": "alex@startup.co",
+        "companyName": "Startup Co",
+        "status": "Trialing",
+        "mrr": 49,
+        "billingInterval": "Monthly",
+        "currentPeriodStart": "2025-06-20T00:00:00Z",
+        "currentPeriodEnd": "2025-07-04T00:00:00Z",
+        "cancelAtPeriodEnd": false,
+        "canceledAt": null,
+        "startedAt": "2025-06-20T00:00:00Z",
+        "createdAt": "2025-06-20T00:00:00Z",
+        "updatedAt": "2025-06-20T00:00:00Z"
+      },
+      {
+        "id": "sub_004",
+        "planId": "plan_002",
+        "planName": "Growth CRM",
+        "customerName": "Diana Prince",
+        "customerEmail": "diana@techinnovations.com",
+        "companyName": "Tech Innovations",
+        "status": "Past Due",
+        "mrr": 129,
+        "billingInterval": "Monthly",
+        "currentPeriodStart": "2025-05-01T00:00:00Z",
+        "currentPeriodEnd": "2025-06-01T00:00:00Z",
+        "cancelAtPeriodEnd": false,
+        "canceledAt": null,
+        "startedAt": "2024-11-10T09:00:00Z",
+        "createdAt": "2024-11-10T09:00:00Z",
+        "updatedAt": "2025-06-05T08:00:00Z"
+      },
+      {
+        "id": "sub_005",
+        "planId": "plan_001",
+        "planName": "Starter CRM",
+        "customerName": "Barry Schowalter",
+        "customerEmail": "barry@marketingsolutions.com",
+        "companyName": "Marketing Solutions",
+        "status": "Canceled",
+        "mrr": 0,
+        "billingInterval": "Monthly",
+        "currentPeriodStart": "2025-04-01T00:00:00Z",
+        "currentPeriodEnd": "2025-05-01T00:00:00Z",
+        "cancelAtPeriodEnd": true,
+        "canceledAt": "2025-04-28T16:00:00Z",
+        "startedAt": "2024-03-01T11:00:00Z",
+        "createdAt": "2024-03-01T11:00:00Z",
+        "updatedAt": "2025-04-28T16:00:00Z"
+      }
+    ],
+    "subscriptionEvents": [
+      {
+        "id": "evt_001",
+        "subscriptionId": "sub_001",
+        "eventType": "renewed",
+        "description": "Subscription renewed for $129.00",
+        "metadata": { "amount": 129, "currency": "USD" },
+        "createdAt": "2025-06-01T00:05:00Z"
+      },
+      {
+        "id": "evt_002",
+        "subscriptionId": "sub_001",
+        "eventType": "upgraded",
+        "description": "Upgraded from Starter CRM to Growth CRM",
+        "metadata": { "fromPlan": "plan_001", "toPlan": "plan_002" },
+        "createdAt": "2025-03-15T14:30:00Z"
+      },
+      {
+        "id": "evt_003",
+        "subscriptionId": "sub_001",
+        "eventType": "created",
+        "description": "Subscription created on Starter CRM",
+        "metadata": { "planId": "plan_001" },
+        "createdAt": "2025-01-15T10:00:00Z"
+      },
+      {
+        "id": "evt_004",
+        "subscriptionId": "sub_002",
+        "eventType": "renewed",
+        "description": "Annual subscription renewed for $699.00",
+        "metadata": { "amount": 699, "currency": "USD" },
+        "createdAt": "2025-06-01T00:10:00Z"
+      },
+      {
+        "id": "evt_005",
+        "subscriptionId": "sub_002",
+        "eventType": "created",
+        "description": "Enterprise CRM subscription created",
+        "metadata": { "planId": "plan_003" },
+        "createdAt": "2024-08-20T14:00:00Z"
+      },
+      {
+        "id": "evt_006",
+        "subscriptionId": "sub_003",
+        "eventType": "created",
+        "description": "Trial started on Starter CRM (7 days)",
+        "metadata": { "planId": "plan_001", "trialDays": 7 },
+        "createdAt": "2025-06-20T00:00:00Z"
+      },
+      {
+        "id": "evt_007",
+        "subscriptionId": "sub_004",
+        "eventType": "payment_failed",
+        "description": "Payment failed — invoice INV-2025-042",
+        "metadata": { "invoiceId": "INV-2025-042", "amount": 129 },
+        "createdAt": "2025-06-05T08:00:00Z"
+      },
+      {
+        "id": "evt_008",
+        "subscriptionId": "sub_004",
+        "eventType": "renewed",
+        "description": "Subscription renewed for $129.00",
+        "metadata": { "amount": 129, "currency": "USD" },
+        "createdAt": "2025-05-01T00:05:00Z"
+      },
+      {
+        "id": "evt_009",
+        "subscriptionId": "sub_005",
+        "eventType": "canceled",
+        "description": "Subscription canceled at end of billing period",
+        "metadata": { "reason": "Customer request" },
+        "createdAt": "2025-04-28T16:00:00Z"
+      },
+      {
+        "id": "evt_010",
+        "subscriptionId": "sub_005",
+        "eventType": "renewed",
+        "description": "Subscription renewed for $49.00",
+        "metadata": { "amount": 49, "currency": "USD" },
+        "createdAt": "2025-04-01T00:05:00Z"
       }
     ]
   }

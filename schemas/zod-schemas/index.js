@@ -144,6 +144,34 @@ export {
 } from "./ecommerce.js";
 
 export {
+	CampaignStatusSchema,
+	CampaignStepTypeSchema,
+	SegmentEntityTypeSchema,
+	MarketingFormStatusSchema,
+	MarketingMetricCardSchema,
+	SegmentFilterSchema,
+	SegmentSchema,
+	CampaignStepSchema,
+	CampaignSchema,
+	MarketingFormFieldSchema,
+	MarketingFormSchema,
+	FormSubmissionSchema,
+	AppMarketingDataSchema,
+} from "./marketing.js";
+
+export {
+	SubscriptionBillingIntervalSchema,
+	SubscriptionPlanStatusSchema,
+	SubscriptionStatusSchema,
+	SubscriptionEventTypeSchema,
+	SubscriptionMetricCardSchema,
+	SubscriptionPlanSchema,
+	SubscriptionSchema,
+	SubscriptionEventSchema,
+	AppSubscriptionsDataSchema,
+} from "./subscriptions.js";
+
+export {
 	ApiLogEntrySchema,
 	AppApiLogsDataSchema,
 	SupportMessageSchema,
