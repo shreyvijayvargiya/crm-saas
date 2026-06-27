@@ -1,17 +1,3 @@
-/**
- * Lead capture — sends one email to you via SMTP (no Resend / Airtable / webhooks).
- *
- * Gmail (recommended): create an App Password (Google Account → Security → 2-Step → App passwords),
- * then set:
- *   SMTP_USER=shreyvijayvargiya26@gmail.com
- *   SMTP_PASS=your-app-password
- *   (aliases: SMTP_PASS_CRM_SAAS, SMTP_PASS_CRM_SAAS_CRM_SAAS — spaces in Gmail app passwords are stripped)
- *
- * Optional:
- *   LEAD_TO_EMAIL — inbox to receive leads (default: shreyvijayvargiya26@gmail.com)
- *   SMTP_HOST, SMTP_PORT — omit to use Gmail preset via service "gmail"
- */
-
 import nodemailer from "nodemailer";
 
 const DEFAULT_TO = "shreyvijayvargiya26@gmail.com";

@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Plus, Search, LayoutGrid, List } from "lucide-react";
 import { toast } from "sonner";
 import SubscriptionsLayout from "../SubscriptionsLayout";
-import { SUBSCRIPTION_PLANS } from "../subscriptionsSeedData";
+import { useSubscriptionPlans } from "../../../hooks/useSubscriptionPlans";
 import { FormModal, FormField } from "../../../lib/ui/modal";
 import FormSelect from "../../../lib/ui/FormSelect";
 import { cn } from "@/lib/utils";
@@ -31,7 +31,7 @@ const EMPTY_PLAN = {
 };
 
 const SubscriptionPlans = () => {
-	const [plans, setPlans] = useState(SUBSCRIPTION_PLANS);
+	const { plans, isLoading, source, createPlan } = useSubscriptionPlans();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [viewMode, setViewMode] = useState("table");
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,31 +46,19 @@ const SubscriptionPlans = () => {
 		);
 	}, [plans, searchTerm]);
 
-	const handleCreate = () => {
+	const handleCreate = async () => {
 		if (!newPlan.name.trim() || !newPlan.sku.trim()) {
 			toast.error("Name and SKU are required");
 			return;
 		}
-		const created = {
-			id: `plan_${Date.now()}`,
-			name: newPlan.name,
-			sku: newPlan.sku,
-			tier: newPlan.tier,
-			price: parseFloat(newPlan.price) || 0,
-			currency: "USD",
-			billingInterval: newPlan.billingInterval,
-			features: [],
-			maxSeats: 5,
-			trialDays: 7,
-			status: newPlan.status,
-			activeSubscriptions: 0,
-			createdAt: new Date().toISOString(),
-			updatedAt: new Date().toISOString(),
-		};
-		setPlans((prev) => [created, ...prev]);
-		toast.success(`Plan "${created.name}" created`);
-		setIsModalOpen(false);
-		setNewPlan(EMPTY_PLAN);
+		try {
+			const created = await createPlan(newPlan);
+			toast.success(`Plan "${created.name}" created`);
+			setIsModalOpen(false);
+			setNewPlan(EMPTY_PLAN);
+		} catch (err) {
+			toast.error(err.message || "Failed to create plan");
+		}
 	};
 
 	return (
@@ -83,7 +71,10 @@ const SubscriptionPlans = () => {
 					<div className="flex flex-row flex-wrap items-center justify-between gap-4 space-y-0">
 						<div>
 							<CardTitle>Plan catalog</CardTitle>
-							<CardDescription>{filtered.length} plans</CardDescription>
+							<CardDescription>
+								{filtered.length} plans
+								{source === "pro" ? " · live database" : source === "demo" ? " · demo data" : ""}
+							</CardDescription>
 						</div>
 						<div className="flex items-center gap-2">
 							<div className="flex rounded-lg border p-0.5">

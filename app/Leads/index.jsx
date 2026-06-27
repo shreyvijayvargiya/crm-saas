@@ -46,7 +46,8 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ExportDropdown } from "../../lib/ui/dropdown";
-import { INITIAL_LEADS, INITIAL_PIPELINES } from "../CRM/leadsSeedData";
+import { INITIAL_PIPELINES } from "../CRM/leadsSeedData";
+import { useLeads } from "../../hooks/useLeads";
 import { FormModal, FormField } from "../../lib/ui/modal";
 import FormSelect from "../../lib/ui/FormSelect";
 import {
@@ -166,8 +167,15 @@ const LeadsShadcn = () => {
 	const { theme, colorScheme, colors } = useTheme();
 	const chartTooltipProps = useChartTooltipProps();
 
+	const {
+		leads: allLeads,
+		createLead,
+		deleteLead,
+		isLoading: leadsLoading,
+		source: leadsSource,
+	} = useLeads();
+	const [tableSearchTerm, setTableSearchTerm] = useState("");
 	const [pipelines, setPipelines] = useState(INITIAL_PIPELINES);
-	const [allLeads, setAllLeads] = useState(INITIAL_LEADS);
 	const [sortConfig, setSortConfig] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [newLead, setNewLead] = useState(EMPTY_LEAD_FORM);
@@ -198,29 +206,32 @@ const LeadsShadcn = () => {
 		}
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		if (!newLead.name?.trim() || !newLead.email?.trim()) return;
-		const leadToAdd = {
-			id: String(Date.now()),
-			name: newLead.name.trim(),
-			email: newLead.email.trim(),
-			image: newLead.image || LEAD_AVATARS[0],
-			company: newLead.company?.trim() || leadDisplayCompany({ email: newLead.email }),
-			phone: newLead.phone,
-			source: newLead.source,
-			status: newLead.status,
-			notes: newLead.notes,
-			files: newLead.files,
-			lastContacted: new Date().toLocaleDateString("en-US"),
-		};
-		setAllLeads((prevLeads) => [...prevLeads, leadToAdd]);
-		toast.success(`Added Lead: ${leadToAdd.name}`);
-		handleModalClose();
+		try {
+			const leadToAdd = await createLead({
+				name: newLead.name.trim(),
+				email: newLead.email.trim(),
+				image: newLead.image || LEAD_AVATARS[0],
+				company: newLead.company?.trim() || leadDisplayCompany({ email: newLead.email }),
+				phone: newLead.phone,
+				source: newLead.source,
+				status: newLead.status,
+			});
+			toast.success(`Added Lead: ${leadToAdd.name}`);
+			handleModalClose();
+		} catch (err) {
+			toast.error(err.message || "Failed to add lead");
+		}
 	};
 
-	const handleRemoveLead = (leadId) => {
-		setAllLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== leadId));
-		toast.success(`Removed Lead with ID: ${leadId}`);
+	const handleRemoveLead = async (leadId) => {
+		try {
+			await deleteLead(leadId);
+			toast.success(`Removed Lead with ID: ${leadId}`);
+		} catch (err) {
+			toast.error(err.message || "Failed to remove lead");
+		}
 	};
 
 	const handleExportCSV = () => {
@@ -302,6 +313,14 @@ const LeadsShadcn = () => {
 
 	const sortedLeads = useMemo(() => {
 		let sortableLeads = [...allLeads];
+		if (tableSearchTerm) {
+			const q = tableSearchTerm.toLowerCase();
+			sortableLeads = sortableLeads.filter(
+				(lead) =>
+					lead.name.toLowerCase().includes(q) ||
+					lead.email.toLowerCase().includes(q)
+			);
+		}
 		if (sortConfig !== null) {
 			sortableLeads.sort((a, b) => {
 				if (a[sortConfig.key] < b[sortConfig.key])
@@ -312,7 +331,7 @@ const LeadsShadcn = () => {
 			});
 		}
 		return sortableLeads;
-	}, [allLeads, sortConfig]);
+	}, [allLeads, sortConfig, tableSearchTerm]);
 
 	const allVisibleSelected =
 		sortedLeads.length > 0 &&
@@ -534,18 +553,8 @@ const LeadsShadcn = () => {
 								placeholder="Search Leads..."
 								name="search-leads"
 								className="pl-9"
-								onChange={(e) => {
-									const searchTerm = e.target.value.toLowerCase();
-									const filteredLeads =
-										searchTerm === ""
-											? pipelines[0].leads
-											: pipelines[0].leads.filter(
-													(lead) =>
-														lead.name.toLowerCase().includes(searchTerm) ||
-														lead.email.toLowerCase().includes(searchTerm)
-											  );
-									setAllLeads(filteredLeads);
-								}}
+								value={tableSearchTerm}
+								onChange={(e) => setTableSearchTerm(e.target.value)}
 							/>
 						</div>
 						<Button onClick={handleAddLead}>

@@ -2,7 +2,7 @@
 
 PostgreSQL tables for this CRM template, aligned with `schemas/sql-schemas/drizzle/schema.ts` and Zod `app*` payloads in `data.json`. Use **`tenant_id`** on every app table so data is isolated per customer (same intent as Firestore `tenants/{tenantId}`).
 
-Apply migrations in order: **`01-auth.sql`** → **`02-app-tables.sql`** → **`rls-policies.sql`**.
+Apply migrations in order: **`01-auth.sql`** → **`02-app-tables.sql`** → **`rls-policies.sql`** → **`04-pro-client-rls.sql`** (client-side signup). Optional: **`03-pro-sample-seed.sql`** after signup.
 
 ## Auth & identity (`01-auth.sql`)
 

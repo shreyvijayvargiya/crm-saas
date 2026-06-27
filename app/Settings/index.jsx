@@ -13,6 +13,7 @@ import {
 	ChevronDown,
 	ChevronUp,
 	Search,
+	Database,
 } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
@@ -23,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FormModal, FormField } from "../../lib/ui/modal";
+import ProSetupPanel from "./ProSetupPanel";
 import FormSelect from "../../lib/ui/FormSelect";
 import {
 	Table,
@@ -42,7 +44,7 @@ const textareaClassName = cn(
 const Settings = () => {
 	const { colors } = useTheme();
 
-	const [activeTab, setActiveTab] = useState("profile");
+	const [activeTab, setActiveTab] = useState("database");
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [memberRole, setMemberRole] = useState("");
@@ -207,6 +209,7 @@ const Settings = () => {
 	);
 
 	const tabs = [
+		{ id: "database", label: "Database (PRO)", icon: Database },
 		{ id: "profile", label: "Profile", icon: User },
 		{ id: "account", label: "Account", icon: Lock },
 		{ id: "notifications", label: "Notifications", icon: Bell },
@@ -935,6 +938,7 @@ const Settings = () => {
 				</div>
 
 				<div className="md:w-3/4 w-full">
+					{activeTab === "database" && <ProSetupPanel />}
 					{activeTab === "profile" && renderProfileSettings()}
 					{activeTab === "account" && renderAccountSettings()}
 					{activeTab === "notifications" && renderNotificationSettings()}

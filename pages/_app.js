@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import LayoutWrapper from "../modules/Layout";
 import { ThemeProvider } from "../utils/ThemeContext";
 import { ThemeCustomizerProvider } from "../utils/ThemeCustomizerContext";
+import { AuthProvider, ProRouteGuard } from "../utils/AuthProvider";
 import "tailwindcss/tailwind.css";
 import "../globals.css";
 
@@ -10,10 +11,14 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<ThemeProvider>
 			<ThemeCustomizerProvider>
-				<LayoutWrapper>
-					<Component {...pageProps} />
-					<Analytics />
-				</LayoutWrapper>
+				<AuthProvider>
+					<LayoutWrapper>
+						<ProRouteGuard>
+							<Component {...pageProps} />
+						</ProRouteGuard>
+						<Analytics />
+					</LayoutWrapper>
+				</AuthProvider>
 			</ThemeCustomizerProvider>
 		</ThemeProvider>
 	);

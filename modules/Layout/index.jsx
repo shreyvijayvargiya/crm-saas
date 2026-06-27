@@ -18,6 +18,7 @@ import Sidebar from "../Sidebar";
 import ThemeCustomizer from "../ThemeCustomizer";
 import { Toaster } from "@/components/ui/sonner";
 import Navbar from "../Navbar";
+import ProModeBanner from "../ProModeBanner";
 import { useTheme } from "../../utils/useTheme";
 import i18n from "../../utils/i18n";
 import AutoTranslate from "../AutoTranslate";
@@ -138,6 +139,7 @@ const LayoutWrapper = ({ children }) => {
 								aiChatOpen={aiChatOpen}
 								onToggleAiChat={toggleAiChat}
 							/>
+							<ProModeBanner />
 							<div>{children}</div>
 						</main>
 

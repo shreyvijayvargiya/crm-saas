@@ -7,6 +7,7 @@ module.exports = {
 		"modules/**/*.{js,jsx}",
 		"pages/**/*.{js,jsx}",
 		"utils/**/*.{js,jsx}",
+		"hooks/**/*.{js,jsx}",
 		"lib/**/*.{js,jsx,ts,tsx}",
 	],
 	theme: {

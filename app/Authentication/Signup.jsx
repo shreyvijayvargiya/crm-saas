@@ -1,10 +1,12 @@
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { toast } from "sonner";
 import AuthPageShell from "./AuthPageShell";
 import LabeledInput from "./LabeledInput";
 import PasswordField from "./PasswordField";
 import { useTheme } from "../../utils/useTheme";
+import { useAuth } from "../../utils/AuthProvider";
 import { Button } from "@/components/ui/button";
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -25,7 +27,9 @@ function strengthLabel(pw) {
 }
 
 const Signup = () => {
+	const router = useRouter();
 	const { colors } = useTheme();
+	const { signUp, proEnabled, isDemo } = useAuth();
 	const [name, setName] = useState("");
 	const [company, setCompany] = useState("");
 	const [email, setEmail] = useState("");
@@ -33,6 +37,7 @@ const Signup = () => {
 	const [confirm, setConfirm] = useState("");
 	const [accepted, setAccepted] = useState(false);
 	const [errors, setErrors] = useState({});
+	const [submitting, setSubmitting] = useState(false);
 
 	const strength = useMemo(() => strengthLabel(password), [password]);
 
@@ -49,17 +54,44 @@ const Signup = () => {
 		return Object.keys(next).length === 0;
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (!validate()) return;
-		toast.success("Demo: account created. Hook signup to your user service.");
+		setSubmitting(true);
+		try {
+			if (proEnabled) {
+				const data = await signUp({
+					email: email.trim(),
+					password,
+					name: name.trim(),
+					company: company.trim(),
+				});
+				if (data.session) {
+					toast.success("Account created — welcome!");
+					router.push("/");
+				} else {
+					toast.success("Check your email to confirm your account");
+				}
+			} else {
+				toast.success("Demo: account created. Enable PRO in Settings or .env.local");
+				router.push("/login");
+			}
+		} catch (err) {
+			toast.error(err.message || "Sign up failed");
+		} finally {
+			setSubmitting(false);
+		}
 	};
 
 	return (
 		<AuthPageShell
 			title="Create your account"
-			subtitle="Invite your team after you connect your identity provider or database."
-			badge="Sign up"
+			subtitle={
+				proEnabled
+					? "Creates your profile, workspace, and tenant in Supabase."
+					: "Invite your team after you connect your identity provider or database."
+			}
+			badge={proEnabled ? "PRO signup" : "Demo signup"}
 			footer={
 				<p className={`text-center text-sm ${colors.mutedForeground}`}>
 					Already have an account?{" "}
@@ -155,8 +187,8 @@ const Signup = () => {
 						</p>
 					) : null}
 				</div>
-				<Button type="submit" className="w-full">
-					Create account
+				<Button type="submit" className="w-full" disabled={submitting}>
+					{submitting ? "Creating account…" : "Create account"}
 				</Button>
 			</form>
 		</AuthPageShell>

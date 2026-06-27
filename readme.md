@@ -71,6 +71,19 @@ When you pivot to **PostgreSQL** with migrations and a relational story, start f
 
 These files are **not** connected to Next.js until you adopt them (for example copy the Prisma schema to `prisma/schema.prisma`, set `DATABASE_URL`, run `prisma migrate`). Inline comments mention **Prisma 5 vs 7** datasource URL behaviour.
 
+### PRO mode — Supabase integration (included)
+
+The template includes a **PRO layer** that wires Supabase auth and live CRUD for **Leads** and **Subscriptions** without breaking the default demo experience.
+
+| Mode | How to enable |
+|------|----------------|
+| **Demo** (default) | No env vars — seed data works immediately |
+| **PRO** | Copy `.env.example` → `.env.local`, set `NEXT_PUBLIC_DEMO_MODE=false` + Supabase URL & anon key |
+
+**Documentation:** [`docs/INTEGRATION.md`](./docs/INTEGRATION.md) — client-side Supabase only (no `/api/pro` routes).
+
+**In-app checklist:** Settings → **Database (PRO)** tab.
+
 **Suggested flow:** implement REST (or RPC) payloads that align with **`schemas/` (Zod)**, persist with **Prisma or Drizzle** from **`sql-schemas`**, and keep **`data.json`** in sync only as illustrative docs if you still maintain it.
 
 ---
