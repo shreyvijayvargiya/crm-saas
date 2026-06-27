@@ -36,6 +36,14 @@ alter table public.record_files enable row level security;
 alter table public.contact_embedded_emails enable row level security;
 alter table public.ecommerce_products enable row level security;
 alter table public.ecommerce_orders enable row level security;
+alter table public.segments enable row level security;
+alter table public.campaigns enable row level security;
+alter table public.campaign_steps enable row level security;
+alter table public.marketing_forms enable row level security;
+alter table public.form_submissions enable row level security;
+alter table public.subscription_plans enable row level security;
+alter table public.subscriptions enable row level security;
+alter table public.subscription_events enable row level security;
 
 -- ---------------------------------------------------------------------------
 -- Macro: tenant-scoped CRUD for tables with tenant_id
@@ -207,3 +215,43 @@ create policy "ecommerce_orders_tenant_select" on public.ecommerce_orders for se
 create policy "ecommerce_orders_tenant_insert" on public.ecommerce_orders for insert with check (tenant_id in (select public.user_tenant_ids()));
 create policy "ecommerce_orders_tenant_update" on public.ecommerce_orders for update using (tenant_id in (select public.user_tenant_ids()));
 create policy "ecommerce_orders_tenant_delete" on public.ecommerce_orders for delete using (tenant_id in (select public.user_tenant_ids()));
+
+create policy "segments_tenant_select" on public.segments for select using (tenant_id in (select public.user_tenant_ids()));
+create policy "segments_tenant_insert" on public.segments for insert with check (tenant_id in (select public.user_tenant_ids()));
+create policy "segments_tenant_update" on public.segments for update using (tenant_id in (select public.user_tenant_ids()));
+create policy "segments_tenant_delete" on public.segments for delete using (tenant_id in (select public.user_tenant_ids()));
+
+create policy "campaigns_tenant_select" on public.campaigns for select using (tenant_id in (select public.user_tenant_ids()));
+create policy "campaigns_tenant_insert" on public.campaigns for insert with check (tenant_id in (select public.user_tenant_ids()));
+create policy "campaigns_tenant_update" on public.campaigns for update using (tenant_id in (select public.user_tenant_ids()));
+create policy "campaigns_tenant_delete" on public.campaigns for delete using (tenant_id in (select public.user_tenant_ids()));
+
+create policy "campaign_steps_tenant_select" on public.campaign_steps for select using (tenant_id in (select public.user_tenant_ids()));
+create policy "campaign_steps_tenant_insert" on public.campaign_steps for insert with check (tenant_id in (select public.user_tenant_ids()));
+create policy "campaign_steps_tenant_update" on public.campaign_steps for update using (tenant_id in (select public.user_tenant_ids()));
+create policy "campaign_steps_tenant_delete" on public.campaign_steps for delete using (tenant_id in (select public.user_tenant_ids()));
+
+create policy "marketing_forms_tenant_select" on public.marketing_forms for select using (tenant_id in (select public.user_tenant_ids()));
+create policy "marketing_forms_tenant_insert" on public.marketing_forms for insert with check (tenant_id in (select public.user_tenant_ids()));
+create policy "marketing_forms_tenant_update" on public.marketing_forms for update using (tenant_id in (select public.user_tenant_ids()));
+create policy "marketing_forms_tenant_delete" on public.marketing_forms for delete using (tenant_id in (select public.user_tenant_ids()));
+
+create policy "form_submissions_tenant_select" on public.form_submissions for select using (tenant_id in (select public.user_tenant_ids()));
+create policy "form_submissions_tenant_insert" on public.form_submissions for insert with check (tenant_id in (select public.user_tenant_ids()));
+create policy "form_submissions_tenant_update" on public.form_submissions for update using (tenant_id in (select public.user_tenant_ids()));
+create policy "form_submissions_tenant_delete" on public.form_submissions for delete using (tenant_id in (select public.user_tenant_ids()));
+
+create policy "subscription_plans_tenant_select" on public.subscription_plans for select using (tenant_id in (select public.user_tenant_ids()));
+create policy "subscription_plans_tenant_insert" on public.subscription_plans for insert with check (tenant_id in (select public.user_tenant_ids()));
+create policy "subscription_plans_tenant_update" on public.subscription_plans for update using (tenant_id in (select public.user_tenant_ids()));
+create policy "subscription_plans_tenant_delete" on public.subscription_plans for delete using (tenant_id in (select public.user_tenant_ids()));
+
+create policy "subscriptions_tenant_select" on public.subscriptions for select using (tenant_id in (select public.user_tenant_ids()));
+create policy "subscriptions_tenant_insert" on public.subscriptions for insert with check (tenant_id in (select public.user_tenant_ids()));
+create policy "subscriptions_tenant_update" on public.subscriptions for update using (tenant_id in (select public.user_tenant_ids()));
+create policy "subscriptions_tenant_delete" on public.subscriptions for delete using (tenant_id in (select public.user_tenant_ids()));
+
+create policy "subscription_events_tenant_select" on public.subscription_events for select using (tenant_id in (select public.user_tenant_ids()));
+create policy "subscription_events_tenant_insert" on public.subscription_events for insert with check (tenant_id in (select public.user_tenant_ids()));
+create policy "subscription_events_tenant_update" on public.subscription_events for update using (tenant_id in (select public.user_tenant_ids()));
+create policy "subscription_events_tenant_delete" on public.subscription_events for delete using (tenant_id in (select public.user_tenant_ids()));

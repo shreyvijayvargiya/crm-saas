@@ -13,6 +13,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { navCategories } from "../navConfig";
 
 const Sidebar = ({ open, setDrawerOpen }) => {
 	const router = useRouter();
@@ -34,219 +35,6 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 	const langPrefix = (i18n.language || "en").split("-")[0];
 	const selectedLanguage =
 		languageOptions.find((lang) => lang.code === langPrefix) || languageOptions[0];
-
-	const navCategories = [
-		{
-			id: "main",
-			label: "Main",
-			items: [
-				{
-					id: 1,
-					label: "Dashboard",
-					route: "/",
-					icon: "Home",
-				},
-				{
-					id: 16,
-					label: "Analytics",
-					route: "/analytics",
-					icon: "BarChart3",
-				},
-			],
-		},
-		{
-			id: "sales",
-			label: "Sales & CRM",
-			items: [
-				{
-					id: 2,
-					label: "Leads",
-					route: "/leads",
-					icon: "User",
-				},
-				{
-					id: 3,
-					label: "Sales",
-					route: "/sales",
-					icon: "DollarSign",
-				},
-				{
-					id: 18,
-					label: "Pipeline",
-					route: "/pipelines",
-					icon: "Layers",
-				},
-				{
-					id: 21,
-					label: "Deals",
-					route: "/deals",
-					icon: "CircleDollarSign",
-				},
-				{
-					id: 4,
-					label: "Contacts",
-					route: "/contacts",
-					icon: "Contact",
-				},
-				{
-					id: 7,
-					label: "Companies",
-					route: "/companies",
-					icon: "Users",
-				},
-				{
-					id: 24,
-					label: "E-commerce",
-					route: "/e-commerce",
-					icon: "ShoppingCart",
-				},
-			],
-		},
-		{
-			id: "operations",
-			label: "Operations",
-			items: [
-				{
-					id: 6,
-					label: "Tasks",
-					route: "/tasks",
-					icon: "ListTodo",
-				},
-				{
-					id: 15,
-					label: "Calendar",
-					route: "/calendar",
-					icon: "Calendar",
-				},
-				{
-					id: 19,
-					label: "Email",
-					route: "/email",
-					icon: "Mail",
-				},
-				{
-					id: 12,
-					label: "Projects",
-					route: "/projects",
-					icon: "FolderClosed",
-				},
-			],
-		},
-		{
-			id: "finance",
-			label: "Finance",
-			items: [
-				{
-					id: 23,
-					label: "Products",
-					route: "/products",
-					icon: "Package",
-				},
-				{
-					id: 8,
-					label: "Invoices",
-					route: "/invoices",
-					icon: "FileText",
-				},
-				{
-					id: 11,
-					label: "Payments",
-					route: "/payments",
-					icon: "CreditCard",
-				},
-			],
-		},
-		{
-			id: "developer",
-			label: "Developer",
-			items: [
-				{
-					id: 5,
-					label: "Integrations",
-					route: "/integrations",
-					icon: "Cable",
-				},
-				{
-					id: 9,
-					label: "Webhooks",
-					route: "/webhooks",
-					icon: "Webhook",
-				},
-				{
-					id: 10,
-					label: "Api Keys",
-					route: "/api-keys",
-					icon: "Key",
-				},
-				{
-					id: 13,
-					label: "CMS",
-					route: "/cms",
-					icon: "FileText",
-				},
-			],
-		},
-		{
-			id: "authentication",
-			label: "Authentication",
-			items: [
-				{
-					id: 101,
-					label: "Login",
-					route: "/login",
-					icon: "LogIn",
-				},
-				{
-					id: 102,
-					label: "Sign up",
-					route: "/signup",
-					icon: "UserPlus",
-				},
-				{
-					id: 103,
-					label: "Forgot password",
-					route: "/forgot-password",
-					icon: "KeyRound",
-				},
-				{
-					id: 104,
-					label: "Change password",
-					route: "/change-password",
-					icon: "Lock",
-				},
-			],
-		},
-		{
-			id: "system",
-			label: "System",
-			items: [
-				{
-					id: 17,
-					label: "Teams",
-					route: "/teams",
-					icon: "UsersRound",
-				},
-				{
-					id: 20,
-					label: "Notifications",
-					route: "/notifications",
-					icon: "Bell",
-				},
-				{
-					id: 14,
-					label: "Settings",
-					route: "/settings",
-					icon: "Settings",
-				},
-				{
-					id: 22,
-					label: "About",
-					route: "/about",
-					icon: "Info",
-				},
-			],
-		},
-	];
 
 	return (
 		<div
@@ -330,7 +118,9 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 								<div className="space-y-1">
 									{category.items?.map((item) => {
 										const Icon = lucideIcons[item?.icon];
-										const isActive = router.pathname === item.route;
+										const isActive =
+											router.pathname === item.route ||
+											router.pathname.startsWith(`${item.route}/`);
 										return (
 											<div key={item.id} className="relative group">
 												<Button

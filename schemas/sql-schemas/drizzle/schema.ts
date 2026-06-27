@@ -581,3 +581,224 @@ export const ecommerceOrders = pgTable(
 		index("ecommerce_orders_product_id_idx").on(t.productId),
 	]
 );
+
+export const campaignStatusEnum = pgEnum("campaign_status", [
+	"Draft",
+	"Scheduled",
+	"Active",
+	"Paused",
+	"Completed",
+]);
+
+export const campaignStepTypeEnum = pgEnum("campaign_step_type", ["email", "wait", "branch"]);
+
+export const segmentEntityTypeEnum = pgEnum("segment_entity_type", ["contact", "lead", "both"]);
+
+export const marketingFormStatusEnum = pgEnum("marketing_form_status", ["Draft", "Active"]);
+
+export const segments = pgTable(
+	"segments",
+	{
+		id: varchar("id", { length: 32 }).primaryKey(),
+		tenantId: varchar("tenant_id", { length: 32 }).notNull(),
+		name: text("name").notNull(),
+		description: text("description"),
+		entityType: segmentEntityTypeEnum("entity_type").default("both").notNull(),
+		filters: json("filters").notNull(),
+		contactCount: integer("contact_count").default(0).notNull(),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
+	},
+	(t) => [
+		index("segments_tenant_id_idx").on(t.tenantId),
+		index("segments_entity_type_idx").on(t.entityType),
+	]
+);
+
+export const campaigns = pgTable(
+	"campaigns",
+	{
+		id: varchar("id", { length: 32 }).primaryKey(),
+		tenantId: varchar("tenant_id", { length: 32 }).notNull(),
+		name: text("name").notNull(),
+		description: text("description"),
+		status: campaignStatusEnum("status").default("Draft").notNull(),
+		segmentId: varchar("segment_id", { length: 32 }).references(() => segments.id, {
+			onDelete: "set null",
+		}),
+		scheduledAt: timestamp("scheduled_at"),
+		startedAt: timestamp("started_at"),
+		completedAt: timestamp("completed_at"),
+		sentCount: integer("sent_count").default(0).notNull(),
+		deliveredCount: integer("delivered_count").default(0).notNull(),
+		openRate: decimal("open_rate", { precision: 5, scale: 2 }),
+		clickRate: decimal("click_rate", { precision: 5, scale: 2 }),
+		bounceRate: decimal("bounce_rate", { precision: 5, scale: 2 }),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
+	},
+	(t) => [
+		index("campaigns_tenant_id_idx").on(t.tenantId),
+		index("campaigns_status_idx").on(t.status),
+		index("campaigns_segment_id_idx").on(t.segmentId),
+	]
+);
+
+export const campaignSteps = pgTable(
+	"campaign_steps",
+	{
+		id: varchar("id", { length: 32 }).primaryKey(),
+		tenantId: varchar("tenant_id", { length: 32 }).notNull(),
+		campaignId: varchar("campaign_id", { length: 32 })
+			.notNull()
+			.references(() => campaigns.id, { onDelete: "cascade" }),
+		stepOrder: integer("step_order").notNull(),
+		stepType: campaignStepTypeEnum("step_type").notNull(),
+		name: text("name").notNull(),
+		config: json("config"),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+	},
+	(t) => [
+		index("campaign_steps_tenant_id_idx").on(t.tenantId),
+		index("campaign_steps_campaign_id_idx").on(t.campaignId),
+	]
+);
+
+export const marketingForms = pgTable(
+	"marketing_forms",
+	{
+		id: varchar("id", { length: 32 }).primaryKey(),
+		tenantId: varchar("tenant_id", { length: 32 }).notNull(),
+		name: text("name").notNull(),
+		description: text("description"),
+		fields: json("fields").notNull(),
+		embedCode: text("embed_code"),
+		status: marketingFormStatusEnum("status").default("Draft").notNull(),
+		submissionCount: integer("submission_count").default(0).notNull(),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
+	},
+	(t) => [
+		index("marketing_forms_tenant_id_idx").on(t.tenantId),
+		index("marketing_forms_status_idx").on(t.status),
+	]
+);
+
+export const formSubmissions = pgTable(
+	"form_submissions",
+	{
+		id: varchar("id", { length: 32 }).primaryKey(),
+		tenantId: varchar("tenant_id", { length: 32 }).notNull(),
+		formId: varchar("form_id", { length: 32 })
+			.notNull()
+			.references(() => marketingForms.id, { onDelete: "cascade" }),
+		payload: json("payload").notNull(),
+		sourceUrl: text("source_url"),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+	},
+	(t) => [
+		index("form_submissions_tenant_id_idx").on(t.tenantId),
+		index("form_submissions_form_id_idx").on(t.formId),
+	]
+);
+
+export const subscriptionBillingIntervalEnum = pgEnum("subscription_billing_interval", [
+	"Monthly",
+	"Yearly",
+]);
+
+export const subscriptionPlanStatusEnum = pgEnum("subscription_plan_status", [
+	"Active",
+	"Archived",
+]);
+
+export const subscriptionStatusEnum = pgEnum("subscription_status", [
+	"Active",
+	"Trialing",
+	"Past Due",
+	"Canceled",
+	"Paused",
+]);
+
+export const subscriptionEventTypeEnum = pgEnum("subscription_event_type", [
+	"created",
+	"renewed",
+	"upgraded",
+	"downgraded",
+	"canceled",
+	"payment_failed",
+	"reactivated",
+]);
+
+export const subscriptionPlans = pgTable(
+	"subscription_plans",
+	{
+		id: varchar("id", { length: 32 }).primaryKey(),
+		tenantId: varchar("tenant_id", { length: 32 }).notNull(),
+		name: text("name").notNull(),
+		sku: text("sku").notNull(),
+		tier: text("tier").notNull(),
+		price: decimal("price", { precision: 12, scale: 2 }).notNull(),
+		currency: text("currency").default("USD").notNull(),
+		billingInterval: subscriptionBillingIntervalEnum("billing_interval").notNull(),
+		features: json("features").notNull(),
+		maxSeats: integer("max_seats").default(0).notNull(),
+		trialDays: integer("trial_days").default(0).notNull(),
+		status: subscriptionPlanStatusEnum("status").default("Active").notNull(),
+		activeSubscriptions: integer("active_subscriptions").default(0).notNull(),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
+	},
+	(t) => [
+		index("subscription_plans_tenant_id_idx").on(t.tenantId),
+		index("subscription_plans_status_idx").on(t.status),
+	]
+);
+
+export const subscriptions = pgTable(
+	"subscriptions",
+	{
+		id: varchar("id", { length: 32 }).primaryKey(),
+		tenantId: varchar("tenant_id", { length: 32 }).notNull(),
+		planId: varchar("plan_id", { length: 32 })
+			.notNull()
+			.references(() => subscriptionPlans.id, { onDelete: "restrict" }),
+		customerName: text("customer_name").notNull(),
+		customerEmail: text("customer_email").notNull(),
+		companyName: text("company_name"),
+		status: subscriptionStatusEnum("status").default("Active").notNull(),
+		mrr: decimal("mrr", { precision: 12, scale: 2 }).notNull(),
+		billingInterval: subscriptionBillingIntervalEnum("billing_interval").notNull(),
+		currentPeriodStart: timestamp("current_period_start"),
+		currentPeriodEnd: timestamp("current_period_end"),
+		cancelAtPeriodEnd: boolean("cancel_at_period_end").default(false).notNull(),
+		canceledAt: timestamp("canceled_at"),
+		startedAt: timestamp("started_at"),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
+	},
+	(t) => [
+		index("subscriptions_tenant_id_idx").on(t.tenantId),
+		index("subscriptions_plan_id_idx").on(t.planId),
+		index("subscriptions_status_idx").on(t.status),
+	]
+);
+
+export const subscriptionEvents = pgTable(
+	"subscription_events",
+	{
+		id: varchar("id", { length: 32 }).primaryKey(),
+		tenantId: varchar("tenant_id", { length: 32 }).notNull(),
+		subscriptionId: varchar("subscription_id", { length: 32 })
+			.notNull()
+			.references(() => subscriptions.id, { onDelete: "cascade" }),
+		eventType: subscriptionEventTypeEnum("event_type").notNull(),
+		description: text("description").notNull(),
+		metadata: json("metadata"),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+	},
+	(t) => [
+		index("subscription_events_tenant_id_idx").on(t.tenantId),
+		index("subscription_events_subscription_id_idx").on(t.subscriptionId),
+	]
+);

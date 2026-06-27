@@ -81,6 +81,21 @@ export const EcommerceProductSchema = z.object({
 	createdAt: z.string(),
 });
 
+export const EcommerceStoreOrderSchema = z.object({
+	id: z.string(),
+	orderNumber: z.string(),
+	customer: z.string(),
+	email: z.string(),
+	productId: z.string(),
+	productName: z.string(),
+	amount: z.number(),
+	status: z.string(),
+	paymentStatus: z.string(),
+	createdAt: z.string(),
+	items: z.number(),
+	shippingAddress: z.string(),
+});
+
 export const AppEcommerceDataSchema = z.object({
 	source: z.string().optional(),
 	metrics: z.array(EcommerceMetricCardSchema),
@@ -91,4 +106,5 @@ export const AppEcommerceDataSchema = z.object({
 	deliveryOrders: z.record(z.string(), z.array(EcommerceDeliveryOrderSchema)),
 	popularProducts: z.array(EcommercePopularProductSchema),
 	products: z.array(EcommerceProductSchema),
+	storeOrders: z.array(EcommerceStoreOrderSchema),
 });

@@ -99,6 +99,154 @@ const dataJsonTips = [
 	"For production, replace JSON adapters with API responses using same shape.",
 ];
 
+const ROUTE_ZOD_MAP = {
+	appLeads: "leads.js",
+	appCrmRecordDetail: "crm-record-detail.js",
+	appCompanies: "companies.js",
+	appContacts: "contacts.js",
+	appInvoices: "finance.js",
+	appPayments: "finance.js",
+	appDeals: "deals-pipelines.js",
+	appPipelines: "deals-pipelines.js",
+	appAnalytics: "analytics.js",
+	appNotifications: "notifications-teams.js",
+	appTeams: "notifications-teams.js",
+	appTasks: "tasks.js",
+	appHome: "home-sales.js",
+	appSales: "home-sales.js",
+	appCalendar: "calendar-email.js",
+	appEmail: "calendar-email.js",
+	appProjects: "projects.js",
+	appSettings: "settings.js",
+	appIntegrations: "integrations-api.js",
+	appApiKeys: "integrations-api.js",
+	appWebhooks: "integrations-api.js",
+	appCms: "cms.js",
+	appEcommerce: "ecommerce.js",
+	appApiLogs: "platform.js",
+	appSupport: "platform.js",
+	appUsers: "platform.js",
+	appRoles: "platform.js",
+	appAuditLog: "platform.js",
+	appHelp: "platform.js",
+	appReports: "platform.js",
+	appActivity: "platform.js",
+	appFiles: "files.js",
+};
+
+const DataJsonExplorer = ({ raw }) => {
+	const parsed = React.useMemo(() => {
+		try {
+			return JSON.parse(raw);
+		} catch {
+			return null;
+		}
+	}, [raw]);
+
+	const sectionKeys = React.useMemo(() => {
+		if (!parsed) return [];
+		return Object.keys(parsed)
+			.filter((k) => k.startsWith("app"))
+			.sort();
+	}, [parsed]);
+
+	const [activeKey, setActiveKey] = React.useState(sectionKeys[0] ?? "");
+
+	React.useEffect(() => {
+		if (sectionKeys.length && !sectionKeys.includes(activeKey)) {
+			setActiveKey(sectionKeys[0]);
+		}
+	}, [sectionKeys, activeKey]);
+
+	if (!parsed) {
+		return (
+			<p className="text-sm text-muted-foreground">
+				data.json could not be parsed.
+			</p>
+		);
+	}
+
+	const routeMap = parsed.meta?.pageRouteMap ?? {};
+	const activeSection = activeKey ? parsed[activeKey] : null;
+	const zodFile = ROUTE_ZOD_MAP[activeKey];
+
+	return (
+		<div className="space-y-4">
+			{parsed.meta?.summary ? (
+				<p className="text-sm text-muted-foreground">{parsed.meta.summary}</p>
+			) : null}
+
+			<div>
+				<p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+					Route map
+				</p>
+				<div className="max-h-48 overflow-auto rounded-xl border">
+					<table className="w-full text-left text-xs">
+						<thead className="sticky top-0 bg-muted">
+							<tr>
+								<th className="px-3 py-2 font-medium">Route</th>
+								<th className="px-3 py-2 font-medium">data.json key</th>
+							</tr>
+						</thead>
+						<tbody>
+							{Object.entries(routeMap).map(([route, key]) => (
+								<tr key={route} className="border-t">
+									<td className="px-3 py-1.5 font-mono">{route}</td>
+									<td className="px-3 py-1.5 text-muted-foreground">{key}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div>
+				<p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+					Sections ({sectionKeys.length})
+				</p>
+				<div className="flex flex-wrap gap-1.5">
+					{sectionKeys.map((key) => (
+						<button
+							key={key}
+							type="button"
+							onClick={() => setActiveKey(key)}
+							className={`rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors ${
+								activeKey === key
+									? "border-primary bg-primary text-primary-foreground"
+									: "border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground"
+							}`}
+						>
+							{key}
+						</button>
+					))}
+				</div>
+			</div>
+
+			{activeSection ? (
+				<div>
+					<div className="mb-2 flex flex-wrap items-center gap-2">
+						<p className="text-sm font-medium">{activeKey}</p>
+						{zodFile ? (
+							<code className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
+								schemas/zod-schemas/{zodFile}
+							</code>
+						) : null}
+						{activeSection.source ? (
+							<span className="text-xs text-muted-foreground">
+								→ {activeSection.source}
+							</span>
+						) : null}
+					</div>
+					<SourcePanel
+						subtitle={`${activeKey} snapshot`}
+						raw={JSON.stringify(activeSection, null, 2)}
+					/>
+				</div>
+			) : null}
+		</div>
+	);
+};
+
 const About = ({
 	designMd = "",
 	dataJson = "",
@@ -156,7 +304,9 @@ const About = ({
 								))}
 							</ul>
 							{dataJson ? (
-								<SourcePanel subtitle="data.json" raw={dataJson} />
+								<div className="mt-4">
+									<DataJsonExplorer raw={dataJson} />
+								</div>
 							) : (
 								<p className="mt-2 text-sm text-muted-foreground">
 									data.json was not found at build time.
@@ -218,6 +368,9 @@ const About = ({
 							<CardTitle className="text-base">Zod schemas</CardTitle>
 							<CardDescription>
 								Validation schemas under <code className="text-xs">schemas/zod-schemas/</code>.
+								Platform modules (API logs, support, users, roles, audit, help, reports, activity) live in{" "}
+								<code className="text-xs">platform.js</code>; e-commerce store orders are in{" "}
+								<code className="text-xs">ecommerce.js</code> (<code className="text-xs">storeOrders</code>).
 							</CardDescription>
 						</CardHeader>
 						<CardContent>

@@ -167,8 +167,21 @@ const semanticColors = {
 	hover: "hover:bg-accent",
 	hoverPrimary: "hover:bg-primary/90",
 	hoverSecondary: "hover:bg-accent",
-	ring: "ring-ring",
-	shadow: "shadow-sm",
+	ring: "ring-ring ring-themed",
+	shadow: "shadow-elevation",
+	focusRing:
+		"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-themed",
+	radius: "rounded-lg",
+	radiusXl: "rounded-xl",
+	radius2xl: "rounded-2xl",
+	overlay: "bg-black/50 backdrop-themed",
+	paddingPage: "p-page",
+	gapSection: "gap-section",
+	tracking: "tracking-base",
+	leading: "leading-base",
+	cardSurface: "rounded-2xl border bg-card text-card-foreground shadow-sm",
+	popoverSurface: "rounded-xl border bg-popover text-popover-foreground shadow-md",
+	panelSurface: "rounded-xl border bg-background shadow-lg",
 	textMuted: "text-muted-foreground",
 	textSecondary: "text-foreground",
 	textTertiary: "text-muted-foreground",
@@ -292,17 +305,6 @@ export const applySchemeCssVars = (colorScheme, theme) => {
 	root.dataset.colorScheme = colorScheme;
 };
 
-// Helper function to get focus ring class based on color scheme
-export const getFocusRingClass = (colorScheme) => {
-	const ringClasses = {
-		blue: "focus:ring-blue-600 dark:focus:ring-blue-500",
-		green: "focus:ring-green-600 dark:focus:ring-green-500",
-		purple: "focus:ring-purple-600 dark:focus:ring-purple-500",
-		orange: "focus:ring-orange-600 dark:focus:ring-orange-500",
-		red: "focus:ring-red-600 dark:focus:ring-red-500",
-		pink: "focus:ring-pink-600 dark:focus:ring-pink-500",
-		indigo: "focus:ring-indigo-600 dark:focus:ring-indigo-500",
-		zinc: "focus:ring-zinc-900 dark:focus:ring-zinc-50",
-	};
-	return ringClasses[colorScheme] || ringClasses.zinc;
-};
+/** Focus ring wired to CSS customizer (--ring, --ring-width). */
+export const getFocusRingClass = (_colorScheme) =>
+	"focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ring-themed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";

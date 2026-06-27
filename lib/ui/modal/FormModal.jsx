@@ -3,6 +3,7 @@ import { X, Trash2 } from "lucide-react";
 import { useTheme } from "../../../utils/useTheme";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { overlayBackdrop, panelSurface } from "@/lib/themeTokens";
 
 /**
  * Reusable form modal — overlay, header, scrollable body, footer with cancel / save / delete.
@@ -27,12 +28,12 @@ const FormModal = ({
 
 	return (
 		<div
-			className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+			className={cn("fixed inset-0 z-50 flex items-center justify-center p-4", overlayBackdrop)}
 			onClick={onClose}
 			role="presentation"
 		>
 			<div
-				className={`${colors.card} rounded-xl ${colors.shadow} ${maxWidth} w-full max-h-[90vh] overflow-hidden flex flex-col border ${colors.border}`}
+				className={cn(panelSurface, maxWidth, "w-full max-h-[90vh] overflow-hidden flex flex-col")}
 				onClick={(e) => e.stopPropagation()}
 				role="dialog"
 				aria-modal="true"

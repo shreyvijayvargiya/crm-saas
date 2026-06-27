@@ -26,6 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import { FormModal, FormField } from "../../lib/ui/modal";
 import FormSelect from "../../lib/ui/FormSelect";
 import PaymentMethodForm from "./PaymentMethodForm";
+import ExchangeRatesCard from "./ExchangeRatesCard";
 import {
 	Table,
 	TableHeader,
@@ -871,8 +872,9 @@ const Payments = () => {
 					</div>
 				)}
 				</Card>
-				<div className="w-full xl:w-[min(100%,26rem)] shrink-0 xl:sticky xl:top-4">
+				<div className="w-full xl:w-[min(100%,26rem)] shrink-0 xl:sticky xl:top-4 space-y-6">
 					<PaymentMethodForm />
+					<ExchangeRatesCard />
 				</div>
 			</div>
 

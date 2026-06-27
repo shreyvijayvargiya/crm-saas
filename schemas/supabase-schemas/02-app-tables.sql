@@ -552,3 +552,154 @@ create table if not exists public.ecommerce_orders (
 
 create index if not exists ecommerce_orders_tenant_id_idx on public.ecommerce_orders (tenant_id);
 create index if not exists ecommerce_orders_product_id_idx on public.ecommerce_orders (product_id);
+
+-- Marketing (`appMarketing`)
+create type public.campaign_status as enum ('Draft', 'Scheduled', 'Active', 'Paused', 'Completed');
+create type public.campaign_step_type as enum ('email', 'wait', 'branch');
+create type public.segment_entity_type as enum ('contact', 'lead', 'both');
+create type public.marketing_form_status as enum ('Draft', 'Active');
+
+create table if not exists public.segments (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  name text not null,
+  description text,
+  entity_type public.segment_entity_type not null default 'both',
+  filters jsonb not null,
+  contact_count integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists segments_tenant_id_idx on public.segments (tenant_id);
+create index if not exists segments_entity_type_idx on public.segments (entity_type);
+
+create table if not exists public.campaigns (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  name text not null,
+  description text,
+  status public.campaign_status not null default 'Draft',
+  segment_id varchar(32) references public.segments (id) on delete set null,
+  scheduled_at timestamptz,
+  started_at timestamptz,
+  completed_at timestamptz,
+  sent_count integer not null default 0,
+  delivered_count integer not null default 0,
+  open_rate numeric(5, 2),
+  click_rate numeric(5, 2),
+  bounce_rate numeric(5, 2),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists campaigns_tenant_id_idx on public.campaigns (tenant_id);
+create index if not exists campaigns_status_idx on public.campaigns (status);
+create index if not exists campaigns_segment_id_idx on public.campaigns (segment_id);
+
+create table if not exists public.campaign_steps (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  campaign_id varchar(32) not null references public.campaigns (id) on delete cascade,
+  step_order integer not null,
+  step_type public.campaign_step_type not null,
+  name text not null,
+  config jsonb,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists campaign_steps_tenant_id_idx on public.campaign_steps (tenant_id);
+create index if not exists campaign_steps_campaign_id_idx on public.campaign_steps (campaign_id);
+
+create table if not exists public.marketing_forms (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  name text not null,
+  description text,
+  fields jsonb not null,
+  embed_code text,
+  status public.marketing_form_status not null default 'Draft',
+  submission_count integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists marketing_forms_tenant_id_idx on public.marketing_forms (tenant_id);
+create index if not exists marketing_forms_status_idx on public.marketing_forms (status);
+
+create table if not exists public.form_submissions (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  form_id varchar(32) not null references public.marketing_forms (id) on delete cascade,
+  payload jsonb not null,
+  source_url text,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists form_submissions_tenant_id_idx on public.form_submissions (tenant_id);
+create index if not exists form_submissions_form_id_idx on public.form_submissions (form_id);
+
+-- Subscriptions (`appSubscriptions`)
+create type public.subscription_billing_interval as enum ('Monthly', 'Yearly');
+create type public.subscription_plan_status as enum ('Active', 'Archived');
+create type public.subscription_status as enum ('Active', 'Trialing', 'Past Due', 'Canceled', 'Paused');
+create type public.subscription_event_type as enum (
+  'created', 'renewed', 'upgraded', 'downgraded', 'canceled', 'payment_failed', 'reactivated'
+);
+
+create table if not exists public.subscription_plans (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  name text not null,
+  sku text not null,
+  tier text not null,
+  price numeric(12, 2) not null,
+  currency text not null default 'USD',
+  billing_interval public.subscription_billing_interval not null,
+  features jsonb not null,
+  max_seats integer not null default 0,
+  trial_days integer not null default 0,
+  status public.subscription_plan_status not null default 'Active',
+  active_subscriptions integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists subscription_plans_tenant_id_idx on public.subscription_plans (tenant_id);
+create index if not exists subscription_plans_status_idx on public.subscription_plans (status);
+
+create table if not exists public.subscriptions (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  plan_id varchar(32) not null references public.subscription_plans (id) on delete restrict,
+  customer_name text not null,
+  customer_email text not null,
+  company_name text,
+  status public.subscription_status not null default 'Active',
+  mrr numeric(12, 2) not null,
+  billing_interval public.subscription_billing_interval not null,
+  current_period_start timestamptz,
+  current_period_end timestamptz,
+  cancel_at_period_end boolean not null default false,
+  canceled_at timestamptz,
+  started_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists subscriptions_tenant_id_idx on public.subscriptions (tenant_id);
+create index if not exists subscriptions_plan_id_idx on public.subscriptions (plan_id);
+create index if not exists subscriptions_status_idx on public.subscriptions (status);
+
+create table if not exists public.subscription_events (
+  id varchar(32) primary key,
+  tenant_id uuid not null references public.tenants (id) on delete cascade,
+  subscription_id varchar(32) not null references public.subscriptions (id) on delete cascade,
+  event_type public.subscription_event_type not null,
+  description text not null,
+  metadata jsonb,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists subscription_events_tenant_id_idx on public.subscription_events (tenant_id);
+create index if not exists subscription_events_subscription_id_idx on public.subscription_events (subscription_id);

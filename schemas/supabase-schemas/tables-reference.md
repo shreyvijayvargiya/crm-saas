@@ -37,6 +37,17 @@ Supabase Auth (`auth.users`) handles sign-up, sign-in, OAuth, and sessions. `pro
 | Webhooks — `appWebhooks` | `webhooks` (store **secret hashes** only) |
 | CMS — `appCms` | `blog_posts`, `blog_subscribers` |
 | E-commerce — `appEcommerce` | `ecommerce_products`, `ecommerce_orders`, `ecommerce_metrics`, `ecommerce_earnings` |
+| Marketing — `appMarketing` | `segments`, `campaigns`, `campaign_steps`, `marketing_forms`, `form_submissions` |
+| Subscriptions — `appSubscriptions` | `subscription_plans`, `subscriptions`, `subscription_events` |
+| API logs — `appApiLogs` | `api_request_logs` (reference) |
+| Support — `appSupport` | `support_tickets`, `support_messages` |
+| Users — `appUsers` | `tenant_members`, `profiles` |
+| Roles — `appRoles` | `tenant_members.role`, permission matrix (app config) |
+| Audit log — `appAuditLog` | `audit_log_entries` |
+| Help — `appHelp` | `help_articles` (reference CMS) |
+| Reports — `appReports` | `saved_reports`, `report_templates` |
+| Activity — `appActivity` | `activities` (aggregated feed) |
+| Files — `appFiles` | `record_files`, `file_folders`, storage quotas |
 
 **`data.json`:** Top-level `app*` keys describe **API-shaped** payloads for each route; column names should align when you model rows (e.g. invoice `client` in JSON → `client_label` in SQL).
 
