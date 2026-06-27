@@ -1,7 +1,7 @@
 {
   "meta": {
     "purpose": "Static snapshot of mock / hardcoded data shapes used in this CRM app. For developer reference and schema discovery only — the running app does not import this file.",
-    "summary": "23 top-level `app*` sections cover all main pages in `pages/` (see `pageRouteMap`). Detail routes `/leads/[id]` and `/contacts/[id]` share `appCrmRecordDetail`. Sections `appLeads`, `appCompanies`, and `appInvoices` include `dashboardStats` and `chartSeries` snapshots matching the stats grids and Recharts data derived in those pages.",
+    "summary": "33 top-level `app*` sections cover all main pages in `pages/` (see `pageRouteMap`). Detail routes `/leads/[id]` and `/contacts/[id]` share `appCrmRecordDetail`. E-commerce store orders live under `appEcommerce.storeOrders` (nested route `/e-commerce/orders`, not a separate sidebar item).",
     "notes": [
       "Paths like ./people/ and ./companies/ match public/ asset URLs in Next.js.",
       "Some UI-only keys (e.g. React icon components) are omitted; use string ids where applicable.",
@@ -11,8 +11,11 @@
     ],
     "pageRouteMap": {
       "/": "appHome",
+      "/activity": "appActivity",
       "/analytics": "appAnalytics",
       "/api-keys": "appApiKeys",
+      "/api-logs": "appApiLogs",
+      "/audit-log": "appAuditLog",
       "/calendar": "appCalendar",
       "/cms": "appCms",
       "/companies": "appCompanies",
@@ -20,6 +23,9 @@
       "/contacts/[id]": "appCrmRecordDetail (contact rows)",
       "/deals": "appDeals",
       "/email": "appEmail",
+      "/files": "appFiles",
+      "/files/[id]": "appFiles (file rows)",
+      "/help": "appHelp",
       "/integrations": "appIntegrations",
       "/invoices": "appInvoices",
       "/leads": "appLeads",
@@ -28,13 +34,20 @@
       "/payments": "appPayments",
       "/pipelines": "appPipelines",
       "/projects": "appProjects",
+      "/reports": "appReports",
+      "/roles": "appRoles",
       "/sales": "appSales",
       "/settings": "appSettings",
+      "/support": "appSupport",
+      "/support/[id]": "appSupport (ticket rows)",
       "/tasks": "appTasks",
       "/teams": "appTeams",
+      "/users": "appUsers",
       "/webhooks": "appWebhooks",
       "/e-commerce": "appEcommerce",
-      "/e-commerce/products/[id]": "appEcommerce (product rows)"
+      "/e-commerce/products/[id]": "appEcommerce (product rows)",
+      "/e-commerce/orders": "appEcommerce (storeOrders)",
+      "/e-commerce/orders/[id]": "appEcommerce (storeOrders)"
     }
   },
   "appLeads": {
@@ -3978,6 +3991,484 @@
         "sku": "NOT-1024",
         "visitors": "8.4K",
         "createdAt": "2026-01-25"
+      }
+    ],
+    "storeOrders": [
+      {
+        "id": "ord_001",
+        "orderNumber": "ORD-10482",
+        "customer": "Barry Schowalter",
+        "email": "barry.s@email.com",
+        "productId": "ec_prd_001",
+        "productName": "Samsung galaxy s35",
+        "amount": 312,
+        "status": "Pending",
+        "paymentStatus": "Paid",
+        "createdAt": "2026-04-14",
+        "items": 1,
+        "shippingAddress": "939 orange, California(CA), 92118"
+      },
+      {
+        "id": "ord_002",
+        "orderNumber": "ORD-10481",
+        "customer": "Chris Nolan",
+        "email": "chris.n@email.com",
+        "productId": "ec_prd_002",
+        "productName": "MacBook Pro 16",
+        "amount": 2499,
+        "status": "Shipped",
+        "paymentStatus": "Paid",
+        "createdAt": "2026-04-13",
+        "items": 1,
+        "shippingAddress": "12 River Rd, Oregon(OR), 97201"
+      },
+      {
+        "id": "ord_003",
+        "orderNumber": "ORD-10480",
+        "customer": "Dana Brooks",
+        "email": "dana.b@email.com",
+        "productId": "ec_prd_003",
+        "productName": "Sony WH-1000XM5",
+        "amount": 349,
+        "status": "Processing",
+        "paymentStatus": "Paid",
+        "createdAt": "2026-04-12",
+        "items": 2,
+        "shippingAddress": "5 Lakeview, Florida(FL), 33101"
+      },
+      {
+        "id": "ord_004",
+        "orderNumber": "ORD-10479",
+        "customer": "Jordan Lee",
+        "email": "jordan.lee@email.com",
+        "productId": "ec_prd_004",
+        "productName": "Apple Watch Ultra",
+        "amount": 799,
+        "status": "Delivered",
+        "paymentStatus": "Paid",
+        "createdAt": "2026-04-10",
+        "items": 1,
+        "shippingAddress": "77 Cedar Ln, Colorado(CO), 80202"
+      },
+      {
+        "id": "ord_005",
+        "orderNumber": "ORD-10478",
+        "customer": "Elena Rossi",
+        "email": "elena@company.com",
+        "productId": "ec_prd_005",
+        "productName": "iPhone 16 Pro",
+        "amount": 1099,
+        "status": "Cancelled",
+        "paymentStatus": "Refunded",
+        "createdAt": "2026-04-09",
+        "items": 1,
+        "shippingAddress": "22 Market St, New York(NY), 10001"
+      },
+      {
+        "id": "ord_006",
+        "orderNumber": "ORD-10477",
+        "customer": "Marcus Webb",
+        "email": "marcus@company.com",
+        "productId": "ec_prd_006",
+        "productName": "Dell XPS 15",
+        "amount": 1899,
+        "status": "Delivered",
+        "paymentStatus": "Paid",
+        "createdAt": "2026-04-08",
+        "items": 1,
+        "shippingAddress": "88 Pine St, Texas(TX), 73301"
+      }
+    ]
+  },
+  "appApiLogs": {
+    "source": "app/ApiLogs/index.jsx",
+    "stats": {
+      "total": 8,
+      "errors": 3,
+      "avgLatency": 218
+    },
+    "logs": [
+      {
+        "id": "log_001",
+        "method": "GET",
+        "path": "/api/v1/leads",
+        "status": 200,
+        "latencyMs": 42,
+        "apiKey": "Production API Key",
+        "timestamp": "2026-04-14 10:42:01"
+      },
+      {
+        "id": "log_002",
+        "method": "POST",
+        "path": "/api/v1/deals",
+        "status": 201,
+        "latencyMs": 118,
+        "apiKey": "Production API Key",
+        "timestamp": "2026-04-14 10:41:55"
+      },
+      {
+        "id": "log_003",
+        "method": "GET",
+        "path": "/api/v1/contacts/205",
+        "status": 404,
+        "latencyMs": 28,
+        "apiKey": "Development Key",
+        "timestamp": "2026-04-14 10:40:12"
+      },
+      {
+        "id": "log_004",
+        "method": "PATCH",
+        "path": "/api/v1/invoices/inv_2408",
+        "status": 200,
+        "latencyMs": 95,
+        "apiKey": "Production API Key",
+        "timestamp": "2026-04-14 10:38:44"
+      },
+      {
+        "id": "log_005",
+        "method": "POST",
+        "path": "/api/v1/webhooks/test",
+        "status": 500,
+        "latencyMs": 1204,
+        "apiKey": "Staging Environment",
+        "timestamp": "2026-04-14 10:35:20"
+      }
+    ]
+  },
+  "appSupport": {
+    "source": "app/Support/index.jsx",
+    "tickets": [
+      {
+        "id": "tkt_001",
+        "subject": "Cannot sync Salesforce contacts",
+        "customer": "Sarah Chen",
+        "email": "sarah.chen@company.com",
+        "priority": "High",
+        "status": "Open",
+        "assignee": "John Doe",
+        "createdAt": "2026-04-14",
+        "updatedAt": "2026-04-14",
+        "category": "Integrations",
+        "description": "OAuth connection succeeds but contact sync stalls at 12%.",
+        "messages": [
+          {
+            "from": "Sarah Chen",
+            "body": "Sync has been failing since yesterday morning.",
+            "at": "2026-04-14 09:12"
+          }
+        ]
+      },
+      {
+        "id": "tkt_002",
+        "subject": "Invoice PDF layout broken on mobile",
+        "customer": "Marcus Webb",
+        "email": "marcus@company.com",
+        "priority": "Medium",
+        "status": "In progress",
+        "assignee": "Elena Rossi",
+        "createdAt": "2026-04-13",
+        "updatedAt": "2026-04-14",
+        "category": "Billing",
+        "description": "PDF export cuts off line items when viewed on iOS Mail.",
+        "messages": []
+      }
+    ]
+  },
+  "appUsers": {
+    "source": "app/Users/index.jsx",
+    "users": [
+      {
+        "id": "usr_001",
+        "name": "John Doe",
+        "email": "john.doe@company.com",
+        "role": "Admin",
+        "department": "Sales",
+        "status": "Active",
+        "lastActive": "2026-04-14"
+      },
+      {
+        "id": "usr_002",
+        "name": "Sarah Chen",
+        "email": "sarah.chen@company.com",
+        "role": "Manager",
+        "department": "Sales",
+        "status": "Active",
+        "lastActive": "2026-04-14"
+      },
+      {
+        "id": "usr_003",
+        "name": "Marcus Webb",
+        "email": "marcus@company.com",
+        "role": "Member",
+        "department": "Marketing",
+        "status": "Active",
+        "lastActive": "2026-04-13"
+      }
+    ]
+  },
+  "appRoles": {
+    "source": "app/Roles/index.jsx",
+    "roles": ["Admin", "Manager", "Member", "Viewer"],
+    "permissions": [
+      { "id": "leads", "label": "Leads" },
+      { "id": "deals", "label": "Deals" },
+      { "id": "contacts", "label": "Contacts" },
+      { "id": "invoices", "label": "Invoices" },
+      { "id": "settings", "label": "Settings" },
+      { "id": "users", "label": "User management" },
+      { "id": "api", "label": "API & webhooks" },
+      { "id": "reports", "label": "Reports" }
+    ],
+    "matrix": {
+      "Admin": {
+        "leads": true,
+        "deals": true,
+        "contacts": true,
+        "invoices": true,
+        "settings": true,
+        "users": true,
+        "api": true,
+        "reports": true
+      },
+      "Viewer": {
+        "leads": true,
+        "deals": true,
+        "contacts": true,
+        "invoices": false,
+        "settings": false,
+        "users": false,
+        "api": false,
+        "reports": true
+      }
+    }
+  },
+  "appAuditLog": {
+    "source": "app/AuditLog/index.jsx",
+    "entries": [
+      {
+        "id": "aud_001",
+        "actor": "John Doe",
+        "action": "Updated",
+        "resource": "Deal #D-1042",
+        "module": "Deals",
+        "ip": "192.168.1.42",
+        "timestamp": "2026-04-14 10:42:01"
+      },
+      {
+        "id": "aud_002",
+        "actor": "Sarah Chen",
+        "action": "Created",
+        "resource": "Lead — Alice Brown",
+        "module": "Leads",
+        "ip": "10.0.0.18",
+        "timestamp": "2026-04-14 10:38:22"
+      }
+    ]
+  },
+  "appHelp": {
+    "source": "app/Help/index.jsx",
+    "sections": [
+      {
+        "id": "getting-started",
+        "title": "Getting started",
+        "articles": [
+          {
+            "id": "gs-1",
+            "q": "How do I invite team members?",
+            "a": "Go to Users or Teams, click Invite, and enter their email."
+          }
+        ]
+      },
+      {
+        "id": "developer",
+        "title": "Developer & API",
+        "articles": [
+          {
+            "id": "dev-1",
+            "q": "Where are API keys managed?",
+            "a": "Developer → API Keys. Monitor usage in API Logs."
+          }
+        ]
+      }
+    ]
+  },
+  "appReports": {
+    "source": "app/Reports/index.jsx",
+    "templates": [
+      {
+        "id": "tpl_1",
+        "name": "Deal forecast",
+        "desc": "Weighted pipeline by stage and close date"
+      },
+      {
+        "id": "tpl_2",
+        "name": "Contact growth",
+        "desc": "New contacts and conversion rate"
+      }
+    ],
+    "savedReports": [
+      {
+        "id": "rpt_001",
+        "name": "Weekly pipeline summary",
+        "type": "Sales",
+        "schedule": "Every Monday 8:00 AM",
+        "lastRun": "2026-04-14",
+        "format": "PDF",
+        "status": "Active"
+      },
+      {
+        "id": "rpt_004",
+        "name": "Invoice aging",
+        "type": "Finance",
+        "schedule": "Daily 6:00 AM",
+        "lastRun": "2026-04-14",
+        "format": "PDF",
+        "status": "Active"
+      }
+    ]
+  },
+  "appActivity": {
+    "source": "app/Activity/index.jsx",
+    "feed": [
+      {
+        "id": "act_001",
+        "type": "deal",
+        "title": "Deal moved to Negotiation",
+        "body": "Acme Corp — $48,000",
+        "actor": "Sarah Chen",
+        "time": "10 min ago",
+        "module": "Deals"
+      },
+      {
+        "id": "act_002",
+        "type": "lead",
+        "title": "New lead assigned",
+        "body": "Alice Brown from Cloud Corp",
+        "actor": "System",
+        "time": "25 min ago",
+        "module": "Leads"
+      }
+    ]
+  },
+  "appFiles": {
+    "source": "app/Files/index.jsx",
+    "categories": [
+      {
+        "id": "documents",
+        "label": "Documents",
+        "count": 1390,
+        "usedLabel": "2.1 GB used",
+        "percent": 35,
+        "color": "blue",
+        "icon": "FileText"
+      },
+      {
+        "id": "images",
+        "label": "Images",
+        "count": 842,
+        "usedLabel": "1.4 GB used",
+        "percent": 28,
+        "color": "green",
+        "icon": "Image"
+      },
+      {
+        "id": "videos",
+        "label": "Videos",
+        "count": 126,
+        "usedLabel": "890 MB used",
+        "percent": 18,
+        "color": "red",
+        "icon": "Video"
+      },
+      {
+        "id": "others",
+        "label": "Others",
+        "count": 312,
+        "usedLabel": "420 MB used",
+        "percent": 12,
+        "color": "yellow",
+        "icon": "File"
+      }
+    ],
+    "folders": [
+      {
+        "id": "fld_documents",
+        "name": "Documents",
+        "itemCount": 1390,
+        "lastUpdate": "Apr 15, 2025",
+        "starred": true
+      },
+      {
+        "id": "fld_images",
+        "name": "Images",
+        "itemCount": 842,
+        "lastUpdate": "Apr 14, 2025",
+        "starred": false
+      },
+      {
+        "id": "fld_downloads",
+        "name": "Downloads",
+        "itemCount": 218,
+        "lastUpdate": "Apr 12, 2025",
+        "starred": false
+      }
+    ],
+    "storage": {
+      "usedGb": 1.8,
+      "totalGb": 3,
+      "label": "Storage Space Used",
+      "subtitle": "See your remaining file storage."
+    },
+    "monthlyTransfer": [
+      { "month": "Jan", "desktop": 42, "mobile": 28 },
+      { "month": "Feb", "desktop": 38, "mobile": 32 },
+      { "month": "Mar", "desktop": 55, "mobile": 41 },
+      { "month": "Apr", "desktop": 48, "mobile": 36 },
+      { "month": "May", "desktop": 62, "mobile": 44 },
+      { "month": "Jun", "desktop": 58, "mobile": 52 },
+      { "month": "Jul", "desktop": 71, "mobile": 48 },
+      { "month": "Aug", "desktop": 65, "mobile": 55 },
+      { "month": "Sep", "desktop": 54, "mobile": 42 },
+      { "month": "Oct", "desktop": 60, "mobile": 38 },
+      { "month": "Nov", "desktop": 72, "mobile": 46 },
+      { "month": "Dec", "desktop": 68, "mobile": 50 }
+    ],
+    "files": [
+      {
+        "id": "file_001",
+        "name": "Q2-Sales-Proposal.docx",
+        "size": "2.38 MB",
+        "sizeBytes": 2495616,
+        "category": "documents",
+        "folder": "Documents",
+        "type": "docx",
+        "uploadDate": "Apr 15, 2025",
+        "uploadedBy": "Sarah Chen",
+        "description": "Enterprise sales proposal for Q2 pipeline review."
+      },
+      {
+        "id": "file_002",
+        "name": "Product-Hero-Banner.png",
+        "size": "1.12 MB",
+        "sizeBytes": 1174405,
+        "category": "images",
+        "folder": "Images",
+        "type": "png",
+        "uploadDate": "Apr 14, 2025",
+        "uploadedBy": "Marcus Webb",
+        "description": "Landing page hero asset for marketing campaign."
+      },
+      {
+        "id": "file_003",
+        "name": "Onboarding-Walkthrough.mp4",
+        "size": "48.6 MB",
+        "sizeBytes": 50960793,
+        "category": "videos",
+        "folder": "Downloads",
+        "type": "mp4",
+        "uploadDate": "Apr 13, 2025",
+        "uploadedBy": "John Doe",
+        "description": "Customer onboarding screen recording."
       }
     ]
   }

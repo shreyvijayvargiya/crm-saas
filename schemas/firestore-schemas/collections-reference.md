@@ -26,9 +26,14 @@ Maps SQL/Drizzle entities to suggested Firestore paths. Use **`tenants/{tenantId
 | `ecommerce_orders` | order id | Delivery tracking; `product_id` → product |
 | `ecommerce_metrics` | metric id | Dashboard KPI cards (optional denormalized doc) |
 | `ecommerce_earnings` | doc id | Weekly chart + earning/profit/expense breakdown |
-| `activities` | activity id | Polymorphic `activityType` |
+| `api_request_logs` | log id | API Logs module — method, path, status, latency |
+| `support_tickets` | ticket id | Subcollection `messages` for thread |
+| `audit_log_entries` | entry id | Immutable audit trail |
+| `saved_reports` / `report_templates` | id | Reports module |
+| `help_articles` | article id | Help center FAQ (optional CMS) |
+| `record_files` | file id | File manager — metadata + storage URL |
+| `activities` | activity id | Polymorphic `activityType`; also powers Activity feed |
 | `lead_notes` / `contact_notes` | note id | |
-| `record_files` | file id | |
 | `contact_embedded_emails` | id | |
 
 **`data.json`:** Top-level `app*` keys describe **API-shaped** payloads for each route; they are not a 1:1 Firestore export but field names should align when you model documents.

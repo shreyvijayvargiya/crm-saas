@@ -26,6 +26,17 @@ import {
 } from "../schemas/zod-schemas/integrations-api.js";
 import { AppCmsDataSchema } from "../schemas/zod-schemas/cms.js";
 import { AppEcommerceDataSchema } from "../schemas/zod-schemas/ecommerce.js";
+import {
+	AppApiLogsDataSchema,
+	AppSupportDataSchema,
+	AppUsersDataSchema,
+	AppRolesDataSchema,
+	AppAuditLogDataSchema,
+	AppHelpDataSchema,
+	AppReportsDataSchema,
+	AppActivityDataSchema,
+} from "../schemas/zod-schemas/platform.js";
+import { AppFilesDataSchema } from "../schemas/zod-schemas/files.js";
 
 const dataPath = new URL("../data.json", import.meta.url);
 const data = JSON.parse(fs.readFileSync(dataPath, "utf8"));
@@ -55,6 +66,15 @@ const SCHEMA_BY_SECTION = {
 	appWebhooks: AppWebhooksDataSchema,
 	appCms: AppCmsDataSchema,
 	appEcommerce: AppEcommerceDataSchema,
+	appApiLogs: AppApiLogsDataSchema,
+	appSupport: AppSupportDataSchema,
+	appUsers: AppUsersDataSchema,
+	appRoles: AppRolesDataSchema,
+	appAuditLog: AppAuditLogDataSchema,
+	appHelp: AppHelpDataSchema,
+	appReports: AppReportsDataSchema,
+	appActivity: AppActivityDataSchema,
+	appFiles: AppFilesDataSchema,
 };
 
 const appKeys = Object.keys(data).filter((k) => k.startsWith("app"));

@@ -52,6 +52,18 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					route: "/analytics",
 					icon: "BarChart3",
 				},
+				{
+					id: 25,
+					label: "Reports",
+					route: "/reports",
+					icon: "FileBarChart",
+				},
+				{
+					id: 26,
+					label: "Activity",
+					route: "/activity",
+					icon: "Activity",
+				},
 			],
 		},
 		{
@@ -130,6 +142,18 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					route: "/projects",
 					icon: "FolderClosed",
 				},
+				{
+					id: 34,
+					label: "Files",
+					route: "/files",
+					icon: "FolderOpen",
+				},
+				{
+					id: 28,
+					label: "Support",
+					route: "/support",
+					icon: "Headphones",
+				},
 			],
 		},
 		{
@@ -184,6 +208,12 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					route: "/cms",
 					icon: "FileText",
 				},
+				{
+					id: 29,
+					label: "API Logs",
+					route: "/api-logs",
+					icon: "ScrollText",
+				},
 			],
 		},
 		{
@@ -214,6 +244,12 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					route: "/change-password",
 					icon: "Lock",
 				},
+				{
+					id: 105,
+					label: "UI components",
+					route: "/ui-components",
+					icon: "Palette",
+				},
 			],
 		},
 		{
@@ -227,10 +263,34 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					icon: "UsersRound",
 				},
 				{
+					id: 30,
+					label: "Users",
+					route: "/users",
+					icon: "UserCog",
+				},
+				{
+					id: 31,
+					label: "Roles",
+					route: "/roles",
+					icon: "Shield",
+				},
+				{
+					id: 32,
+					label: "Audit log",
+					route: "/audit-log",
+					icon: "History",
+				},
+				{
 					id: 20,
 					label: "Notifications",
 					route: "/notifications",
 					icon: "Bell",
+				},
+				{
+					id: 33,
+					label: "Help",
+					route: "/help",
+					icon: "CircleHelp",
 				},
 				{
 					id: 14,
@@ -330,7 +390,9 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 								<div className="space-y-1">
 									{category.items?.map((item) => {
 										const Icon = lucideIcons[item?.icon];
-										const isActive = router.pathname === item.route;
+										const isActive =
+											router.pathname === item.route ||
+											router.pathname.startsWith(`${item.route}/`);
 										return (
 											<div key={item.id} className="relative group">
 												<Button

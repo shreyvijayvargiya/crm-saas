@@ -224,4 +224,103 @@ export function findEcommerceProduct(id) {
 	return ECOMMERCE_PRODUCTS.find((p) => p.id === id) ?? null;
 }
 
+export const ECOMMERCE_ORDERS = [
+	{
+		id: "ord_001",
+		orderNumber: "ORD-10482",
+		customer: "Barry Schowalter",
+		email: "barry.s@email.com",
+		productId: "ec_prd_001",
+		productName: "Samsung galaxy s35",
+		amount: 312,
+		status: "Pending",
+		paymentStatus: "Paid",
+		createdAt: "2026-04-14",
+		items: 1,
+		shippingAddress: "939 orange, California(CA), 92118",
+	},
+	{
+		id: "ord_002",
+		orderNumber: "ORD-10481",
+		customer: "Chris Nolan",
+		email: "chris.n@email.com",
+		productId: "ec_prd_002",
+		productName: "MacBook Pro 16",
+		amount: 2499,
+		status: "Shipped",
+		paymentStatus: "Paid",
+		createdAt: "2026-04-13",
+		items: 1,
+		shippingAddress: "12 River Rd, Oregon(OR), 97201",
+	},
+	{
+		id: "ord_003",
+		orderNumber: "ORD-10480",
+		customer: "Dana Brooks",
+		email: "dana.b@email.com",
+		productId: "ec_prd_003",
+		productName: "Sony WH-1000XM5",
+		amount: 349,
+		status: "Processing",
+		paymentStatus: "Paid",
+		createdAt: "2026-04-12",
+		items: 2,
+		shippingAddress: "5 Lakeview, Florida(FL), 33101",
+	},
+	{
+		id: "ord_004",
+		orderNumber: "ORD-10479",
+		customer: "Jordan Lee",
+		email: "jordan.lee@email.com",
+		productId: "ec_prd_004",
+		productName: "Apple Watch Ultra",
+		amount: 799,
+		status: "Delivered",
+		paymentStatus: "Paid",
+		createdAt: "2026-04-10",
+		items: 1,
+		shippingAddress: "77 Cedar Ln, Colorado(CO), 80202",
+	},
+	{
+		id: "ord_005",
+		orderNumber: "ORD-10478",
+		customer: "Elena Rossi",
+		email: "elena@company.com",
+		productId: "ec_prd_005",
+		productName: "iPhone 16 Pro",
+		amount: 1099,
+		status: "Cancelled",
+		paymentStatus: "Refunded",
+		createdAt: "2026-04-09",
+		items: 1,
+		shippingAddress: "22 Market St, New York(NY), 10001",
+	},
+	{
+		id: "ord_006",
+		orderNumber: "ORD-10477",
+		customer: "Marcus Webb",
+		email: "marcus@company.com",
+		productId: "ec_prd_006",
+		productName: "Dell XPS 15",
+		amount: 1899,
+		status: "Delivered",
+		paymentStatus: "Paid",
+		createdAt: "2026-04-08",
+		items: 1,
+		shippingAddress: "88 Pine St, Texas(TX), 73301",
+	},
+];
+
+export const ORDER_STATUSES = [
+	"Pending",
+	"Processing",
+	"Shipped",
+	"Delivered",
+	"Cancelled",
+];
+
+export function findEcommerceOrder(id) {
+	return ECOMMERCE_ORDERS.find((o) => o.id === id) ?? null;
+}
+
 export { PRODUCT_CATEGORIES, PRODUCT_STATUSES };
