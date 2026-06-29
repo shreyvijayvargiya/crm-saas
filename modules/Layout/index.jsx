@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import {
 	PlayCircle,
 	X,
@@ -92,7 +93,7 @@ const LayoutWrapper = ({ children }) => {
 	const [isOtherProductsModalOpen, setIsOtherProductsModalOpen] = useState(false);
 	const [aiChatOpen, setAiChatOpen] = useState(false);
 	const isMd = useMediaQueryMd();
-	const { colors } = useTheme();
+	const { colors, theme } = useTheme();
 
 	const toggleAiChat = () => setAiChatOpen((v) => !v);
 
@@ -187,6 +188,21 @@ const LayoutWrapper = ({ children }) => {
 							</>
 						)}
 					</AnimatePresence>
+
+					<div className="fixed bottom-4 left-1/2 z-40 -translate-x-1/2">
+						<Link href="/" passHref>
+							<a
+								className={cn(
+									"inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium shadow-lg backdrop-blur-md transition hover:opacity-90",
+									theme === "dark"
+										? "border-white/10 bg-black/70 text-zinc-200"
+										: "border-zinc-200 bg-white/90 text-zinc-700"
+								)}
+							>
+								← Back to agency site
+							</a>
+						</Link>
+					</div>
 
 					<div className="fixed bottom-2 right-2 z-40 flex flex-col items-end gap-2">
 						<Button

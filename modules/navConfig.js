@@ -8,7 +8,7 @@ export const navCategories = [
 		id: "main",
 		label: "Main",
 		items: [
-			{ id: 1, label: "Dashboard", route: "/", icon: "Home" },
+			{ id: 1, label: "Dashboard", route: "/demo", icon: "Home" },
 			{ id: 16, label: "Analytics", route: "/analytics", icon: "BarChart3" },
 			{ id: 25, label: "Reports", route: "/reports", icon: "FileBarChart" },
 			{ id: 26, label: "Activity", route: "/activity", icon: "Activity" },
@@ -59,6 +59,8 @@ export const navCategories = [
 			{ id: 10, label: "Api Keys", route: "/api-keys", icon: "Key" },
 			{ id: 13, label: "CMS", route: "/cms", icon: "FileText" },
 			{ id: 29, label: "API Logs", route: "/api-logs", icon: "ScrollText" },
+			{ id: 42, label: "Agent Ops", route: "/agent-ops", icon: "Bot" },
+			{ id: 43, label: "SaaS Dashboard", route: "/saas-dashboard", icon: "LayoutDashboard" },
 		],
 	},
 	{

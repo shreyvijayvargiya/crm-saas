@@ -1,2 +1,2 @@
-import MarketingLanding from "../app/LandingPage";
-export default () => <MarketingLanding />;
+import AgencyHomePage from "../app/AgencySite/pages/HomePage";
+export default AgencyHomePage;
