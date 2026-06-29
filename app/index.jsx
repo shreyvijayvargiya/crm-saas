@@ -58,3 +58,4 @@ export { default as MarketingForms } from "./Marketing/Forms";
 export { default as Subscriptions } from "./Subscriptions";
 export { default as SubscriptionPlans } from "./Subscriptions/Plans";
 export { default as SubscriptionDetail } from "./Subscriptions/SubscriptionDetail";
+export { default as SaasDashboard } from "./SaasDashboard";
