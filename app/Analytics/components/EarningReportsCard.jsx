@@ -7,8 +7,8 @@ import {
 	YAxis,
 	CartesianGrid,
 	Tooltip,
-	ResponsiveContainer,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { useTheme } from "../../../utils/useTheme";
 import { useChartTooltipProps } from "../../../utils/chartTooltip";
 import { Button } from "@/components/ui/button";

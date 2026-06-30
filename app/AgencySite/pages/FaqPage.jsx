@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import { FAQ_ITEMS } from "../agencyConfig";
+import { fadeUp, fadeUpWithDelay } from "../motionPresets";
 
 function FaqItem({ item, isOpen, onToggle, isLight }) {
 	return (
@@ -64,11 +65,7 @@ function FaqContent() {
 
 	return (
 		<>
-			<motion.header
-				initial={{ opacity: 0, y: 16 }}
-				animate={{ opacity: 1, y: 0 }}
-				className="mb-10 text-center"
-			>
+			<motion.header {...fadeUp} className="mb-10 text-center">
 				<h1
 					className={cn(
 						"text-3xl font-bold tracking-tight sm:text-4xl",
@@ -89,12 +86,7 @@ function FaqContent() {
 
 			<div className="space-y-2">
 				{FAQ_ITEMS.map((item, i) => (
-					<motion.div
-						key={item.q}
-						initial={{ opacity: 0, y: 12 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: i * 0.04 }}
-					>
+					<motion.div key={item.q} {...fadeUpWithDelay(i * 0.04)}>
 						<FaqItem
 							item={item}
 							isOpen={openId === i}

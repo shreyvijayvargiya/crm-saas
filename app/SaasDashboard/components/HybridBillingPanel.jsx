@@ -19,11 +19,11 @@ import {
 	Area,
 	AreaChart,
 	CartesianGrid,
-	ResponsiveContainer,
 	Tooltip,
 	XAxis,
 	YAxis,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { useChartTooltipProps } from "../../../utils/chartTooltip";
 import { useTheme } from "../../../utils/useTheme";
 import {

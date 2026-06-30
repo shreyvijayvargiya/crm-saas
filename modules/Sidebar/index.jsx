@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import * as lucideIcons from "lucide-react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
@@ -134,12 +135,12 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 													onMouseEnter={() => setDrawerOpen(!open)}
 													onMouseLeave={() => setDrawerOpen(!open)}
 												>
-													<a href={item.route}>
+													<Link href={item.route}>
 														{Icon ? (
 															<Icon className="w-4 h-4" />
 														) : null}
 														{open ? item.label : null}
-													</a>
+													</Link>
 												</Button>
 												{!open && (
 													<div className="fixed left-14 mb-2 w-max rounded bg-primary px-1 py-1 text-xs text-primary-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100 z-10">

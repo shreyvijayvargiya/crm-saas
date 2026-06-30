@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowUp, MoreVertical, Wallet, DollarSign, CreditCard } from "lucide-react";
-import { BarChart, Bar, XAxis, ResponsiveContainer, Cell } from "recharts";
+import { BarChart, Bar, XAxis, Cell } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { useTheme } from "../../../utils/useTheme";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

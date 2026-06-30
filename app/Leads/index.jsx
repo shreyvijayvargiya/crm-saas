@@ -26,11 +26,11 @@ import {
 	Bar,
 	BarChart,
 	CartesianGrid,
-	ResponsiveContainer,
 	Tooltip,
 	XAxis,
 	YAxis,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { useTheme } from "../../utils/useTheme";
 import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { getFocusRingClass } from "../../utils/theme";

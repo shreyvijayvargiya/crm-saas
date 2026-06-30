@@ -1,5 +1,6 @@
 import React from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { PieChart as PieIcon } from "lucide-react";
 import { useTheme } from "../../../utils/useTheme";
 import { useChartTooltipProps } from "../../../utils/chartTooltip";

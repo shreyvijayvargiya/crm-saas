@@ -23,11 +23,11 @@ import {
 	Bar,
 	BarChart,
 	CartesianGrid,
-	ResponsiveContainer,
 	Tooltip,
 	XAxis,
 	YAxis,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { useTheme } from "../../utils/useTheme";
 import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { getFocusRingClass } from "../../utils/theme";
@@ -42,6 +42,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
 	Card,
 	CardContent,
@@ -801,21 +802,25 @@ const Invoices = () => {
 						/>
 					</FormField>
 					<FormField label="Issue Date" htmlFor="invoice-issue-date">
-						<Input
+						<DatePicker
 							id="invoice-issue-date"
-							type="date"
-							name="issueDate"
 							value={newInvoice.issueDate}
-							onChange={handleInputChange}
+							onChange={(val) =>
+								handleInputChange({
+									target: { name: "issueDate", value: val },
+								})
+							}
 						/>
 					</FormField>
 					<FormField label="Due Date" htmlFor="invoice-due-date">
-						<Input
+						<DatePicker
 							id="invoice-due-date"
-							type="date"
-							name="dueDate"
 							value={newInvoice.dueDate}
-							onChange={handleInputChange}
+							onChange={(val) =>
+								handleInputChange({
+									target: { name: "dueDate", value: val },
+								})
+							}
 						/>
 					</FormField>
 					<div className="md:col-span-2">

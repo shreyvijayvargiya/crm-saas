@@ -2,7 +2,7 @@ import React from "react";
 import { CalendarRange } from "lucide-react";
 import { useTheme } from "../../../utils/useTheme";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 
 const PRESETS = [
 	{ id: "7d", label: "7 days" },
@@ -12,7 +12,15 @@ const PRESETS = [
 	{ id: "ytd", label: "Year to date" },
 ];
 
-const DateRangeFilter = ({ value, onChange, showCustom, onToggleCustom, customFrom, customTo, onCustomChange }) => {
+const DateRangeFilter = ({
+	value,
+	onChange,
+	showCustom,
+	onToggleCustom,
+	customFrom,
+	customTo,
+	onCustomChange,
+}) => {
 	const { colors } = useTheme();
 
 	return (
@@ -48,18 +56,16 @@ const DateRangeFilter = ({ value, onChange, showCustom, onToggleCustom, customFr
 			{showCustom && (
 				<div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
 					<label className={`text-xs ${colors.mutedForeground}`}>From</label>
-					<Input
-						type="date"
+					<DatePicker
 						value={customFrom}
-						onChange={(e) => onCustomChange("from", e.target.value)}
-						className="h-8 w-auto text-xs"
+						onChange={(val) => onCustomChange("from", val)}
+						className="h-8 min-w-[8.5rem] text-xs"
 					/>
 					<label className={`text-xs ${colors.mutedForeground}`}>To</label>
-					<Input
-						type="date"
+					<DatePicker
 						value={customTo}
-						onChange={(e) => onCustomChange("to", e.target.value)}
-						className="h-8 w-auto text-xs"
+						onChange={(val) => onCustomChange("to", val)}
+						className="h-8 min-w-[8.5rem] text-xs"
 					/>
 				</div>
 			)}

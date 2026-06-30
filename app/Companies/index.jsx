@@ -18,11 +18,11 @@ import {
 	Bar,
 	BarChart,
 	CartesianGrid,
-	ResponsiveContainer,
 	Tooltip,
 	XAxis,
 	YAxis,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { ExportDropdown } from "../../lib/ui/dropdown";
 import { toast } from "sonner";
 import { Pagination } from "../../modules";

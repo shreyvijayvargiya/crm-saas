@@ -15,23 +15,25 @@ const fallbackThemeContext = {
 const ThemeContext = createContext(fallbackThemeContext);
 
 export const ThemeProvider = ({ children }) => {
-	// Theme state
-	const [theme, setTheme] = useState(() => {
-		if (typeof window !== "undefined") {
-			const savedTheme = localStorage.getItem("cms-theme");
-			return savedTheme || "light";
-		}
-		return "light";
-	});
+	const [theme, setTheme] = useState("light");
+	const [colorScheme, setColorScheme] = useState("blue");
 
-	// Color scheme state
-	const [colorScheme, setColorScheme] = useState(() => {
-		if (typeof window !== "undefined") {
+	// Restore persisted theme after mount — never read localStorage during SSR
+	// or the first client render, or hydration will mismatch the server HTML.
+	useEffect(() => {
+		try {
+			const savedTheme = localStorage.getItem("cms-theme");
 			const savedScheme = localStorage.getItem("cms-color-scheme");
-			return savedScheme || "blue";
+			if (savedTheme === "light" || savedTheme === "dark") {
+				setTheme(savedTheme);
+			}
+			if (savedScheme && colorSchemes[savedScheme]) {
+				setColorScheme(savedScheme);
+			}
+		} catch {
+			/* ignore */
 		}
-		return "blue";
-	});
+	}, []);
 
 	// Apply light/dark mode + accent palette to document (shadcn CSS vars)
 	useEffect(() => {

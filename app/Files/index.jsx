@@ -20,8 +20,8 @@ import {
 	CartesianGrid,
 	Tooltip,
 	Legend,
-	ResponsiveContainer,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { toast } from "sonner";
 import { useTheme } from "../../utils/useTheme";
 import { cn } from "@/lib/utils";

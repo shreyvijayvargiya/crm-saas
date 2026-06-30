@@ -190,17 +190,16 @@ const LayoutWrapper = ({ children }) => {
 					</AnimatePresence>
 
 					<div className="fixed bottom-4 left-1/2 z-40 -translate-x-1/2">
-						<Link href="/" passHref>
-							<a
-								className={cn(
-									"inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium shadow-lg backdrop-blur-md transition hover:opacity-90",
-									theme === "dark"
-										? "border-white/10 bg-black/70 text-zinc-200"
-										: "border-zinc-200 bg-white/90 text-zinc-700"
-								)}
-							>
-								← Back to agency site
-							</a>
+						<Link
+							href="/"
+							className={cn(
+								"inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium shadow-lg backdrop-blur-md transition hover:opacity-90",
+								theme === "dark"
+									? "border-white/10 bg-black/70 text-zinc-200"
+									: "border-zinc-200 bg-white/90 text-zinc-700"
+							)}
+						>
+							← Back to agency site
 						</Link>
 					</div>
 
@@ -293,7 +292,7 @@ const LayoutWrapper = ({ children }) => {
 											return (
 												<motion.div
 													key={step.title}
-													initial={{ opacity: 0, y: 12 }}
+													initial={false}
 													animate={{ opacity: 1, y: 0 }}
 													transition={{ delay: idx * 0.08, duration: 0.3 }}
 													className={`rounded-xl border ${colors.border} p-4`}

@@ -24,12 +24,12 @@ import {
 	LineChart,
 	Pie,
 	PieChart,
-	ResponsiveContainer,
 	Tooltip,
 	XAxis,
 	YAxis,
 	Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { cn } from "@/lib/utils";
 import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { Button } from "@/components/ui/button";
@@ -82,6 +82,7 @@ import MultiSelect from "../../lib/ui/MultiSelect";
 import ExportDropdown from "../../lib/ui/dropdown/ExportDropdown";
 import { FormModal, FormField } from "../../lib/ui/modal";
 import DateRangeFilter from "../Analytics/components/DateRangeFilter";
+import { DatePicker, DateRangePicker } from "@/components/ui/date-picker";
 
 const NAV_ITEMS = [
 	{ id: "breadcrumbs", label: "Breadcrumbs" },
@@ -98,6 +99,7 @@ const NAV_ITEMS = [
 	{ id: "sheet", label: "Sheet" },
 	{ id: "drawer", label: "Drawer" },
 	{ id: "toast", label: "Toast" },
+	{ id: "date-picker", label: "Date picker" },
 	{ id: "date-range", label: "Date range" },
 	{ id: "modal", label: "Form modal" },
 	{ id: "table", label: "Table" },
@@ -144,6 +146,9 @@ const UiShowcase = () => {
 	const [showCustomRange, setShowCustomRange] = useState(false);
 	const [customFrom, setCustomFrom] = useState("");
 	const [customTo, setCustomTo] = useState("");
+	const [demoDate, setDemoDate] = useState("");
+	const [demoRangeFrom, setDemoRangeFrom] = useState("");
+	const [demoRangeTo, setDemoRangeTo] = useState("");
 	const [activeNav, setActiveNav] = useState("breadcrumbs");
 	const [toolbarSearch, setToolbarSearch] = useState("");
 	const [toolbarStatus, setToolbarStatus] = useState("All");
@@ -458,6 +463,31 @@ const UiShowcase = () => {
 								<Button variant="destructive" onClick={() => toast.error("Something went wrong")}>
 									Error
 								</Button>
+							</div>
+						</Section>
+
+						<Section
+							id="date-picker"
+							title="Date picker"
+							description="Framer Motion popover with shadcn calendar — month/year dropdown, Clear & Today actions."
+							path="components/ui/date-picker.jsx"
+						>
+							<div className="flex max-w-md flex-col gap-4">
+								<FormField label="Single date" htmlFor="demo-date">
+									<DatePicker
+										id="demo-date"
+										value={demoDate}
+										onChange={setDemoDate}
+									/>
+								</FormField>
+								<FormField label="Date range">
+									<DateRangePicker
+										from={demoRangeFrom}
+										to={demoRangeTo}
+										onFromChange={setDemoRangeFrom}
+										onToChange={setDemoRangeTo}
+									/>
+								</FormField>
 							</div>
 						</Section>
 

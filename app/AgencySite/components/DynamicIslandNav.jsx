@@ -41,7 +41,7 @@ export default function DynamicIslandNav() {
 		>
 			<motion.nav
 				layout
-				initial={{ opacity: 0, y: 24, scale: 0.96 }}
+				initial={false}
 				animate={{ opacity: 1, y: 0, scale: 1 }}
 				transition={{ type: "spring", stiffness: 380, damping: 28 }}
 				className={cn(

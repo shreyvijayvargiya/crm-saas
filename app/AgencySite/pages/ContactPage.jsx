@@ -16,6 +16,7 @@ import { Card } from "@/components/ui/card";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import { CONTACT } from "../agencyConfig";
+import { fadeUp, fadeUpWithDelay } from "../motionPresets";
 
 function XIcon({ className }) {
 	return (
@@ -102,11 +103,7 @@ function ContactContent() {
 
 	return (
 		<>
-			<motion.header
-				initial={{ opacity: 0, y: 16 }}
-				animate={{ opacity: 1, y: 0 }}
-				className="mb-8 text-center"
-			>
+			<motion.header {...fadeUp} className="mb-8 text-center">
 				<h1
 					className={cn(
 						"text-3xl font-bold tracking-tight sm:text-4xl",
@@ -127,9 +124,7 @@ function ContactContent() {
 			</motion.header>
 
 			<motion.div
-				initial={{ opacity: 0, y: 16 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ delay: 0.05 }}
+				{...fadeUpWithDelay(0.05)}
 				className="mb-6 grid grid-cols-1 gap-2 sm:mb-8 sm:grid-cols-2"
 			>
 				{SOCIAL_LINKS.map((link) => {
@@ -181,11 +176,7 @@ function ContactContent() {
 				})}
 			</motion.div>
 
-			<motion.div
-				initial={{ opacity: 0, y: 16 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ delay: 0.1 }}
-			>
+			<motion.div {...fadeUpWithDelay(0.1)}>
 				<Card
 					className={cn(
 						"p-4 sm:p-6",

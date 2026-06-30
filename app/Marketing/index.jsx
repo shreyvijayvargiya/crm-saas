@@ -15,12 +15,12 @@ import {
 	Bar,
 	BarChart,
 	CartesianGrid,
-	ResponsiveContainer,
 	Tooltip,
 	XAxis,
 	YAxis,
 	Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import MarketingLayout from "./MarketingLayout";
 import {
 	MARKETING_METRICS,

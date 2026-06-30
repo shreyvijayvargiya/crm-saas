@@ -6,11 +6,11 @@ import {
 	Cell,
 	Pie,
 	PieChart,
-	ResponsiveContainer,
 	Tooltip,
 	XAxis,
 	YAxis,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { Brain, GitBranch, Users, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";

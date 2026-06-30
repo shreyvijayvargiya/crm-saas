@@ -16,12 +16,7 @@ import { Card } from "@/components/ui/card";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import { HOME_FEATURES, SERVICES, CHECKOUT } from "../agencyConfig";
-
-const fadeUp = {
-	initial: { opacity: 0, y: 16 },
-	animate: { opacity: 1, y: 0 },
-	transition: { duration: 0.45 },
-};
+import { fadeUp, fadeUpWithDelay } from "../motionPresets";
 
 function HomeContent() {
 	const { isLight } = useAgencyTheme();
@@ -66,9 +61,6 @@ function HomeContent() {
 				<div className="mt-8 flex flex-wrap items-center justify-center gap-3">
 					<Button
 						asChild
-						target="_blank"
-						rel="noopener noreferrer"
-						type="button"
 						className={cn(
 							"rounded-full px-5",
 							isLight
@@ -76,37 +68,30 @@ function HomeContent() {
 								: "bg-zinc-100 text-zinc-900 hover:bg-white"
 						)}
 					>
-						<a href="/demo" passHref className="flex gap-2">
+						<Link href="/demo" className="flex gap-2">
 							Explore live demo
 							<ArrowRight className="h-4 w-4" />
-						</a>
+						</Link>
 					</Button>
 					<Button
 						variant="outline"
 						asChild
 						className={cn(
 							"rounded-full px-5",
-							isLight
-								? "border-zinc-300 text-zinc-800 hover:bg-zinc-100"
-								: "border-zinc-700 text-zinc-200 hover:bg-zinc-900"
 						)}
 					>
-						<a href="/pricing" passHref>
-							<a>View pricing</a>
-						</a>
+						<a href="/pricing">View pricing</a>
 					</Button>
 				</div>
 			</motion.header>
 
 			<motion.section
-				{...fadeUp}
-				transition={{ ...fadeUp.transition, delay: 0.06 }}
+				{...fadeUpWithDelay(0.06)}
 				className="mb-12 grid gap-3 sm:grid-cols-3"
 			>
 				{SERVICES.map((service) => (
-					<Link key={service.title} href={service.href} passHref>
-						<a>
-							<Card
+					<Link key={service.title} href={service.href}>
+						<Card
 								className={cn(
 									"group h-full p-5 transition",
 									isLight
@@ -139,15 +124,13 @@ function HomeContent() {
 									{service.cta}
 									<ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
 								</span>
-							</Card>
-						</a>
+						</Card>
 					</Link>
 				))}
 			</motion.section>
 
 			<motion.section
-				{...fadeUp}
-				transition={{ ...fadeUp.transition, delay: 0.1 }}
+				{...fadeUpWithDelay(0.1)}
 				className="mb-12"
 			>
 				<div className="mb-6 flex items-center gap-2">
@@ -196,8 +179,7 @@ function HomeContent() {
 			</motion.section>
 
 			<motion.section
-				{...fadeUp}
-				transition={{ ...fadeUp.transition, delay: 0.14 }}
+				{...fadeUpWithDelay(0.14)}
 				className="mb-4"
 			>
 				<Card
@@ -255,16 +237,15 @@ function HomeContent() {
 							</a>
 						</Button>
 						<Button variant="outline" asChild className="rounded-full px-5">
-							<Link href="/contact" passHref>
-								<a
-									className={cn(
-										isLight
-											? "border-zinc-300 text-zinc-800"
-											: "border-zinc-700 text-zinc-200"
-									)}
-								>
-									Contact us
-								</a>
+							<Link
+								href="/contact"
+								className={cn(
+									isLight
+										? "border-zinc-300 text-zinc-800"
+										: "border-zinc-700 text-zinc-200"
+								)}
+							>
+								Contact us
 							</Link>
 						</Button>
 					</div>

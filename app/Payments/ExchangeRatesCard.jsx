@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
 	ArrowUpDown,
 	BarChart3,
@@ -11,8 +11,8 @@ import {
 	YAxis,
 	CartesianGrid,
 	Tooltip,
-	ResponsiveContainer,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -174,7 +174,11 @@ const ExchangeRatesCard = () => {
 	const [fromCurrency, setFromCurrency] = useState("JPY");
 	const [toCurrency, setToCurrency] = useState("USD");
 	const [timeRange, setTimeRange] = useState("30D");
-	const [lastUpdated, setLastUpdated] = useState(() => new Date());
+	const [lastUpdated, setLastUpdated] = useState(null);
+
+	useEffect(() => {
+		setLastUpdated(new Date());
+	}, []);
 
 	const chartData = useMemo(
 		() => generateChartData(fromCurrency, toCurrency, timeRange),
@@ -199,7 +203,7 @@ const ExchangeRatesCard = () => {
 				<CardTitle className="text-lg">Exchange rates</CardTitle>
 				<div className="flex items-center gap-2 shrink-0">
 					<p className="text-xs text-muted-foreground whitespace-nowrap">
-						Last updated: {formatUpdatedTime(lastUpdated)}
+						Last updated: {lastUpdated ? formatUpdatedTime(lastUpdated) : "—"}
 					</p>
 					<Button
 						type="button"

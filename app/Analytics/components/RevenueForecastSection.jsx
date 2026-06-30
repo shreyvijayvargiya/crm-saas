@@ -8,9 +8,9 @@ import {
 	CartesianGrid,
 	Tooltip,
 	Legend,
-	ResponsiveContainer,
 	ReferenceLine,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { TrendingUp } from "lucide-react";
 import { useTheme } from "../../../utils/useTheme";
 import { useChartTooltipProps } from "../../../utils/chartTooltip";

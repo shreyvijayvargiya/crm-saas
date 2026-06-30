@@ -19,12 +19,12 @@ import {
 	Cell,
 	Pie,
 	PieChart,
-	ResponsiveContainer,
 	Tooltip,
 	XAxis,
 	YAxis,
 	Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import SubscriptionsLayout from "./SubscriptionsLayout";
 import {
 	SUBSCRIPTION_METRICS,

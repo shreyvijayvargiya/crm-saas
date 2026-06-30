@@ -19,6 +19,7 @@ import { CmsField, CmsMetaRow } from "./CmsField";
 import { BLOG_CATEGORIES, BLOG_STATUSES } from "./cmsSeedData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -256,11 +257,10 @@ export default function BlogDetail() {
 									/>
 								</CmsField>
 								<CmsField label="Publish date" htmlFor="blog-date">
-									<Input
+									<DatePicker
 										id="blog-date"
-										type="date"
 										value={draft.publishDate}
-										onChange={(e) => setField("publishDate", e.target.value)}
+										onChange={(val) => setField("publishDate", val)}
 									/>
 								</CmsField>
 								<CmsField label="Tags" htmlFor="blog-tags" hint="Comma separated">

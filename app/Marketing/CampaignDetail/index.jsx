@@ -18,11 +18,11 @@ import {
 	Line,
 	LineChart,
 	CartesianGrid,
-	ResponsiveContainer,
 	Tooltip,
 	XAxis,
 	YAxis,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { findCampaign, findCampaignSteps, findSegment } from "../marketingSeedData";
 import { useTheme } from "../../../utils/useTheme";
 import { useChartTooltipProps } from "../../../utils/chartTooltip";

@@ -20,8 +20,8 @@ import {
 	YAxis,
 	CartesianGrid,
 	Tooltip,
-	ResponsiveContainer,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { useTheme } from "../../utils/useTheme";
 import { cn } from "@/lib/utils";
 import { getChartColor, CHART_MUTED } from "@/lib/chartColors";

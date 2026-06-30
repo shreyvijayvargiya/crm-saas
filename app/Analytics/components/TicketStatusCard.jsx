@@ -1,6 +1,7 @@
 import React from "react";
 import { Ticket, Clock, MessageSquare } from "lucide-react";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell } from "recharts";
+import { ResponsiveContainer } from "@/components/ui/responsive-chart";
 import { useTheme } from "../../../utils/useTheme";
 import { Card, CardContent } from "@/components/ui/card";
 import { getChartColor, CHART_MUTED } from "@/lib/chartColors";

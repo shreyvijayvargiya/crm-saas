@@ -9,17 +9,14 @@ import { Card } from "@/components/ui/card";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import { PRICING_TIERS, CONTACT } from "../agencyConfig";
+import { fadeUp, fadeUpWithDelay } from "../motionPresets";
 
 function PricingContent() {
 	const { isLight } = useAgencyTheme();
 
 	return (
 		<>
-			<motion.header
-				initial={{ opacity: 0, y: 16 }}
-				animate={{ opacity: 1, y: 0 }}
-				className="mb-10 text-center"
-			>
+			<motion.header {...fadeUp} className="mb-10 text-center">
 				<h1
 					className={cn(
 						"text-3xl font-bold tracking-tight sm:text-4xl",
@@ -41,12 +38,7 @@ function PricingContent() {
 
 			<div className="space-y-4">
 				{PRICING_TIERS.map((tier, i) => (
-					<motion.div
-						key={tier.id}
-						initial={{ opacity: 0, y: 16 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: i * 0.06 }}
-					>
+					<motion.div key={tier.id} {...fadeUpWithDelay(i * 0.06)}>
 						<Card
 							className={cn(
 								"relative overflow-hidden p-6",
@@ -129,9 +121,7 @@ function PricingContent() {
 											"rounded-full",
 										)}
 									>
-										<a href={tier.href} passHref>
-											<a>{tier.cta}</a>
-										</a>
+										<Link href={tier.href}>{tier.cta}</Link>
 									</Button>
 								) : (
 									<>
