@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { FollowerPointerCard } from "@/components/ui/following-pointer";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import { PRICING_TIERS, CONTACT } from "../agencyConfig";
@@ -47,6 +48,10 @@ function PricingContent() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: i * 0.06 }}
 					>
+						<FollowerPointerCard
+							title={tier.pointerTitle || tier.cta}
+							accentColor={tier.pointerColor}
+						>
 						<Card
 							className={cn(
 								"relative overflow-hidden p-6",
@@ -70,6 +75,16 @@ function PricingContent() {
 								>
 									Popular
 								</Badge>
+							) : null}
+							{tier.image ? (
+								<img
+									src={tier.image}
+									alt=""
+									className={cn(
+										"mb-4 h-48 w-full rounded-xl object-cover object-top",
+										isLight ? "ring-1 ring-zinc-200" : "ring-1 ring-zinc-700"
+									)}
+								/>
 							) : null}
 							<div className="mb-4">
 								<h2
@@ -164,6 +179,7 @@ function PricingContent() {
 								)}
 							</div>
 						</Card>
+						</FollowerPointerCard>
 					</motion.div>
 				))}
 			</div>

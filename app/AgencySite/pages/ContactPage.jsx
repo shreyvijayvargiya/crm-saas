@@ -8,6 +8,7 @@ import {
 	Github,
 	Globe,
 	Calendar,
+	Phone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -58,6 +59,12 @@ const SOCIAL_LINKS = [
 		desc: "Shrey Vijayvargiya",
 		icon: LinkedInIcon,
 	},
+	{
+		label: "WhatsApp",
+		href: `https://wa.me/${CONTACT.whatsapp}`,
+		desc: "WhatsApp",
+		icon: Phone,
+	}
 ];
 
 function ContactContent() {

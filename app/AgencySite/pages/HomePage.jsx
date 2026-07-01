@@ -1,21 +1,25 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import {
+import * as lucideIcons from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { FollowerPointerCard } from "@/components/ui/following-pointer";
+import AgencyShell from "../components/AgencyShell";
+import IntegrationsShowcase from "../components/IntegrationsShowcase";
+import { useAgencyTheme } from "../AgencyThemeContext";
+import { HOME_FEATURES, SERVICES, CHECKOUT } from "../agencyConfig";
+
+const {
 	ArrowRight,
 	Sparkles,
 	Zap,
 	ExternalLink,
 	Code2,
 	Rocket,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
-import AgencyShell from "../components/AgencyShell";
-import { useAgencyTheme } from "../AgencyThemeContext";
-import { HOME_FEATURES, SERVICES, CHECKOUT } from "../agencyConfig";
+} = lucideIcons;
 
 const fadeUp = {
 	initial: { opacity: 0, y: 16 },
@@ -29,22 +33,18 @@ function HomeContent() {
 	return (
 		<>
 			<motion.header {...fadeUp} className="mb-10 text-center sm:mb-14">
-				<div className="mb-5 flex justify-center">
-					<span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-zinc-700 to-zinc-900 text-lg font-bold text-white shadow-lg shadow-zinc-900/30">
-						C
-					</span>
-				</div>
+				<motion.img src="https://ovevcjixqq.ufs.sh/f/9pIU2Of3sxTfU9NP1Drb7rxhdGYe1SLHVu92gAbfPX6ytMjc" className="w-full h-full rounded-xl ring-2 ring-zinc-200 dark:ring-zinc-800 object-cover" />
 				<Badge
 					variant="outline"
 					className={cn(
-						"mb-4 gap-2 px-3 py-1 text-xs font-medium",
+						"my-4 gap-2 px-3 py-1 text-xs font-medium",
 						isLight
 							? "border-zinc-300 bg-zinc-100 text-zinc-700"
 							: "border-zinc-700 bg-zinc-900 text-zinc-300"
 					)}
 				>
 					<Zap className="h-3.5 w-3.5" />
-					Template · Custom builds · Agency delivery
+					CRM for Businesses
 				</Badge>
 				<h1
 					className={cn(
@@ -104,16 +104,34 @@ function HomeContent() {
 				className="mb-12 grid gap-3 sm:grid-cols-3"
 			>
 				{SERVICES.map((service) => (
-					<Link key={service.title} href={service.href} passHref>
-						<a>
+					<FollowerPointerCard
+						key={service.title}
+						className="h-full"
+						title={service.pointerTitle || service.cta}
+						accentColor={service.pointerColor}
+					>
+						<Link href={service.href} passHref>
+							<a className="block h-full">
 							<Card
 								className={cn(
-									"group h-full p-5 transition",
+									"group h-full overflow-hidden p-5 transition",
 									isLight
 										? "border-zinc-200 bg-white shadow-sm hover:border-zinc-400 hover:shadow-md"
 										: "border-zinc-800 bg-zinc-900/50 hover:border-zinc-600 hover:bg-zinc-900"
 								)}
 							>
+								{service.image ? (
+									<img
+										src={service.image}
+										alt=""
+										className={cn(
+											"mb-3 h-24 w-full rounded-xl object-cover object-top",
+											isLight
+												? "ring-1 ring-zinc-200"
+												: "ring-1 ring-zinc-700"
+										)}
+									/>
+								) : null}
 								<h2
 									className={cn(
 										"font-semibold",
@@ -140,8 +158,9 @@ function HomeContent() {
 									<ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
 								</span>
 							</Card>
-						</a>
-					</Link>
+							</a>
+						</Link>
+					</FollowerPointerCard>
 				))}
 			</motion.section>
 
@@ -164,7 +183,9 @@ function HomeContent() {
 					</h2>
 				</div>
 				<div className="grid gap-3 sm:grid-cols-2">
-					{HOME_FEATURES.map((feature) => (
+					{HOME_FEATURES.map((feature) => {
+						const Icon = lucideIcons[feature.icon];
+						return (
 						<Card
 							key={feature.title}
 							className={cn(
@@ -174,57 +195,57 @@ function HomeContent() {
 									: "border-zinc-800 bg-zinc-900/40"
 							)}
 						>
-							<h3
-								className={cn(
-									"text-sm font-semibold",
-									isLight ? "text-zinc-900" : "text-white"
-								)}
-							>
-								{feature.title}
-							</h3>
+							<div className="mb-3 flex items-center gap-3">
+								<div
+									className={cn(
+										"flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border",
+										isLight ? feature.iconClass.light : feature.iconClass.dark
+									)}
+								>
+									{Icon ? <Icon className="h-4 w-4" strokeWidth={1.75} /> : null}
+								</div>
+								<h3
+									className={cn(
+										"text-sm font-semibold",
+										isLight ? "text-zinc-900" : "text-white"
+									)}
+								>
+									{feature.title}
+								</h3>
+							</div>
 							<p
 								className={cn(
-									"mt-1.5 text-sm leading-relaxed",
+									"text-sm leading-relaxed",
 									isLight ? "text-zinc-600" : "text-zinc-400"
 								)}
 							>
 								{feature.desc}
 							</p>
 						</Card>
-					))}
+						);
+					})}
 				</div>
 			</motion.section>
+
+			<IntegrationsShowcase />
 
 			<motion.section
 				{...fadeUp}
 				transition={{ ...fadeUp.transition, delay: 0.14 }}
-				className="mb-4"
+				className={cn(
+					"group mb-4 rounded-2xl p-4 ring-2 transition-all duration-300",
+					isLight
+						? "bg-white/20 ring-zinc-200 hover:bg-white/50"
+						: "bg-zinc-900/20 ring-zinc-800 hover:bg-zinc-900/90"
+				)}
 			>
-				<Card
-					className={cn(
-						"p-6 text-center sm:p-8",
-						isLight
-							? "border-zinc-300 bg-gradient-to-br from-zinc-100 to-zinc-50"
-							: "border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-950"
-					)}
-				>
+				<div className="mt-1 px-1 text-center sm:px-2">
 					<div className="mb-3 flex justify-center gap-3">
-						<Code2
-							className={cn(
-								"h-8 w-8",
-								isLight ? "text-zinc-700" : "text-zinc-400"
-							)}
-						/>
-						<Rocket
-							className={cn(
-								"h-8 w-8",
-								isLight ? "text-zinc-600" : "text-zinc-500"
-							)}
-						/>
+						<Rocket className="h-7 w-7 text-zinc-400 transition-all duration-300 group-hover:translate-x-1/2 group-hover:rotate-45 group-hover:text-green-400" />
 					</div>
 					<h2
 						className={cn(
-							"text-xl font-bold",
+							"text-lg font-bold sm:text-xl",
 							isLight ? "text-zinc-900" : "text-white"
 						)}
 					>
@@ -233,17 +254,17 @@ function HomeContent() {
 					<p
 						className={cn(
 							"mx-auto mt-2 max-w-md text-sm",
-							isLight ? "text-zinc-600" : "text-zinc-400"
+							isLight ? "text-zinc-600" : "text-zinc-300"
 						)}
 					>
 						Grab the template from $49, or talk to us about a custom CRM for your
 						startup or agency client.
 					</p>
-					<div className="mt-6 flex flex-wrap justify-center gap-3">
+					<div className="mt-5 flex flex-wrap items-center justify-center gap-3">
 						<Button
 							asChild
 							className={cn(
-								"rounded-full px-5",
+								"rounded-full px-6",
 								isLight
 									? "bg-zinc-900 text-white hover:bg-zinc-800"
 									: "bg-zinc-100 text-zinc-900 hover:bg-white"
@@ -254,21 +275,32 @@ function HomeContent() {
 								<ExternalLink className="h-4 w-4" />
 							</a>
 						</Button>
-						<Button variant="outline" asChild className="rounded-full px-5">
+						<Button
+							variant="outline"
+							asChild
+							className={cn(
+								"rounded-full px-5",
+								isLight
+									? "border-zinc-300 bg-transparent text-zinc-800 hover:bg-zinc-100"
+									: "border-zinc-600 bg-transparent text-zinc-100 hover:bg-zinc-800"
+							)}
+						>
 							<Link href="/contact" passHref>
-								<a
-									className={cn(
-										isLight
-											? "border-zinc-300 text-zinc-800"
-											: "border-zinc-700 text-zinc-200"
-									)}
-								>
-									Contact us
-								</a>
+								<a>Contact us</a>
 							</Link>
 						</Button>
 					</div>
-				</Card>
+				</div>
+
+				<div
+					className={cn(
+						"mt-4 flex flex-shrink-0 items-center justify-between px-1 pb-1 font-mono text-xs sm:px-2",
+						isLight ? "text-zinc-600" : "text-zinc-400"
+					)}
+				>
+					<div>CRM SaaS Template</div>
+					<div className="opacity-80">From $49</div>
+				</div>
 			</motion.section>
 		</>
 	);

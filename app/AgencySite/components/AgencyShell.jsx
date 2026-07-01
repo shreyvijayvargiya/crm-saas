@@ -2,6 +2,8 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { AgencyThemeProvider, useAgencyTheme } from "../AgencyThemeContext";
 import DynamicIslandNav from "./DynamicIslandNav";
+import AgencyVideoPhone from "./AgencyVideoPhone";
+import { GravityStarsBackground } from "@/src/components/animate-ui/components/backgrounds/gravity-stars";
 
 function AgencyShellInner({ children, className }) {
 	const { isLight } = useAgencyTheme();
@@ -39,11 +41,13 @@ function AgencyShellInner({ children, className }) {
 				}}
 			/>
 
-			<div className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col px-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-10 sm:px-6 sm:pb-28 sm:pt-14">
+			<div className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col px-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-20 sm:px-6 sm:pb-28 sm:pt-20">
 				{children}
 			</div>
 
 			<DynamicIslandNav />
+			<AgencyVideoPhone />
+			<GravityStarsBackground className="absolute inset-0 top-[40%] bottom-0 " />
 		</div>
 	);
 }
