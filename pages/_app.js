@@ -8,13 +8,26 @@ import "tailwindcss/tailwind.css";
 import "../globals.css";
 
 function MyApp({ Component, pageProps }) {
+	const skipLayout = Component.disableLayout === true;
+
 	return (
 		<ThemeProvider>
 			<ThemeCustomizerProvider>
-				<LayoutWrapper>
-					<Component {...pageProps} />
-					<Analytics />
-				</LayoutWrapper>
+				<AuthProvider>
+					{skipLayout ? (
+						<>
+							<Component {...pageProps} />
+							<Analytics />
+						</>
+					) : (
+						<LayoutWrapper>
+							<ProRouteGuard>
+								<Component {...pageProps} />
+							</ProRouteGuard>
+							<Analytics />
+						</LayoutWrapper>
+					)}
+				</AuthProvider>
 			</ThemeCustomizerProvider>
 		</ThemeProvider>
 	);
