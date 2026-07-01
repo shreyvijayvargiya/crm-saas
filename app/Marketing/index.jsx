@@ -11,16 +11,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
-import {
-	Bar,
-	BarChart,
-	CartesianGrid,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis,
-	Legend,
-} from "recharts";
+import { CampaignAreaChartCard } from "@/components/charts/CampaignAreaChartCard";
 import MarketingLayout from "./MarketingLayout";
 import {
 	MARKETING_METRICS,
@@ -34,7 +25,6 @@ import { ExportDropdown } from "../../lib/ui/dropdown";
 import { FormModal, FormField } from "../../lib/ui/modal";
 import FormSelect from "../../lib/ui/FormSelect";
 import { useTheme } from "../../utils/useTheme";
-import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -73,7 +63,6 @@ const EMPTY_CAMPAIGN = {
 const Marketing = () => {
 	const router = useRouter();
 	const { colors } = useTheme();
-	const chartTooltipProps = useChartTooltipProps();
 
 	const [campaigns, setCampaigns] = useState(CAMPAIGNS);
 	const [searchTerm, setSearchTerm] = useState("");
@@ -199,28 +188,7 @@ const Marketing = () => {
 				})}
 			</div>
 
-			<Card>
-				<CardHeader>
-					<CardTitle>Campaign performance</CardTitle>
-					<CardDescription>Sent, opens, and clicks over the reporting period</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<div className="h-72 w-full">
-						<ResponsiveContainer width="100%" height="100%">
-							<BarChart data={MARKETING_CHART_SERIES} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
-								<CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-								<XAxis dataKey="month" tick={{ fontSize: 12 }} />
-								<YAxis tick={{ fontSize: 12 }} />
-								<Tooltip {...chartTooltipProps} />
-								<Legend />
-								<Bar dataKey="sent" name="Sent" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-								<Bar dataKey="opens" name="Opens" fill="hsl(var(--chart-2))" radius={[4, 4, 0, 0]} />
-								<Bar dataKey="clicks" name="Clicks" fill="hsl(var(--chart-3))" radius={[4, 4, 0, 0]} />
-							</BarChart>
-						</ResponsiveContainer>
-					</div>
-				</CardContent>
-			</Card>
+			<CampaignAreaChartCard data={MARKETING_CHART_SERIES} />
 
 			<Card>
 				<CardHeader className="space-y-4">

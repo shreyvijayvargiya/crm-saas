@@ -14,20 +14,11 @@ import {
 	Pen,
 	Trash,
 } from "lucide-react";
-import {
-	Bar,
-	BarChart,
-	CartesianGrid,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis,
-} from "recharts";
+import { CategoryBarChartCard } from "@/components/charts/CategoryBarChartCard";
 import { ExportDropdown } from "../../lib/ui/dropdown";
 import { toast } from "sonner";
 import { Pagination } from "../../modules";
 import { useTheme } from "../../utils/useTheme";
-import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -57,7 +48,6 @@ const Companies = () => {
 	const router = useRouter();
 	// Theme hook
 	const { theme, colors } = useTheme();
-	const chartTooltipProps = useChartTooltipProps();
 
 	const [companies, setCompanies] = useState(INITIAL_COMPANIES);
 
@@ -176,9 +166,6 @@ const Companies = () => {
 			.slice(0, 10);
 	}, [companies]);
 
-	const gridStroke = theme === "dark" ? "#3f3f46" : "#e4e4e7";
-	const axisStroke = theme === "dark" ? "#71717a" : "#71717a";
-
 	return (
 		<div className={`p-6 transition-colors`}>
 			{/* Stats + charts */}
@@ -234,102 +221,24 @@ const Companies = () => {
 			</div>
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-				<Card>
-					<CardHeader className="pb-2">
-						<CardTitle>Companies by industry</CardTitle>
-						<CardDescription>Matches unique industries and totals</CardDescription>
-					</CardHeader>
-					<CardContent>
-					<ResponsiveContainer width="100%" height={240}>
-						<BarChart
-							data={industryChartData}
-							margin={{ top: 8, right: 8, left: 0, bottom: 32 }}
-						>
-							<CartesianGrid
-								strokeDasharray="3 3"
-								stroke={gridStroke}
-								vertical={false}
-							/>
-							<XAxis
-								dataKey="name"
-								stroke={axisStroke}
-								fontSize={10}
-								tickLine={false}
-								axisLine={false}
-								interval={0}
-								angle={-25}
-								textAnchor="end"
-								height={48}
-							/>
-							<YAxis
-								stroke={axisStroke}
-								fontSize={11}
-								tickLine={false}
-								axisLine={false}
-								allowDecimals={false}
-							/>
-							<Tooltip
-								{...chartTooltipProps}
-								formatter={(value) => [value, "Companies"]}
-							/>
-							<Bar
-								dataKey="count"
-								fill={theme === "dark" ? "#a855f7" : "#9333ea"}
-								radius={[8, 8, 0, 0]}
-							/>
-						</BarChart>
-					</ResponsiveContainer>
-					</CardContent>
-				</Card>
-				<Card>
-					<CardHeader className="pb-2">
-						<CardTitle>Companies by location</CardTitle>
-						<CardDescription>
-							Top cities (unique location count: {companyStats.locations})
-						</CardDescription>
-					</CardHeader>
-					<CardContent>
-					<ResponsiveContainer width="100%" height={240}>
-						<BarChart
-							data={locationChartData}
-							margin={{ top: 8, right: 8, left: 0, bottom: 32 }}
-						>
-							<CartesianGrid
-								strokeDasharray="3 3"
-								stroke={gridStroke}
-								vertical={false}
-							/>
-							<XAxis
-								dataKey="name"
-								stroke={axisStroke}
-								fontSize={10}
-								tickLine={false}
-								axisLine={false}
-								interval={0}
-								angle={-25}
-								textAnchor="end"
-								height={48}
-							/>
-							<YAxis
-								stroke={axisStroke}
-								fontSize={11}
-								tickLine={false}
-								axisLine={false}
-								allowDecimals={false}
-							/>
-							<Tooltip
-								{...chartTooltipProps}
-								formatter={(value) => [value, "Companies"]}
-							/>
-							<Bar
-								dataKey="count"
-								fill={theme === "dark" ? "#14b8a6" : "#0d9488"}
-								radius={[8, 8, 0, 0]}
-							/>
-						</BarChart>
-					</ResponsiveContainer>
-					</CardContent>
-				</Card>
+				<CategoryBarChartCard
+					title="Companies by industry"
+					description="Matches unique industries and totals"
+					data={industryChartData}
+					valueLabel="Companies"
+					color="var(--chart-2)"
+					xTickAngle={-25}
+					heightClass="h-[260px]"
+				/>
+				<CategoryBarChartCard
+					title="Companies by location"
+					description={`Top cities (unique location count: ${companyStats.locations})`}
+					data={locationChartData}
+					valueLabel="Companies"
+					color="var(--chart-4)"
+					xTickAngle={-25}
+					heightClass="h-[260px]"
+				/>
 			</div>
 
 			{/* Companies Table - Improved */}
