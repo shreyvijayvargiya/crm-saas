@@ -13,25 +13,9 @@ import {
 	Megaphone,
 	Repeat,
 } from "lucide-react";
-import {
-	Area,
-	AreaChart,
-	Bar,
-	BarChart,
-	CartesianGrid,
-	Cell,
-	Line,
-	LineChart,
-	Pie,
-	PieChart,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis,
-	Legend,
-} from "recharts";
+import { ChartAreaInteractive } from "@/components/charts/ChartAreaInteractive";
+import { ChartBarInteractive } from "@/components/charts/ChartBarInteractive";
 import { cn } from "@/lib/utils";
-import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -149,7 +133,6 @@ const UiShowcase = () => {
 	const [toolbarStatus, setToolbarStatus] = useState("All");
 	const [tableSelected, setTableSelected] = useState([]);
 	const [moduleTab, setModuleTab] = useState("overview");
-	const chartTooltipProps = useChartTooltipProps();
 
 	const scrollTo = (id) => {
 		setActiveNav(id);
@@ -599,101 +582,12 @@ const UiShowcase = () => {
 						<Section
 							id="charts"
 							title="Charts"
-							description="Recharts patterns from Marketing, Subscriptions, Invoices, and Analytics."
-							path="recharts + utils/chartTooltip.js"
+							description="shadcn/ui chart components built on Recharts (ChartContainer, tooltips, legends)."
+							path="components/ui/chart.jsx + components/charts/"
 						>
-							<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-								<div className="h-56">
-									<p className="mb-2 text-sm font-medium">Bar — campaign performance</p>
-									<ResponsiveContainer width="100%" height="100%">
-										<BarChart
-											data={[
-												{ month: "Apr", sent: 4600, opens: 1520 },
-												{ month: "May", sent: 5200, opens: 1680 },
-												{ month: "Jun", sent: 4900, opens: 1590 },
-											]}
-										>
-											<CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-											<XAxis dataKey="month" tick={{ fontSize: 12 }} />
-											<YAxis tick={{ fontSize: 12 }} />
-											<Tooltip {...chartTooltipProps} />
-											<Bar dataKey="sent" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-											<Bar dataKey="opens" fill="hsl(var(--chart-2))" radius={[4, 4, 0, 0]} />
-										</BarChart>
-									</ResponsiveContainer>
-								</div>
-								<div className="h-56">
-									<p className="mb-2 text-sm font-medium">Area — MRR trend</p>
-									<ResponsiveContainer width="100%" height="100%">
-										<AreaChart
-											data={[
-												{ month: "Apr", mrr: 45300 },
-												{ month: "May", mrr: 46900 },
-												{ month: "Jun", mrr: 48200 },
-											]}
-										>
-											<CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-											<XAxis dataKey="month" tick={{ fontSize: 12 }} />
-											<YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => `$${v / 1000}k`} />
-											<Tooltip {...chartTooltipProps} />
-											<Area
-												type="monotone"
-												dataKey="mrr"
-												stroke="hsl(var(--primary))"
-												fill="hsl(var(--primary))"
-												fillOpacity={0.15}
-											/>
-										</AreaChart>
-									</ResponsiveContainer>
-								</div>
-								<div className="h-56">
-									<p className="mb-2 text-sm font-medium">Line — engagement</p>
-									<ResponsiveContainer width="100%" height="100%">
-										<LineChart
-											data={[
-												{ day: "Mon", opens: 42, clicks: 12 },
-												{ day: "Wed", opens: 51, clicks: 15 },
-												{ day: "Fri", opens: 49, clicks: 14 },
-											]}
-										>
-											<CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-											<XAxis dataKey="day" tick={{ fontSize: 12 }} />
-											<YAxis tick={{ fontSize: 12 }} />
-											<Tooltip {...chartTooltipProps} />
-											<Line type="monotone" dataKey="opens" stroke="hsl(var(--primary))" strokeWidth={2} />
-											<Line type="monotone" dataKey="clicks" stroke="hsl(var(--chart-2))" strokeWidth={2} />
-										</LineChart>
-									</ResponsiveContainer>
-								</div>
-								<div className="h-56">
-									<p className="mb-2 text-sm font-medium">Pie — subscription status</p>
-									<ResponsiveContainer width="100%" height="100%">
-										<PieChart>
-											<Pie
-												data={[
-													{ status: "Active", count: 248 },
-													{ status: "Trialing", count: 34 },
-													{ status: "Past Due", count: 12 },
-												]}
-												dataKey="count"
-												nameKey="status"
-												cx="50%"
-												cy="50%"
-												innerRadius={45}
-												outerRadius={70}
-											>
-												{[0, 1, 2].map((i) => (
-													<Cell
-														key={i}
-														fill={`hsl(var(--chart-${i + 1}))`}
-													/>
-												))}
-											</Pie>
-											<Tooltip {...chartTooltipProps} />
-											<Legend />
-										</PieChart>
-									</ResponsiveContainer>
-								</div>
+							<div className="grid grid-cols-1 gap-6">
+								<ChartAreaInteractive />
+								<ChartBarInteractive />
 							</div>
 						</Section>
 

@@ -19,17 +19,8 @@ import React, { useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { toast } from "sonner";
-import {
-	Bar,
-	BarChart,
-	CartesianGrid,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis,
-} from "recharts";
+import { CategoryBarChartCard } from "@/components/charts/CategoryBarChartCard";
 import { useTheme } from "../../utils/useTheme";
-import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { getFocusRingClass } from "../../utils/theme";
 import { ExportDropdown } from "../../lib/ui/dropdown";
 import { FormModal, FormField } from "../../lib/ui/modal";
@@ -69,7 +60,6 @@ const Invoices = () => {
 	const router = useRouter();
 	// Theme hook
 	const { theme, colorScheme, colors } = useTheme();
-	const chartTooltipProps = useChartTooltipProps();
 
 	const [invoices, setInvoices] = useState(INITIAL_INVOICES);
 	const [selectedInvoiceIds, setSelectedInvoiceIds] = useState([]);
@@ -316,9 +306,6 @@ const Invoices = () => {
 		}));
 	}, [invoices]);
 
-	const gridStroke = theme === "dark" ? "#3f3f46" : "#e4e4e7";
-	const axisStroke = theme === "dark" ? "#71717a" : "#71717a";
-
 	return (
 		<div
 			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar transition-all duration-100 ease-in`}
@@ -376,94 +363,21 @@ const Invoices = () => {
 			</div>
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-				<Card>
-					<CardHeader className="pb-2">
-						<CardTitle>Invoices by status</CardTitle>
-						<CardDescription>Count breakdown (matches totals above)</CardDescription>
-					</CardHeader>
-					<CardContent>
-					<ResponsiveContainer width="100%" height={220}>
-						<BarChart
-							data={statusCountData}
-							margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
-						>
-							<CartesianGrid
-								strokeDasharray="3 3"
-								stroke={gridStroke}
-								vertical={false}
-							/>
-							<XAxis
-								dataKey="name"
-								stroke={axisStroke}
-								fontSize={11}
-								tickLine={false}
-								axisLine={false}
-							/>
-							<YAxis
-								stroke={axisStroke}
-								fontSize={11}
-								tickLine={false}
-								axisLine={false}
-								allowDecimals={false}
-							/>
-							<Tooltip
-								{...chartTooltipProps}
-								formatter={(value) => [value, "Invoices"]}
-							/>
-							<Bar
-								dataKey="count"
-								fill={theme === "dark" ? "#3b82f6" : "#2563eb"}
-								radius={[8, 8, 0, 0]}
-							/>
-						</BarChart>
-					</ResponsiveContainer>
-					</CardContent>
-				</Card>
-				<Card>
-					<CardHeader className="pb-2">
-						<CardTitle>Amount by status</CardTitle>
-						<CardDescription>USD split across paid, pending, and overdue</CardDescription>
-					</CardHeader>
-					<CardContent>
-					<ResponsiveContainer width="100%" height={220}>
-						<BarChart
-							data={amountByStatusData}
-							margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
-						>
-							<CartesianGrid
-								strokeDasharray="3 3"
-								stroke={gridStroke}
-								vertical={false}
-							/>
-							<XAxis
-								dataKey="name"
-								stroke={axisStroke}
-								fontSize={11}
-								tickLine={false}
-								axisLine={false}
-							/>
-							<YAxis
-								stroke={axisStroke}
-								fontSize={11}
-								tickLine={false}
-								axisLine={false}
-								tickFormatter={(v) =>
-									v >= 1000 ? `$${(v / 1000).toFixed(0)}k` : `$${v}`
-								}
-							/>
-							<Tooltip
-								{...chartTooltipProps}
-								formatter={(value) => formatCurrency(value)}
-							/>
-							<Bar
-								dataKey="amount"
-								fill={theme === "dark" ? "#22c55e" : "#16a34a"}
-								radius={[8, 8, 0, 0]}
-							/>
-						</BarChart>
-					</ResponsiveContainer>
-					</CardContent>
-				</Card>
+				<CategoryBarChartCard
+					title="Invoices by status"
+					description="Count breakdown (matches totals above)"
+					data={statusCountData}
+					valueLabel="Invoices"
+					color="var(--chart-1)"
+				/>
+				<CategoryBarChartCard
+					title="Amount by status"
+					description="USD split across paid, pending, and overdue"
+					data={amountByStatusData}
+					dataKey="amount"
+					valueLabel="Amount"
+					color="var(--chart-3)"
+				/>
 			</div>
 
 			{/* Table Header */}

@@ -22,17 +22,8 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
-import {
-	Bar,
-	BarChart,
-	CartesianGrid,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis,
-} from "recharts";
+import { CategoryBarChartCard } from "@/components/charts/CategoryBarChartCard";
 import { useTheme } from "../../utils/useTheme";
-import { useChartTooltipProps } from "../../utils/chartTooltip";
 import { getFocusRingClass } from "../../utils/theme";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -165,7 +156,6 @@ const LeadsShadcn = () => {
 	// Theme hook
 	const router = useRouter();
 	const { theme, colorScheme, colors } = useTheme();
-	const chartTooltipProps = useChartTooltipProps();
 
 	const {
 		leads: allLeads,
@@ -381,9 +371,6 @@ const LeadsShadcn = () => {
 			.slice(0, 10);
 	}, [allLeads]);
 
-	const gridStroke = theme === "dark" ? "#3f3f46" : "#e4e4e7";
-	const axisStroke = theme === "dark" ? "#71717a" : "#71717a";
-
 	return (
 		<div
 			className={`p-6 overflow-y-scroll max-h-screen hidescrollbar transition-all duration-100 ease-in`}
@@ -441,96 +428,22 @@ const LeadsShadcn = () => {
 			</div>
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-				<Card>
-					<CardHeader className="pb-2">
-						<CardTitle>Leads by pipeline stage</CardTitle>
-						<CardDescription>Kanban columns (Backlog, In Progress, Done)</CardDescription>
-					</CardHeader>
-					<CardContent>
-					<ResponsiveContainer width="100%" height={220}>
-						<BarChart
-							data={pipelineStageData}
-							margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
-						>
-							<CartesianGrid
-								strokeDasharray="3 3"
-								stroke={gridStroke}
-								vertical={false}
-							/>
-							<XAxis
-								dataKey="name"
-								stroke={axisStroke}
-								fontSize={11}
-								tickLine={false}
-								axisLine={false}
-							/>
-							<YAxis
-								stroke={axisStroke}
-								fontSize={11}
-								tickLine={false}
-								axisLine={false}
-								allowDecimals={false}
-							/>
-							<Tooltip
-								{...chartTooltipProps}
-								formatter={(value) => [value, "Leads"]}
-							/>
-							<Bar
-								dataKey="count"
-								fill={theme === "dark" ? "#3b82f6" : "#2563eb"}
-								radius={[8, 8, 0, 0]}
-							/>
-						</BarChart>
-					</ResponsiveContainer>
-					</CardContent>
-				</Card>
-				<Card>
-					<CardHeader className="pb-2">
-						<CardTitle>Leads by account</CardTitle>
-						<CardDescription>Top companies (from company or email domain)</CardDescription>
-					</CardHeader>
-					<CardContent>
-					<ResponsiveContainer width="100%" height={240}>
-						<BarChart
-							data={companyLeadCounts}
-							margin={{ top: 8, right: 8, left: 0, bottom: 32 }}
-						>
-							<CartesianGrid
-								strokeDasharray="3 3"
-								stroke={gridStroke}
-								vertical={false}
-							/>
-							<XAxis
-								dataKey="name"
-								stroke={axisStroke}
-								fontSize={10}
-								tickLine={false}
-								axisLine={false}
-								interval={0}
-								angle={-25}
-								textAnchor="end"
-								height={48}
-							/>
-							<YAxis
-								stroke={axisStroke}
-								fontSize={11}
-								tickLine={false}
-								axisLine={false}
-								allowDecimals={false}
-							/>
-							<Tooltip
-								{...chartTooltipProps}
-								formatter={(value) => [value, "Leads"]}
-							/>
-							<Bar
-								dataKey="count"
-								fill={theme === "dark" ? "#a855f7" : "#9333ea"}
-								radius={[8, 8, 0, 0]}
-							/>
-						</BarChart>
-					</ResponsiveContainer>
-					</CardContent>
-				</Card>
+				<CategoryBarChartCard
+					title="Leads by pipeline stage"
+					description="Kanban columns (Backlog, In Progress, Done)"
+					data={pipelineStageData}
+					valueLabel="Leads"
+					color="var(--chart-1)"
+				/>
+				<CategoryBarChartCard
+					title="Leads by account"
+					description="Top companies (from company or email domain)"
+					data={companyLeadCounts}
+					valueLabel="Leads"
+					color="var(--chart-2)"
+					xTickAngle={-25}
+					heightClass="h-[260px]"
+				/>
 			</div>
 
 			{/* Table Header */}

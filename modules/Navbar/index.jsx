@@ -10,11 +10,13 @@ import {
 	X,
 	Moon,
 	Sun,
+	Palette,
 } from "lucide-react";
 import Image from "next/image";
 import * as lucideIcons from "lucide-react";
 import { useRouter } from "next/router";
 import { useTheme } from "../../utils/useTheme";
+import { useThemeCustomizer } from "../../utils/ThemeCustomizerContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -42,6 +44,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 	const modalSearchInputRef = useRef(null);
 
 	const { theme, toggleTheme, colors } = useTheme();
+	const { open: customizerOpen, toggleCustomizer } = useThemeCustomizer();
 
 	const searchNavItems = getSearchNavItems();
 
@@ -124,6 +127,22 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 			</div>
 
 			<div className="flex shrink-0 items-center gap-2">
+				<Button
+					type="button"
+					variant="ghost"
+					size="icon"
+					onClick={toggleCustomizer}
+					className={cn(
+						iconBtnClass,
+						customizerOpen &&
+							"border-zinc-300 bg-zinc-200 text-zinc-900 dark:border-zinc-600 dark:bg-zinc-700 dark:text-zinc-100"
+					)}
+					aria-label="Open theme customizer"
+					aria-pressed={customizerOpen}
+				>
+					<Palette className="h-4 w-4" strokeWidth={1.75} />
+				</Button>
+
 				<Button
 					type="button"
 					variant="ghost"

@@ -1041,7 +1041,7 @@ const Home = () => {
 								variant="outline"
 								onClick={() => router.push(action.route)}
 								className={cn(
-									"flex h-auto flex-col items-center gap-2 p-4 rounded-xl border",
+									"flex h-auto flex-col items-center gap-4 p-4 rounded-xl border",
 									colorClasses[action.color],
 									"transition-all duration-200 hover:scale-105"
 								)}
