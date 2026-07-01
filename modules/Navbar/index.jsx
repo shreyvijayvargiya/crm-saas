@@ -4,23 +4,21 @@ import {
 	Bot,
 	Users2,
 	LogOutIcon,
-	PanelLeftClose,
-	PanelRightClose,
+	PanelLeft,
 	Search,
 	SettingsIcon,
 	X,
 	Moon,
 	Sun,
-	Palette,
 } from "lucide-react";
 import Image from "next/image";
 import * as lucideIcons from "lucide-react";
 import { useRouter } from "next/router";
 import { useTheme } from "../../utils/useTheme";
-import { useThemeCustomizer } from "../../utils/ThemeCustomizerContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -34,15 +32,16 @@ import {
 	groupSearchNavItems,
 } from "../navConfig";
 
+const iconBtnClass =
+	"h-9 w-9 shrink-0 rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100";
+
 const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) => {
 	const router = useRouter();
 	const [searchModalOpen, setSearchModalOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
-	const searchInputRef = useRef(null);
 	const modalSearchInputRef = useRef(null);
 
 	const { theme, toggleTheme, colors } = useTheme();
-	const { open: customizerOpen, toggleCustomizer } = useThemeCustomizer();
 
 	const searchNavItems = getSearchNavItems();
 
@@ -86,170 +85,140 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 	const groupedFilteredNavItems = groupSearchNavItems(filteredNavItems);
 
 	return (
-		<div
-			className={`flex justify-between md:overflow-hidden overflow-x-scroll hidescrollbar w-full border-b ${colors.border} px-2 py-1 ${colors.primaryBackground} transition-all duration-100 ease-in`}
+		<header
+			className={cn(
+				"sticky top-0 z-30 flex w-full items-center justify-between gap-3 border-b px-3 py-2.5 sm:px-4",
+				"border-zinc-200/80 bg-white/95 backdrop-blur-sm",
+				"dark:border-zinc-800 dark:bg-zinc-950/95"
+			)}
 		>
-			<div className="relative flex justify-start items-center">
-				{open ? (
-					<PanelRightClose
-						size={18}
-						className={`mr-2 cursor-pointer ${colors.hoverSecondary} rounded ${colors.mutedForeground} transition-colors`}
-						onClick={() => setOpen(false)}
-					/>
-				) : (
-					<PanelLeftClose
-						className={`mr-2 cursor-pointer ${colors.hoverSecondary} rounded ${colors.mutedForeground} transition-colors`}
-						size={18}
-						onClick={() => {
+			<div className="flex min-w-0 items-center gap-2">
+				<Button
+					type="button"
+					variant="ghost"
+					size="icon"
+					className={iconBtnClass}
+					onClick={() => {
+						if (open) setOpen(false);
+						else {
 							setOpen(true);
 							setDrawerOpen(true);
-						}}
-					/>
-				)}
-				<div
-					className={`flex ${colors.hoverSecondary} rounded-[10px] mx-2 items-center group border ${colors.border} h-7 cursor-pointer transition-colors`}
+						}
+					}}
+					aria-label={open ? "Collapse sidebar" : "Expand sidebar"}
+				>
+					<PanelLeft className="h-4 w-4" strokeWidth={1.75} />
+				</Button>
+
+				<Button
+					type="button"
+					variant="ghost"
+					size="icon"
+					className={iconBtnClass}
 					onClick={handleSearchClick}
+					aria-label="Search"
 				>
-					<Search className={`${colors.textMuted} ml-2`} size={16} />
-					<Input
-						ref={searchInputRef}
-						type="text"
-						placeholder="Search..."
-						className="md:block hidden h-8 border-0 bg-transparent shadow-none focus-visible:ring-0 cursor-pointer"
-						readOnly
-					/>
-					<div className={`text-[10px] min-w-fit hidden md:flex ${colors.textMuted} italic mr-2 gap-0.5 items-center`}>
-						CMD + K
-					</div>
-				</div>
+					<Search className="h-4 w-4" strokeWidth={1.75} />
+				</Button>
+				<span className="hidden text-[10px] text-zinc-400 md:inline">⌘K</span>
 			</div>
-			<div className="flex items-center justify-between gap-2">
-				<div className={`p-1 md:flex hidden flex p-1 border ${colors.border} gap-1 rounded-xl`}>
-					<a
-						href="https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX"
-						target="_blank"
-						rel="noopener noreferrer"
-						className={`w-fit rounded bg-orange-100 text-zinc-600 dark:text-zinc-800 hover:bg-orange-200 dark:hover:bg-orange-900 p-1 text-center text-xs font-semibold text-white transition-all duration-100 ease-in`}
-					>
-						🇮🇳 
-						INR
-					</a>
-					<div>
-						<a href="https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template" target="_blank" rel="noopener noreferrer" 
-						className={`w-fit rounded text-zinc-600 dark:text-zinc-200 ${colors.hoverSecondary} px-1 py-1.5 text-center text-xs font-semibold text-white transition-all duration-100 ease-in`}>
-						🇺🇸
-							USD
-						</a>
-					</div>
-				</div>
 
-					<Button
-						type="button"
-						variant={customizerOpen ? "default" : "primary"}
-						size="icon"
-						onClick={toggleCustomizer}
-						className="h-9 w-9 hidden md:inline-flex"
-						aria-label="Open theme customizer"
-						aria-pressed={customizerOpen}
-					>
-						<Palette className="w-4 h-4" />
-					</Button>
-					{/* Theme Toggle */}
-					<Button
-						type="button"
-						variant="primary"
-						size="icon"
-						onClick={toggleTheme}
-						className="h-9 w-9"
-						aria-label="Toggle theme"
-					>
-						{theme === "light" ? (
-							<Moon className="w-4 h-4" />
-						) : (
-							<Sun className="w-4 h-4" />
-						)}
-					</Button>
-
-				<div
-					className="relative"
-					onClick={() => router.push("/notifications")}
+			<div className="flex shrink-0 items-center gap-2">
+				<Button
+					type="button"
+					variant="ghost"
+					size="icon"
+					onClick={toggleTheme}
+					className="h-9 w-9 rounded-xl text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+					aria-label="Toggle theme"
 				>
-					<Bell
-					size={18}
-						className={`cursor-pointer ${colors.mutedForeground} transition-all duration-100 ease-in`}
-					/>
-					<Badge className="absolute -top-2 right-0 h-4 min-w-4 justify-center border-transparent bg-red-500 px-1 text-[8px] text-white hover:bg-red-500">
+					{theme === "light" ? (
+						<Moon className="h-4 w-4" strokeWidth={1.75} />
+					) : (
+						<Sun className="h-4 w-4" strokeWidth={1.75} />
+					)}
+				</Button>
+
+				<Button
+					type="button"
+					variant="ghost"
+					size="icon"
+					className="relative h-9 w-9 rounded-xl text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+					onClick={() => router.push("/notifications")}
+					aria-label="Notifications"
+				>
+					<Bell className="h-4 w-4" strokeWidth={1.75} />
+					<Badge className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center border-2 border-white bg-red-500 px-1 text-[9px] font-semibold text-white hover:bg-red-500 dark:border-zinc-950">
 						3
 					</Badge>
-				</div>
-				
+				</Button>
+
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button
 							type="button"
 							variant="ghost"
 							size="icon"
-							className="h-8 w-8 rounded-full p-0"
+							className="h-9 w-9 rounded-full p-0 ring-2 ring-zinc-100 dark:ring-zinc-800"
 							aria-label="User menu"
 						>
 							<Image
 								src="/people/person-1.png"
 								alt="User Avatar"
-								width={32}
-								height={32}
-								className="rounded-full"
+								width={36}
+								height={36}
+								className="rounded-full object-cover"
 							/>
 						</Button>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end" className="w-48">
-						<div className="border-b border-zinc-200 dark:border-zinc-800">
-							<div className="p-2 flex justify-start">
+					<DropdownMenuContent align="end" className="w-52">
+						<div className="border-b border-zinc-200 p-3 dark:border-zinc-800">
+							<div className="flex items-center gap-3">
 								<Image
 									src="/people/person-1.png"
 									alt="User Avatar"
 									width={40}
 									height={40}
-									className="rounded-full mr-2"
+									className="rounded-full"
 								/>
-							</div>
-							<div className={`text-left mb-2 px-2 ${colors.foreground}`}>
-								<p className="font-bold">John Doe</p>
-								<p className={`text-sm ${colors.mutedForeground}`}>
-									john@doe.com
-								</p>
+								<div className="min-w-0">
+									<p className="truncate text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+										John Doe
+									</p>
+									<p className="truncate text-xs text-zinc-500">john@doe.com</p>
+								</div>
 							</div>
 						</div>
-						<div className="px-1 py-1">
-							<DropdownMenuItem onClick={() => router.push("/settings")}>
-								<Users2 size={14} className="text-sm" />
-								Profile
-							</DropdownMenuItem>
-							<DropdownMenuItem onClick={() => router.push("/settings")}>
-								<SettingsIcon size={14} className="text-sm" />
-								Settings
-							</DropdownMenuItem>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem>
-								<LogOutIcon size={14} className="text-sm" />
-								Logout
-							</DropdownMenuItem>
-						</div>
+						<DropdownMenuItem onClick={() => router.push("/settings")}>
+							<Users2 size={14} />
+							Profile
+						</DropdownMenuItem>
+						<DropdownMenuItem onClick={() => router.push("/settings")}>
+							<SettingsIcon size={14} />
+							Settings
+						</DropdownMenuItem>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem>
+							<LogOutIcon size={14} />
+							Logout
+						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
+
 				<Button
 					type="button"
-					variant={aiChatOpen ? "default" : "outline"}
+					variant="ghost"
 					size="icon"
 					onClick={onToggleAiChat}
-					className="ml-1 h-7 w-7 shrink-0 rounded-[10px]"
+					className={cn(
+						iconBtnClass,
+						aiChatOpen &&
+							"border-zinc-300 bg-zinc-200 text-zinc-900 dark:border-zinc-600 dark:bg-zinc-700 dark:text-zinc-100"
+					)}
 					aria-label={aiChatOpen ? "Close AI assistant" : "Open AI assistant"}
 					aria-pressed={aiChatOpen}
 				>
-					{aiChatOpen ? (
-						<PanelRightClose className="h-3.5 w-3.5" />
-					) : (
-						<Bot className="h-3.5 w-3.5" />
-					)}
+					<Bot className="h-4 w-4" strokeWidth={1.75} />
 				</Button>
 			</div>
 
@@ -337,7 +306,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 					</div>
 				</div>
 			)}
-		</div>
+		</header>
 	);
 };
 export default Navbar;

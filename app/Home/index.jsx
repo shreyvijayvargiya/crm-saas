@@ -18,27 +18,26 @@ import {
 	Target,
 	CheckCircle2,
 	ArrowRight,
+	BarChart3,
+	Users,
 } from "lucide-react";
 import router from "next/router";
 import { toast } from "sonner";
-import { BiParty } from "react-icons/bi";
 import {
 	AreaChart,
 	Area,
 	BarChart,
 	Bar,
-	LineChart,
-	Line,
+	Cell,
 	XAxis,
 	YAxis,
 	CartesianGrid,
 	Tooltip,
-	Legend,
 	ResponsiveContainer,
 } from "recharts";
 import { useTheme } from "../../utils/useTheme";
 import { cn } from "@/lib/utils";
-import { getChartColor, CHART_MUTED } from "@/lib/chartColors";
+import { CHART_MUTED } from "@/lib/chartColors";
 import { Button } from "@/components/ui/button";
 import {
 	Table,
@@ -58,17 +57,83 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 
+const CHART_CARD =
+	"overflow-hidden border-zinc-200/80 shadow-sm transition-shadow hover:shadow-md dark:border-zinc-800";
+
+const ICON_BOX =
+	"flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900";
+
+function monthDelta(data, key) {
+	return data[data.length - 1][key] - data[data.length - 2][key];
+}
+
+function monthPctChange(data, key) {
+	const last = data[data.length - 1][key];
+	const prev = data[data.length - 2][key];
+	return prev ? Math.round(((last - prev) / prev) * 100) : 0;
+}
+
+function TrendBadge({ positive, children }) {
+	return (
+		<span
+			className={cn(
+				"inline-flex shrink-0 items-center rounded-full px-2.5 py-1 text-xs font-medium",
+				positive
+					? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400"
+					: "bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-400"
+			)}
+		>
+			{children}
+		</span>
+	);
+}
+
+function DashboardChartCard({ icon: Icon, title, value, subtitle, trend, children }) {
+	return (
+		<Card className={CHART_CARD}>
+			<CardContent className="p-5 sm:p-6">
+				<div className="mb-1 flex items-start justify-between gap-3">
+					<div className="flex items-center gap-3">
+						<div className={ICON_BOX}>
+							<Icon
+								className="h-5 w-5 text-zinc-700 dark:text-zinc-300"
+								strokeWidth={1.75}
+							/>
+						</div>
+						<div>
+							<p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+								{title}
+							</p>
+							<p className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+								{value}
+							</p>
+						</div>
+					</div>
+					{trend}
+				</div>
+				{subtitle ? (
+					<p className="mb-4 text-xs text-zinc-500 dark:text-zinc-500">{subtitle}</p>
+				) : null}
+				{children}
+			</CardContent>
+		</Card>
+	);
+}
+
+function zincBarFill(theme, active = false) {
+	if (active) return theme === "dark" ? "#e4e4e7" : "#27272a";
+	return theme === "dark" ? "#71717a" : "#a1a1aa";
+}
+
 const Home = () => {
 	const { theme, colors } = useTheme();
-	const chartColor = getChartColor(1);
-	const secondaryColor = getChartColor(2);
 
 	const dashboardData = {
 		stats: {
 			totalLeads: 45,
 			conversionRate: "22%",
 			sales: "95",
-			revenue: "$12, 500",
+			revenue: "$12,500",
 		},
 		upcomingMeetings: [
 			{
@@ -260,246 +325,243 @@ const Home = () => {
 	};
 
 	const sampleData = [
-		{
-			name: "Jan",
-			leads: 30,
-			conversion: 20,
-			sales: 50,
-			revenue: 1000,
-			companies: 5,
-		},
-		{
-			name: "Feb",
-			leads: 40,
-			conversion: 25,
-			sales: 60,
-			revenue: 1500,
-			companies: 7,
-		},
-		{
-			name: "Mar",
-			leads: 35,
-			conversion: 30,
-			sales: 70,
-			revenue: 2000,
-			companies: 6,
-		},
-		{
-			name: "Apr",
-			leads: 50,
-			conversion: 35,
-			sales: 80,
-			revenue: 2500,
-			companies: 8,
-		},
+		{ name: "Jan", leads: 30, conversion: 18, sales: 50, revenue: 1000, companies: 5 },
+		{ name: "Feb", leads: 40, conversion: 22, sales: 60, revenue: 1500, companies: 7 },
+		{ name: "Mar", leads: 35, conversion: 26, sales: 70, revenue: 2000, companies: 6 },
+		{ name: "Apr", leads: 50, conversion: 30, sales: 80, revenue: 2500, companies: 8 },
+		{ name: "May", leads: 45, conversion: 28, sales: 75, revenue: 2200, companies: 7 },
+		{ name: "Jun", leads: 55, conversion: 35, sales: 95, revenue: 3100, companies: 9 },
 	];
 
+	const conversionTrend = monthDelta(sampleData, "conversion");
+	const salesTrend = monthDelta(sampleData, "sales");
+	const revenueTrendPct = monthPctChange(sampleData, "revenue");
+	const leadsTrend = monthDelta(sampleData, "leads");
+
+	const chartTooltipStyle = {
+		backgroundColor: theme === "dark" ? "#18181b" : "#ffffff",
+		border: `1px solid ${theme === "dark" ? "#3f3f46" : "#e4e4e7"}`,
+		borderRadius: "0.75rem",
+		padding: "0.625rem 0.75rem",
+		boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+		fontSize: "12px",
+	};
+
+	const chartLabelStyle = {
+		color: theme === "dark" ? "#fafafa" : "#18181b",
+		fontWeight: 600,
+	};
+
+	const zincStroke = theme === "dark" ? "#e4e4e7" : "#3f3f46";
+	const zincFillTop = theme === "dark" ? "#a1a1aa" : "#52525b";
+
 	return (
-		<div className="p-6 mx-auto transition-all duration-100 ease-in">
-			<h1 className="text-xl font-semibold mb-4">
-				Welcome back, John
-			</h1>
-			<Button
-				variant="link"
-				className="h-auto p-0 gap-1 hover:underline"
-				onClick={() => router.push("/stats")}
-			>
-				Stats
-				<ExternalLink size={18} className="text-muted-foreground" />
-			</Button>
-			<div className="py-1 mb-4">
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2 w-full">
-					{/* Sales Chart Card */}
-					<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300 group">
-						<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-green-400/20 to-green-600/10 rounded-full blur-2xl"></div>
-						<div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-green-300/15 to-green-500/5 rounded-full blur-xl"></div>
+		<div className="p-4 sm:p-6 mx-auto transition-all duration-100 ease-in">
+			<div className="mb-6">
+				<h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+					Welcome back, John
+				</h1>
+				<p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+					Here&apos;s what&apos;s happening with your pipeline today.
+				</p>
+			</div>
+			<div className="mb-6">
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+					<DashboardChartCard
+						icon={BarChart3}
+						title="Sales"
+						value={dashboardData.stats.sales}
+						subtitle="Closed deals over the last 6 months"
+						trend={
+							<TrendBadge positive={salesTrend >= 0}>
+								{salesTrend >= 0 ? "+" : ""}
+								{salesTrend} vs last month
+							</TrendBadge>
+						}
+					>
+						<ResponsiveContainer width="100%" height={210}>
+							<BarChart
+								data={sampleData}
+								margin={{ top: 8, right: 8, left: -18, bottom: 0 }}
+								barCategoryGap="28%"
+							>
+								<CartesianGrid
+									strokeDasharray="4 4"
+									className="stroke-zinc-200 dark:stroke-zinc-800"
+									vertical={false}
+								/>
+								<XAxis
+									dataKey="name"
+									stroke={CHART_MUTED}
+									fontSize={11}
+									tickLine={false}
+									axisLine={false}
+									dy={8}
+								/>
+								<YAxis
+									stroke={CHART_MUTED}
+									fontSize={11}
+									tickLine={false}
+									axisLine={false}
+									width={36}
+								/>
+								<Tooltip
+									contentStyle={chartTooltipStyle}
+									labelStyle={chartLabelStyle}
+									formatter={(value) => [value, "Sales"]}
+									cursor={{ fill: theme === "dark" ? "#27272a" : "#f4f4f5", radius: 6 }}
+								/>
+								<Bar dataKey="sales" radius={[6, 6, 0, 0]} maxBarSize={32}>
+									{sampleData.map((entry, index) => (
+										<Cell
+											key={entry.name}
+											fill={zincBarFill(theme, index === sampleData.length - 1)}
+										/>
+									))}
+								</Bar>
+							</BarChart>
+						</ResponsiveContainer>
+					</DashboardChartCard>
 
-						<CardContent className="relative p-6">
-							<div className="flex items-center gap-3 mb-4">
-								<div className="p-2 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-sm border border-green-500/20">
-									<BiParty className="text-green-500 text-xl" />
-								</div>
-								<div>
-									<p className="text-sm font-medium text-muted-foreground">
-										Sales
-									</p>
-									<p className="text-xl font-bold">
-										{dashboardData.stats.sales}
-									</p>
-								</div>
-							</div>
-							<ResponsiveContainer width="100%" height={200}>
-								<BarChart
-									data={sampleData}
-									margin={{ top: 5, right: 5, left: 0, bottom: 0 }}
-								>
-									<CartesianGrid
-										strokeDasharray="3 3"
-										className="stroke-zinc-200 dark:stroke-zinc-700"
-										vertical={false}
-									/>
-									<XAxis
-										dataKey="name"
-										stroke={CHART_MUTED}
-										fontSize={10}
-										tickLine={false}
-										axisLine={false}
-									/>
-									<YAxis
-										stroke={CHART_MUTED}
-										fontSize={10}
-										tickLine={false}
-										axisLine={false}
-									/>
-									<Tooltip
-										contentStyle={{
-											backgroundColor: theme === "dark" ? "#18181b" : "#ffffff",
-											border: `1px solid ${
-												theme === "dark" ? "#3f3f46" : "#e4e4e7"
-											}`,
-											borderRadius: "0.5rem",
-											padding: "0.5rem",
-										}}
-									/>
-									<Bar
-										dataKey="sales"
-										fill={chartColor}
-										radius={[8, 8, 0, 0]}
-									/>
-								</BarChart>
-							</ResponsiveContainer>
-						</CardContent>
-					</Card>
+					<DashboardChartCard
+						icon={DollarSign}
+						title="Revenue"
+						value={dashboardData.stats.revenue}
+						subtitle="Monthly recurring & one-time revenue"
+						trend={
+							<TrendBadge positive={revenueTrendPct >= 0}>
+								{revenueTrendPct >= 0 ? "+" : ""}
+								{revenueTrendPct}% vs last month
+							</TrendBadge>
+						}
+					>
+						<ResponsiveContainer width="100%" height={210}>
+							<BarChart
+								data={sampleData}
+								margin={{ top: 8, right: 8, left: -18, bottom: 0 }}
+								barCategoryGap="28%"
+							>
+								<CartesianGrid
+									strokeDasharray="4 4"
+									className="stroke-zinc-200 dark:stroke-zinc-800"
+									vertical={false}
+								/>
+								<XAxis
+									dataKey="name"
+									stroke={CHART_MUTED}
+									fontSize={11}
+									tickLine={false}
+									axisLine={false}
+									dy={8}
+								/>
+								<YAxis
+									stroke={CHART_MUTED}
+									fontSize={11}
+									tickLine={false}
+									axisLine={false}
+									tickFormatter={(v) => `$${v >= 1000 ? `${v / 1000}k` : v}`}
+									width={40}
+								/>
+								<Tooltip
+									contentStyle={chartTooltipStyle}
+									labelStyle={chartLabelStyle}
+									formatter={(value) => [
+										`$${Number(value).toLocaleString()}`,
+										"Revenue",
+									]}
+									cursor={{ fill: theme === "dark" ? "#27272a" : "#f4f4f5", radius: 6 }}
+								/>
+								<Bar dataKey="revenue" radius={[6, 6, 0, 0]} maxBarSize={32}>
+									{sampleData.map((entry, index) => (
+										<Cell
+											key={entry.name}
+											fill={zincBarFill(
+												theme,
+												index === sampleData.length - 1
+											)}
+										/>
+									))}
+								</Bar>
+							</BarChart>
+						</ResponsiveContainer>
+					</DashboardChartCard>
 
-					{/* Revenue Chart Card */}
-					<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300 group">
-						<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-orange-400/20 to-orange-600/10 rounded-full blur-2xl"></div>
-						<div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-orange-300/15 to-orange-500/5 rounded-full blur-xl"></div>
-
-						<CardContent className="relative p-6">
-							<div className="flex items-center gap-3 mb-4">
-								<div className="p-2 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 backdrop-blur-sm border border-orange-500/20">
-									<DollarSign className="text-orange-500" size={20} />
-								</div>
-								<div>
-									<p className="text-sm font-medium text-muted-foreground">
-										Revenue
-									</p>
-									<p className="text-xl font-bold">
-										{dashboardData.stats.revenue}
-									</p>
-								</div>
-							</div>
-							<ResponsiveContainer width="100%" height={200}>
-								<BarChart
-									data={sampleData}
-									margin={{ top: 5, right: 5, left: 0, bottom: 0 }}
-								>
-									<CartesianGrid
-										strokeDasharray="3 3"
-										className="stroke-zinc-200 dark:stroke-zinc-700"
-										vertical={false}
-									/>
-									<XAxis
-										dataKey="name"
-										stroke={CHART_MUTED}
-										fontSize={10}
-										tickLine={false}
-										axisLine={false}
-									/>
-									<YAxis
-										stroke={CHART_MUTED}
-										fontSize={10}
-										tickLine={false}
-										axisLine={false}
-									/>
-									<Tooltip
-										contentStyle={{
-											backgroundColor: theme === "dark" ? "#18181b" : "#ffffff",
-											border: `1px solid ${
-												theme === "dark" ? "#3f3f46" : "#e4e4e7"
-											}`,
-											borderRadius: "0.5rem",
-											padding: "0.5rem",
-										}}
-									/>
-									<Bar
-										dataKey="revenue"
-										fill={secondaryColor}
-										radius={[8, 8, 0, 0]}
-									/>
-								</BarChart>
-							</ResponsiveContainer>
-						</CardContent>
-					</Card>
-
-					{/* Conversion Rate Chart Card */}
-					<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300 group">
-						<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-pink-400/20 to-pink-600/10 rounded-full blur-2xl"></div>
-						<div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-pink-300/15 to-pink-500/5 rounded-full blur-xl"></div>
-
-						<CardContent className="relative p-6">
-							<div className="flex items-center gap-3 mb-4">
-								<div className="p-2 rounded-xl bg-gradient-to-br from-pink-500/20 to-pink-600/10 backdrop-blur-sm border border-pink-500/20">
-									<TrendingUp className="text-pink-500" size={20} />
-								</div>
-								<div>
-									<p className="text-sm font-medium text-muted-foreground">
-										Conversion Rate
-									</p>
-									<p className="text-xl font-bold">
-										{dashboardData.stats.conversionRate}
-									</p>
-								</div>
-							</div>
-							<ResponsiveContainer width="100%" height={200}>
-								<LineChart
-									data={sampleData}
-									margin={{ top: 5, right: 5, left: 0, bottom: 0 }}
-								>
-									<CartesianGrid
-										strokeDasharray="3 3"
-										className="stroke-zinc-200 dark:stroke-zinc-700"
-										vertical={false}
-									/>
-									<XAxis
-										dataKey="name"
-										stroke={CHART_MUTED}
-										fontSize={10}
-										tickLine={false}
-										axisLine={false}
-									/>
-									<YAxis
-										stroke={CHART_MUTED}
-										fontSize={10}
-										tickLine={false}
-										axisLine={false}
-									/>
-									<Tooltip
-										contentStyle={{
-											backgroundColor: theme === "dark" ? "#18181b" : "#ffffff",
-											border: `1px solid ${
-												theme === "dark" ? "#3f3f46" : "#e4e4e7"
-											}`,
-											borderRadius: "0.5rem",
-											padding: "0.5rem",
-										}}
-									/>
-									<Line
-										type="monotone"
-										dataKey="conversion"
-										stroke={CHART_MUTED}
-										strokeWidth={2}
-										dot={{
-											fill: CHART_MUTED,
-											r: 4,
-										}}
-										activeDot={{ r: 6 }}
-									/>
-								</LineChart>
-							</ResponsiveContainer>
-						</CardContent>
-					</Card>
+					<DashboardChartCard
+						icon={TrendingUp}
+						title="Conversion rate"
+						value={dashboardData.stats.conversionRate}
+						subtitle="Lead-to-deal conversion over the last 6 months"
+						trend={
+							<TrendBadge positive={conversionTrend >= 0}>
+								{conversionTrend >= 0 ? "+" : ""}
+								{conversionTrend}% vs last month
+							</TrendBadge>
+						}
+					>
+						<ResponsiveContainer width="100%" height={210}>
+							<AreaChart
+								data={sampleData}
+								margin={{ top: 8, right: 8, left: -18, bottom: 0 }}
+							>
+								<defs>
+									<linearGradient id="conversionFill" x1="0" y1="0" x2="0" y2="1">
+										<stop offset="0%" stopColor={zincFillTop} stopOpacity={0.25} />
+										<stop offset="100%" stopColor={zincFillTop} stopOpacity={0} />
+									</linearGradient>
+								</defs>
+								<CartesianGrid
+									strokeDasharray="4 4"
+									className="stroke-zinc-200 dark:stroke-zinc-800"
+									vertical={false}
+								/>
+								<XAxis
+									dataKey="name"
+									stroke={CHART_MUTED}
+									fontSize={11}
+									tickLine={false}
+									axisLine={false}
+									dy={8}
+								/>
+								<YAxis
+									stroke={CHART_MUTED}
+									fontSize={11}
+									tickLine={false}
+									axisLine={false}
+									tickFormatter={(v) => `${v}%`}
+									domain={[0, 40]}
+									width={36}
+								/>
+								<Tooltip
+									contentStyle={chartTooltipStyle}
+									labelStyle={chartLabelStyle}
+									formatter={(value) => [`${value}%`, "Conversion"]}
+									cursor={{
+										stroke: theme === "dark" ? "#52525b" : "#d4d4d8",
+										strokeWidth: 1,
+									}}
+								/>
+								<Area
+									type="monotone"
+									dataKey="conversion"
+									stroke={zincStroke}
+									strokeWidth={2.5}
+									fill="url(#conversionFill)"
+									dot={{
+										fill: theme === "dark" ? "#18181b" : "#ffffff",
+										stroke: zincStroke,
+										strokeWidth: 2,
+										r: 3.5,
+									}}
+									activeDot={{
+										r: 5,
+										fill: theme === "dark" ? "#fafafa" : "#18181b",
+										stroke: theme === "dark" ? "#18181b" : "#ffffff",
+										strokeWidth: 2,
+									}}
+								/>
+							</AreaChart>
+						</ResponsiveContainer>
+					</DashboardChartCard>
 				</div>
 			</div>
 			<Button
@@ -626,63 +688,94 @@ const Home = () => {
 				</Card>
 
 				{/* Total Leads Chart */}
-				<Card className="w-full">
-					<CardHeader>
-						<CardTitle className="text-lg">Total Leads Overview</CardTitle>
-						<CardDescription>
-							Total Leads: {dashboardData.stats.totalLeads}
-						</CardDescription>
-					</CardHeader>
-					<CardContent>
-					<ResponsiveContainer width="100%" height={400}>
-						<AreaChart
-							data={sampleData}
-							margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-						>
-							<defs>
-								<linearGradient id="colorLeads" x1="0" y1="0" x2="0" y2="1">
-									<stop offset="5%" stopColor={chartColor} stopOpacity={0.8} />
-									<stop offset="95%" stopColor={chartColor} stopOpacity={0.1} />
-								</linearGradient>
-							</defs>
-							<CartesianGrid
-								strokeDasharray="3 3"
-								className="stroke-zinc-200 dark:stroke-zinc-700"
-								vertical={false}
-							/>
-							<XAxis
-								dataKey="name"
-								stroke={CHART_MUTED}
-								fontSize={12}
-								tickLine={false}
-								axisLine={false}
-							/>
-							<YAxis
-								stroke={CHART_MUTED}
-								fontSize={12}
-								tickLine={false}
-								axisLine={false}
-							/>
-							<Tooltip
-								contentStyle={{
-									backgroundColor: theme === "dark" ? "#18181b" : "#ffffff",
-									border: `1px solid ${
-										theme === "dark" ? "#3f3f46" : "#e4e4e7"
-									}`,
-									borderRadius: "0.75rem",
-									padding: "0.75rem",
-								}}
-							/>
-							<Legend />
-							<Area
-								type="monotone"
-								dataKey="leads"
-								stroke={chartColor}
-								fillOpacity={1}
-								fill="url(#colorLeads)"
-							/>
-						</AreaChart>
-					</ResponsiveContainer>
+				<Card className={cn(CHART_CARD, "w-full")}>
+					<CardContent className="p-5 sm:p-6">
+						<div className="mb-1 flex flex-wrap items-start justify-between gap-3">
+							<div className="flex items-center gap-3">
+								<div className={ICON_BOX}>
+									<Users
+										className="h-5 w-5 text-zinc-700 dark:text-zinc-300"
+										strokeWidth={1.75}
+									/>
+								</div>
+								<div>
+									<p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+										Total leads
+									</p>
+									<p className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+										{dashboardData.stats.totalLeads}
+									</p>
+								</div>
+							</div>
+							<TrendBadge positive={leadsTrend >= 0}>
+								{leadsTrend >= 0 ? "+" : ""}
+								{leadsTrend} vs last month
+							</TrendBadge>
+						</div>
+						<p className="mb-4 text-xs text-zinc-500">
+							Inbound lead volume across all channels
+						</p>
+						<ResponsiveContainer width="100%" height={320}>
+							<AreaChart
+								data={sampleData}
+								margin={{ top: 8, right: 12, left: -12, bottom: 0 }}
+							>
+								<defs>
+									<linearGradient id="leadsFill" x1="0" y1="0" x2="0" y2="1">
+										<stop offset="0%" stopColor={zincFillTop} stopOpacity={0.3} />
+										<stop offset="100%" stopColor={zincFillTop} stopOpacity={0} />
+									</linearGradient>
+								</defs>
+								<CartesianGrid
+									strokeDasharray="4 4"
+									className="stroke-zinc-200 dark:stroke-zinc-800"
+									vertical={false}
+								/>
+								<XAxis
+									dataKey="name"
+									stroke={CHART_MUTED}
+									fontSize={11}
+									tickLine={false}
+									axisLine={false}
+									dy={8}
+								/>
+								<YAxis
+									stroke={CHART_MUTED}
+									fontSize={11}
+									tickLine={false}
+									axisLine={false}
+									width={36}
+								/>
+								<Tooltip
+									contentStyle={chartTooltipStyle}
+									labelStyle={chartLabelStyle}
+									formatter={(value) => [value, "Leads"]}
+									cursor={{
+										stroke: theme === "dark" ? "#52525b" : "#d4d4d8",
+										strokeWidth: 1,
+									}}
+								/>
+								<Area
+									type="monotone"
+									dataKey="leads"
+									stroke={zincStroke}
+									strokeWidth={2.5}
+									fill="url(#leadsFill)"
+									dot={{
+										fill: theme === "dark" ? "#18181b" : "#ffffff",
+										stroke: zincStroke,
+										strokeWidth: 2,
+										r: 3.5,
+									}}
+									activeDot={{
+										r: 5,
+										fill: theme === "dark" ? "#fafafa" : "#18181b",
+										stroke: theme === "dark" ? "#18181b" : "#ffffff",
+										strokeWidth: 2,
+									}}
+								/>
+							</AreaChart>
+						</ResponsiveContainer>
 					</CardContent>
 				</Card>
 			</div>

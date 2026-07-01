@@ -11,14 +11,10 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<ThemeProvider>
 			<ThemeCustomizerProvider>
-				<AuthProvider>
-					<LayoutWrapper>
-						<ProRouteGuard>
-							<Component {...pageProps} />
-						</ProRouteGuard>
-						<Analytics />
-					</LayoutWrapper>
-				</AuthProvider>
+				<LayoutWrapper>
+					<Component {...pageProps} />
+					<Analytics />
+				</LayoutWrapper>
 			</ThemeCustomizerProvider>
 		</ThemeProvider>
 	);
