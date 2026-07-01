@@ -2,7 +2,7 @@ import React from "react";
 import { CalendarRange } from "lucide-react";
 import { useTheme } from "../../../utils/useTheme";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { DateRangePicker } from "@/components/ui/date-picker";
 
 const PRESETS = [
 	{ id: "7d", label: "7 days" },
@@ -46,22 +46,12 @@ const DateRangeFilter = ({ value, onChange, showCustom, onToggleCustom, customFr
 				</Button>
 			</div>
 			{showCustom && (
-				<div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-					<label className={`text-xs ${colors.mutedForeground}`}>From</label>
-					<Input
-						type="date"
-						value={customFrom}
-						onChange={(e) => onCustomChange("from", e.target.value)}
-						className="h-8 w-auto text-xs"
-					/>
-					<label className={`text-xs ${colors.mutedForeground}`}>To</label>
-					<Input
-						type="date"
-						value={customTo}
-						onChange={(e) => onCustomChange("to", e.target.value)}
-						className="h-8 w-auto text-xs"
-					/>
-				</div>
+				<DateRangePicker
+					from={customFrom}
+					to={customTo}
+					onFromChange={(val) => onCustomChange("from", val)}
+					onToChange={(val) => onCustomChange("to", val)}
+				/>
 			)}
 		</div>
 	);

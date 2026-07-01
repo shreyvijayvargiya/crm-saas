@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
 	Bell,
 	Bot,
@@ -21,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { overlayBackdrop, panelSurface } from "@/lib/themeTokens";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -43,7 +45,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 	const [searchTerm, setSearchTerm] = useState("");
 	const modalSearchInputRef = useRef(null);
 
-	const { theme, toggleTheme, colors } = useTheme();
+	const { theme, toggleTheme } = useTheme();
 	const { open: customizerOpen, toggleCustomizer } = useThemeCustomizer();
 
 	const searchNavItems = getSearchNavItems();
@@ -70,6 +72,15 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 		}
 	}, [searchModalOpen]);
 
+	useEffect(() => {
+		if (!searchModalOpen) return;
+		const prev = document.body.style.overflow;
+		document.body.style.overflow = "hidden";
+		return () => {
+			document.body.style.overflow = prev;
+		};
+	}, [searchModalOpen]);
+
 	const handleSearchClick = () => {
 		setSearchModalOpen(true);
 	};
@@ -86,6 +97,106 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 
 	const filteredNavItems = filterSearchNavItems(searchNavItems, searchTerm);
 	const groupedFilteredNavItems = groupSearchNavItems(filteredNavItems);
+
+	const searchModal =
+		searchModalOpen && typeof document !== "undefined"
+			? createPortal(
+					<div
+						role="presentation"
+						className={cn(
+							"fixed inset-0 z-[100] flex items-start justify-center p-4 pt-[min(20vh,7rem)] sm:p-6",
+							overlayBackdrop
+						)}
+						onClick={handleCloseModal}
+					>
+						<div
+							role="dialog"
+							aria-modal="true"
+							aria-label="Search pages"
+							className={cn(
+								"w-full max-w-2xl overflow-hidden rounded-xl shadow-2xl",
+								panelSurface
+							)}
+							onClick={(e) => e.stopPropagation()}
+						>
+							<div className="border-b border-border p-3">
+								<div className="flex items-center gap-2">
+									<div className="flex min-w-0 flex-1 items-center gap-2 rounded-lg border border-input bg-muted/40 px-3 py-0.5 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+										<Search
+											className="h-4 w-4 shrink-0 text-muted-foreground"
+											strokeWidth={1.75}
+										/>
+										<Input
+											ref={modalSearchInputRef}
+											type="text"
+											placeholder="Search pages..."
+											value={searchTerm}
+											onChange={(e) => setSearchTerm(e.target.value)}
+											className="h-9 flex-1 border-0 bg-transparent px-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+										/>
+									</div>
+									<Button
+										type="button"
+										variant="ghost"
+										size="icon"
+										className="h-9 w-9 shrink-0"
+										onClick={handleCloseModal}
+										aria-label="Close search"
+									>
+										<X className="h-4 w-4" />
+									</Button>
+								</div>
+							</div>
+							<div className="max-h-[min(60vh,28rem)] overflow-y-auto p-2">
+								<div className="space-y-2">
+									{groupedFilteredNavItems.length > 0 ? (
+										groupedFilteredNavItems.map((section) => (
+											<div key={section.key} className="space-y-1">
+												<div className="px-2 text-xs font-semibold tracking-wide text-muted-foreground">
+													{section.label}
+												</div>
+												<div className="p-1">
+													{section.items.map((item) => {
+														const Icon = lucideIcons[item.icon];
+														return (
+															<Button
+																key={item.id}
+																variant="ghost"
+																className="h-auto w-full justify-between gap-3 px-2 py-2 text-left"
+																onClick={() => handleNavigate(item.route)}
+															>
+																<div className="flex min-w-0 items-center gap-3">
+																	{Icon && (
+																		<Icon
+																			size={16}
+																			className="shrink-0 text-muted-foreground"
+																		/>
+																	)}
+																	<span className="truncate text-sm text-foreground">
+																		{item.label}
+																	</span>
+																</div>
+																<span className="shrink-0 rounded-md border border-border px-2 py-0.5 text-xs text-muted-foreground">
+																	{item.route}
+																</span>
+															</Button>
+														);
+													})}
+												</div>
+											</div>
+										))
+									) : (
+										<div className="py-8 text-center text-sm text-muted-foreground">
+											<p>No results found</p>
+										</div>
+									)}
+								</div>
+							</div>
+						</div>
+					</div>,
+					document.body
+				)
+			: null;
 
 	return (
 		<header
@@ -241,90 +352,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 				</Button>
 			</div>
 
-			{/* Search Modal */}
-			{searchModalOpen && (
-				<div className="fixed inset-0 flex items-start justify-center bg-black bg-opacity-50 z-50 pt-20">
-					<div
-						className={`${colors.card} border-2 ${colors.border} rounded-xl w-full max-w-2xl mx-4 max-h-[80vh] overflow-auto`}
-					>
-						<div
-							className={`flex items-center justify-between p-2 border-b-2 ${colors.border}`}
-						>
-							<div className="flex items-center gap-2 flex-1">
-								<Search className={colors.mutedForeground} size={18} />
-								<Input
-									ref={modalSearchInputRef}
-									type="text"
-									placeholder="Search pages..."
-									value={searchTerm}
-									onChange={(e) => setSearchTerm(e.target.value)}
-									className="flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0"
-								/>
-							</div>
-							<Button
-								type="button"
-								variant="ghost"
-								size="icon"
-								onClick={handleCloseModal}
-								aria-label="Close search"
-							>
-								<X size={18} />
-							</Button>
-						</div>
-						<div className="p-2 overflow-y-auto max-h-[60vh]">
-							<div className="space-y-2">
-								{groupedFilteredNavItems.length > 0 ? (
-									groupedFilteredNavItems.map((section) => (
-										<div key={section.key} className="space-y-1">
-											<div
-												className={`px-2 text-xs font-semibold tracking-wide  ${colors.textMuted}`}
-											>
-												{section.label}
-											</div>
-											<div className={`p-1`}>
-												{section.items.map((item) => {
-													const Icon = lucideIcons[item.icon];
-													return (
-														<Button
-															key={item.id}
-															variant="ghost"
-															className="w-full justify-between gap-3 px-2 py-1 text-left h-auto"
-															onClick={() => handleNavigate(item.route)}
-														>
-															<div className="flex items-center gap-3 min-w-0">
-																{Icon && (
-																	<Icon
-																		size={16}
-																		className={colors.textSecondary}
-																	/>
-																)}
-																<span
-																	className={`${colors.textSecondary} text-sm truncate`}
-																>
-																	{item.label}
-																</span>
-															</div>
-															<span
-																className={`text-xs px-2 py-0.5 rounded-md border ${colors.border} ${colors.textMuted}`}
-															>
-																{item.route}
-															</span>
-														</Button>
-													);
-												})}
-											</div>
-										</div>
-									))
-								) : (
-									<div className={`text-center py-8 ${colors.mutedForeground}`}>
-										<p>No results found</p>
-									</div>
-								)}
-							</div>
-						</div>
-					</div>
-				</div>
-			)}
+			{searchModal}
 		</header>
 	);
 };

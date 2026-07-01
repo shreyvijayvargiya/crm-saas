@@ -18,6 +18,7 @@ import { ChartBarInteractive } from "@/components/charts/ChartBarInteractive";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
@@ -82,6 +83,7 @@ const NAV_ITEMS = [
 	{ id: "sheet", label: "Sheet" },
 	{ id: "drawer", label: "Drawer" },
 	{ id: "toast", label: "Toast" },
+	{ id: "date-picker", label: "Date picker" },
 	{ id: "date-range", label: "Date range" },
 	{ id: "modal", label: "Form modal" },
 	{ id: "table", label: "Table" },
@@ -128,6 +130,7 @@ const UiShowcase = () => {
 	const [showCustomRange, setShowCustomRange] = useState(false);
 	const [customFrom, setCustomFrom] = useState("");
 	const [customTo, setCustomTo] = useState("");
+	const [demoDate, setDemoDate] = useState("");
 	const [activeNav, setActiveNav] = useState("breadcrumbs");
 	const [toolbarSearch, setToolbarSearch] = useState("");
 	const [toolbarStatus, setToolbarStatus] = useState("All");
@@ -442,6 +445,15 @@ const UiShowcase = () => {
 									Error
 								</Button>
 							</div>
+						</Section>
+
+						<Section
+							id="date-picker"
+							title="Date picker"
+							description="Shadcn-style popover calendar for single-date fields."
+							path="components/ui/date-picker.jsx"
+						>
+							<DatePicker value={demoDate} onChange={setDemoDate} />
 						</Section>
 
 						<Section

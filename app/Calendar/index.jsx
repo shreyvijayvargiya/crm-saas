@@ -16,6 +16,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FormModal, FormField } from "../../lib/ui/modal";
@@ -676,14 +677,11 @@ const Calendar = () => {
 					/>
 				</FormField>
 				<FormField label="Date" htmlFor="new-event-date" required>
-					<Input
+					<DatePicker
 						id="new-event-date"
-						type="date"
 						value={newEvent.date}
-						onChange={(e) =>
-							setNewEvent({ ...newEvent, date: e.target.value })
-						}
-						required
+						onChange={(date) => setNewEvent({ ...newEvent, date })}
+						className="w-full"
 					/>
 				</FormField>
 				<FormField label="Color" htmlFor="new-event-color">
@@ -749,14 +747,13 @@ const Calendar = () => {
 						/>
 					</FormField>
 					<FormField label="Date" htmlFor="edit-event-date" required>
-						<Input
+						<DatePicker
 							id="edit-event-date"
-							type="date"
 							value={editEvent.date}
-							onChange={(e) =>
-								setEditEvent((prev) => ({ ...prev, date: e.target.value }))
+							onChange={(date) =>
+								setEditEvent((prev) => ({ ...prev, date }))
 							}
-							required
+							className="w-full"
 						/>
 					</FormField>
 				</div>

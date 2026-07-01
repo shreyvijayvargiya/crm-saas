@@ -19,6 +19,7 @@ import { CmsField, CmsMetaRow } from "./CmsField";
 import { NEWSLETTER_STATUSES } from "./cmsSeedData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -234,11 +235,11 @@ export default function NewsletterDetail() {
 									/>
 								</CmsField>
 								<CmsField label="Send date" htmlFor="nl-date">
-									<Input
+									<DatePicker
 										id="nl-date"
-										type="date"
 										value={draft.sendDate}
-										onChange={(e) => setField("sendDate", e.target.value)}
+										onChange={(val) => setField("sendDate", val)}
+										className="w-full"
 									/>
 								</CmsField>
 								<CmsField label="Recipients" htmlFor="nl-recipients">

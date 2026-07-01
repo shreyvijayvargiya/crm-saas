@@ -22,6 +22,7 @@ import {
 } from "./cmsSeedData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -604,12 +605,16 @@ const ContentManagementSystem = () => {
 				</div>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<CmsField label="Publish Date" htmlFor="blog-publish-date">
-						<Input
+						<DatePicker
 							id="blog-publish-date"
-							type="date"
 							name="publishDate"
 							value={newBlog.publishDate}
-							onChange={handleInputChange}
+							onChange={(val) =>
+								handleInputChange({
+									target: { name: "publishDate", value: val },
+								})
+							}
+							className="w-full"
 						/>
 					</CmsField>
 					<CmsField label="Status" htmlFor="blog-status" required>
@@ -677,12 +682,16 @@ const ContentManagementSystem = () => {
 				</CmsField>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<CmsField label="Send Date" htmlFor="nl-send-date">
-						<Input
+						<DatePicker
 							id="nl-send-date"
-							type="date"
 							name="sendDate"
 							value={newNewsletter.sendDate}
-							onChange={handleNewsletterInputChange}
+							onChange={(val) =>
+								handleNewsletterInputChange({
+									target: { name: "sendDate", value: val },
+								})
+							}
+							className="w-full"
 						/>
 					</CmsField>
 					<CmsField label="Status" htmlFor="nl-status" required>
