@@ -6,6 +6,7 @@ export const CONTACT = {
 	x: "https://x.com/treyvijay",
 	xHandle: "@treyvijay",
 	linkedin: "https://www.linkedin.com/in/shreyvijayvargiya",
+	whatsapp: "+91 7030226230",
 };
 
 export const CHECKOUT = {
@@ -23,8 +24,12 @@ export const PRICING_TIERS = [
 		period: "one-time · lifetime updates",
 		featured: false,
 		cta: "Buy template",
+		pointerTitle: "Buy template (USD)",
+		pointerColor: "#3b82f6",
 		checkoutUsd: CHECKOUT.usd,
 		checkoutInr: CHECKOUT.inr,
+		image:
+			"https://ovevcjixqq.ufs.sh/f/9pIU2Of3sxTfU9NP1Drb7rxhdGYe1SLHVu92gAbfPX6ytMjc",
 		features: [
 			"60+ production CRM screens",
 			"Next.js · React · Tailwind · shadcn/ui",
@@ -44,8 +49,12 @@ export const PRICING_TIERS = [
 		period: "one-time",
 		featured: true,
 		cta: "Get template + Figma",
+		pointerTitle: "Get template + Figma",
+		pointerColor: "#a855f7",
 		checkoutUsd: CHECKOUT.usd,
 		checkoutInr: CHECKOUT.inr,
+		image:
+			"https://ovevcjixqq.ufs.sh/f/9pIU2Of3sxTf0oTGf0ItJ0bOPyYln79LjfwsKrFWgTAe4Emd",
 		features: [
 			"Everything in CRM Template",
 			"Figma component kit (request via receipt)",
@@ -62,6 +71,8 @@ export const PRICING_TIERS = [
 		period: "project-based",
 		featured: false,
 		cta: "Book a call",
+		pointerTitle: "Book a call",
+		pointerColor: "#14b8a6",
 		href: "/contact",
 		features: [
 			"Template as foundation — tailored to your workflow",
@@ -92,7 +103,7 @@ export const FAQ_ITEMS = [
 	},
 	{
 		q: "Is there a live demo before I buy?",
-		a: "Yes — open the Demo tab in the bottom nav or visit /demo to explore the full interactive CRM: leads, pipeline, finance, developer tools, and more.",
+		a: "Yes — open the Demo tab in the top nav or visit /demo to explore the full interactive CRM: leads, pipeline, finance, developer tools, and more.",
 	},
 	{
 		q: "How do I get the Figma files?",
@@ -111,26 +122,56 @@ export const FAQ_ITEMS = [
 export const HOME_FEATURES = [
 	{
 		title: "60+ CRM screens",
+		icon: "LayoutDashboard",
+		iconClass: {
+			light: "border-blue-200 bg-blue-50 text-blue-600",
+			dark: "border-blue-500/30 bg-blue-500/10 text-blue-400",
+		},
 		desc: "Leads, pipeline, deals, finance, dev tools — structured like a real SaaS product, not empty placeholders.",
 	},
 	{
 		title: "Agency-ready foundation",
+		icon: "Building2",
+		iconClass: {
+			light: "border-violet-200 bg-violet-50 text-violet-600",
+			dark: "border-violet-500/30 bg-violet-500/10 text-violet-400",
+		},
 		desc: "Sell the template to clients or let us extend it — same codebase, faster delivery for startups and mid-size teams.",
 	},
 	{
 		title: "AI & platform modules",
+		icon: "Bot",
+		iconClass: {
+			light: "border-emerald-200 bg-emerald-50 text-emerald-600",
+			dark: "border-emerald-500/30 bg-emerald-500/10 text-emerald-400",
+		},
 		desc: "Copilot shell, Agent Ops observability, and SaaS billing dashboard included for credible demos.",
 	},
 	{
 		title: "Theme & i18n",
+		icon: "Palette",
+		iconClass: {
+			light: "border-pink-200 bg-pink-50 text-pink-600",
+			dark: "border-pink-500/30 bg-pink-500/10 text-pink-400",
+		},
 		desc: "Live theme customizer, dark mode, accent schemes, and translation-ready structure out of the box.",
 	},
 	{
 		title: "Charts & analytics",
+		icon: "BarChart3",
+		iconClass: {
+			light: "border-amber-200 bg-amber-50 text-amber-600",
+			dark: "border-amber-500/30 bg-amber-500/10 text-amber-400",
+		},
 		desc: "Recharts dashboards so your demo feels operational — not a static mockup.",
 	},
 	{
 		title: "Auth & operations",
+		icon: "ShieldCheck",
+		iconClass: {
+			light: "border-teal-200 bg-teal-50 text-teal-600",
+			dark: "border-teal-500/30 bg-teal-500/10 text-teal-400",
+		},
 		desc: "Login flows, teams, email UI, tasks, calendar, notifications, and integrations pages your buyers expect.",
 	},
 ];
@@ -141,17 +182,29 @@ export const SERVICES = [
 		desc: "Self-serve license with lifetime updates. Rebrand, connect your API, deploy.",
 		cta: "View pricing",
 		href: "/pricing",
+		pointerTitle: "View pricing",
+		pointerColor: "#3b82f6",
+		image:
+			"https://ovevcjixqq.ufs.sh/f/9pIU2Of3sxTfU9NP1Drb7rxhdGYe1SLHVu92gAbfPX6ytMjc",
 	},
 	{
 		title: "We build your CRM",
 		desc: "Custom modules, integrations, and deployment for startups and agencies who want it done.",
 		cta: "Start a project",
 		href: "/contact",
+		pointerTitle: "Start a project",
+		pointerColor: "#14b8a6",
+		image:
+			"https://ovevcjixqq.ufs.sh/f/9pIU2Of3sxTf0oTGf0ItJ0bOPyYln79LjfwsKrFWgTAe4Emd",
 	},
 	{
 		title: "Explore the demo",
 		desc: "Walk through every screen before you commit — full interactive app, real navigation.",
 		cta: "Open demo",
 		href: "/demo",
+		pointerTitle: "Open demo",
+		pointerColor: "#a855f7",
+		image:
+			"https://ovevcjixqq.ufs.sh/f/9pIU2Of3sxTfU9NP1Drb7rxhdGYe1SLHVu92gAbfPX6ytMjc",
 	},
 ];
