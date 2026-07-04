@@ -33,7 +33,7 @@ export const PRICING_TIERS = [
 		features: [
 			"60+ production CRM screens",
 			"Next.js · React · Tailwind · shadcn/ui",
-			"AI assistant, Agent Ops & SaaS dashboard modules",
+			"AI assistant & Agent Ops modules",
 			"Marketing landing + lead capture API",
 			"Zod schemas + Drizzle SQL reference",
 			"6 months priority email support",
@@ -87,7 +87,7 @@ export const PRICING_TIERS = [
 export const FAQ_ITEMS = [
 	{
 		q: "What do I get when I buy the template?",
-		a: "Full React + Next.js source code, 60+ CRM screens with demo data, shadcn/ui components, marketing landing, AI assistant shell, Agent Ops & SaaS dashboard modules, theme customizer, Zod schemas, Design.md, and lifetime updates.",
+		a: "Full React + Next.js source code, 60+ CRM screens with demo data, shadcn/ui components, marketing landing, AI assistant shell, Agent Ops module, theme customizer, Zod schemas, Design.md, and lifetime updates.",
 	},
 	{
 		q: "Can I use this in commercial client projects?",

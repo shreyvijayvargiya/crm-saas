@@ -60,7 +60,6 @@ export const navCategories = [
 			{ id: 13, label: "CMS", route: "/cms", icon: "FileText" },
 			{ id: 29, label: "API Logs", route: "/api-logs", icon: "ScrollText" },
 			{ id: 42, label: "Agent Ops", route: "/agent-ops", icon: "Bot" },
-			{ id: 43, label: "SaaS Dashboard", route: "/saas-dashboard", icon: "LayoutDashboard" },
 		],
 	},
 	{
