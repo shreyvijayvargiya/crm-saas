@@ -42,11 +42,11 @@ export const ThemeProvider = ({ children }) => {
 
 		if (theme === "dark") {
 			root.classList.add("dark");
-			body.style.backgroundColor = "#09090b"; // zinc-950
 		} else {
 			root.classList.remove("dark");
-			body.style.backgroundColor = "#f4f4f5"; // zinc-100
 		}
+		// Follow customizer --background (shadcn token)
+		body.style.backgroundColor = "hsl(var(--background))";
 
 		// Accent/primary tokens owned by ThemeCustomizerProvider
 

@@ -115,7 +115,7 @@ function RingProgress({ percent, complete }) {
 	const r = 16;
 	const c = 2 * Math.PI * r;
 	const offset = c - (Math.min(100, percent) / 100) * c;
-	const stroke = complete ? "#22c55e" : "#f59e0b";
+	const stroke = complete ? "hsl(var(--chart-3))" : "hsl(var(--chart-4))";
 	return (
 		<div className="flex items-center gap-2 shrink-0">
 			<svg width="40" height="40" className="shrink-0 -rotate-90">
@@ -124,7 +124,7 @@ function RingProgress({ percent, complete }) {
 					cy="20"
 					r={r}
 					fill="none"
-					className="stroke-zinc-200 dark:stroke-zinc-700"
+					stroke="hsl(var(--border))"
 					strokeWidth="3"
 				/>
 				<circle
@@ -414,14 +414,14 @@ const LeadsShadcn = () => {
 					description="Kanban columns (Backlog, In Progress, Done)"
 					data={pipelineStageData}
 					valueLabel="Leads"
-					color="var(--chart-1)"
+					color="hsl(var(--chart-1))"
 				/>
 				<CategoryBarChartCard
 					title="Leads by account"
 					description="Top companies (from company or email domain)"
 					data={companyLeadCounts}
 					valueLabel="Leads"
-					color="var(--chart-2)"
+					color="hsl(var(--chart-2))"
 					xTickAngle={-25}
 					heightClass="h-[260px]"
 				/>

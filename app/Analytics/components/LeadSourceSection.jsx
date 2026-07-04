@@ -11,7 +11,7 @@ const LeadSourceSection = ({ data }) => {
 	const { colors } = useTheme();
 	const tooltipProps = useChartTooltipProps();
 	const total = data.reduce((s, d) => s + d.value, 0);
-	const sliceColor = (i) => (i % 2 === 0 ? getChartColor(1) : getChartColor(2));
+	const sliceColor = (i) => getChartColor((i % 5) + 1);
 
 	return (
 		<Card className="h-full flex flex-col">

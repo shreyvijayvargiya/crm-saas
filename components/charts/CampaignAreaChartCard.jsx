@@ -16,9 +16,9 @@ import {
 } from "@/components/ui/chart";
 
 const chartConfig = {
-	sent: { label: "Sent", color: "var(--chart-1)" },
-	opens: { label: "Opens", color: "var(--chart-2)" },
-	clicks: { label: "Clicks", color: "var(--chart-3)" },
+	sent: { label: "Sent", color: "hsl(var(--chart-1))" },
+	opens: { label: "Opens", color: "hsl(var(--chart-2))" },
+	clicks: { label: "Clicks", color: "hsl(var(--chart-3))" },
 };
 
 export function CampaignAreaChartCard({

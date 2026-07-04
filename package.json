@@ -15,6 +15,7 @@
 		"dev": "next --port 3002",
 		"clean": "yarn cache clean",
 		"build": "NODE_OPTIONS=--openssl-legacy-provider next build",
+		"build-crm": "node scripts/build-crm.mjs",
 		"verify:schemas": "node scripts/verify-schemas.mjs"
 	},
 	"dependencies": {

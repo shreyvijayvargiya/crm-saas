@@ -3,6 +3,7 @@ import { useTheme } from "./useTheme";
 import {
 	CUSTOMIZER_STORAGE_KEY,
 	defaultCustomizerState,
+	themePresets,
 	applyBaseColorVars,
 	applyAccentVars,
 	applyRadiusVar,
@@ -37,7 +38,12 @@ export function ThemeCustomizerProvider({ children }) {
 		try {
 			const saved = localStorage.getItem(CUSTOMIZER_STORAGE_KEY);
 			if (saved) {
-				setSettings({ ...defaultCustomizerState, ...JSON.parse(saved) });
+				const parsed = JSON.parse(saved);
+				setSettings({
+					...defaultCustomizerState,
+					...parsed,
+					themeId: parsed.themeId ?? "custom",
+				});
 			}
 		} catch {
 			/* ignore */
@@ -85,7 +91,19 @@ export function ThemeCustomizerProvider({ children }) {
 				)?.[0];
 				if (radiusKey) next.radius = radiusKey;
 			}
+			// Manual token tweaks leave named theme selection
+			if (key !== "themeId") next.themeId = "custom";
 			return next;
+		});
+	};
+
+	const applyThemePreset = (themeId) => {
+		const preset = themePresets[themeId];
+		if (!preset) return;
+		setSettings({
+			...defaultCustomizerState,
+			...preset.settings,
+			themeId,
 		});
 	};
 
@@ -97,6 +115,7 @@ export function ThemeCustomizerProvider({ children }) {
 			value={{
 				settings,
 				updateSetting,
+				applyThemePreset,
 				resetSettings,
 				hydrated,
 				open,

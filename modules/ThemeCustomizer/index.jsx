@@ -13,6 +13,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { useThemeCustomizer } from "../../utils/ThemeCustomizerContext";
 import {
+	themePresets,
 	stylePresets,
 	baseColorPresets,
 	accentPresets,
@@ -41,19 +42,37 @@ import { cn } from "@/lib/utils";
 
 export const PANEL_WIDTH = 320;
 
-const dropdownContentProps = {
-	side: "left",
-	align: "start",
-	sideOffset: 8,
-	className: "z-[250] w-56 border-zinc-200 bg-white text-zinc-900 shadow-lg",
-};
+function useIsMdUp() {
+	const [isMdUp, setIsMdUp] = React.useState(false);
+
+	React.useEffect(() => {
+		const mq = window.matchMedia("(min-width: 768px)");
+		const update = () => setIsMdUp(mq.matches);
+		update();
+		mq.addEventListener("change", update);
+		return () => mq.removeEventListener("change", update);
+	}, []);
+
+	return isMdUp;
+}
 
 function CustomizerDropdownContent({ className, children, ...props }) {
+	const isMdUp = useIsMdUp();
+
 	return (
 		<DropdownMenuContent
-			{...dropdownContentProps}
+			side={isMdUp ? "left" : "bottom"}
+			align="start"
+			sideOffset={8}
+			collisionPadding={12}
+			className={cn(
+				"z-[250] border-zinc-200 bg-white text-zinc-900 shadow-lg",
+				isMdUp
+					? "w-56"
+					: "w-[var(--radix-dropdown-menu-trigger-width)] max-h-60 overflow-y-auto",
+				className
+			)}
 			{...props}
-			className={cn(dropdownContentProps.className, className)}
 		>
 			{children}
 		</DropdownMenuContent>
@@ -82,14 +101,14 @@ function CustomizerSection({ title, children }) {
 
 function CustomizerRow({ label, value, icon, children }) {
 	return (
-		<div className="rounded-xl border border-zinc-200 bg-white p-3 shadow-sm">
+		<div className="rounded-xl p-2">
 			<p className="text-[11px] font-medium text-zinc-500">{label}</p>
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button
 						type="button"
 						variant="ghost"
-						className="mt-2 h-auto w-full justify-between gap-2 rounded-lg px-1 py-1 font-normal hover:bg-zinc-50"
+						className="mt-2 h-auto bg-white w-full justify-between gap-2 rounded-lg px-1 py-1 font-normal hover:bg-zinc-50"
 					>
 						<span className="flex min-w-0 items-center gap-2.5">
 							{icon}
@@ -127,6 +146,20 @@ function SwatchIcon({ color, className }) {
 			className={cn("inline-block h-5 w-5 shrink-0 rounded-full border border-black/10", className)}
 			style={{ backgroundColor: color }}
 		/>
+	);
+}
+
+function ThemeSwatches({ colors, className }) {
+	return (
+		<span className={cn("flex shrink-0 items-center -space-x-1", className)}>
+			{(colors ?? []).slice(0, 4).map((color, i) => (
+				<span
+					key={`${color}-${i}`}
+					className="inline-block h-3.5 w-3.5 rounded-full border border-white shadow-sm"
+					style={{ backgroundColor: color }}
+				/>
+			))}
+		</span>
 	);
 }
 
@@ -210,59 +243,18 @@ function ShadowIcon({ shadowKey }) {
 	);
 }
 
-function LivePreview({ settings }) {
-	const borderStyle = borderStylePresets[settings.borderStyle]?.value ?? "solid";
-	const borderWidth = borderWidthPresets[settings.borderWidth]?.value ?? "1px";
-	const shadow = shadowPresets[settings.shadow]?.value ?? shadowPresets.sm.value;
-	const radius = radiusPresets[settings.radius]?.value ?? "0.5rem";
-	const blur = backdropBlurPresets[settings.backdropBlur]?.value ?? "0px";
-
-	return (
-		<div
-			className="rounded-xl border border-zinc-200 bg-gradient-to-br from-zinc-100 to-white p-3"
-			style={{ backdropFilter: blur !== "0px" ? `blur(${blur})` : undefined }}
-		>
-			<p className="mb-2 text-[10px] font-medium uppercase tracking-wide text-zinc-400">
-				Preview
-			</p>
-			<div
-				className="rounded-lg bg-white p-3"
-				style={{
-					borderStyle,
-					borderWidth,
-					borderColor: "hsl(240 5.9% 90%)",
-					borderRadius: radius,
-					boxShadow: shadow === "none" ? "none" : shadow,
-				}}
-			>
-				<p className="text-sm font-semibold text-zinc-900">Card surface</p>
-				<p
-					className="mt-1 text-xs text-zinc-500"
-					style={{
-						lineHeight: lineHeightPresets[settings.lineHeight]?.value,
-						letterSpacing: letterSpacingPresets[settings.letterSpacing]?.value,
-					}}
-				>
-					Borders, shadow, radius, and type tokens update live.
-				</p>
-				<div className="mt-3 flex gap-2">
-					<span
-						className="rounded-md px-2 py-1 text-[10px] font-medium text-white"
-						style={{ background: "hsl(221 83% 53%)" }}
-					>
-						Primary
-					</span>
-					<span className="rounded-md border px-2 py-1 text-[10px] font-medium text-zinc-700" style={{ borderStyle, borderWidth }}>
-						Outline
-					</span>
-				</div>
-			</div>
-		</div>
-	);
-}
 
 const ThemeCustomizer = () => {
-	const { settings, updateSetting, resetSettings, open, setOpen } = useThemeCustomizer();
+	const { settings, updateSetting, applyThemePreset, resetSettings, open, setOpen } =
+		useThemeCustomizer();
+
+	const activeThemeLabel =
+		settings.themeId === "custom"
+			? "Custom"
+			: themePresets[settings.themeId]?.label ?? "Custom";
+	const activeThemeSwatches =
+		themePresets[settings.themeId]?.swatches ??
+		themePresets.default.swatches;
 
 	return (
 		<AnimatePresence>
@@ -284,15 +276,15 @@ const ThemeCustomizer = () => {
 						animate={{ x: 0 }}
 						exit={{ x: "100%" }}
 						transition={{ type: "tween", duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-						className="fixed right-0 top-0 z-[200] flex h-screen flex-col border-l border-zinc-200 bg-zinc-50/95 backdrop-blur-sm"
+						className="fixed right-2 top-2 bottom-2 rounded-xl z-[200] flex flex-col border-l border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 backdrop-blur-sm"
 						style={{ width: PANEL_WIDTH }}
 						data-theme-customizer
 						aria-label="Theme customizer"
 					>
-						<div className="flex items-center justify-between border-b border-zinc-200 bg-white px-4 py-3">
+						<div className="flex items-center justify-between px-4 py-3">
 							<div>
-								<p className="text-sm font-semibold text-zinc-900">Design tokens</p>
-								<p className="text-[11px] text-zinc-500">Figma-style CSS variables</p>
+								<p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Theme Customizer</p>
+								<p className="text-[11px] text-zinc-500 dark:text-zinc-400">Customize your theme</p>
 							</div>
 							<div className="flex items-center gap-1">
 								<Button
@@ -300,7 +292,7 @@ const ThemeCustomizer = () => {
 									variant="ghost"
 									size="sm"
 									onClick={resetSettings}
-									className="h-auto px-2 py-1 text-[11px] font-medium text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"
+									className="h-auto px-2 py-1 text-[11px] font-medium text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
 								>
 									Reset
 								</Button>
@@ -309,7 +301,7 @@ const ThemeCustomizer = () => {
 									variant="ghost"
 									size="icon"
 									onClick={() => setOpen(false)}
-									className="h-8 w-8 text-zinc-500 hover:bg-zinc-100"
+									className="h-8 w-8 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:text-zinc-400"
 									aria-label="Close theme customizer"
 								>
 									<X className="h-4 w-4" />
@@ -318,9 +310,27 @@ const ThemeCustomizer = () => {
 						</div>
 
 						<div className="flex-1 space-y-4 overflow-y-auto p-3 hidescrollbar">
-							<LivePreview settings={settings} />
+
 
 							<CustomizerSection title="Colors">
+								<CustomizerRow
+									label="Theme"
+									value={activeThemeLabel}
+									icon={<ThemeSwatches colors={activeThemeSwatches} />}
+								>
+									<PresetDropdown
+										presets={themePresets}
+										value={settings.themeId}
+										onSelect={(key) => applyThemePreset(key)}
+										renderItem={(key, preset) => (
+											<span className="flex items-center gap-2.5">
+												<ThemeSwatches colors={preset.swatches} />
+												{preset.label}
+											</span>
+										)}
+									/>
+								</CustomizerRow>
+
 								<CustomizerRow
 									label="Style preset"
 									value={stylePresets[settings.style]?.label}
@@ -377,15 +387,26 @@ const ThemeCustomizer = () => {
 								<CustomizerRow
 									label="Chart color"
 									value={chartColorPresets[settings.chartColor]?.label}
-									icon={<SwatchIcon color={chartColorPresets[settings.chartColor]?.swatch} />}
+									icon={
+										<ThemeSwatches
+											colors={(
+												chartColorPresets[settings.chartColor]?.colors ??
+												chartColorPresets.blue.colors
+											).map((c) => `hsl(${c})`)}
+										/>
+									}
 								>
 									<PresetDropdown
 										presets={chartColorPresets}
 										value={settings.chartColor}
 										onSelect={(key) => updateSetting("chartColor", key)}
 										renderItem={(key, preset) => (
-											<span className="flex items-center gap-2">
-												<SwatchIcon color={preset.swatch} />
+											<span className="flex items-center gap-2.5">
+												<ThemeSwatches
+													colors={(preset.colors ?? [preset.value]).map(
+														(c) => `hsl(${c})`
+													)}
+												/>
 												{preset.label}
 											</span>
 										)}
@@ -627,14 +648,6 @@ const ThemeCustomizer = () => {
 									/>
 								</CustomizerRow>
 							</CustomizerSection>
-						</div>
-
-						<div className="border-t border-zinc-200 bg-white px-4 py-3">
-							<p className="text-[10px] leading-relaxed text-zinc-400">
-								Tokens map to CSS variables on{" "}
-								<code className="rounded bg-zinc-100 px-1 text-zinc-600">:root</code> — border
-								style, width, shadow, spacing, type, and blur. Saved to localStorage.
-							</p>
 						</div>
 					</motion.aside>
 				</>

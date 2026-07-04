@@ -56,7 +56,7 @@ const AverageDailySalesCard = () => {
 							<CartesianGrid
 								strokeDasharray="3 3"
 								vertical={false}
-								className="stroke-zinc-200 dark:stroke-zinc-700"
+								stroke="hsl(var(--border))"
 							/>
 							<XAxis dataKey="x" hide />
 							<YAxis hide />

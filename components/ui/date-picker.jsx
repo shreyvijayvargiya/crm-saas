@@ -12,6 +12,15 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 
+function formatDateLabel(date) {
+	if (!date) return null;
+	try {
+		return format(date, "PPP");
+	} catch {
+		return toDateString(date) || null;
+	}
+}
+
 export function DatePicker({
 	id,
 	name,
@@ -26,37 +35,52 @@ export function DatePicker({
 }) {
 	const mounted = useIsMounted();
 	const [open, setOpen] = React.useState(false);
-	const [internalValue, setInternalValue] = React.useState(value ?? "");
-	const [month, setMonth] = React.useState(() => parseDateValue(value) ?? new Date());
+	// Optimistic local selection so the trigger label updates even if the
+	// parent is slow to echo `value` back (or is briefly uncontrolled).
+	const [selectedDate, setSelectedDate] = React.useState(() =>
+		parseDateValue(value)
+	);
+	const [month, setMonth] = React.useState(
+		() => parseDateValue(value) ?? new Date()
+	);
 
 	React.useEffect(() => {
-		setInternalValue(value ?? "");
 		const parsed = parseDateValue(value);
+		setSelectedDate(parsed);
 		if (parsed) setMonth(parsed);
 	}, [value]);
 
-	const selected = parseDateValue(internalValue);
-
 	const handleSelect = (date) => {
-		const next = date ? toDateString(date) : "";
-		setInternalValue(next);
-		onChange?.(next);
+		setSelectedDate(date);
 		if (date) setMonth(date);
+		onChange?.(date ? toDateString(date) : "");
 		setOpen(false);
 	};
 
-	const label = selected ? format(selected, "PPP") : placeholder;
+	const handleOpenChange = (nextOpen) => {
+		setOpen(nextOpen);
+		// Re-sync from controlled value when reopening
+		if (nextOpen) {
+			const parsed = parseDateValue(value);
+			if (parsed) {
+				setSelectedDate(parsed);
+				setMonth(parsed);
+			}
+		}
+	};
 
-	const triggerButton = (
+	const label = formatDateLabel(selectedDate) ?? placeholder;
+	const storageValue = selectedDate ? toDateString(selectedDate) : "";
+
+	const trigger = (
 		<Button
 			id={id}
 			type="button"
 			variant="outline"
-			name={name}
 			disabled={disabled}
-			required={required}
+			aria-required={required || undefined}
 			onBlur={onBlur}
-			data-empty={!selected}
+			data-empty={!selectedDate}
 			className={cn(
 				"flex w-[212px] justify-between text-left font-normal data-[empty=true]:text-muted-foreground",
 				className
@@ -68,28 +92,39 @@ export function DatePicker({
 	);
 
 	if (!mounted) {
-		return triggerButton;
+		return (
+			<>
+				{name ? (
+					<input type="hidden" name={name} value={storageValue} readOnly />
+				) : null}
+				{trigger}
+			</>
+		);
 	}
 
 	return (
-		<Popover open={open} onOpenChange={setOpen}>
-			<PopoverTrigger asChild>{triggerButton}</PopoverTrigger>
-			<PopoverContent
-				className="w-auto p-0"
-				align={align}
-				onOpenAutoFocus={(e) => e.preventDefault()}
-				onCloseAutoFocus={(e) => e.preventDefault()}
-			>
-				<Calendar
-					mode="single"
-					selected={selected}
-					onSelect={handleSelect}
-					month={month}
-					onMonthChange={setMonth}
-					initialFocus
-				/>
-			</PopoverContent>
-		</Popover>
+		<>
+			{name ? (
+				<input type="hidden" name={name} value={storageValue} readOnly />
+			) : null}
+			<Popover open={open} onOpenChange={handleOpenChange} modal>
+				<PopoverTrigger asChild>{trigger}</PopoverTrigger>
+				<PopoverContent
+					className="w-auto p-0"
+					align={align}
+					onOpenAutoFocus={(e) => e.preventDefault()}
+					onCloseAutoFocus={(e) => e.preventDefault()}
+				>
+					<Calendar
+						mode="single"
+						selected={selectedDate}
+						onSelect={handleSelect}
+						month={month}
+						onMonthChange={setMonth}
+					/>
+				</PopoverContent>
+			</Popover>
+		</>
 	);
 }
 

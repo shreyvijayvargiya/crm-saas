@@ -369,7 +369,7 @@ const Invoices = () => {
 					description="Count breakdown (matches totals above)"
 					data={statusCountData}
 					valueLabel="Invoices"
-					color="var(--chart-1)"
+					color="hsl(var(--chart-1))"
 				/>
 				<CategoryBarChartCard
 					title="Amount by status"
@@ -377,7 +377,7 @@ const Invoices = () => {
 					data={amountByStatusData}
 					dataKey="amount"
 					valueLabel="Amount"
-					color="var(--chart-3)"
+					color="hsl(var(--chart-3))"
 				/>
 			</div>
 

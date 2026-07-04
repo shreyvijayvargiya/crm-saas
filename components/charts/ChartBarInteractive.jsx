@@ -109,8 +109,8 @@ const chartData = [
 
 const chartConfig = {
 	views: { label: "Page Views" },
-	desktop: { label: "Desktop", color: "var(--chart-2)" },
-	mobile: { label: "Mobile", color: "var(--chart-1)" },
+	desktop: { label: "Desktop", color: "hsl(var(--chart-2))" },
+	mobile: { label: "Mobile", color: "hsl(var(--chart-1))" },
 };
 
 export function ChartBarInteractive() {

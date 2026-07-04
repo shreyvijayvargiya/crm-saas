@@ -21,7 +21,7 @@ import { EARNING_BREAKDOWN, WEEKLY_EARNINGS } from "../ecommerceSeedData";
 const iconMap = { Wallet, DollarSign, CreditCard };
 
 const chartConfig = {
-	value: { label: "Earnings", color: "var(--chart-1)" },
+	value: { label: "Earnings", color: "hsl(var(--chart-1))" },
 };
 
 const EarningInsightsCard = () => {

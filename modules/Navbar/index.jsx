@@ -5,6 +5,7 @@ import {
 	Bot,
 	Users2,
 	LogOutIcon,
+	Menu,
 	PanelLeft,
 	Search,
 	SettingsIcon,
@@ -37,7 +38,10 @@ import {
 } from "../navConfig";
 
 const iconBtnClass =
-	"h-9 w-9 shrink-0 rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100";
+	"h-9 w-9 shrink-0 rounded-xl border border-border bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground";
+
+const iconBtnActiveClass =
+	"border-primary/30 bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary";
 
 const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) => {
 	const router = useRouter();
@@ -132,7 +136,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 											placeholder="Search pages..."
 											value={searchTerm}
 											onChange={(e) => setSearchTerm(e.target.value)}
-											className="h-9 flex-1 border-0 bg-transparent px-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+											className="h-9 outline-none focus:outline-none flex-1 border-0 bg-transparent px-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
 										/>
 									</div>
 									<Button
@@ -201,9 +205,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 	return (
 		<header
 			className={cn(
-				"sticky top-0 z-30 flex w-full items-center justify-between gap-3 border-b px-3 py-2.5 sm:px-4",
-				"border-zinc-200/80 bg-white/95 backdrop-blur-sm",
-				"dark:border-zinc-800 dark:bg-zinc-950/95"
+				"sticky top-0 z-30 flex w-full items-center justify-between gap-3 border-b border-border bg-background/95 px-3 py-2.5 backdrop-blur-sm sm:px-4"
 			)}
 		>
 			<div className="flex min-w-0 items-center gap-2">
@@ -234,20 +236,17 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 				>
 					<Search className="h-4 w-4" strokeWidth={1.75} />
 				</Button>
-				<span className="hidden text-[10px] text-zinc-400 md:inline">⌘K</span>
+				<span className="hidden text-[10px] text-muted-foreground md:inline">⌘K</span>
 			</div>
 
-			<div className="flex shrink-0 items-center gap-2">
+			{/* Desktop: full action row */}
+			<div className="hidden shrink-0 items-center gap-2 md:flex">
 				<Button
 					type="button"
 					variant="ghost"
 					size="icon"
 					onClick={toggleCustomizer}
-					className={cn(
-						iconBtnClass,
-						customizerOpen &&
-							"border-zinc-300 bg-zinc-200 text-zinc-900 dark:border-zinc-600 dark:bg-zinc-700 dark:text-zinc-100"
-					)}
+					className={cn(iconBtnClass, customizerOpen && iconBtnActiveClass)}
 					aria-label="Open theme customizer"
 					aria-pressed={customizerOpen}
 				>
@@ -259,7 +258,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 					variant="ghost"
 					size="icon"
 					onClick={toggleTheme}
-					className="h-9 w-9 rounded-xl text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+					className="h-9 w-9 rounded-xl text-muted-foreground hover:bg-accent hover:text-accent-foreground"
 					aria-label="Toggle theme"
 				>
 					{theme === "light" ? (
@@ -273,12 +272,12 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 					type="button"
 					variant="ghost"
 					size="icon"
-					className="relative h-9 w-9 rounded-xl text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+					className="relative h-9 w-9 rounded-xl text-muted-foreground hover:bg-accent hover:text-accent-foreground"
 					onClick={() => router.push("/notifications")}
 					aria-label="Notifications"
 				>
 					<Bell className="h-4 w-4" strokeWidth={1.75} />
-					<Badge className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center border-2 border-white bg-red-500 px-1 text-[9px] font-semibold text-white hover:bg-red-500 dark:border-zinc-950">
+					<Badge className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center border-2 border-background bg-destructive px-1 text-[9px] font-semibold text-destructive-foreground hover:bg-destructive">
 						3
 					</Badge>
 				</Button>
@@ -289,7 +288,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 							type="button"
 							variant="ghost"
 							size="icon"
-							className="h-9 w-9 rounded-full p-0 ring-2 ring-zinc-100 dark:ring-zinc-800"
+							className="h-9 w-9 rounded-full p-0 ring-2 ring-border"
 							aria-label="User menu"
 						>
 							<Image
@@ -302,7 +301,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end" className="w-52">
-						<div className="border-b border-zinc-200 p-3 dark:border-zinc-800">
+						<div className="border-b border-border p-3">
 							<div className="flex items-center gap-3">
 								<Image
 									src="/people/person-1.png"
@@ -312,10 +311,10 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 									className="rounded-full"
 								/>
 								<div className="min-w-0">
-									<p className="truncate text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+									<p className="truncate text-sm font-semibold text-foreground">
 										John Doe
 									</p>
-									<p className="truncate text-xs text-zinc-500">john@doe.com</p>
+									<p className="truncate text-xs text-muted-foreground">john@doe.com</p>
 								</div>
 							</div>
 						</div>
@@ -340,16 +339,91 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 					variant="ghost"
 					size="icon"
 					onClick={onToggleAiChat}
-					className={cn(
-						iconBtnClass,
-						aiChatOpen &&
-							"border-zinc-300 bg-zinc-200 text-zinc-900 dark:border-zinc-600 dark:bg-zinc-700 dark:text-zinc-100"
-					)}
+					className={cn(iconBtnClass, aiChatOpen && iconBtnActiveClass)}
 					aria-label={aiChatOpen ? "Close AI assistant" : "Open AI assistant"}
 					aria-pressed={aiChatOpen}
 				>
 					<Bot className="h-4 w-4" strokeWidth={1.75} />
 				</Button>
+			</div>
+
+			{/* Mobile: actions collapsed into bars menu */}
+			<div className="md:hidden">
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<Button
+							type="button"
+							variant="ghost"
+							size="icon"
+							className={iconBtnClass}
+							aria-label="Open menu"
+						>
+							<Menu className="h-4 w-4" strokeWidth={1.75} />
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end" className="w-56">
+						<div className="border-b border-border p-3">
+							<div className="flex items-center gap-3">
+								<Image
+									src="/people/person-1.png"
+									alt="User Avatar"
+									width={40}
+									height={40}
+									className="rounded-full"
+								/>
+								<div className="min-w-0">
+									<p className="truncate text-sm font-semibold text-foreground">
+										John Doe
+									</p>
+									<p className="truncate text-xs text-muted-foreground">
+										john@doe.com
+									</p>
+								</div>
+							</div>
+						</div>
+						<DropdownMenuItem
+							onClick={toggleCustomizer}
+							className={cn(customizerOpen && "bg-primary/10 text-primary")}
+						>
+							<Palette size={14} />
+							Theme customizer
+						</DropdownMenuItem>
+						<DropdownMenuItem onClick={toggleTheme}>
+							{theme === "light" ? <Moon size={14} /> : <Sun size={14} />}
+							{theme === "light" ? "Dark mode" : "Light mode"}
+						</DropdownMenuItem>
+						<DropdownMenuItem onClick={() => router.push("/notifications")}>
+							<Bell size={14} />
+							<span className="flex flex-1 items-center justify-between gap-2">
+								Notifications
+								<Badge className="flex h-5 min-w-5 items-center justify-center border-0 bg-destructive px-1.5 text-[10px] font-semibold text-destructive-foreground hover:bg-destructive">
+									3
+								</Badge>
+							</span>
+						</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={onToggleAiChat}
+							className={cn(aiChatOpen && "bg-primary/10 text-primary")}
+						>
+							<Bot size={14} />
+							{aiChatOpen ? "Close AI assistant" : "AI assistant"}
+						</DropdownMenuItem>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem onClick={() => router.push("/settings")}>
+							<Users2 size={14} />
+							Profile
+						</DropdownMenuItem>
+						<DropdownMenuItem onClick={() => router.push("/settings")}>
+							<SettingsIcon size={14} />
+							Settings
+						</DropdownMenuItem>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem>
+							<LogOutIcon size={14} />
+							Logout
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
 			</div>
 
 			{searchModal}

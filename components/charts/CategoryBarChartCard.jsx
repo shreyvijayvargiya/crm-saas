@@ -21,7 +21,7 @@ export function CategoryBarChartCard({
 	dataKey = "count",
 	xKey = "name",
 	valueLabel = "Count",
-	color = "var(--chart-1)",
+	color = "hsl(var(--chart-1))",
 	className,
 	xTickAngle = 0,
 	heightClass = "h-[250px]",

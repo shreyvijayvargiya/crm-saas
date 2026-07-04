@@ -8,7 +8,7 @@ import { DayPicker, getDefaultClassNames } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 
-function CalendarDayButton({ className, day, modifiers, ...props }) {
+function CalendarDayButton({ className, day, modifiers, children, ...props }) {
 	const defaultClassNames = getDefaultClassNames();
 	const ref = React.useRef(null);
 
@@ -21,18 +21,21 @@ function CalendarDayButton({ className, day, modifiers, ...props }) {
 			ref={ref}
 			type="button"
 			variant="ghost"
+			size="icon"
 			data-day={day.date.toLocaleDateString()}
 			data-selected-single={
 				modifiers.selected &&
 				!modifiers.range_start &&
 				!modifiers.range_end &&
 				!modifiers.range_middle
+					? "true"
+					: "false"
 			}
-			data-range-start={modifiers.range_start}
-			data-range-end={modifiers.range_end}
-			data-range-middle={modifiers.range_middle}
+			data-range-start={modifiers.range_start ? "true" : undefined}
+			data-range-end={modifiers.range_end ? "true" : undefined}
+			data-range-middle={modifiers.range_middle ? "true" : undefined}
 			className={cn(
-				"size-8 p-0 font-normal leading-none aria-selected:opacity-100",
+				"size-8 p-0 font-normal leading-none text-foreground",
 				"data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground",
 				"data-[range-start=true]:rounded-md data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground",
 				"data-[range-end=true]:rounded-md data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground",
@@ -45,7 +48,9 @@ function CalendarDayButton({ className, day, modifiers, ...props }) {
 				className
 			)}
 			{...props}
-		/>
+		>
+			{children ?? day.date.getDate()}
+		</Button>
 	);
 }
 

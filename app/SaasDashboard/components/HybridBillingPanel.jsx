@@ -25,7 +25,6 @@ import {
 	YAxis,
 } from "recharts";
 import { useChartTooltipProps } from "../../../utils/chartTooltip";
-import { useTheme } from "../../../utils/useTheme";
 import {
 	BILLING_PLANS,
 	STRIPE_PORTAL_SECTIONS,
@@ -158,8 +157,7 @@ function StripePortalEmbed() {
 
 export default function HybridBillingPanel() {
 	const chartTooltipProps = useChartTooltipProps();
-	const { theme } = useTheme();
-	const gridStroke = theme === "dark" ? "hsl(240 4% 16%)" : "hsl(240 5% 90%)";
+	const gridStroke = "hsl(var(--border))";
 
 	const currentPlan = BILLING_PLANS.find((p) => p.current) ?? BILLING_PLANS[2];
 	const [seats, setSeats] = useState(currentPlan.seats);

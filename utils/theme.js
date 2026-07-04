@@ -1,149 +1,25 @@
-// Color scheme definitions
+/**
+ * Accent scheme classes — all map to shadcn CSS variables so the customizer
+ * (--primary, --primary-foreground, --ring) drives buttons/chips globally.
+ */
+const semanticScheme = {
+	primary: "bg-primary",
+	primaryForeground: "text-primary-foreground",
+	primaryHover: "hover:bg-primary/90",
+	primaryRing: "ring-ring ring-themed",
+	chip: "bg-primary/10 text-primary border-primary/20",
+	chipDark: "bg-primary/15 text-primary border-primary/25",
+};
+
 export const colorSchemes = {
-	blue: {
-		light: {
-			primary: "bg-blue-600",
-			primaryForeground: "text-white",
-			primaryHover: "hover:bg-blue-700",
-			primaryRing: "ring-blue-600",
-			chip: "bg-blue-100 text-blue-800",
-			chipDark: "bg-blue-900/30 text-blue-400 border-blue-800/50",
-		},
-		dark: {
-			primary: "bg-blue-500",
-			primaryForeground: "text-blue-950",
-			primaryHover: "hover:bg-blue-400",
-			primaryRing: "ring-blue-500",
-			chip: "bg-blue-900/30 text-blue-400 border-blue-800/50",
-			chipDark: "bg-blue-900/30 text-blue-400 border-blue-800/50",
-		},
-	},
-	green: {
-		light: {
-			primary: "bg-green-600",
-			primaryForeground: "text-white",
-			primaryHover: "hover:bg-green-700",
-			primaryRing: "ring-green-600",
-			chip: "bg-green-100 text-green-800",
-			chipDark: "bg-green-900/30 text-green-400 border-green-800/50",
-		},
-		dark: {
-			primary: "bg-green-500",
-			primaryForeground: "text-green-950",
-			primaryHover: "hover:bg-green-400",
-			primaryRing: "ring-green-500",
-			chip: "bg-green-900/30 text-green-400 border-green-800/50",
-			chipDark: "bg-green-900/30 text-green-400 border-green-800/50",
-		},
-	},
-	purple: {
-		light: {
-			primary: "bg-purple-600",
-			primaryForeground: "text-white",
-			primaryHover: "hover:bg-purple-700",
-			primaryRing: "ring-purple-600",
-			chip: "bg-purple-100 text-purple-800",
-			chipDark: "bg-purple-900/30 text-purple-400 border-purple-800/50",
-		},
-		dark: {
-			primary: "bg-purple-500",
-			primaryForeground: "text-purple-950",
-			primaryHover: "hover:bg-purple-400",
-			primaryRing: "ring-purple-500",
-			chip: "bg-purple-900/30 text-purple-400 border-purple-800/50",
-			chipDark: "bg-purple-900/30 text-purple-400 border-purple-800/50",
-		},
-	},
-	orange: {
-		light: {
-			primary: "bg-orange-600",
-			primaryForeground: "text-white",
-			primaryHover: "hover:bg-orange-700",
-			primaryRing: "ring-orange-600",
-			chip: "bg-orange-100 text-orange-800",
-			chipDark: "bg-orange-900/30 text-orange-400 border-orange-800/50",
-		},
-		dark: {
-			primary: "bg-orange-500",
-			primaryForeground: "text-orange-950",
-			primaryHover: "hover:bg-orange-400",
-			primaryRing: "ring-orange-500",
-			chip: "bg-orange-900/30 text-orange-400 border-orange-800/50",
-			chipDark: "bg-orange-900/30 text-orange-400 border-orange-800/50",
-		},
-	},
-	red: {
-		light: {
-			primary: "bg-red-600",
-			primaryForeground: "text-white",
-			primaryHover: "hover:bg-red-700",
-			primaryRing: "ring-red-600",
-			chip: "bg-red-100 text-red-800",
-			chipDark: "bg-red-900/30 text-red-400 border-red-800/50",
-		},
-		dark: {
-			primary: "bg-red-500",
-			primaryForeground: "text-red-950",
-			primaryHover: "hover:bg-red-400",
-			primaryRing: "ring-red-500",
-			chip: "bg-red-900/30 text-red-400 border-red-800/50",
-			chipDark: "bg-red-900/30 text-red-400 border-red-800/50",
-		},
-	},
-	pink: {
-		light: {
-			primary: "bg-pink-600",
-			primaryForeground: "text-white",
-			primaryHover: "hover:bg-pink-700",
-			primaryRing: "ring-pink-600",
-			chip: "bg-pink-100 text-pink-800",
-			chipDark: "bg-pink-900/30 text-pink-400 border-pink-800/50",
-		},
-		dark: {
-			primary: "bg-pink-500",
-			primaryForeground: "text-pink-950",
-			primaryHover: "hover:bg-pink-400",
-			primaryRing: "ring-pink-500",
-			chip: "bg-pink-900/30 text-pink-400 border-pink-800/50",
-			chipDark: "bg-pink-900/30 text-pink-400 border-pink-800/50",
-		},
-	},
-	indigo: {
-		light: {
-			primary: "bg-indigo-600",
-			primaryForeground: "text-white",
-			primaryHover: "hover:bg-indigo-700",
-			primaryRing: "ring-indigo-600",
-			chip: "bg-indigo-100 text-indigo-800",
-			chipDark: "bg-indigo-900/30 text-indigo-400 border-indigo-800/50",
-		},
-		dark: {
-			primary: "bg-indigo-500",
-			primaryForeground: "text-indigo-950",
-			primaryHover: "hover:bg-indigo-400",
-			primaryRing: "ring-indigo-500",
-			chip: "bg-indigo-900/30 text-indigo-400 border-indigo-800/50",
-			chipDark: "bg-indigo-900/30 text-indigo-400 border-indigo-800/50",
-		},
-	},
-	zinc: {
-		light: {
-			primary: "bg-zinc-900",
-			primaryForeground: "text-white",
-			primaryHover: "hover:bg-zinc-800",
-			primaryRing: "ring-zinc-900",
-			chip: "bg-zinc-100 text-zinc-800",
-			chipDark: "bg-zinc-800 text-zinc-300 border-zinc-700",
-		},
-		dark: {
-			primary: "bg-zinc-50",
-			primaryForeground: "text-zinc-900",
-			primaryHover: "hover:bg-zinc-100",
-			primaryRing: "ring-zinc-50",
-			chip: "bg-zinc-800 text-zinc-300 border-zinc-700",
-			chipDark: "bg-zinc-800 text-zinc-300 border-zinc-700",
-		},
-	},
+	blue: { light: semanticScheme, dark: semanticScheme },
+	green: { light: semanticScheme, dark: semanticScheme },
+	purple: { light: semanticScheme, dark: semanticScheme },
+	orange: { light: semanticScheme, dark: semanticScheme },
+	red: { light: semanticScheme, dark: semanticScheme },
+	pink: { light: semanticScheme, dark: semanticScheme },
+	indigo: { light: semanticScheme, dark: semanticScheme },
+	zinc: { light: semanticScheme, dark: semanticScheme },
 };
 
 // Semantic tokens — follow CSS variables from globals.css / theme customizer

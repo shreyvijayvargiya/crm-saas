@@ -226,7 +226,7 @@ const Companies = () => {
 					description="Matches unique industries and totals"
 					data={industryChartData}
 					valueLabel="Companies"
-					color="var(--chart-2)"
+					color="hsl(var(--chart-2))"
 					xTickAngle={-25}
 					heightClass="h-[260px]"
 				/>
@@ -235,7 +235,7 @@ const Companies = () => {
 					description={`Top cities (unique location count: ${companyStats.locations})`}
 					data={locationChartData}
 					valueLabel="Companies"
-					color="var(--chart-4)"
+					color="hsl(var(--chart-4))"
 					xTickAngle={-25}
 					heightClass="h-[260px]"
 				/>

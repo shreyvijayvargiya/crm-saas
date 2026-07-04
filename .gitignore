@@ -5,3 +5,4 @@ yarn-debug.log*
 node_modules
 .env
 .vercel
+dist
