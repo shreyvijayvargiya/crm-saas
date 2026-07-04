@@ -13,7 +13,6 @@ import {
 import Image from "next/image";
 import { useTheme } from "../../utils/useTheme";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -160,8 +159,8 @@ const Notifications = () => {
 					</div>
 				</div>
 
-				<Card className="p-4 mb-6 flex flex-col lg:flex-row gap-3 lg:items-center lg:justify-between">
-					<div className="relative flex-1 min-w-0 max-w-md">
+				<Card className="p-1 mb-6 flex flex-col lg:flex-row gap-3 border-none lg:items-center lg:justify-between bg-transparent">
+					<div className="relative flex-1 min-w-xs max-w-lg">
 						<Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
 						<Input
 							type="search"
@@ -171,7 +170,7 @@ const Notifications = () => {
 							className="pl-10"
 						/>
 					</div>
-					<div className="flex flex-wrap items-center gap-2">
+					<div className="flex items-center gap-2">
 						<FormSelect
 							value={status}
 							onChange={(e) => setStatus(e.target.value)}
@@ -192,6 +191,7 @@ const Notifications = () => {
 							]}
 						/>
 						<div className={`flex rounded-xl border ${colors.border} p-0.5 ${colors.muted}`}>
+					</div>
 							<Button
 								type="button"
 								variant={!compact ? "secondary" : "ghost"}
@@ -210,7 +210,6 @@ const Notifications = () => {
 							>
 								<LayoutGrid className="w-4 h-4" />
 							</Button>
-						</div>
 					</div>
 				</Card>
 
@@ -228,9 +227,9 @@ const Notifications = () => {
 							return (
 								<li
 									key={n.id}
-									className={`rounded-2xl border ${colors.border} transition-colors ${
+									className={`rounded-2xl border-0 transition-colors ${
 										n.unread
-											? "bg-amber-50/90 dark:bg-amber-950/25 border-amber-200/60 dark:border-amber-900/40"
+											? "bg-amber-50/90 dark:bg-amber-950/25"
 											: `${colors.card}`
 									} ${compact ? "p-3" : "p-4 md:p-5"} shadow-sm`}
 								>

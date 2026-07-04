@@ -20,6 +20,7 @@ import {
 	applyLetterSpacingVar,
 	applyRingWidthVar,
 	applyBackdropBlurVar,
+	applyNamedThemeCssVars,
 	accentToColorScheme,
 	stylePresets,
 	radiusPresets,
@@ -53,22 +54,29 @@ export function ThemeCustomizerProvider({ children }) {
 
 	const applyAll = useCallback(
 		(next, mode = theme) => {
-			applyStylePreset(next.style);
-			applyBaseColorVars(next.baseColor, mode);
-			applyAccentVars(next.accent);
-			applyRadiusVar(next.radius);
-			applyFontVars(next.bodyFont, next.headingFont);
-			applyChartColorVar(next.chartColor);
+			// Layout / density tokens always come from settings
 			applyFontSizeVar(next.fontSize);
 			applyUiScaleVar(next.uiScale);
 			applyBorderStyleVar(next.borderStyle);
 			applyBorderWidthVar(next.borderWidth);
-			applyShadowVar(next.shadow);
 			applySpacingVar(next.spacing);
 			applyLineHeightVar(next.lineHeight);
-			applyLetterSpacingVar(next.letterSpacing);
 			applyRingWidthVar(next.ringWidth);
 			applyBackdropBlurVar(next.backdropBlur);
+
+			// Full :root packs (e.g. Claude) override color/font/radius/chart tokens
+			const usedCssPack = applyNamedThemeCssVars(next.themeId, mode);
+			if (!usedCssPack) {
+				applyStylePreset(next.style);
+				applyBaseColorVars(next.baseColor, mode);
+				applyAccentVars(next.accent);
+				applyRadiusVar(next.radius);
+				applyFontVars(next.bodyFont, next.headingFont);
+				applyChartColorVar(next.chartColor);
+				applyShadowVar(next.shadow);
+				applyLetterSpacingVar(next.letterSpacing);
+			}
+
 			const schemeKey = accentToColorScheme[next.accent] ?? "blue";
 			setColorScheme(schemeKey);
 		},
