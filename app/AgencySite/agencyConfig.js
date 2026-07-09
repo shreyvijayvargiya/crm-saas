@@ -33,7 +33,7 @@ export const PRICING_TIERS = [
 		features: [
 			"60+ production CRM screens",
 			"Next.js · React · Tailwind · shadcn/ui",
-			"AI assistant & Agent Ops modules",
+			"Agentic AI chatbot with OpenRouter + tool-calling",
 			"Marketing landing + lead capture API",
 			"Zod schemas + Drizzle SQL reference",
 			"6 months priority email support",
@@ -87,7 +87,7 @@ export const PRICING_TIERS = [
 export const FAQ_ITEMS = [
 	{
 		q: "What do I get when I buy the template?",
-		a: "Full React + Next.js source code, 60+ CRM screens with demo data, shadcn/ui components, marketing landing, AI assistant shell, Agent Ops module, theme customizer, Zod schemas, Design.md, and lifetime updates.",
+		a: "Full React + Next.js source code, 60+ CRM screens with demo data, shadcn/ui components, marketing landing, agentic AI chatbot (OpenRouter + tool-calling), theme customizer, Zod schemas, Design.md, and lifetime updates.",
 	},
 	{
 		q: "Can I use this in commercial client projects?",
@@ -103,7 +103,7 @@ export const FAQ_ITEMS = [
 	},
 	{
 		q: "Is there a live demo before I buy?",
-		a: "Yes — open the Demo tab in the top nav or visit /demo to explore the full interactive CRM: leads, pipeline, finance, developer tools, and more.",
+		a: "Yes — open the Demo tab in the top nav or visit /demo to explore the full interactive CRM, including the AI chatbot sidebar: ask questions, create records, and see live UI updates.",
 	},
 	{
 		q: "How do I get the Figma files?",
@@ -139,13 +139,13 @@ export const HOME_FEATURES = [
 		desc: "Sell the template to clients or let us extend it — same codebase, faster delivery for startups and mid-size teams.",
 	},
 	{
-		title: "AI & platform modules",
+		title: "Agentic AI chatbot",
 		icon: "Bot",
 		iconClass: {
-			light: "border-emerald-200 bg-emerald-50 text-emerald-600",
-			dark: "border-emerald-500/30 bg-emerald-500/10 text-emerald-400",
+			light: "border-violet-200 bg-violet-50 text-violet-600",
+			dark: "border-violet-500/30 bg-violet-500/10 text-violet-400",
 		},
-		desc: "Copilot shell, Agent Ops observability, and SaaS billing dashboard included for credible demos.",
+		desc: "First agentic CRM copilot — ask questions, research accounts, create invoices, and mutate live data via OpenRouter tool-calling.",
 	},
 	{
 		title: "Theme & i18n",

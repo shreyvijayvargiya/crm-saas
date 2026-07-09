@@ -15,11 +15,19 @@ import { HOME_FEATURES, SERVICES, CHECKOUT } from "../agencyConfig";
 const {
 	ArrowRight,
 	Sparkles,
-	Zap,
 	ExternalLink,
-	Code2,
 	Rocket,
+	Bot,
+	MessageSquare,
+	Brain,
+	Wand2,
 } = lucideIcons;
+
+const AI_CHATBOT_CAPABILITIES = [
+	"Ask anything about leads, deals, pipeline, invoices, and tasks",
+	"Research accounts and get instant CRM answers — no tab switching",
+	"Create, update, and delete records with natural language",
+];
 
 const fadeUp = {
 	initial: { opacity: 0, y: 16 },
@@ -43,8 +51,8 @@ function HomeContent() {
 							: "border-zinc-700 bg-zinc-900 text-zinc-300"
 					)}
 				>
-					<Zap className="h-3.5 w-3.5" />
-					CRM for Businesses
+					<Bot className="h-3.5 w-3.5" />
+					First agentic CRM · AI chatbot included
 				</Badge>
 				<h1
 					className={cn(
@@ -52,7 +60,7 @@ function HomeContent() {
 						isLight ? "text-zinc-900" : "text-white"
 					)}
 				>
-					We sell &amp; build production-grade CRM SaaS for startups and agencies.
+					The first agentic CRM SaaS template with a built-in AI chatbot.
 				</h1>
 				<p
 					className={cn(
@@ -60,8 +68,8 @@ function HomeContent() {
 						isLight ? "text-zinc-600" : "text-zinc-400"
 					)}
 				>
-					Buy the Next.js CRM template and ship in days — or hire us to customize,
-					integrate, and deploy for your team.
+					Ask questions, run research, and manage your entire CRM by chat — then
+					buy the Next.js template and ship in days, or hire us to customize and deploy.
 				</p>
 				<div className="mt-8 flex flex-wrap items-center justify-center gap-3">
 					<Button
@@ -97,6 +105,107 @@ function HomeContent() {
 					</Button>
 				</div>
 			</motion.header>
+
+			<motion.section
+				{...fadeUp}
+				transition={{ ...fadeUp.transition, delay: 0.04 }}
+				className="mb-12"
+			>
+				<Card
+					className={cn(
+						"overflow-hidden border-2 p-0",
+						isLight
+							? "border-orange-200 bg-gradient-to-br from-orange-50/80 via-white to-blue-50/60"
+							: "border-orange-500/30 bg-gradient-to-br from-orange-950/40 via-zinc-900/80 to-blue-950/30"
+					)}
+				>
+					<div className="grid gap-0 lg:grid-cols-2 lg:items-stretch">
+						<div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
+							<Badge
+								className={cn(
+									"mb-4 w-fit gap-1.5 border-0 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide",
+									isLight
+										? "bg-orange-600 text-white"
+										: "bg-orange-500 text-white"
+								)}
+							>
+								<Sparkles className="h-3 w-3" />
+								New · Agentic AI
+							</Badge>
+							<h2
+								className={cn(
+									"text-2xl font-bold leading-tight tracking-tight sm:text-3xl",
+									isLight ? "text-zinc-900" : "text-white"
+								)}
+							>
+								Get the first agentic CRM with an AI chatbot for all your work
+							</h2>
+							
+							<ul className="mt-5 space-y-2.5">
+								{AI_CHATBOT_CAPABILITIES.map((item) => (
+									<li
+										key={item}
+										className={cn(
+											"flex items-start gap-2.5 text-sm leading-snug",
+											isLight ? "text-zinc-700" : "text-zinc-300"
+										)}
+									>
+										<span
+											className={cn(
+												"mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
+												isLight
+													? "bg-orange-100 text-orange-600"
+													: "bg-orange-500/20 text-orange-300"
+											)}
+										>
+											<Wand2 className="h-3 w-3" />
+										</span>
+										{item}
+									</li>
+								))}
+							</ul>
+							<div className="mt-7 flex flex-wrap gap-3">
+								<Button
+									asChild
+									className={cn(
+										"rounded-full px-5",
+										isLight
+											? "bg-orange-600 text-white hover:bg-orange-700"
+											: "bg-orange-500 text-white hover:bg-orange-400"
+									)}
+								>
+									<a href="/demo" className="flex items-center gap-2">
+										<MessageSquare className="h-4 w-4" />
+										Try AI chatbot in demo
+										<ArrowRight className="h-4 w-4" />
+									</a>
+								</Button>
+							</div>
+						</div>
+						<div
+							className={cn(
+								"relative border-t p-4 sm:p-6 lg:border-l lg:border-t-0",
+								isLight ? "border-orange-100 bg-white/50" : "border-orange-500/20 bg-zinc-950/50"
+							)}
+						>
+							<div
+								className={cn(
+									"overflow-hidden rounded-xl ring-2",
+									isLight ? "ring-orange-200/80 shadow-xl" : "ring-orange-500/30 shadow-2xl"
+								)}
+							>
+								<img
+									src="/ai-chatbot-crm-saas.png"
+									alt="CRM SaaS AI chatbot — ask questions, create invoices, and manage leads from a sidebar assistant"
+									className="h-full w-full object-cover object-top"
+									width={400}
+									height={400}
+								/>
+							</div>
+						</div>
+					</div>
+				</Card>
+			</motion.section>
 
 			<motion.section
 				{...fadeUp}
