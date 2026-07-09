@@ -12,7 +12,8 @@ import {
 	Trash2,
 } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
-import { INITIAL_DEALS, STAGE_META } from "../CRM/dealsSeedData";
+import { STAGE_META } from "../CRM/dealsSeedData";
+import { useCrmData } from "../../utils/CrmDataContext";
 import { FormModal, FormField } from "../../lib/ui/modal";
 import FormSelect from "../../lib/ui/FormSelect";
 import { cn } from "@/lib/utils";
@@ -51,7 +52,7 @@ const EMPTY_EDIT_DEAL = {
 
 const Deals = () => {
 	const { colors } = useTheme();
-	const [deals, setDeals] = useState(INITIAL_DEALS);
+	const { deals, setDeals, setPipelineDeals } = useCrmData();
 	const [search, setSearch] = useState("");
 	const [stageFilter, setStageFilter] = useState("all");
 	const [sortKey, setSortKey] = useState("closeDate");
@@ -145,6 +146,7 @@ const Deals = () => {
 
 	const handleDelete = (dealId) => {
 		setDeals((prev) => prev.filter((d) => d.id !== dealId));
+		setPipelineDeals((prev) => prev.filter((d) => d.id !== dealId));
 		toast.success("Deal removed");
 	};
 

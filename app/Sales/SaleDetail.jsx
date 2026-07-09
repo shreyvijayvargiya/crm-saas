@@ -10,9 +10,9 @@ import {
 	Tag,
 } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
+import { useCrmData } from "../../utils/CrmDataContext";
+import { findById } from "../../utils/crmRecordHelpers";
 import EntityDetailShell from "../CRM/EntityDetailShell";
-import { findSaleSeed } from "../CRM/salesSeedData";
-import { findInvoiceSeed } from "../CRM/invoicesSeedData";
 import {
 	formatCurrency,
 	getInvoiceStatusColor,
@@ -26,20 +26,30 @@ const SaleDetail = () => {
 	const { id } = router.query;
 	const { colors } = useTheme();
 
+	const { sales, invoices } = useCrmData();
+
 	const sale = useMemo(() => {
 		if (!id) return null;
-		return findSaleSeed(id);
-	}, [id]);
+		return findById(sales, id);
+	}, [id, sales]);
 
 	const invoice = useMemo(() => {
 		if (!sale?.invoiceId) return null;
-		return findInvoiceSeed(sale.invoiceId);
-	}, [sale]);
+		return findById(invoices, sale.invoiceId);
+	}, [sale, invoices]);
 
-	if (!router.isReady || !sale) {
+	if (!router.isReady) {
 		return (
 			<div className="p-6">
 				<p className="text-zinc-500 dark:text-zinc-400">Loading…</p>
+			</div>
+		);
+	}
+
+	if (!sale) {
+		return (
+			<div className="p-6">
+				<p className="text-zinc-500 dark:text-zinc-400">Sale not found.</p>
 			</div>
 		);
 	}
@@ -61,7 +71,7 @@ const SaleDetail = () => {
 				</div>
 			</div>
 
-			<ul className={`space-y-3 text-sm border-t ${colors.border} pt-6`}>
+			<ul className={`space-y-3 text-sm  pt-6`}>
 				<li className="flex items-center gap-2">
 					<DollarSign className={`w-4 h-4 shrink-0 ${colors.textMuted}`} />
 					<span className={colors.foreground}>
@@ -131,7 +141,7 @@ const SaleDetail = () => {
 								</Badge>
 							</div>
 							<div
-								className={`mt-4 pt-4 border-t ${colors.border} flex flex-wrap gap-6 text-sm`}
+								className={`mt-4 pt-4  flex flex-wrap gap-6 text-sm`}
 							>
 								<div>
 									<p className={colors.mutedForeground}>Amount</p>

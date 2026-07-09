@@ -34,64 +34,12 @@ import {
 	TableCaption,
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useCrmData } from "../../utils/CrmDataContext";
 
 const Webhooks = () => {
 	const { theme, colorScheme, colors } = useTheme();
 
-	const initialWebhooks = [
-		{
-			id: "wh_001",
-			name: "Order Created Webhook",
-			url: "https://api.example.com/webhooks/orders",
-			events: ["order.created", "order.updated"],
-			createdAt: "2024-01-15",
-			updatedAt: "2024-06-20",
-			status: "Active",
-			secret: "whsec_abc123xyz456def789",
-		},
-		{
-			id: "wh_002",
-			name: "Payment Webhook",
-			url: "https://payments.example.com/hooks",
-			events: ["payment.succeeded", "payment.failed"],
-			createdAt: "2024-02-10",
-			updatedAt: "2024-06-18",
-			status: "Active",
-			secret: "whsec_def456uvw789ghi012",
-		},
-		{
-			id: "wh_003",
-			name: "Customer Sync",
-			url: "https://sync.example.com/customers",
-			events: ["customer.created", "customer.updated", "customer.deleted"],
-			createdAt: "2024-03-05",
-			updatedAt: "2024-06-15",
-			status: "Active",
-			secret: "whsec_ghi789rst012jkl345",
-		},
-		{
-			id: "wh_004",
-			name: "Invoice Webhook",
-			url: "https://invoices.example.com/webhook",
-			events: ["invoice.paid", "invoice.overdue"],
-			createdAt: "2024-04-12",
-			updatedAt: "2024-06-10",
-			status: "Inactive",
-			secret: "whsec_jkl012mno345pqr678",
-		},
-		{
-			id: "wh_005",
-			name: "Lead Notification",
-			url: "https://notifications.example.com/leads",
-			events: ["lead.created"],
-			createdAt: "2024-05-20",
-			updatedAt: "2024-06-08",
-			status: "Active",
-			secret: "whsec_pqr345stu678vwx901",
-		},
-	];
-
-	const [webhooks, setWebhooks] = useState(initialWebhooks);
+	const { webhooks, setWebhooks } = useCrmData();
 	const [sortConfig, setSortConfig] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");

@@ -3,6 +3,7 @@ import { Plus, Search, LayoutGrid, List } from "lucide-react";
 import { toast } from "sonner";
 import SubscriptionsLayout from "../SubscriptionsLayout";
 import { SUBSCRIPTION_PLANS } from "../subscriptionsSeedData";
+import { useCrmData } from "../../../utils/CrmDataContext";
 import { FormModal, FormField } from "../../../lib/ui/modal";
 import FormSelect from "../../../lib/ui/FormSelect";
 import { cn } from "@/lib/utils";
@@ -31,7 +32,7 @@ const EMPTY_PLAN = {
 };
 
 const SubscriptionPlans = () => {
-	const [plans, setPlans] = useState(SUBSCRIPTION_PLANS);
+	const { subscriptionPlans: plans, setSubscriptionPlans: setPlans } = useCrmData();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [viewMode, setViewMode] = useState("table");
 	const [isModalOpen, setIsModalOpen] = useState(false);

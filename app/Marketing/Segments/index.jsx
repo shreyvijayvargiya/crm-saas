@@ -3,6 +3,7 @@ import { Plus, Filter, Search, Pen, Trash, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import MarketingLayout from "../MarketingLayout";
 import { SEGMENTS } from "../marketingSeedData";
+import { useCrmData } from "../../../utils/CrmDataContext";
 import { FormModal, FormField } from "../../../lib/ui/modal";
 import FormSelect from "../../../lib/ui/FormSelect";
 import MultiSelect from "../../../lib/ui/MultiSelect";
@@ -49,7 +50,7 @@ const EMPTY_SEGMENT = {
 };
 
 const MarketingSegments = () => {
-	const [segments, setSegments] = useState(SEGMENTS);
+	const { segments, setSegments } = useCrmData();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [entityFilter, setEntityFilter] = useState("All");
 	const [isModalOpen, setIsModalOpen] = useState(false);

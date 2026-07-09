@@ -34,6 +34,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { INITIAL_PROJECTS } from "../CRM/projectsSeedData";
+import { useCrmData } from "../../utils/CrmDataContext";
 import {
 	Table,
 	TableHeader,
@@ -64,7 +65,7 @@ const Projects = () => {
 	const [calendarMonth, setCalendarMonth] = useState(new Date(2025, 10, 1)); // November 2025
 	const [selectedPreset, setSelectedPreset] = useState("Last 28 Days");
 
-	const [projects] = useState(INITIAL_PROJECTS);
+	const { projects, setProjects } = useCrmData();
 
 	// Generate data for the last 3 months (Aug 18 to Nov 8)
 	const generateData = (period) => {
@@ -998,7 +999,7 @@ const Projects = () => {
 
 				{/* Table Footer */}
 				<div
-					className={`px-6 py-4 border-t ${colors.border} flex items-center justify-between`}
+					className={`px-6 py-4  flex items-center justify-between`}
 				>
 					<div className="text-sm text-zinc-500">
 						{selectedRows.length} of {filteredProjects.length} row(s) selected.

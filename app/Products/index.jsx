@@ -31,85 +31,12 @@ const textareaClass = cn(
 	"flex min-h-24 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 );
 
-const initialProducts = [
-	{
-		id: "prd_001",
-		name: "Starter CRM",
-		sku: "CRM-STARTER-001",
-		planTier: "Starter",
-		category: "CRM Suite",
-		price: 49,
-		currency: "USD",
-		billingInterval: "Monthly",
-		trialDays: 7,
-		maxSeats: 5,
-		taxRate: 18,
-		visibility: "Public",
-		features: ["Leads", "Pipelines", "Email Sync"],
-		status: "Active",
-		unitsSold: 214,
-		updatedAt: "2026-04-18",
-	},
-	{
-		id: "prd_002",
-		name: "Growth CRM",
-		sku: "CRM-GROWTH-002",
-		planTier: "Growth",
-		category: "CRM Suite",
-		price: 129,
-		currency: "USD",
-		billingInterval: "Monthly",
-		trialDays: 14,
-		maxSeats: 20,
-		taxRate: 18,
-		visibility: "Public",
-		features: ["Automation", "Advanced Reports", "Priority Support"],
-		status: "Active",
-		unitsSold: 139,
-		updatedAt: "2026-04-20",
-	},
-	{
-		id: "prd_003",
-		name: "Enterprise CRM",
-		sku: "CRM-ENT-003",
-		planTier: "Enterprise",
-		category: "CRM Suite",
-		price: 699,
-		currency: "USD",
-		billingInterval: "Yearly",
-		trialDays: 30,
-		maxSeats: 200,
-		taxRate: 18,
-		visibility: "Private",
-		features: ["SSO", "Audit Logs", "Dedicated CSM"],
-		status: "Active",
-		unitsSold: 42,
-		updatedAt: "2026-04-19",
-	},
-	{
-		id: "prd_004",
-		name: "Onboarding Package",
-		sku: "CRM-OB-004",
-		planTier: "One-time",
-		category: "Service",
-		price: 499,
-		currency: "USD",
-		billingInterval: "One-time",
-		trialDays: 0,
-		maxSeats: 0,
-		taxRate: 18,
-		visibility: "Public",
-		features: ["Data migration", "Team setup"],
-		status: "Archived",
-		unitsSold: 27,
-		updatedAt: "2026-04-16",
-	},
-];
+import { useCrmData } from "../../utils/CrmDataContext";
 
 const Products = () => {
 	const { colors } = useTheme();
 
-	const [products, setProducts] = useState(initialProducts);
+	const { products, setProducts } = useCrmData();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [statusFilter, setStatusFilter] = useState("All");
 	const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -341,7 +268,7 @@ const Products = () => {
 								filteredProducts.map((product) => (
 									<TableRow
 										key={product.id}
-										className={`border-t ${colors.border} ${colors.hoverSecondary}`}
+										className={` ${colors.hoverSecondary}`}
 									>
 										<TableCell className="px-4 py-3">
 											<div className="flex flex-col">

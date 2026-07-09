@@ -69,7 +69,7 @@ const PipelineDealDetail = () => {
 				)}
 			</div>
 
-			<ul className={`mt-6 space-y-3 text-sm border-t ${colors.border} pt-6`}>
+			<ul className={`mt-6 space-y-3 text-sm  pt-6`}>
 				<li className="flex items-center gap-2">
 					<DollarSign className={`w-4 h-4 shrink-0 ${colors.textMuted}`} />
 					<span className={colors.foreground}>
@@ -102,7 +102,7 @@ const PipelineDealDetail = () => {
 				</li>
 			</ul>
 
-			<p className={`text-xs mt-6 pt-6 border-t ${colors.border} ${colors.mutedForeground}`}>
+			<p className={`text-xs mt-6 pt-6  ${colors.mutedForeground}`}>
 				<Link href="/deals" passHref>
 					<a className={`font-medium ${colors.foreground} hover:underline`}>
 						View in deals table

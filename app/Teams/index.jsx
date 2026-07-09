@@ -34,6 +34,7 @@ import {
 	TableCaption,
 } from "@/components/ui/table";
 
+import { useCrmData } from "../../utils/CrmDataContext";
 const ROLE_OPTIONS = [
 	{ value: "all", label: "All roles" },
 	{ value: "Admin", label: "Admin" },
@@ -47,48 +48,9 @@ const ROLE_ICONS = {
 	Viewer: Eye,
 };
 
-const initialMembers = [
-	{
-		id: "1",
-		name: "John Doe",
-		email: "john@doe.com",
-		role: "Admin",
-		status: "Active",
-		joinedAt: "2024-01-10",
-		image: "/people/person-1.png",
-	},
-	{
-		id: "2",
-		name: "Sarah Chen",
-		email: "sarah.chen@company.com",
-		role: "Member",
-		status: "Active",
-		joinedAt: "2024-03-22",
-		image: "/people/person-2.png",
-	},
-	{
-		id: "3",
-		name: "Marcus Webb",
-		email: "marcus@company.com",
-		role: "Member",
-		status: "Invited",
-		joinedAt: "2025-11-02",
-		image: "/people/person-3.png",
-	},
-	{
-		id: "4",
-		name: "Elena Rossi",
-		email: "elena@company.com",
-		role: "Viewer",
-		status: "Active",
-		joinedAt: "2025-01-15",
-		image: "/people/person-4.png",
-	},
-];
-
 const Teams = () => {
 	const { colors } = useTheme();
-	const [members, setMembers] = useState(initialMembers);
+	const { teamMembers: members, setTeamMembers: setMembers } = useCrmData();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [roleFilter, setRoleFilter] = useState("all");
 	const [addOpen, setAddOpen] = useState(false);

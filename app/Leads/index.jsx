@@ -37,7 +37,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ExportDropdown } from "../../lib/ui/dropdown";
-import { INITIAL_LEADS, INITIAL_PIPELINES } from "../CRM/leadsSeedData";
+import { useCrmData } from "../../utils/CrmDataContext";
 import { FormModal, FormField } from "../../lib/ui/modal";
 import FormSelect from "../../lib/ui/FormSelect";
 import {
@@ -156,8 +156,7 @@ const LeadsShadcn = () => {
 	const router = useRouter();
 	const { theme, colorScheme, colors } = useTheme();
 
-	const [pipelines, setPipelines] = useState(INITIAL_PIPELINES);
-	const [allLeads, setAllLeads] = useState(INITIAL_LEADS);
+	const { leads: allLeads, setLeads: setAllLeads, leadPipelines: pipelines, setLeadPipelines: setPipelines, removeLead } = useCrmData();
 	const [sortConfig, setSortConfig] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [newLead, setNewLead] = useState(EMPTY_LEAD_FORM);
@@ -204,12 +203,31 @@ const LeadsShadcn = () => {
 			lastContacted: new Date().toLocaleDateString("en-US"),
 		};
 		setAllLeads((prevLeads) => [...prevLeads, leadToAdd]);
+		setPipelines((prev) =>
+			prev.map((pipeline) =>
+				pipeline.id === "new"
+					? {
+							...pipeline,
+							leads: [
+								...pipeline.leads,
+								{
+									id: leadToAdd.id,
+									name: leadToAdd.name,
+									email: leadToAdd.email,
+									company: leadToAdd.company,
+									image: leadToAdd.image,
+								},
+							],
+					  }
+					: pipeline
+			)
+		);
 		toast.success(`Added Lead: ${leadToAdd.name}`);
 		handleModalClose();
 	};
 
 	const handleRemoveLead = (leadId) => {
-		setAllLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== leadId));
+		removeLead(leadId);
 		toast.success(`Removed Lead with ID: ${leadId}`);
 	};
 

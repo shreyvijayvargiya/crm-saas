@@ -15,7 +15,8 @@ import {
 	TableRow,
 	TableCell,
 } from "@/components/ui/table";
-import { ECOMMERCE_ORDERS, ORDER_STATUSES } from "../ecommerceSeedData";
+import { ORDER_STATUSES } from "../ecommerceSeedData";
+import { useCrmData } from "../../../utils/CrmDataContext";
 
 function orderStatusVariant(status) {
 	if (status === "Delivered") return "default";
@@ -25,12 +26,13 @@ function orderStatusVariant(status) {
 }
 
 const Orders = () => {
+	const { ecommerceOrders } = useCrmData();
 	const router = useRouter();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [statusFilter, setStatusFilter] = useState("All");
 
 	const filtered = useMemo(() => {
-		let list = [...ECOMMERCE_ORDERS];
+		let list = [...ecommerceOrders];
 		if (statusFilter !== "All") list = list.filter((o) => o.status === statusFilter);
 		if (searchTerm.trim()) {
 			const q = searchTerm.toLowerCase();
@@ -42,20 +44,20 @@ const Orders = () => {
 			);
 		}
 		return list;
-	}, [searchTerm, statusFilter]);
+	}, [searchTerm, statusFilter, ecommerceOrders]);
 
 	const stats = useMemo(
 		() => ({
-			total: ECOMMERCE_ORDERS.length,
-			revenue: ECOMMERCE_ORDERS.filter((o) => o.paymentStatus === "Paid").reduce(
+			total: ecommerceOrders.length,
+			revenue: ecommerceOrders.filter((o) => o.paymentStatus === "Paid").reduce(
 				(s, o) => s + o.amount,
 				0
 			),
-			pending: ECOMMERCE_ORDERS.filter((o) =>
+			pending: ecommerceOrders.filter((o) =>
 				["Pending", "Processing"].includes(o.status)
 			).length,
 		}),
-		[]
+		[ecommerceOrders]
 	);
 
 	return (

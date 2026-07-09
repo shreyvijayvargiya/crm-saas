@@ -23,9 +23,9 @@ import { useTheme } from "../../utils/useTheme";
 import { FormModal, FormField } from "../../lib/ui/modal";
 import FormSelect from "../../lib/ui/FormSelect";
 import {
-	INITIAL_PIPELINE_DEALS,
 	PIPELINE_STAGES,
 } from "../CRM/pipelineDealsSeedData";
+import { useCrmData } from "../../utils/CrmDataContext";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -165,7 +165,7 @@ function DealCard({ deal, stageAccent, colors, onOpen }) {
 							</p>
 						</div>
 
-						<div className={`flex items-end justify-between gap-2 pt-1 border-t ${colors.border} border-dashed`}>
+						<div className={`flex items-end justify-between gap-2 pt-1  border-dashed`}>
 							<div>
 								<p className={`text-[10px] uppercase tracking-wider font-medium ${colors.mutedForeground}`}>
 									Value
@@ -268,7 +268,7 @@ function StageColumn({ stage, deals, colors, totalValue, onOpen, onAddDeal }) {
 const Pipelines = () => {
 	const router = useRouter();
 	const { colors } = useTheme();
-	const [deals, setDeals] = useState(INITIAL_PIPELINE_DEALS);
+	const { pipelineDeals: deals, setPipelineDeals, setDeals } = useCrmData();
 	const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 	const [newDeal, setNewDeal] = useState(EMPTY_DEAL_FORM);
 
@@ -315,9 +315,14 @@ const Pipelines = () => {
 		const targetStage = findStageForOver(over.id);
 		if (!targetStage) return;
 		const dealId = active.id;
-		setDeals((prev) =>
+		setPipelineDeals((prev) =>
 			prev.map((d) =>
 				d.id === dealId ? { ...d, stage: targetStage, daysInStage: 0 } : d,
+			),
+		);
+		setDeals((prev) =>
+			prev.map((d) =>
+				d.id === dealId ? { ...d, stage: targetStage } : d,
 			),
 		);
 	};
@@ -348,7 +353,19 @@ const Pipelines = () => {
 			daysInStage: 0,
 			tag: null,
 		};
-		setDeals((prev) => [...prev, deal]);
+		setPipelineDeals((prev) => [...prev, deal]);
+		setDeals((prev) => [
+			...prev,
+			{
+				id: deal.id,
+				name: deal.title,
+				company: deal.company,
+				value: deal.value,
+				stage: deal.stage,
+				closeDate: "TBD",
+				rep: "You",
+			},
+		]);
 		toast.success(`Deal "${deal.title}" added`);
 		closeAddModal();
 	};

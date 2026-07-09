@@ -15,7 +15,8 @@ import {
 	TableRow,
 	TableCell,
 } from "@/components/ui/table";
-import { SUPPORT_TICKETS, TICKET_STATUSES } from "./supportSeedData";
+import { TICKET_STATUSES } from "./supportSeedData";
+import { useCrmData } from "../../utils/CrmDataContext";
 
 function priorityVariant(p) {
 	if (p === "High") return "destructive";
@@ -30,12 +31,13 @@ function statusVariant(s) {
 }
 
 const Support = () => {
+	const { supportTickets } = useCrmData();
 	const router = useRouter();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [statusFilter, setStatusFilter] = useState("All");
 
 	const filtered = useMemo(() => {
-		let list = [...SUPPORT_TICKETS];
+		let list = [...supportTickets];
 		if (statusFilter !== "All") list = list.filter((t) => t.status === statusFilter);
 		if (searchTerm.trim()) {
 			const q = searchTerm.toLowerCase();
@@ -47,15 +49,15 @@ const Support = () => {
 			);
 		}
 		return list;
-	}, [searchTerm, statusFilter]);
+	}, [searchTerm, statusFilter, supportTickets]);
 
 	const stats = useMemo(
 		() => ({
-			open: SUPPORT_TICKETS.filter((t) => t.status === "Open").length,
-			inProgress: SUPPORT_TICKETS.filter((t) => t.status === "In progress").length,
-			resolved: SUPPORT_TICKETS.filter((t) => t.status === "Resolved").length,
+			open: supportTickets.filter((t) => t.status === "Open").length,
+			inProgress: supportTickets.filter((t) => t.status === "In progress").length,
+			resolved: supportTickets.filter((t) => t.status === "Resolved").length,
 		}),
-		[]
+		[supportTickets]
 	);
 
 	return (

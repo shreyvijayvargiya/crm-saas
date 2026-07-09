@@ -3,9 +3,10 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { Briefcase, Calendar, User } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
+import { useCrmData } from "../../utils/CrmDataContext";
+import { findById } from "../../utils/crmRecordHelpers";
 import EntityDetailShell from "../CRM/EntityDetailShell";
 import EntityRecordTabs from "../CRM/EntityRecordTabs";
-import { getProjectRecord } from "../CRM/entityDetailData";
 import { getProjectStatusColor } from "../CRM/projectsSeedData";
 
 const ProjectDetail = () => {
@@ -13,15 +14,25 @@ const ProjectDetail = () => {
 	const { id } = router.query;
 	const { colors } = useTheme();
 
+	const { projects } = useCrmData();
+
 	const project = useMemo(() => {
 		if (!id) return null;
-		return getProjectRecord(id);
-	}, [id]);
+		return findById(projects, id);
+	}, [id, projects]);
 
-	if (!router.isReady || !project) {
+	if (!router.isReady) {
 		return (
 			<div className="p-6">
 				<p className="text-zinc-500 dark:text-zinc-400">Loading…</p>
+			</div>
+		);
+	}
+
+	if (!project) {
+		return (
+			<div className="p-6">
+				<p className="text-zinc-500 dark:text-zinc-400">Project not found.</p>
 			</div>
 		);
 	}
@@ -74,7 +85,7 @@ const ProjectDetail = () => {
 			</div>
 
 			<ul
-				className={`mt-6 space-y-3 text-sm border-t ${colors.border} pt-6`}
+				className={`mt-6 space-y-3 text-sm  pt-6`}
 			>
 				<li className="flex items-center gap-3">
 					<div
@@ -99,7 +110,7 @@ const ProjectDetail = () => {
 				</li>
 			</ul>
 
-			<p className={`text-xs mt-6 pt-6 border-t ${colors.border} ${colors.mutedForeground}`}>
+			<p className={`text-xs mt-6 pt-6  ${colors.mutedForeground}`}>
 				<Link href="/tasks" passHref>
 					<a className={`font-medium ${colors.foreground} hover:underline`}>
 						View related tasks

@@ -62,7 +62,7 @@ const ProductDetail = () => {
 					</Badge>
 				</div>
 
-				<ul className={`mt-6 space-y-3 text-sm border-t ${colors.border} pt-6`}>
+				<ul className={`mt-6 space-y-3 text-sm  pt-6`}>
 					<li className="flex items-center gap-2">
 						<DollarSign className={`w-4 h-4 shrink-0 ${colors.textMuted}`} />
 						<span className={colors.foreground}>${product.price}</span>
@@ -103,7 +103,7 @@ const ProductDetail = () => {
 						</p>
 					</div>
 
-					<div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t ${colors.border}`}>
+					<div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 `}>
 						<div>
 							<p className={`text-xs font-medium uppercase tracking-wide ${colors.mutedForeground}`}>
 								SKU
@@ -139,7 +139,7 @@ const ProductDetail = () => {
 						</div>
 					</div>
 
-					<p className={`text-xs pt-4 border-t ${colors.border} ${colors.mutedForeground}`}>
+					<p className={`text-xs pt-4  ${colors.mutedForeground}`}>
 						<Link href="/e-commerce" passHref>
 							<a className={`font-medium ${colors.foreground} hover:underline`}>
 								Return to catalog

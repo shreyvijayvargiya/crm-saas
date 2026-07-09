@@ -217,7 +217,7 @@ const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 						</div>
 
 						<ul
-							className={`mt-6 space-y-3 text-sm border-t ${colors.border} pt-6`}
+							className={`mt-6 space-y-3 text-sm pt-6`}
 						>
 							<li className="flex items-start gap-2">
 								<Mail className={`w-4 h-4 mt-0.5 shrink-0 ${colors.textMuted}`} />
@@ -245,7 +245,7 @@ const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 								</span>
 							</li>
 						</ul>
-						<div className={`mt-6 pt-6 border-t ${colors.border}`}>
+						<div className={`mt-6 pt-6`}>
 							<p className={`text-xs font-medium uppercase ${colors.mutedForeground}`}>
 								Owner
 							</p>

@@ -14,6 +14,7 @@ import {
 import { Pagination } from "../../modules";
 import { useTheme } from "../../utils/useTheme";
 import { INITIAL_CONTACTS } from "../CRM/contactsSeedData";
+import { useCrmData } from "../../utils/CrmDataContext";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +36,7 @@ const Contacts = () => {
 	const router = useRouter();
 	const { colors } = useTheme();
 
-	const [contacts, setContacts] = useState(INITIAL_CONTACTS);
+	const { contacts, setContacts } = useCrmData();
 
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isAddContactModalOpen, setIsAddContactModalOpen] = useState(false);

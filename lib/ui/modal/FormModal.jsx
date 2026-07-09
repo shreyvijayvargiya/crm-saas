@@ -77,7 +77,7 @@ const FormModal = ({
 					<div className="p-6 space-y-4 overflow-y-auto flex-1">{children}</div>
 
 					<div
-						className={`flex flex-wrap items-center justify-end gap-2 p-6 border-t ${colors.border} shrink-0`}
+						className={`flex flex-wrap items-center justify-end gap-2 p-6  shrink-0`}
 					>
 						{showDelete && onDelete && (
 							<Button

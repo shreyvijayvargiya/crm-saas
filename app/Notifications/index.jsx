@@ -19,64 +19,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import FormSelect from "../../lib/ui/FormSelect";
 
-const INITIAL_NOTIFICATIONS = [
-	{
-		id: "n1",
-		type: "ticket",
-		title: "New Ticket Assigned",
-		body: "You have been assigned to ticket #1234 — Website Redesign",
-		category: "Ticket",
-		time: "5 minutes ago",
-		unread: true,
-	},
-	{
-		id: "n2",
-		type: "team",
-		title: "Joaquina Weisenborn",
-		body: "Requesting access permission",
-		category: "Team",
-		time: "12 pm",
-		unread: false,
-		avatar: "/people/person-2.png",
-		actions: true,
-	},
-	{
-		id: "n3",
-		type: "message",
-		title: "New Message",
-		body: "Sarah Johnson sent you a message about the Q2 roadmap…",
-		category: "Message",
-		time: "1 hour ago",
-		unread: false,
-	},
-	{
-		id: "n4",
-		type: "ticket",
-		title: "Ticket updated",
-		body: "Status changed to In Progress for ticket #1198",
-		category: "Ticket",
-		time: "3 hours ago",
-		unread: true,
-	},
-	{
-		id: "n5",
-		type: "message",
-		title: "Mention in thread",
-		body: "You were mentioned in #product — Design review notes",
-		category: "Message",
-		time: "Yesterday",
-		unread: false,
-	},
-	{
-		id: "n6",
-		type: "team",
-		title: "Team invite",
-		body: "You were added to the Sales workspace",
-		category: "Team",
-		time: "1 day ago",
-		unread: true,
-	},
-];
+import { useCrmData } from "../../utils/CrmDataContext";
 
 const TYPE_ICON = {
 	ticket: { Icon: FileText, wrap: "bg-blue-500/15 text-blue-600 dark:text-blue-400" },
@@ -87,7 +30,7 @@ const TYPE_ICON = {
 const Notifications = () => {
 	const { colors } = useTheme();
 
-	const [items, setItems] = useState(INITIAL_NOTIFICATIONS);
+	const { notifications: items, setNotifications: setItems } = useCrmData();
 	const [query, setQuery] = useState("");
 	const [status, setStatus] = useState("all");
 	const [typeFilter, setTypeFilter] = useState("all");

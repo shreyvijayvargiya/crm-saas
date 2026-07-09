@@ -96,7 +96,7 @@ const AuthPageShell = ({
 							</header>
 							{children}
 							{footer ? (
-								<div className={`mt-6 border-t ${colors.border} pt-5`}>{footer}</div>
+								<div className={`mt-6 pt-5`}>{footer}</div>
 							) : null}
 						</div>
 					</div>

@@ -16,93 +16,17 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { useCrmData } from "../../utils/CrmDataContext";
 
 const textareaClass = cn(
 	"flex min-h-24 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 );
 
-const THREADS = [
-	{
-		id: "t1",
-		subject: "Re: Enterprise pilot timeline",
-		preview: "Thanks for the updated scope — we can start the week of Apr 21…",
-		from: "Sarah Chen",
-		fromEmail: "sarah@acme.com",
-		time: "10:42 AM",
-		unread: true,
-		starred: true,
-		messages: [
-			{
-				id: "m1",
-				from: "Sarah Chen",
-				fromEmail: "sarah@acme.com",
-				to: "you@crm.io",
-				time: "Apr 14, 2026 · 10:42 AM",
-				body: "Thanks for the updated scope — we can start the week of Apr 21 if legal signs by Friday. Can you confirm SSO metadata format?",
-			},
-			{
-				id: "m2",
-				from: "You",
-				fromEmail: "you@crm.io",
-				to: "sarah@acme.com",
-				time: "Apr 14, 2026 · 11:05 AM",
-				body: "Confirmed — we'll send SAML metadata today EOD. I've attached the checklist for your IT team.",
-			},
-			{
-				id: "m3",
-				from: "Sarah Chen",
-				fromEmail: "sarah@acme.com",
-				to: "you@crm.io",
-				time: "Apr 14, 2026 · 11:18 AM",
-				body: "Perfect. Looping in @james from IT for the firewall allowlist.",
-			},
-		],
-	},
-	{
-		id: "t2",
-		subject: "Invoice #INV-2408 — paid",
-		preview: "Payment received. Receipt attached for your records.",
-		from: "billing@northwind.io",
-		fromEmail: "billing@northwind.io",
-		time: "Yesterday",
-		unread: false,
-		starred: false,
-		messages: [
-			{
-				id: "m1",
-				from: "Northwind Billing",
-				fromEmail: "billing@northwind.io",
-				to: "you@crm.io",
-				time: "Apr 13, 2026 · 4:02 PM",
-				body: "Payment received for invoice INV-2408. Receipt attached.",
-			},
-		],
-	},
-	{
-		id: "t3",
-		subject: "Product roadmap Q2",
-		preview: "Sharing the deck we discussed on the call…",
-		from: "Alex Rivera",
-		fromEmail: "alex@startup.io",
-		time: "Mon",
-		unread: true,
-		starred: false,
-		messages: [
-			{
-				id: "m1",
-				from: "Alex Rivera",
-				fromEmail: "alex@startup.io",
-				to: "you@crm.io",
-				time: "Apr 12, 2026 · 9:00 AM",
-				body: "Sharing the deck we discussed on the call — focus slides 4–8 for integrations.",
-			},
-		],
-	},
-];
 
 const Email = () => {
+	const { emailThreads: THREADS } = useCrmData();
 	const { colors } = useTheme();
-	const [activeId, setActiveId] = useState(THREADS[0].id);
+	const [activeId, setActiveId] = useState(THREADS[0]?.id);
 	const [body, setBody] = useState("");
 	const active = THREADS.find((t) => t.id === activeId) || THREADS[0];
 
@@ -217,7 +141,7 @@ const Email = () => {
 						))}
 					</div>
 
-					<div className={`border-t ${colors.border} p-4 ${colors.card}`}>
+					<div className={`p-4 ${colors.card}`}>
 						<div className="flex items-center gap-2 mb-2">
 							<div className={`flex items-center gap-1 text-xs ${colors.textSecondary}`}>
 								<Mail className="w-3.5 h-3.5" />

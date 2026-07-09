@@ -20,6 +20,7 @@ import {
 	CAMPAIGN_STATUS_OPTIONS,
 	SEGMENTS,
 } from "./marketingSeedData";
+import { useCrmData } from "../../utils/CrmDataContext";
 import DateRangeFilter from "../Analytics/components/DateRangeFilter";
 import { ExportDropdown } from "../../lib/ui/dropdown";
 import { FormModal, FormField } from "../../lib/ui/modal";
@@ -64,7 +65,7 @@ const Marketing = () => {
 	const router = useRouter();
 	const { colors } = useTheme();
 
-	const [campaigns, setCampaigns] = useState(CAMPAIGNS);
+	const { campaigns, setCampaigns } = useCrmData();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [statusFilter, setStatusFilter] = useState("All");
 	const [range, setRange] = useState("30d");

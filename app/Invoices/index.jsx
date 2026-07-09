@@ -30,6 +30,7 @@ import {
 	formatCurrency,
 	getInvoiceStatusColor,
 } from "../CRM/invoicesSeedData";
+import { useCrmData } from "../../utils/CrmDataContext";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -62,7 +63,7 @@ const Invoices = () => {
 	// Theme hook
 	const { theme, colorScheme, colors } = useTheme();
 
-	const [invoices, setInvoices] = useState(INITIAL_INVOICES);
+	const { invoices, setInvoices } = useCrmData();
 	const [selectedInvoiceIds, setSelectedInvoiceIds] = useState([]);
 	const [sortConfig, setSortConfig] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);

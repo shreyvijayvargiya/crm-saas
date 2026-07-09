@@ -2,7 +2,8 @@ import React, { useMemo, useState } from "react";
 import { Plus, Copy, Check, Search, Code, Eye } from "lucide-react";
 import { toast } from "sonner";
 import MarketingLayout from "../MarketingLayout";
-import { MARKETING_FORMS, FORM_SUBMISSIONS } from "../marketingSeedData";
+import { FORM_SUBMISSIONS } from "../marketingSeedData";
+import { useCrmData } from "../../../utils/CrmDataContext";
 import { FormModal, FormField } from "../../../lib/ui/modal";
 import FormSelect from "../../../lib/ui/FormSelect";
 import { Sheet } from "@/components/ui/sheet";
@@ -58,7 +59,7 @@ function EmbedCodeBlock({ code }) {
 const EMPTY_FORM = { name: "", description: "", status: "Draft" };
 
 const MarketingForms = () => {
-	const [forms, setForms] = useState(MARKETING_FORMS);
+	const { marketingForms: forms, setMarketingForms: setForms } = useCrmData();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [statusFilter, setStatusFilter] = useState("All");
 	const [sheetForm, setSheetForm] = useState(null);

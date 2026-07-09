@@ -37,6 +37,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { FormModal, FormField } from "../../lib/ui/modal";
 import { INITIAL_SALES } from "../CRM/salesSeedData";
+import { useCrmData } from "../../utils/CrmDataContext";
 import {
 	Table,
 	TableHeader,
@@ -88,7 +89,7 @@ const Sales = () => {
 
 	const [activeTab, setActiveTab] = useState("daily");
 
-	const [products, setProducts] = useState(INITIAL_SALES);
+	const { sales: products, setSales: setProducts } = useCrmData();
 	const [sortConfig, setSortConfig] = useState({ key: "soldAt", direction: "descending" });
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [newProduct, setNewProduct] = useState({

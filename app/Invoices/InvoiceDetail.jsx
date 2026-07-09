@@ -3,8 +3,9 @@ import { useRouter } from "next/router";
 import { Download } from "lucide-react";
 import { toast } from "sonner";
 import { useTheme } from "../../utils/useTheme";
+import { useCrmData } from "../../utils/CrmDataContext";
+import { findById } from "../../utils/crmRecordHelpers";
 import EntityDetailShell from "../CRM/EntityDetailShell";
-import { getInvoiceRecord } from "../CRM/entityDetailData";
 import {
 	formatCurrency,
 	getInvoiceStatusColor,
@@ -29,15 +30,25 @@ const InvoiceDetail = () => {
 	const { id } = router.query;
 	const { colors } = useTheme();
 
+	const { invoices } = useCrmData();
+
 	const invoice = useMemo(() => {
 		if (!id) return null;
-		return getInvoiceRecord(id);
-	}, [id]);
+		return findById(invoices, id);
+	}, [id, invoices]);
 
-	if (!router.isReady || !invoice) {
+	if (!router.isReady) {
 		return (
 			<div className="p-6">
 				<p className="text-zinc-500 dark:text-zinc-400">Loading…</p>
+			</div>
+		);
+	}
+
+	if (!invoice) {
+		return (
+			<div className="p-6">
+				<p className="text-zinc-500 dark:text-zinc-400">Invoice not found.</p>
 			</div>
 		);
 	}
@@ -55,7 +66,7 @@ const InvoiceDetail = () => {
 				{invoice.status}
 			</Badge>
 
-			<div className={`mt-6 space-y-3 text-sm border-t ${colors.border} pt-6`}>
+			<div className={`mt-6 space-y-3 text-sm  pt-6`}>
 				<div className="flex justify-between gap-4">
 					<span className={colors.textSecondary}>Issue date</span>
 					<span className={colors.foreground}>{invoice.issueDate}</span>
@@ -159,7 +170,7 @@ const InvoiceDetail = () => {
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								{invoice.items.map((item, index) => (
+								{(invoice.items ?? []).map((item, index) => (
 									<TableRow
 										key={index}
 										className={`border-b ${colors.border} ${colors.hover}`}

@@ -40,16 +40,16 @@ import {
 	TableCaption,
 } from "@/components/ui/table";
 import {
-	INITIAL_COMPANIES,
 	companySlug,
 } from "../CRM/companiesSeedData";
+import { useCrmData } from "../../utils/CrmDataContext";
 
 const Companies = () => {
 	const router = useRouter();
 	// Theme hook
 	const { theme, colors } = useTheme();
 
-	const [companies, setCompanies] = useState(INITIAL_COMPANIES);
+	const { companies, setCompanies } = useCrmData();
 
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isAddCompanyModalOpen, setIsAddCompanyModalOpen] = useState(false);

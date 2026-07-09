@@ -32,54 +32,12 @@ import {
 	TableCaption,
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useCrmData } from "../../utils/CrmDataContext";
 
 const ApiKeys = () => {
 	const { theme, colorScheme, colors } = useTheme();
 
-	const initialApiKeys = [
-		{
-			id: "ak_001",
-			name: "Production API Key",
-			key: "sk_live_abc123xyz456def789",
-			createdAt: "2024-01-15",
-			updatedAt: "2024-06-20",
-			status: "Active",
-		},
-		{
-			id: "ak_002",
-			name: "Development Key",
-			key: "sk_test_def456uvw789ghi012",
-			createdAt: "2024-02-10",
-			updatedAt: "2024-06-18",
-			status: "Active",
-		},
-		{
-			id: "ak_003",
-			name: "Staging Environment",
-			key: "sk_staging_ghi789rst012jkl345",
-			createdAt: "2024-03-05",
-			updatedAt: "2024-06-15",
-			status: "Active",
-		},
-		{
-			id: "ak_004",
-			name: "Mobile App Key",
-			key: "sk_mobile_jkl012mno345pqr678",
-			createdAt: "2024-04-12",
-			updatedAt: "2024-06-10",
-			status: "Revoked",
-		},
-		{
-			id: "ak_005",
-			name: "Third-party Integration",
-			key: "sk_integration_pqr345stu678vwx901",
-			createdAt: "2024-05-20",
-			updatedAt: "2024-06-08",
-			status: "Active",
-		},
-	];
-
-	const [apiKeys, setApiKeys] = useState(initialApiKeys);
+	const { apiKeys, setApiKeys } = useCrmData();
 	const [sortConfig, setSortConfig] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");

@@ -11,17 +11,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import FormSelect from "../../lib/ui/FormSelect";
-
-const ACTIVITY_FEED = [
-	{ id: "act_001", type: "deal", title: "Deal moved to Negotiation", body: "Acme Corp — $48,000", actor: "Sarah Chen", time: "10 min ago", module: "Deals" },
-	{ id: "act_002", type: "lead", title: "New lead assigned", body: "Alice Brown from Cloud Corp", actor: "System", time: "25 min ago", module: "Leads" },
-	{ id: "act_003", type: "email", title: "Email sent", body: "Re: Enterprise pilot timeline", actor: "John Doe", time: "1 hr ago", module: "Email" },
-	{ id: "act_004", type: "call", title: "Call logged", body: "15 min with Marcus Webb", actor: "Elena Rossi", time: "2 hr ago", module: "Contacts" },
-	{ id: "act_005", type: "invoice", title: "Invoice paid", body: "INV-2408 — $12,500", actor: "System", time: "3 hr ago", module: "Finance" },
-	{ id: "act_006", type: "webhook", title: "Webhook delivered", body: "lead.created → 200 OK", actor: "System", time: "4 hr ago", module: "Developer" },
-	{ id: "act_007", type: "lead", title: "Lead converted", body: "Bob Martinez → Contact", actor: "John Doe", time: "Yesterday", module: "Leads" },
-	{ id: "act_008", type: "deal", title: "Deal won", body: "Northwind expansion — $92,000", actor: "Sarah Chen", time: "Yesterday", module: "Deals" },
-];
+import { useCrmData } from "../../utils/CrmDataContext";
 
 const TYPE_ICONS = {
 	deal: DollarSign,
@@ -33,12 +23,13 @@ const TYPE_ICONS = {
 };
 
 const Activity = () => {
+	const { activities } = useCrmData();
 	const [moduleFilter, setModuleFilter] = useState("All");
 
 	const filtered = useMemo(() => {
-		if (moduleFilter === "All") return ACTIVITY_FEED;
-		return ACTIVITY_FEED.filter((a) => a.module === moduleFilter);
-	}, [moduleFilter]);
+		if (moduleFilter === "All") return activities;
+		return activities.filter((a) => a.module === moduleFilter);
+	}, [moduleFilter, activities]);
 
 	return (
 		<div className="min-h-screen space-y-6 p-6">

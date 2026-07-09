@@ -27,6 +27,7 @@ import { FormModal, FormField } from "../../lib/ui/modal";
 import FormSelect from "../../lib/ui/FormSelect";
 import PaymentMethodForm from "./PaymentMethodForm";
 import ExchangeRatesCard from "./ExchangeRatesCard";
+import { useCrmData } from "../../utils/CrmDataContext";
 import {
 	Table,
 	TableHeader,
@@ -42,170 +43,7 @@ const textareaClass =
 const Payments = () => {
 	const { colors } = useTheme();
 
-	const initialPayments = [
-		{
-			id: "pay_001",
-			transactionId: "TXN-2024-001",
-			amount: 5000.0,
-			currency: "USD",
-			status: "Completed",
-			paymentMethod: "Credit Card",
-			customer: "Cloud Corp",
-			customerEmail: "contact@cloudcorp.com",
-			description: "Monthly subscription payment",
-			date: "2024-06-25",
-			time: "10:30 AM",
-			fee: 150.0,
-			netAmount: 4850.0,
-			invoiceId: "INV-2024-001",
-		},
-		{
-			id: "pay_002",
-			transactionId: "TXN-2024-002",
-			amount: 12000.0,
-			currency: "USD",
-			status: "Pending",
-			paymentMethod: "Bank Transfer",
-			customer: "Tech Innovations",
-			customerEmail: "billing@techinnovations.com",
-			description: "Q2 software license payment",
-			date: "2024-06-26",
-			time: "02:15 PM",
-			fee: 360.0,
-			netAmount: 11640.0,
-			invoiceId: "INV-2024-002",
-		},
-		{
-			id: "pay_003",
-			transactionId: "TXN-2024-003",
-			amount: 8500.0,
-			currency: "USD",
-			status: "Completed",
-			paymentMethod: "PayPal",
-			customer: "AI Labs",
-			customerEmail: "finance@ailabs.io",
-			description: "Custom development services",
-			date: "2024-06-24",
-			time: "09:45 AM",
-			fee: 255.0,
-			netAmount: 8245.0,
-			invoiceId: "INV-2024-003",
-		},
-		{
-			id: "pay_004",
-			transactionId: "TXN-2024-004",
-			amount: 3200.0,
-			currency: "USD",
-			status: "Completed",
-			paymentMethod: "Credit Card",
-			customer: "Marketing Solutions",
-			customerEmail: "payments@marketingsolutions.com",
-			description: "Marketing campaign setup",
-			date: "2024-06-23",
-			time: "11:20 AM",
-			fee: 96.0,
-			netAmount: 3104.0,
-			invoiceId: "INV-2024-004",
-		},
-		{
-			id: "pay_005",
-			transactionId: "TXN-2024-005",
-			amount: 15000.0,
-			currency: "USD",
-			status: "Pending",
-			paymentMethod: "Wire Transfer",
-			customer: "Finance Corp",
-			customerEmail: "accounts@financecorp.com",
-			description: "Annual enterprise package",
-			date: "2024-06-27",
-			time: "03:00 PM",
-			fee: 450.0,
-			netAmount: 14550.0,
-			invoiceId: "INV-2024-005",
-		},
-		{
-			id: "pay_006",
-			transactionId: "TXN-2024-006",
-			amount: 25000.0,
-			currency: "USD",
-			status: "Completed",
-			paymentMethod: "Credit Card",
-			customer: "Amazon",
-			customerEmail: "procurement@amazon.com",
-			description: "Cloud infrastructure services",
-			date: "2024-06-22",
-			time: "04:30 PM",
-			fee: 750.0,
-			netAmount: 24250.0,
-			invoiceId: "INV-2024-006",
-		},
-		{
-			id: "pay_007",
-			transactionId: "TXN-2024-007",
-			amount: 1800.0,
-			currency: "USD",
-			status: "Pending",
-			paymentMethod: "PayPal",
-			customer: "Startup Inc.",
-			customerEmail: "billing@startupinc.com",
-			description: "Basic plan subscription",
-			date: "2024-06-28",
-			time: "01:15 PM",
-			fee: 54.0,
-			netAmount: 1746.0,
-			invoiceId: "INV-2024-007",
-		},
-		{
-			id: "pay_008",
-			transactionId: "TXN-2024-008",
-			amount: 9500.0,
-			currency: "USD",
-			status: "Completed",
-			paymentMethod: "Bank Transfer",
-			customer: "Global Solutions",
-			customerEmail: "finance@globalsolutions.com",
-			description: "Consulting services",
-			date: "2024-06-21",
-			time: "10:00 AM",
-			fee: 285.0,
-			netAmount: 9215.0,
-			invoiceId: "INV-2024-008",
-		},
-		{
-			id: "pay_009",
-			transactionId: "TXN-2024-009",
-			amount: 4200.0,
-			currency: "USD",
-			status: "Completed",
-			paymentMethod: "Credit Card",
-			customer: "Innovatech LLC",
-			customerEmail: "accounts@innovatech.com",
-			description: "API integration services",
-			date: "2024-06-20",
-			time: "02:45 PM",
-			fee: 126.0,
-			netAmount: 4074.0,
-			invoiceId: "INV-2024-009",
-		},
-		{
-			id: "pay_010",
-			transactionId: "TXN-2024-010",
-			amount: 6800.0,
-			currency: "USD",
-			status: "Pending",
-			paymentMethod: "PayPal",
-			customer: "GreenTech Innovations",
-			customerEmail: "billing@greentech.com",
-			description: "Sustainability platform license",
-			date: "2024-06-29",
-			time: "09:30 AM",
-			fee: 204.0,
-			netAmount: 6596.0,
-			invoiceId: "INV-2024-010",
-		},
-	];
-
-	const [payments, setPayments] = useState(initialPayments);
+	const { payments, setPayments } = useCrmData();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [filterStatus, setFilterStatus] = useState("All"); // All, Completed, Pending
 	const [sortConfig, setSortConfig] = useState(null);
@@ -822,7 +660,7 @@ const Payments = () => {
 				{/* Pagination */}
 				{totalPages > 1 && (
 					<div
-						className={`px-6 py-4 border-t ${colors.border} flex items-center justify-between`}
+						className={`px-6 py-4  flex items-center justify-between`}
 					>
 						<div className={`text-sm ${colors.mutedForeground}`}>
 							Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
@@ -1164,7 +1002,7 @@ const Payments = () => {
 							</div>
 
 							{/* Divider */}
-							<div className={`border-t ${colors.border}`} />
+							<div className={``} />
 
 							{/* Payment Information */}
 							<div className="grid grid-cols-2 gap-6">
@@ -1223,7 +1061,7 @@ const Payments = () => {
 							</div>
 
 							{/* Divider */}
-							<div className={`border-t ${colors.border}`} />
+							<div className={``} />
 
 							{/* Payment Breakdown */}
 							<div className={`${colors.card} space-y-3`}>
@@ -1246,7 +1084,7 @@ const Payments = () => {
 										-{formatCurrency(selectedPayment.fee)}
 									</p>
 								</div>
-								<div className={`border-t ${colors.border} pt-3`}>
+								<div className={` pt-3`}>
 									<div className="flex items-center justify-between">
 										<p className={`text-sm font-semibold ${colors.foreground}`}>
 											Net Amount

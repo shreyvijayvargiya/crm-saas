@@ -13,17 +13,8 @@ import {
 	TableRow,
 	TableCell,
 } from "@/components/ui/table";
+import { useCrmData } from "../../utils/CrmDataContext";
 
-const INITIAL_LOGS = [
-	{ id: "log_001", method: "GET", path: "/api/v1/leads", status: 200, latencyMs: 42, apiKey: "Production API Key", timestamp: "2026-04-14 10:42:01" },
-	{ id: "log_002", method: "POST", path: "/api/v1/deals", status: 201, latencyMs: 118, apiKey: "Production API Key", timestamp: "2026-04-14 10:41:55" },
-	{ id: "log_003", method: "GET", path: "/api/v1/contacts/205", status: 404, latencyMs: 28, apiKey: "Development Key", timestamp: "2026-04-14 10:40:12" },
-	{ id: "log_004", method: "PATCH", path: "/api/v1/invoices/inv_2408", status: 200, latencyMs: 95, apiKey: "Production API Key", timestamp: "2026-04-14 10:38:44" },
-	{ id: "log_005", method: "POST", path: "/api/v1/webhooks/test", status: 500, latencyMs: 1204, apiKey: "Staging Environment", timestamp: "2026-04-14 10:35:20" },
-	{ id: "log_006", method: "DELETE", path: "/api/v1/api-keys/ak_004", status: 204, latencyMs: 67, apiKey: "Production API Key", timestamp: "2026-04-14 10:32:08" },
-	{ id: "log_007", method: "GET", path: "/api/v1/analytics/revenue", status: 200, latencyMs: 156, apiKey: "Mobile App Key", timestamp: "2026-04-14 10:28:33" },
-	{ id: "log_008", method: "POST", path: "/api/v1/leads", status: 422, latencyMs: 34, apiKey: "Development Key", timestamp: "2026-04-14 10:25:17" },
-];
 
 function statusVariant(status) {
 	if (status >= 500) return "destructive";
@@ -37,12 +28,13 @@ function methodColor(method) {
 }
 
 const ApiLogs = () => {
+	const { apiLogs } = useCrmData();
 	const { colors } = useTheme();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [statusFilter, setStatusFilter] = useState("All");
 
 	const filtered = useMemo(() => {
-		let list = [...INITIAL_LOGS];
+		let list = [...apiLogs];
 		if (statusFilter === "2xx") list = list.filter((l) => l.status >= 200 && l.status < 300);
 		else if (statusFilter === "4xx") list = list.filter((l) => l.status >= 400 && l.status < 500);
 		else if (statusFilter === "5xx") list = list.filter((l) => l.status >= 500);
@@ -56,15 +48,15 @@ const ApiLogs = () => {
 			);
 		}
 		return list;
-	}, [searchTerm, statusFilter]);
+	}, [searchTerm, statusFilter, apiLogs]);
 
 	const stats = useMemo(() => {
-		const errors = INITIAL_LOGS.filter((l) => l.status >= 400).length;
+		const errors = apiLogs.filter((l) => l.status >= 400).length;
 		const avgLatency = Math.round(
-			INITIAL_LOGS.reduce((s, l) => s + l.latencyMs, 0) / INITIAL_LOGS.length
+			apiLogs.reduce((s, l) => s + l.latencyMs, 0) / apiLogs.length
 		);
-		return { total: INITIAL_LOGS.length, errors, avgLatency };
-	}, []);
+		return { total: apiLogs.length, errors, avgLatency };
+	}, [apiLogs]);
 
 	return (
 		<div className="min-h-screen space-y-6 p-6">

@@ -33,6 +33,7 @@ import {
 	SUBSCRIPTION_STATUS_BREAKDOWN,
 	SUBSCRIPTION_STATUS_OPTIONS,
 } from "./subscriptionsSeedData";
+import { useCrmData } from "../../utils/CrmDataContext";
 import DateRangeFilter from "../Analytics/components/DateRangeFilter";
 import { ExportDropdown } from "../../lib/ui/dropdown";
 import FormSelect from "../../lib/ui/FormSelect";
@@ -88,8 +89,10 @@ const Subscriptions = () => {
 	const [customTo, setCustomTo] = useState("");
 	const [selectedIds, setSelectedIds] = useState([]);
 
+	const { subscriptions } = useCrmData();
+
 	const filtered = useMemo(() => {
-		return SUBSCRIPTIONS.filter((s) => {
+		return subscriptions.filter((s) => {
 			const matchesSearch =
 				!searchTerm ||
 				s.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -98,7 +101,7 @@ const Subscriptions = () => {
 			const matchesStatus = statusFilter === "All" || s.status === statusFilter;
 			return matchesSearch && matchesStatus;
 		});
-	}, [searchTerm, statusFilter]);
+	}, [searchTerm, statusFilter, subscriptions]);
 
 	const allSelected = filtered.length > 0 && selectedIds.length === filtered.length;
 

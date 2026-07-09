@@ -16,21 +16,14 @@ import {
 	TableCell,
 } from "@/components/ui/table";
 
-const INITIAL_USERS = [
-	{ id: "usr_001", name: "John Doe", email: "john.doe@company.com", role: "Admin", department: "Sales", status: "Active", lastActive: "2026-04-14" },
-	{ id: "usr_002", name: "Sarah Chen", email: "sarah.chen@company.com", role: "Manager", department: "Sales", status: "Active", lastActive: "2026-04-14" },
-	{ id: "usr_003", name: "Marcus Webb", email: "marcus@company.com", role: "Member", department: "Marketing", status: "Active", lastActive: "2026-04-13" },
-	{ id: "usr_004", name: "Elena Rossi", email: "elena@company.com", role: "Member", department: "Support", status: "Active", lastActive: "2026-04-14" },
-	{ id: "usr_005", name: "Alex Kim", email: "alex.kim@company.com", role: "Viewer", department: "Finance", status: "Invited", lastActive: "—" },
-	{ id: "usr_006", name: "Jordan Lee", email: "jordan.lee@company.com", role: "Member", department: "Engineering", status: "Suspended", lastActive: "2026-03-28" },
-];
+import { useCrmData } from "../../utils/CrmDataContext";
 
 function getInitials(name) {
 	return name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
 }
 
 const Users = () => {
-	const [users, setUsers] = useState(INITIAL_USERS);
+	const { users, setUsers } = useCrmData();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [roleFilter, setRoleFilter] = useState("All");
 	const [modalOpen, setModalOpen] = useState(false);

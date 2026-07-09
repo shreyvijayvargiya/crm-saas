@@ -34,6 +34,7 @@ import {
 	TableCaption,
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useCrmData } from "../../utils/CrmDataContext";
 
 const GROUP_LABELS = {
 	email_calendar: "Email & calendar",
@@ -59,42 +60,11 @@ const EMPTY_INTEGRATION = {
 	apiKey: "",
 };
 
-const initialIntegrations = [
-	{ id: "1", name: "Google Workspace", enabled: true, tag: "email_sync", group: "email_calendar", lastUpdated: "March 2, 2025" },
-	{ id: "2", name: "Microsoft 365", enabled: true, tag: "email_calendar", group: "email_calendar", lastUpdated: "March 1, 2025" },
-	{ id: "3", name: "Salesforce", enabled: true, tag: "crm", group: "crm_revenue", lastUpdated: "March 2, 2025" },
-	{ id: "4", name: "HubSpot", enabled: false, tag: "crm", group: "crm_revenue", lastUpdated: "February 20, 2025" },
-	{ id: "5", name: "Pipedrive", enabled: false, tag: "pipeline", group: "crm_revenue", lastUpdated: "January 8, 2025" },
-	{ id: "6", name: "Zendesk", enabled: true, tag: "ticketing", group: "support", lastUpdated: "March 2, 2025" },
-	{ id: "7", name: "Intercom", enabled: true, tag: "messaging", group: "support", lastUpdated: "February 28, 2025" },
-	{ id: "8", name: "Freshdesk", enabled: false, tag: "ticketing", group: "support", lastUpdated: "January 12, 2025" },
-	{ id: "9", name: "Stripe", enabled: true, tag: "payments", group: "billing", lastUpdated: "March 2, 2025" },
-	{ id: "10", name: "Chargebee", enabled: false, tag: "subscriptions", group: "billing", lastUpdated: "February 5, 2025" },
-	{ id: "11", name: "Paddle", enabled: false, tag: "subscriptions", group: "billing", lastUpdated: "December 1, 2024" },
-	{ id: "12", name: "Twilio", enabled: true, tag: "sms_voice", group: "voice_sms", lastUpdated: "March 1, 2025" },
-	{ id: "13", name: "Aircall", enabled: false, tag: "cti", group: "voice_sms", lastUpdated: "November 2, 2024" },
-	{ id: "14", name: "RingCentral", enabled: false, tag: "unified_comms", group: "voice_sms", lastUpdated: "October 9, 2024" },
-	{ id: "15", name: "Zoom", enabled: true, tag: "video", group: "voice_video", lastUpdated: "March 2, 2025" },
-	{ id: "16", name: "DocuSign", enabled: true, tag: "e_signature", group: "documents", lastUpdated: "February 15, 2025" },
-	{ id: "17", name: "PandaDoc", enabled: false, tag: "quotes", group: "documents", lastUpdated: "January 3, 2025" },
-	{ id: "18", name: "Google Drive", enabled: true, tag: "cloud_storage", group: "documents", lastUpdated: "March 1, 2025" },
-	{ id: "19", name: "BigQuery", enabled: false, tag: "warehouse", group: "data_bi", lastUpdated: "February 10, 2025" },
-	{ id: "20", name: "Snowflake", enabled: false, tag: "warehouse", group: "data_bi", lastUpdated: "January 22, 2025" },
-	{ id: "21", name: "Looker", enabled: false, tag: "bi", group: "data_bi", lastUpdated: "December 5, 2024" },
-	{ id: "22", name: "Okta", enabled: true, tag: "sso", group: "identity", lastUpdated: "March 1, 2025" },
-	{ id: "23", name: "Azure AD", enabled: true, tag: "sso", group: "identity", lastUpdated: "February 25, 2025" },
-	{ id: "24", name: "Zapier", enabled: true, tag: "automation", group: "automation", lastUpdated: "March 2, 2025" },
-	{ id: "25", name: "Make", enabled: false, tag: "automation", group: "automation", lastUpdated: "January 6, 2025" },
-	{ id: "26", name: "n8n", enabled: false, tag: "automation", group: "automation", lastUpdated: "September 1, 2024" },
-	{ id: "27", name: "Slack", enabled: true, tag: "communication", group: "productivity", lastUpdated: "March 2, 2025" },
-	{ id: "28", name: "Jira", enabled: true, tag: "delivery", group: "productivity", lastUpdated: "March 1, 2025" },
-	{ id: "29", name: "Notion", enabled: false, tag: "wiki", group: "productivity", lastUpdated: "December 20, 2024" },
-];
 
 const Integrations = () => {
 	const { colorScheme, colors } = useTheme();
 
-	const [integrations, setIntegrations] = useState(initialIntegrations);
+	const { integrations, setIntegrations } = useCrmData();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [newIntegration, setNewIntegration] = useState(EMPTY_INTEGRATION);
