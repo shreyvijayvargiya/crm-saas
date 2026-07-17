@@ -11,6 +11,7 @@ export { default as Integrations } from "./Integrations";
 export { default as Tasks } from "./Tasks";
 export { default as Calendar } from "./Calendar";
 export { default as Scheduler } from "./Scheduler";
+export { default as SchedulerApps } from "./Scheduler/Apps";
 export { default as Settings } from "./Settings";
 export { default as Invoices } from "./Invoices";
 export { default as Webhooks } from "./Webhooks";

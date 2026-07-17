@@ -2,6 +2,9 @@ import React, { useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
 	Calendar as CalendarIcon,
+	Check,
+	CheckCircle2,
+	ChevronDown,
 	ChevronLeft,
 	ChevronRight,
 	List,
@@ -34,6 +37,8 @@ import {
 	postPreviewTitle,
 } from "./platforms";
 import { INITIAL_SCHEDULED_POSTS } from "./schedulerSeedData";
+import SchedulerLayout from "./SchedulerLayout";
+import { useSchedulerConnections } from "./SchedulerConnectionsContext";
 
 function formatDate(date) {
 	const year = date.getFullYear();
@@ -120,6 +125,8 @@ function PlatformChip({ platformId, title, time, onClick, compact = false }) {
 }
 
 function PlatformAddMenu({ dateString, onSelectPlatform }) {
+	const { isConnected } = useSchedulerConnections();
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -134,26 +141,47 @@ function PlatformAddMenu({ dateString, onSelectPlatform }) {
 					<Plus className="h-3.5 w-3.5" />
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align="start" className="w-56 z-[80]">
+			<DropdownMenuContent align="start" className="w-60 z-[80]">
 				<DropdownMenuLabel className="text-xs">Schedule for platform</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				{SCHEDULER_PLATFORMS.map((platform) => {
 					const { Icon } = platform;
+					const connected = isConnected(platform.id);
 					return (
 						<DropdownMenuItem
 							key={platform.id}
 							className="gap-2.5 text-xs"
-							onSelect={() => onSelectPlatform(platform.id, dateString)}
+							onSelect={() => {
+								if (!connected) {
+									toast.error(`Connect ${platform.label} first`, {
+										description: "Open Connected apps to link this platform.",
+									});
+									return;
+								}
+								onSelectPlatform(platform.id, dateString);
+							}}
 						>
 							<span
 								className={cn(
 									"flex h-6 w-6 shrink-0 items-center justify-center rounded-md",
-									platform.color
+									platform.color,
+									!connected && "opacity-50"
 								)}
 							>
 								<Icon className="h-3.5 w-3.5" />
 							</span>
-							{platform.label}
+							<span className="flex min-w-0 flex-1 items-center justify-between gap-2">
+								<span className={!connected ? "text-muted-foreground" : undefined}>
+									{platform.label}
+								</span>
+								{connected ? (
+									<CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+								) : (
+									<span className="shrink-0 text-[10px] text-muted-foreground">
+										Not connected
+									</span>
+								)}
+							</span>
 						</DropdownMenuItem>
 					);
 				})}
@@ -248,6 +276,7 @@ const Scheduler = () => {
 	const [currentDate, setCurrentDate] = useState(new Date());
 	const [viewMode, setViewMode] = useState("calendar");
 	const [search, setSearch] = useState("");
+	const [platformFilter, setPlatformFilter] = useState("all");
 	const [editingPost, setEditingPost] = useState(null);
 	const [modalOpen, setModalOpen] = useState(false);
 
@@ -286,8 +315,11 @@ const Scheduler = () => {
 
 	const filteredPosts = useMemo(() => {
 		const q = search.trim().toLowerCase();
-		if (!q) return posts;
 		return posts.filter((post) => {
+			if (platformFilter !== "all" && post.platform !== platformFilter) {
+				return false;
+			}
+			if (!q) return true;
 			const platform = getPlatform(post.platform);
 			const haystack = [
 				platform?.label,
@@ -301,7 +333,12 @@ const Scheduler = () => {
 				.toLowerCase();
 			return haystack.includes(q);
 		});
-	}, [posts, search]);
+	}, [posts, search, platformFilter]);
+
+	const selectedPlatformFilter = useMemo(() => {
+		if (platformFilter === "all") return null;
+		return getPlatform(platformFilter);
+	}, [platformFilter]);
 
 	const getPostsForDate = (date) => {
 		const dateString = formatDate(date);
@@ -421,62 +458,125 @@ const Scheduler = () => {
 		: null;
 
 	return (
-		<div className="p-4 sm:p-6 transition-all duration-100 ease-in">
-			<div className="mb-5 flex flex-col gap-4">
-				<div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-					<div>
-						<h1 className={`text-xl sm:text-2xl font-semibold tracking-tight ${colors.foreground}`}>
-							Content scheduler
-						</h1>
-						<p className={`text-sm mt-1 ${colors.mutedForeground}`}>
-							Plan posts across social platforms — pick a date, choose a
-							channel, edit platform-specific fields.
-						</p>
+		<SchedulerLayout>
+		<div className="transition-all duration-100 ease-in space-y-4">
+			<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+				<div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center min-w-0">
+					<div className="relative w-full max-w-md flex-1">
+						<Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+						<Input
+							type="search"
+							placeholder="Search posts, platforms, captions…"
+							className="pl-9"
+							value={search}
+							onChange={(e) => setSearch(e.target.value)}
+						/>
 					</div>
-					<div className="flex items-center gap-2">
-						<div
-							className={cn(
-								"inline-flex rounded-xl border p-0.5",
-								colors.border
-							)}
-							role="tablist"
-							aria-label="Scheduler view"
-						>
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
 							<Button
 								type="button"
-								variant={viewMode === "calendar" ? "default" : "ghost"}
-								size="sm"
-								className="h-8 gap-1.5 px-2.5"
-								onClick={() => setViewMode("calendar")}
-								aria-pressed={viewMode === "calendar"}
+								variant="outline"
+								className="h-9 w-full sm:w-auto justify-between gap-2 shrink-0"
 							>
-								<CalendarIcon className="h-3.5 w-3.5" />
-								Calendar
+								<span className="flex min-w-0 items-center gap-2">
+									{selectedPlatformFilter ? (
+										<>
+											<span
+												className={cn(
+													"flex h-5 w-5 shrink-0 items-center justify-center rounded-md",
+													selectedPlatformFilter.color
+												)}
+											>
+												{(() => {
+													const Icon = selectedPlatformFilter.Icon;
+													return <Icon className="h-3 w-3" />;
+												})()}
+											</span>
+											<span className="truncate">
+												{selectedPlatformFilter.label}
+											</span>
+										</>
+									) : (
+										<span className="truncate text-muted-foreground">
+											All platforms
+										</span>
+									)}
+								</span>
+								<ChevronDown className="h-4 w-4 shrink-0 opacity-60" />
 							</Button>
-							<Button
-								type="button"
-								variant={viewMode === "list" ? "default" : "ghost"}
-								size="sm"
-								className="h-8 gap-1.5 px-2.5"
-								onClick={() => setViewMode("list")}
-								aria-pressed={viewMode === "list"}
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="start" className="w-56 max-h-72 overflow-y-auto">
+							<DropdownMenuLabel className="text-xs">Filter by platform</DropdownMenuLabel>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem
+								className="justify-between gap-2 text-xs"
+								onSelect={() => setPlatformFilter("all")}
 							>
-								<List className="h-3.5 w-3.5" />
-								List
-							</Button>
-						</div>
-					</div>
+								All platforms
+								{platformFilter === "all" && (
+									<Check className="h-3.5 w-3.5 shrink-0" />
+								)}
+							</DropdownMenuItem>
+							<DropdownMenuSeparator />
+							{SCHEDULER_PLATFORMS.map((platform) => {
+								const { Icon } = platform;
+								return (
+									<DropdownMenuItem
+										key={platform.id}
+										className="justify-between gap-2 text-xs"
+										onSelect={() => setPlatformFilter(platform.id)}
+									>
+										<span className="flex items-center gap-2.5 min-w-0">
+											<span
+												className={cn(
+													"flex h-5 w-5 shrink-0 items-center justify-center rounded-md",
+													platform.color
+												)}
+											>
+												<Icon className="h-3 w-3" />
+											</span>
+											<span className="truncate">{platform.label}</span>
+										</span>
+										{platformFilter === platform.id && (
+											<Check className="h-3.5 w-3.5 shrink-0" />
+										)}
+									</DropdownMenuItem>
+								);
+							})}
+						</DropdownMenuContent>
+					</DropdownMenu>
 				</div>
-
-				<div className="relative max-w-md">
-					<Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-					<Input
-						type="search"
-						placeholder="Search posts, platforms, captions…"
-						className="pl-9"
-						value={search}
-						onChange={(e) => setSearch(e.target.value)}
-					/>
+				<div
+					className={cn(
+						"inline-flex rounded-xl border p-0.5 shrink-0",
+						colors.border
+					)}
+					role="tablist"
+					aria-label="Scheduler view"
+				>
+					<Button
+						type="button"
+						variant={viewMode === "calendar" ? "default" : "ghost"}
+						size="sm"
+						className="h-8 gap-1.5 px-2.5"
+						onClick={() => setViewMode("calendar")}
+						aria-pressed={viewMode === "calendar"}
+					>
+						<CalendarIcon className="h-3.5 w-3.5" />
+						Calendar
+					</Button>
+					<Button
+						type="button"
+						variant={viewMode === "list" ? "default" : "ghost"}
+						size="sm"
+						className="h-8 gap-1.5 px-2.5"
+						onClick={() => setViewMode("list")}
+						aria-pressed={viewMode === "list"}
+					>
+						<List className="h-3.5 w-3.5" />
+						List
+					</Button>
 				</div>
 			</div>
 
@@ -602,32 +702,6 @@ const Scheduler = () => {
 								})}
 							</div>
 						</Card>
-					</div>
-
-					<div className="mt-4 flex flex-wrap gap-2">
-						{SCHEDULER_PLATFORMS.map((p) => {
-							const { Icon } = p;
-							return (
-								<span
-									key={p.id}
-									className={cn(
-										"inline-flex items-center gap-1.5 rounded-full border px-2 py-1 text-[11px]",
-										colors.border,
-										colors.mutedForeground
-									)}
-								>
-									<span
-										className={cn(
-											"flex h-4 w-4 items-center justify-center rounded",
-											p.color
-										)}
-									>
-										<Icon className="h-2.5 w-2.5" />
-									</span>
-									{p.label}
-								</span>
-							);
-						})}
 					</div>
 				</>
 			) : (
@@ -820,6 +894,7 @@ const Scheduler = () => {
 				)}
 			</FormModal>
 		</div>
+		</SchedulerLayout>
 	);
 };
 

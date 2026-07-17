@@ -7,8 +7,12 @@ import {
 	FaPinterestP,
 	FaLinkedinIn,
 	FaDribbble,
+	FaInstagram,
+	FaFacebookF,
+	FaBluesky,
+	FaMedium,
 } from "react-icons/fa6";
-import { SiSubstack } from "react-icons/si";
+import { SiSubstack, SiMastodon } from "react-icons/si";
 
 /**
  * Content platforms for the mini scheduler.
@@ -131,6 +135,76 @@ export const SCHEDULER_PLATFORMS = [
 			{ key: "subtitle", label: "Subtitle", type: "text", placeholder: "Optional subtitle" },
 			{ key: "body", label: "Body", type: "textarea", required: true, placeholder: "Write your issue…" },
 			{ key: "audience", label: "Audience", type: "select", options: ["Everyone", "Paid subscribers", "Free subscribers"] },
+		],
+	},
+	{
+		id: "instagram",
+		label: "Instagram",
+		Icon: FaInstagram,
+		color: "bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 text-white",
+		chipClass: "bg-pink-500/15 text-pink-700 dark:text-pink-300",
+		charLimit: 2200,
+		fields: [
+			{ key: "caption", label: "Caption", type: "textarea", required: true, placeholder: "Write a caption…" },
+			{ key: "mediaUrl", label: "Image / reel URL", type: "text", required: true, placeholder: "https://…" },
+			{ key: "postType", label: "Post type", type: "select", options: ["Feed", "Reel", "Story", "Carousel"] },
+			{ key: "hashtags", label: "Hashtags", type: "text", placeholder: "#saas #crm #product" },
+			{ key: "location", label: "Location", type: "text", placeholder: "San Francisco, CA" },
+		],
+	},
+	{
+		id: "facebook",
+		label: "Facebook",
+		Icon: FaFacebookF,
+		color: "bg-blue-600 text-white",
+		chipClass: "bg-blue-600/15 text-blue-800 dark:text-blue-300",
+		fields: [
+			{ key: "text", label: "Post text", type: "textarea", required: true, placeholder: "Write something…" },
+			{ key: "mediaUrl", label: "Media URL", type: "text", placeholder: "https://…" },
+			{ key: "link", label: "Link", type: "text", placeholder: "https://…" },
+			{ key: "audience", label: "Audience", type: "select", options: ["Public", "Friends", "Only me"] },
+		],
+	},
+	{
+		id: "bluesky",
+		label: "Bluesky",
+		Icon: FaBluesky,
+		color: "bg-sky-500 text-white",
+		chipClass: "bg-sky-500/15 text-sky-800 dark:text-sky-300",
+		charLimit: 300,
+		fields: [
+			{ key: "text", label: "Post text", type: "textarea", required: true, placeholder: "What's on your mind?" },
+			{ key: "mediaUrl", label: "Media URL", type: "text", placeholder: "https://…" },
+			{ key: "languages", label: "Language", type: "select", options: ["English", "Spanish", "French", "German", "Hindi"] },
+		],
+	},
+	{
+		id: "medium",
+		label: "Medium",
+		Icon: FaMedium,
+		color: "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900",
+		chipClass: "bg-zinc-900/10 text-zinc-900 dark:bg-zinc-100/15 dark:text-zinc-100",
+		fields: [
+			{ key: "title", label: "Article title", type: "text", required: true, placeholder: "Article title" },
+			{ key: "subtitle", label: "Subtitle", type: "text", placeholder: "Optional subtitle" },
+			{ key: "body", label: "Body", type: "textarea", required: true, placeholder: "Write your article…" },
+			{ key: "tags", label: "Tags", type: "text", placeholder: "saas, product, growth" },
+			{ key: "canonicalUrl", label: "Canonical URL", type: "text", placeholder: "https://…" },
+		],
+	},
+	{
+		id: "mastodon",
+		label: "Mastodon",
+		Icon: SiMastodon,
+		color: "bg-indigo-600 text-white",
+		chipClass: "bg-indigo-500/15 text-indigo-800 dark:text-indigo-300",
+		charLimit: 500,
+		fields: [
+			{ key: "text", label: "Toot text", type: "textarea", required: true, placeholder: "Write a toot…" },
+			{ key: "mediaUrl", label: "Media URL", type: "text", placeholder: "https://…" },
+			{ key: "instance", label: "Instance", type: "text", placeholder: "mastodon.social" },
+			{ key: "visibility", label: "Visibility", type: "select", options: ["Public", "Unlisted", "Followers only", "Direct"] },
+			{ key: "contentWarning", label: "Content warning", type: "text", placeholder: "Optional CW" },
 		],
 	},
 ];

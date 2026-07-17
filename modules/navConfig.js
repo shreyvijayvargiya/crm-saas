@@ -117,6 +117,14 @@ export const searchRouteExtras = [
 		keywords: ["billing", "mrr", "plans", "recurring"],
 	},
 	{
+		id: 431,
+		label: "Scheduler apps",
+		route: "/scheduler/apps",
+		icon: "Plug2",
+		section: "operations",
+		keywords: ["connect", "social", "oauth", "platforms", "scheduler"],
+	},
+	{
 		id: 242,
 		label: "E-commerce Orders",
 		route: "/e-commerce/orders",

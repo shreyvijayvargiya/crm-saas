@@ -91,4 +91,30 @@ export const INITIAL_SCHEDULED_POSTS = [
 			audience: "Everyone",
 		},
 	},
+	{
+		id: "sch-7",
+		platform: "instagram",
+		date: dayOffset(2),
+		time: "18:00",
+		status: "scheduled",
+		content: {
+			caption: "New pipeline chips landed ✨ Schedule content the same way you close deals.",
+			mediaUrl: "https://example.com/media/pipeline-reel.mp4",
+			postType: "Reel",
+			hashtags: "#saas #crm #product",
+			location: "",
+		},
+	},
+	{
+		id: "sch-8",
+		platform: "bluesky",
+		date: dayOffset(4),
+		time: "12:00",
+		status: "scheduled",
+		content: {
+			text: "Building a content calendar into a CRM template — platforms, chips, and per-channel forms.",
+			mediaUrl: "",
+			languages: "English",
+		},
+	},
 ];
