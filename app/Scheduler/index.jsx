@@ -66,6 +66,23 @@ function isToday(date) {
 	);
 }
 
+/** True when the calendar day (or YYYY-MM-DD string) is before today. */
+function isPastDate(dateOrString) {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+	const d =
+		typeof dateOrString === "string"
+			? new Date(`${dateOrString}T12:00:00`)
+			: new Date(dateOrString);
+	d.setHours(0, 0, 0, 0);
+	return d.getTime() < today.getTime();
+}
+
+function postDisplayStatus(post) {
+	if (isPastDate(post.date) && post.status !== "draft") return "posted";
+	return post.status;
+}
+
 const MONTH_NAMES = [
 	"January",
 	"February",
@@ -88,7 +105,14 @@ const STATUS_OPTIONS = [
 	{ value: "scheduled", label: "Scheduled" },
 ];
 
-function PlatformChip({ platformId, title, time, onClick, compact = false }) {
+function PlatformChip({
+	platformId,
+	title,
+	time,
+	onClick,
+	compact = false,
+	posted = false,
+}) {
 	const platform = getPlatform(platformId);
 	if (!platform) return null;
 	const { Icon, chipClass, label } = platform;
@@ -102,20 +126,31 @@ function PlatformChip({ platformId, title, time, onClick, compact = false }) {
 			}}
 			className={cn(
 				"flex w-full items-center gap-1.5 rounded-lg px-1.5 py-1 text-left text-[10px] sm:text-xs transition hover:opacity-90",
-				chipClass
+				posted
+					? "bg-emerald-500/20 text-emerald-800 dark:bg-emerald-500/25 dark:text-emerald-200 ring-1 ring-emerald-500/30"
+					: chipClass
 			)}
-			title={`${label}${title ? `: ${title}` : ""}`}
+			title={
+				posted
+					? `Posted · ${label}${title ? `: ${title}` : ""}`
+					: `${label}${title ? `: ${title}` : ""}`
+			}
 		>
 			<span
 				className={cn(
 					"flex h-4 w-4 shrink-0 items-center justify-center rounded-md",
-					platform.color
+					posted ? "bg-emerald-600 text-white" : platform.color
 				)}
 			>
-				<Icon className="h-2.5 w-2.5" />
+				{posted ? (
+					<CheckCircle2 className="h-2.5 w-2.5" />
+				) : (
+					<Icon className="h-2.5 w-2.5" />
+				)}
 			</span>
 			{!compact && (
 				<span className="min-w-0 flex-1 truncate font-medium">
+					{posted ? "Posted · " : ""}
 					{time ? `${time} · ` : ""}
 					{title || label}
 				</span>
@@ -686,6 +721,10 @@ const Scheduler = () => {
 														platformId={post.platform}
 														title={postPreviewTitle(post)}
 														time={post.time}
+														posted={
+															isPastDate(day.date) &&
+															post.status !== "draft"
+														}
 														onClick={() => openEditPost(post)}
 													/>
 												))}
@@ -723,6 +762,8 @@ const Scheduler = () => {
 							{listPosts.map((post) => {
 								const platform = getPlatform(post.platform);
 								const Icon = platform?.Icon;
+								const displayStatus = postDisplayStatus(post);
+								const isPosted = displayStatus === "posted";
 								return (
 									<li key={post.id}>
 										<button
@@ -730,16 +771,23 @@ const Scheduler = () => {
 											onClick={() => openEditPost(post)}
 											className={cn(
 												"grid w-full grid-cols-[auto_1fr_auto_auto] items-center gap-3 px-4 py-3 text-left transition",
-												colors.hoverSecondary
+												colors.hoverSecondary,
+												isPosted && "bg-emerald-500/5"
 											)}
 										>
 											<span
 												className={cn(
 													"flex h-8 w-8 items-center justify-center rounded-lg",
-													platform?.color
+													isPosted
+														? "bg-emerald-600 text-white"
+														: platform?.color
 												)}
 											>
-												{Icon ? <Icon className="h-4 w-4" /> : null}
+												{isPosted ? (
+													<CheckCircle2 className="h-4 w-4" />
+												) : Icon ? (
+													<Icon className="h-4 w-4" />
+												) : null}
 											</span>
 											<div className="min-w-0">
 												<p
@@ -765,11 +813,19 @@ const Scheduler = () => {
 											</div>
 											<Badge
 												variant={
-													post.status === "scheduled" ? "default" : "secondary"
+													isPosted
+														? "default"
+														: post.status === "scheduled"
+															? "default"
+															: "secondary"
 												}
-												className="capitalize"
+												className={cn(
+													"capitalize",
+													isPosted &&
+														"border-transparent bg-emerald-600 text-white hover:bg-emerald-600"
+												)}
 											>
-												{post.status}
+												{displayStatus}
 											</Badge>
 										</button>
 									</li>

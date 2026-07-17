@@ -14,6 +14,44 @@ function dayOffset(offset) {
 /** Demo scheduled posts for the content scheduler. */
 export const INITIAL_SCHEDULED_POSTS = [
 	{
+		id: "sch-past-1",
+		platform: "x",
+		date: dayOffset(-2),
+		time: "09:15",
+		status: "scheduled",
+		content: {
+			text: "Shipped last week's pipeline polish — thanks for the feedback from the beta cohort.",
+			mediaUrl: "",
+			replySettings: "Everyone",
+		},
+	},
+	{
+		id: "sch-past-2",
+		platform: "linkedin",
+		date: dayOffset(-1),
+		time: "11:00",
+		status: "scheduled",
+		content: {
+			text: "Yesterday's webinar replay is live — Leads → Pipeline → Deals in 20 minutes.",
+			mediaUrl: "",
+			visibility: "Anyone",
+		},
+	},
+	{
+		id: "sch-past-3",
+		platform: "instagram",
+		date: dayOffset(-3),
+		time: "17:30",
+		status: "scheduled",
+		content: {
+			caption: "Behind the scenes: content chips on the CRM calendar 📅",
+			mediaUrl: "https://example.com/media/bts-calendar.jpg",
+			postType: "Feed",
+			hashtags: "#saas #buildinpublic",
+			location: "",
+		},
+	},
+	{
 		id: "sch-1",
 		platform: "x",
 		date: dayOffset(1),
