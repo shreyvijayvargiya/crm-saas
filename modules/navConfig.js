@@ -34,6 +34,7 @@ export const navCategories = [
 		items: [
 			{ id: 6, label: "Tasks", route: "/tasks", icon: "ListTodo" },
 			{ id: 15, label: "Calendar", route: "/calendar", icon: "Calendar" },
+			{ id: 43, label: "Scheduler", route: "/scheduler", icon: "CalendarClock", keywords: ["content", "social", "schedule", "posts"] },
 			{ id: 19, label: "Email", route: "/email", icon: "Mail" },
 			{ id: 12, label: "Projects", route: "/projects", icon: "FolderClosed" },
 			{ id: 34, label: "Files", route: "/files", icon: "FolderOpen" },
