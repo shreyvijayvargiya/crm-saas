@@ -14,6 +14,57 @@ export const CHECKOUT = {
 	inr: "https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX",
 };
 
+export const AI_BUILD_PROMPTS = [
+	{
+		category: "New CRM module",
+		icon: "LayoutDashboard",
+		prompt:
+			"Add a Quotes page like Invoices with KPI cards, filters, a table, and create/edit modal.",
+		result: "Route, app module, navigation, demo data, and theme-ready UI",
+		tags: ["Thin route", "shadcn table", "Seed data"],
+		accent: {
+			light: "border-blue-200 bg-blue-50 text-blue-600",
+			dark: "border-blue-500/30 bg-blue-500/10 text-blue-400",
+		},
+	},
+	{
+		category: "Record detail",
+		icon: "ContactRound",
+		prompt:
+			"Create a customer success detail page with health score, renewals, tickets, notes, and activity tabs.",
+		result: "Consistent profile shell, related records, tabs, and empty states",
+		tags: ["Detail shell", "CRM tabs", "Responsive"],
+		accent: {
+			light: "border-violet-200 bg-violet-50 text-violet-600",
+			dark: "border-violet-500/30 bg-violet-500/10 text-violet-400",
+		},
+	},
+	{
+		category: "Brand & UI",
+		icon: "Palette",
+		prompt:
+			"Rebrand the CRM for a recruiting SaaS while keeping dark mode and the live theme customizer working.",
+		result: "Token-based colors, existing shadcn variants, and matching app chrome",
+		tags: ["Design.md", "Theme tokens", "No hardcoding"],
+		accent: {
+			light: "border-pink-200 bg-pink-50 text-pink-600",
+			dark: "border-pink-500/30 bg-pink-500/10 text-pink-400",
+		},
+	},
+	{
+		category: "Advanced workflow",
+		icon: "Workflow",
+		prompt:
+			"Build a CRM automation page with trigger and action steps using the existing campaign builder patterns.",
+		result: "A focused frontend workflow that reuses proven project components",
+		tags: ["Reuse patterns", "Frontend only", "Toast feedback"],
+		accent: {
+			light: "border-emerald-200 bg-emerald-50 text-emerald-600",
+			dark: "border-emerald-500/30 bg-emerald-500/10 text-emerald-400",
+		},
+	},
+];
+
 export const PRICING_TIERS = [
 	{
 		id: "template",

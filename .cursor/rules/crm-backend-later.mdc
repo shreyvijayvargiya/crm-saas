@@ -1,0 +1,23 @@
+---
+description: Backend integration placeholder — Supabase/Firebase not wired yet; schemas are reference only
+alwaysApply: false
+---
+
+# Backend later (Supabase / Firebase)
+
+**Current product:** frontend-only template with mock `CrmDataContext`.
+
+## Until the user asks for backend
+- Do **not** add Supabase/Firebase clients, Auth providers, or replace seed data with live fetches
+- Treat `schemas/zod-schemas/`, `schemas/sql-schemas/`, `schemas/supabase-schemas/`, and `data.json` as **contracts / docs**, not runtime wiring
+- Keep AI chat using the in-memory snapshot pattern in `lib/ai/`
+
+## When backend work starts (future rule expansion)
+Planned approach (do not invent details now):
+1. `lib/api/client.js` + env base URL
+2. Per-entity services; Zod `safeParse` on responses
+3. Swap context seed loads for fetch/subscribe
+4. Auth: replace demo login screens with provider sessions
+5. Multi-tenant: align UI with existing `tenants` / `tenant_members` reference SQL
+
+Ask the user: **Supabase vs Firebase (or both)** before scaffolding clients.

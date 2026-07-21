@@ -1,0 +1,24 @@
+---
+description: Theme, colors, and Design.md rules for CRM and marketing UI
+globs: app/**/*.{js,jsx},modules/**/*.{js,jsx},utils/theme*.{js,jsx},globals.css
+alwaysApply: false
+---
+
+# Theme & design
+
+Source of truth: **`Design.md`**. Tokens live in `utils/theme.js`, `globals.css`, and Theme Customizer (`utils/themeCustomizer.js`).
+
+## CRM app chrome
+- Use `const { colors, theme, scheme } = useTheme()`
+- Surfaces/text/borders: `colors.primaryBackground`, `colors.foreground`, `colors.border`, `colors.mutedForeground`, etc.
+- Accents: `scheme.primary` / CSS `hsl(var(--primary))` — **do not** hard-code one brand hue in feature modules
+- Density: bordered cards, `rounded-xl` / `rounded-2xl`, high information density
+
+## Marketing / Agency
+- `app/AgencySite/` uses `AgencyThemeContext` + `disableLayout`
+- Keep agency sales copy separate from in-app CRM modules
+- Orphan note: `app/LandingPage/` exists but `/` uses AgencySite — do not wire both without intent
+
+## Motion & icons
+- Framer Motion for shell panels; keep transitions short
+- Lucide for app chrome; `react-icons` for brand marks (e.g. Scheduler platforms)

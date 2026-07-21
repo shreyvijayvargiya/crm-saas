@@ -10,7 +10,12 @@ import { FollowerPointerCard } from "@/components/ui/following-pointer";
 import AgencyShell from "../components/AgencyShell";
 import IntegrationsShowcase from "../components/IntegrationsShowcase";
 import { useAgencyTheme } from "../AgencyThemeContext";
-import { HOME_FEATURES, SERVICES, CHECKOUT } from "../agencyConfig";
+import {
+	AI_BUILD_PROMPTS,
+	HOME_FEATURES,
+	SERVICES,
+	CHECKOUT,
+} from "../agencyConfig";
 
 const {
 	ArrowRight,
@@ -21,6 +26,8 @@ const {
 	MessageSquare,
 	Brain,
 	Wand2,
+	Code2,
+	CheckCircle2,
 } = lucideIcons;
 
 const AI_CHATBOT_CAPABILITIES = [
@@ -205,6 +212,214 @@ function HomeContent() {
 						</div>
 					</div>
 				</Card>
+			</motion.section>
+
+			<motion.section
+				{...fadeUp}
+				transition={{ ...fadeUp.transition, delay: 0.055 }}
+				className="mb-12"
+			>
+				<div className="mb-6 text-center">
+					<Badge
+						variant="outline"
+						className={cn(
+							"mb-3 gap-1.5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide",
+							isLight
+								? "border-violet-200 bg-violet-50 text-violet-700"
+								: "border-violet-500/30 bg-violet-500/10 text-violet-300"
+						)}
+					>
+						<Code2 className="h-3 w-3" />
+						Cursor-ready source included
+					</Badge>
+					<h2
+						className={cn(
+							"text-2xl font-bold tracking-tight sm:text-3xl",
+							isLight ? "text-zinc-900" : "text-white"
+						)}
+					>
+						Describe the page. The project rules handle the details.
+					</h2>
+					<p
+						className={cn(
+							"mx-auto mt-3 max-w-xl text-sm leading-relaxed sm:text-base",
+							isLight ? "text-zinc-600" : "text-zinc-400"
+						)}
+					>
+						The source ships with focused Cursor rules that teach the agent your
+						routes, shadcn patterns, theme tokens, and frontend-only data model.
+						You ask for the feature — it extends the CRM consistently.
+					</p>
+				</div>
+
+				<div className="grid gap-3 sm:grid-cols-2">
+					{AI_BUILD_PROMPTS.map((item, index) => {
+						const Icon = lucideIcons[item.icon];
+						return (
+							<Card
+								key={item.category}
+								className={cn(
+									"group relative overflow-hidden p-4 transition duration-300 sm:p-5",
+									isLight
+										? "border-zinc-200 bg-white/90 shadow-sm hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-md"
+										: "border-zinc-800 bg-zinc-900/60 hover:-translate-y-0.5 hover:border-zinc-700 hover:bg-zinc-900"
+								)}
+							>
+								<div
+									aria-hidden
+									className={cn(
+										"absolute -right-10 -top-10 h-24 w-24 rounded-full blur-3xl",
+										index === 0 && "bg-blue-500/15",
+										index === 1 && "bg-violet-500/15",
+										index === 2 && "bg-pink-500/15",
+										index === 3 && "bg-emerald-500/15"
+									)}
+								/>
+
+								<div className="relative flex items-center gap-3">
+									<span
+										className={cn(
+											"flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border",
+											isLight ? item.accent.light : item.accent.dark
+										)}
+									>
+										{Icon ? <Icon className="h-4 w-4" strokeWidth={1.8} /> : null}
+									</span>
+									<div>
+										<p
+											className={cn(
+												"text-[10px] font-semibold uppercase tracking-wider",
+												isLight ? "text-zinc-500" : "text-zinc-500"
+											)}
+										>
+											Example prompt
+										</p>
+										<h3
+											className={cn(
+												"text-sm font-semibold",
+												isLight ? "text-zinc-900" : "text-white"
+											)}
+										>
+											{item.category}
+										</h3>
+									</div>
+								</div>
+
+								<div
+									className={cn(
+										"relative mt-4 rounded-xl border p-3 font-mono text-xs leading-relaxed",
+										isLight
+											? "border-zinc-200 bg-zinc-50 text-zinc-700"
+											: "border-zinc-700/70 bg-zinc-950/80 text-zinc-300"
+									)}
+								>
+									<span
+										className={cn(
+											"mr-2 select-none font-semibold",
+											isLight ? "text-violet-600" : "text-violet-400"
+										)}
+									>
+										›
+									</span>
+									{item.prompt}
+								</div>
+
+								<div className="relative mt-4 flex items-start gap-2">
+									<CheckCircle2
+										className={cn(
+											"mt-0.5 h-4 w-4 shrink-0",
+											isLight ? "text-emerald-600" : "text-emerald-400"
+										)}
+									/>
+									<p
+										className={cn(
+											"text-xs leading-relaxed",
+											isLight ? "text-zinc-600" : "text-zinc-400"
+										)}
+									>
+										{item.result}
+									</p>
+								</div>
+
+								<div className="relative mt-4 flex flex-wrap gap-1.5">
+									{item.tags.map((tag) => (
+										<span
+											key={tag}
+											className={cn(
+												"rounded-full border px-2 py-0.5 text-[10px] font-medium",
+												isLight
+													? "border-zinc-200 bg-white text-zinc-600"
+													: "border-zinc-700 bg-zinc-800/70 text-zinc-400"
+											)}
+										>
+											{tag}
+										</span>
+									))}
+								</div>
+							</Card>
+						);
+					})}
+				</div>
+
+				<div
+					className={cn(
+						"mt-3 grid gap-px overflow-hidden rounded-xl border sm:grid-cols-4",
+						isLight
+							? "border-zinc-200 bg-zinc-200"
+							: "border-zinc-800 bg-zinc-800"
+					)}
+				>
+					{[
+						["Routes", "Pages Router conventions"],
+						["UI", "shadcn + shared forms"],
+						["Theme", "Dark mode + live tokens"],
+						["Data", "Demo-first, backend later"],
+					].map(([label, value]) => (
+						<div
+							key={label}
+							className={cn(
+								"px-3 py-3 text-center",
+								isLight ? "bg-white" : "bg-zinc-900"
+							)}
+						>
+							<p
+								className={cn(
+									"text-[10px] font-semibold uppercase tracking-wider",
+									isLight ? "text-zinc-400" : "text-zinc-500"
+								)}
+							>
+								{label}
+							</p>
+							<p
+								className={cn(
+									"mt-1 text-xs font-medium",
+									isLight ? "text-zinc-700" : "text-zinc-300"
+								)}
+							>
+								{value}
+							</p>
+						</div>
+					))}
+				</div>
+				<div className="mt-5 flex justify-center">
+					<Button
+						asChild
+						className={cn(
+							"rounded-full px-5",
+							isLight
+								? "bg-violet-600 text-white hover:bg-violet-700"
+								: "bg-violet-500 text-white hover:bg-violet-400"
+						)}
+					>
+						<Link href="/blueprint" passHref>
+							<a className="flex items-center gap-2">
+								<Sparkles className="h-4 w-4" />
+								Plan your CRM free
+								<ArrowRight className="h-4 w-4" />
+							</a>
+						</Link>
+					</Button>
+				</div>
 			</motion.section>
 
 			<motion.section

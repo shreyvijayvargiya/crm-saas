@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
 	Home,
 	LayoutDashboard,
+	Sparkles,
 	CreditCard,
 	CircleHelp,
 	Mail,
@@ -17,6 +18,7 @@ import { useAgencyTheme } from "../AgencyThemeContext";
 const TABS = [
 	{ id: "home", label: "Home", href: "/", icon: Home },
 	{ id: "demo", label: "Demo", href: "/demo", icon: LayoutDashboard },
+	{ id: "blueprint", label: "Planner", href: "/blueprint", icon: Sparkles },
 	{ id: "pricing", label: "Pricing", href: "/pricing", icon: CreditCard },
 	{ id: "faq", label: "FAQ", href: "/faq", icon: CircleHelp },
 	{ id: "contact", label: "Contact", href: "/contact", icon: Mail },

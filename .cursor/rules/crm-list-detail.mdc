@@ -1,0 +1,25 @@
+---
+alwaysApply: true
+---
+# List & detail pages
+
+## List page skeleton
+1. Page padding: `p-4 sm:p-6` (or module layout wrapper)
+2. Header: title + short description + primary CTA
+3. Toolbar: search, filters (shadcn Dropdown/Select), export
+4. Content: KPI cards (optional) → charts (optional) → main `Card` + `Table` or kanban
+5. Create/edit via `FormModal`; delete with toast confirmation pattern used in siblings
+
+## Detail pages
+- Prefer `EntityDetailShell` / `RecordProfileDetail` / `EntityRecordTabs` under `app/CRM/`
+- Route: `pages/entity/[id].js`
+- Load record from `useCrmData()` or local seed by `router.query.id`
+- Tabs: overview, activity, notes, related records — match Contacts/Leads detail depth when possible
+
+## Kanban
+- Copy DnD patterns from `app/Leads` or `app/Pipelines` (`@dnd-kit`)
+- Keep column ids stable; sync list + board state when both exist
+
+## Data
+- Prefer `CrmDataContext` for entities shared across pages
+- Local `useState(seed)` is OK for isolated demos (Analytics, Reports) — document in a one-line comment if intentional

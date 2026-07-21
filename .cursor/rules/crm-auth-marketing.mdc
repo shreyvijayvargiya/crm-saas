@@ -1,0 +1,21 @@
+---
+description: Auth screens and public marketing pages — layout and disableLayout
+globs: app/Authentication/**/*,app/AgencySite/**/*,pages/login.js,pages/signup.js,pages/forgot-password.js,pages/change-password.js,pages/index.js,pages/pricing.js,pages/faq.js,pages/contact.js
+alwaysApply: false
+---
+
+# Auth & marketing surfaces
+
+## Auth (`app/Authentication/`)
+- Use `AuthPageShell` for Login, Signup, Forgot, Change password
+- Set `Component.disableLayout = true` on the **page** or default export so CRM sidebar does not wrap auth
+- Demo-only: validate client-side, toast “wire your auth provider” — no real sessions unless asked
+
+## Agency site (`app/AgencySite/`)
+- Shell: `AgencyShell` + `DynamicIslandNav`
+- Config/copy: `agencyConfig.js` (checkout links, pricing tiers)
+- Always `disableLayout = true`
+
+## If adding a buyer SaaS marketing kit later
+- Prefer a separate `/site/*` prefix so Agency sales pages stay intact
+- Reuse auth components with `disableLayout`; do not nest auth inside CRM chrome for showcase flows

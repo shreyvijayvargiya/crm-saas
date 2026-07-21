@@ -1,0 +1,36 @@
+---
+description: Core CRM SaaS template conventions — stack, dual surfaces, mock data, scope limits
+alwaysApply: true
+---
+
+# CRM SaaS Template — Core
+
+This is a **Next.js Pages Router frontend CRM template** (demo data, no live DB). Sellable UI kit, not a production backend.
+
+## Stack (do not change without asking)
+- Next.js 12 Pages Router · React 17 · Tailwind · shadcn/ui (`components/ui/`) · Lucide · sonner
+- Data: in-memory `utils/CrmDataContext.jsx` + `*SeedData.js` — **not** Supabase/Firebase yet
+- Theme: `useTheme()` + Theme Customizer CSS vars — see `Design.md`
+- Deep context: `llm.txt` · Design: `Design.md`
+
+## Dual surfaces
+| Surface | Routes | Layout |
+|---------|--------|--------|
+| Agency marketing | `/`, `/pricing`, `/faq`, `/contact` | `disableLayout = true` · `AgencySite/` |
+| CRM app | `/demo`, `/leads`, `/deals`, … | `modules/Layout` (sidebar + navbar) |
+
+Never mix Agency Gumroad copy into buyer-facing CRM modules.
+
+## Non-negotiables
+- Thin routes: `pages/foo.js` → export from `app/Foo`
+- Register nav in `modules/navConfig.js` only
+- Prefer shadcn + `FormModal` / `FormSelect` / `ExportDropdown`
+- Icons: `lucide-react` (brand icons: `react-icons` only when needed)
+- Toasts: `sonner`
+- Match existing file style; minimize scope; no drive-by refactors
+
+## Do not
+- Invent a backend or connect Supabase/Firebase unless the user asks (see `crm-backend-later` rule)
+- Add `/agent-ops` without creating the page (or remove the nav item)
+- Hard-code a single accent color in feature modules — use `useTheme()` / CSS tokens
+- Dump 60+ screens of unrelated verticals into one flat nav

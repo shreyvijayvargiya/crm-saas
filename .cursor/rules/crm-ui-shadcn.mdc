@@ -1,0 +1,26 @@
+---
+description: shadcn/ui and shared form patterns for CRM modules
+globs: app/**/*.{js,jsx},components/ui/**/*,lib/ui/**/*
+alwaysApply: false
+---
+
+# UI & shadcn
+
+## Prefer existing primitives
+- `@/components/ui/*` — Button, Card, Input, Table, Badge, Dialog, DropdownMenu, Tabs, Sheet, Checkbox, Switch
+- Forms: `lib/ui/modal` (`FormModal`, `FormField`), `lib/ui/FormSelect`, `lib/ui/MultiSelect`
+- Export: `lib/ui/dropdown/ExportDropdown`
+- Class merge: `cn()` from `@/lib/utils`
+- Tokens: `@/lib/themeTokens` for focus rings / surfaces when matching chrome
+
+## Patterns
+- Primary actions: default `Button` (theme primary) — not hardcoded `bg-blue-600`
+- Modals: `FormModal` for create/edit; use `showDelete` when editing
+- Tables: shadcn `Table` + search `Input` + pagination pattern from sibling modules
+- Empty states: short muted copy + one CTA
+- Feedback: `toast` from `sonner` on create/update/delete
+
+## Do not
+- Add a new design system or replace shadcn with MUI/Chakra
+- Build one-off modal shells when `FormModal` fits
+- Use `window.alert` / `confirm` for UX flows

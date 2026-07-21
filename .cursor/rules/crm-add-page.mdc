@@ -1,0 +1,33 @@
+---
+description: How to add a new CRM frontend page — route, module, nav, seed, snapshot
+globs: app/**/*.{js,jsx},pages/**/*.js,modules/navConfig.js
+alwaysApply: false
+---
+
+# Add a CRM page (frontend)
+
+Follow this checklist when adding a new module (Quotes, Calls, etc.):
+
+1. **`app/NewModule/index.jsx`** — UI; copy a close sibling (`Leads` = list+table, `Deals` = table, `Pipelines` = kanban, `Scheduler` = calendar tabs)
+2. **Export** from `app/index.jsx`
+3. **`pages/new-module.js`** — thin re-export only:
+   ```js
+   import { NewModule } from "../app";
+   export default () => <NewModule />;
+   ```
+4. **`modules/navConfig.js`** — add sidebar item (and `searchRouteExtras` for nested routes)
+5. **Seed** — `app/CRM/*SeedData.js` or `app/NewModule/*SeedData.js`
+6. **Optional AI parity** — `lib/ai/crmSnapshot.js` keys + tools if the assistant should read/write it
+7. **Optional** — wire into `CrmDataContext` if shared across pages; Zod in `schemas/zod-schemas/` for API-ready contracts
+8. Follow **`Design.md`** for density, cards, and chrome
+
+## Golden examples
+| Pattern | Copy from |
+|---------|-----------|
+| List + CRUD table | `app/Leads/index.jsx`, `app/Contacts/` |
+| Detail / profile | `app/CRM/EntityDetailShell.jsx`, `RecordProfileDetail.jsx` |
+| Sectioned module + tabs | `app/Marketing/MarketingLayout.jsx`, `app/Scheduler/SchedulerLayout.jsx` |
+| Auth (no CRM shell) | `app/Authentication/*` + `disableLayout` on page export |
+
+## Nested routes
+`pages/foo/[id].js` → `app/Foo/FooDetail.jsx`. Parent list must `router.push` / `Link` to detail.
