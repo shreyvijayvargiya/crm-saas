@@ -29,6 +29,7 @@ const {
 	Wand2,
 	Code2,
 	CheckCircle2,
+	Eye,
 } = lucideIcons;
 
 const AI_CHATBOT_CAPABILITIES = [
@@ -38,13 +39,48 @@ const AI_CHATBOT_CAPABILITIES = [
 ];
 
 const CRM_SCREENSHOTS = [
-	{ src: "/screenshots-marketing-page/saas-crm-dashboard.png", alt: "SaaS CRM dashboard" },
-	{ src: "/screenshots-marketing-page/saas-crm-analytics.png", alt: "SaaS CRM analytics" },
-	{ src: "/screenshots-marketing-page/saas-crm-reports.png", alt: "SaaS CRM reports" },
-	{ src: "/screenshots-marketing-page/saas-crm-activity.png", alt: "SaaS CRM activity" },
-	{ src: "/screenshots-marketing-page/saas-crm-leads.png", alt: "SaaS CRM leads" },
-	{ src: "/screenshots-marketing-page/saas-crm-sales.png", alt: "SaaS CRM sales" },
-	{ src: "/screenshots-marketing-page/saas-crm-scheduler.png", alt: "SaaS CRM scheduler" },
+	{
+		src: "/screenshots-marketing-page/saas-crm-dashboard.png",
+		alt: "SaaS CRM dashboard",
+		label: "Dashboard",
+		href: "/demo",
+	},
+	{
+		src: "/screenshots-marketing-page/saas-crm-analytics.png",
+		alt: "SaaS CRM analytics",
+		label: "Analytics",
+		href: "/analytics",
+	},
+	{
+		src: "/screenshots-marketing-page/saas-crm-reports.png",
+		alt: "SaaS CRM reports",
+		label: "Reports",
+		href: "/reports",
+	},
+	{
+		src: "/screenshots-marketing-page/saas-crm-activity.png",
+		alt: "SaaS CRM activity",
+		label: "Activity",
+		href: "/activity",
+	},
+	{
+		src: "/screenshots-marketing-page/saas-crm-leads.png",
+		alt: "SaaS CRM leads",
+		label: "Leads",
+		href: "/leads",
+	},
+	{
+		src: "/screenshots-marketing-page/saas-crm-sales.png",
+		alt: "SaaS CRM sales",
+		label: "Sales",
+		href: "/sales",
+	},
+	{
+		src: "/screenshots-marketing-page/saas-crm-scheduler.png",
+		alt: "SaaS CRM scheduler",
+		label: "Content scheduler",
+		href: "/scheduler",
+	},
 ];
 
 const fadeUp = {
@@ -81,22 +117,67 @@ function HomeContent() {
 						}}
 					>
 						{[0, 1].map((group) => (
-							<div key={group} className="flex shrink-0 gap-4 pr-4">
+							<div key={group} className="flex shrink-0 gap-6 py-5 pr-6">
 								{CRM_SCREENSHOTS.map((screenshot, index) => (
-									<div
+									<motion.div
 										key={`${group}-${screenshot.src}`}
-										className="aspect-[1919/958] w-[calc(100vw-2rem)] shrink-0 sm:w-[45rem]"
+										whileHover={{ y: -6, scale: 1.01 }}
+										transition={{ duration: 0.25, ease: "easeOut" }}
+										className="group w-[calc(100vw-2rem)] shrink-0 sm:w-[45rem]"
 									>
-										<img
-											src={screenshot.src}
-											alt={group === 0 ? screenshot.alt : ""}
-											aria-hidden={group === 1}
-											loading={group === 0 && index < 2 ? "eager" : "lazy"}
-											className="h-full w-full object-cover"
-											width={1919}
-											height={958}
-										/>
-									</div>
+										<Link href={screenshot.href} passHref>
+											<a
+												tabIndex={group === 1 ? -1 : undefined}
+												aria-hidden={group === 1}
+												aria-label={`View ${screenshot.label} in the live demo`}
+												className="block"
+											>
+												<div
+													className={cn(
+														"relative aspect-[1919/958] overflow-hidden rounded-xl border shadow-lg transition-shadow duration-300 group-hover:shadow-2xl",
+														isLight
+															? "border-zinc-200 bg-white shadow-zinc-300/30"
+															: "border-zinc-700 bg-zinc-900 shadow-black/50"
+													)}
+												>
+													<img
+														src={screenshot.src}
+														alt={group === 0 ? screenshot.alt : ""}
+														aria-hidden={group === 1}
+														loading={
+															group === 0 && index < 2 ? "eager" : "lazy"
+														}
+														className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.025]"
+														width={1919}
+														height={958}
+													/>
+													<div className="absolute inset-0 flex items-center justify-center bg-zinc-950/0 transition-colors duration-300 group-hover:bg-zinc-950/35">
+														<motion.span
+															animate={{ scale: [1, 1.08, 1] }}
+															transition={{
+																duration: 1.4,
+																repeat: Infinity,
+																ease: "easeInOut",
+															}}
+															className="flex h-12 w-12 translate-y-2 items-center justify-center rounded-full border border-white/40 bg-white/90 text-zinc-900 opacity-0 shadow-xl backdrop-blur transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
+														>
+															<lucideIcons.Projector className="h-5 w-5" />
+														</motion.span>
+													</div>
+												</div>
+												<div className="flex h-8 items-center justify-center">
+													<span
+														className={cn(
+															"translate-y-1 text-xs font-semibold opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100",
+															isLight ? "text-zinc-800" : "text-zinc-200"
+														)}
+													>
+														{screenshot.label}
+													</span>
+												</div>
+											</a>
+										</Link>
+									</motion.div>
 								))}
 							</div>
 						))}
