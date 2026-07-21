@@ -3,6 +3,9 @@
 		"pages/api/ai/blueprint.js": {
 			"maxDuration": 10
 		},
+		"pages/api/ai/build-crm.js": {
+			"maxDuration": 10
+		},
 		"pages/api/ai/chat.js": {
 			"maxDuration": 10
 		}

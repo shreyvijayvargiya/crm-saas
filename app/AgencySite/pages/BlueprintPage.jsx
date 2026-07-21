@@ -9,9 +9,14 @@ import {
 	Clock3,
 	Code2,
 	Copy,
+	Download,
 	ExternalLink,
+	FileCode2,
+	Folder,
 	Layers3,
 	Loader2,
+	Mail,
+	PackageOpen,
 	Rocket,
 	Sparkles,
 	Wand2,
@@ -22,6 +27,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import { CHECKOUT } from "../agencyConfig";
@@ -77,6 +89,7 @@ const RESULT_TABS = [
 	{ id: "stack", label: "Stack" },
 	{ id: "timeline", label: "Timeline" },
 	{ id: "prompts", label: "Cursor prompts" },
+	{ id: "build", label: "Build CRM" },
 ];
 
 function FieldLabel({ children, htmlFor, isLight }) {
@@ -99,23 +112,43 @@ function SelectField({ id, label, value, onChange, options, isLight }) {
 			<FieldLabel htmlFor={id} isLight={isLight}>
 				{label}
 			</FieldLabel>
-			<select
-				id={id}
+			<Select
 				value={value}
-				onChange={(event) => onChange(event.target.value)}
-				className={cn(
-					"h-10 w-full rounded-xl border px-3 text-sm outline-none transition focus:ring-2 focus:ring-violet-500/30",
-					isLight
-						? "border-zinc-200 bg-white text-zinc-900"
-						: "border-zinc-700 bg-zinc-950 text-zinc-100"
-				)}
+				onValueChange={onChange}
 			>
-				{options.map((option) => (
-					<option key={option} value={option}>
-						{option}
-					</option>
-				))}
-			</select>
+				<SelectTrigger
+					id={id}
+					className={cn(
+						"h-10 rounded-xl",
+						isLight
+							? "border-zinc-200 bg-white text-zinc-900"
+							: "border-zinc-700 bg-zinc-950 text-zinc-100"
+					)}
+				>
+					<SelectValue placeholder={`Select ${label.toLowerCase()}`} />
+				</SelectTrigger>
+				<SelectContent
+					className={cn(
+						isLight
+							? "border-zinc-200 bg-white text-zinc-900"
+							: "border-zinc-700 bg-zinc-950 text-zinc-100"
+					)}
+				>
+					{options.map((option) => (
+						<SelectItem
+							key={option}
+							value={option}
+							className={cn(
+								isLight
+									? "focus:bg-zinc-100 focus:text-zinc-900"
+									: "focus:bg-zinc-800 focus:text-zinc-100"
+							)}
+						>
+							{option}
+						</SelectItem>
+					))}
+				</SelectContent>
+			</Select>
 		</div>
 	);
 }
@@ -196,8 +229,63 @@ function ModuleList({ title, items, included, isLight }) {
 	);
 }
 
-function BlueprintResults({ blueprint, activeTab, setActiveTab, isLight }) {
+function createFileTree(files) {
+	const root = [];
+	for (const path of Object.keys(files || {}).sort()) {
+		let level = root;
+		const parts = path.split("/");
+		parts.forEach((part, index) => {
+			const isFile = index === parts.length - 1;
+			let node = level.find((item) => item.name === part);
+			if (!node) {
+				node = {
+					name: part,
+					path,
+					type: isFile ? "file" : "folder",
+					children: [],
+				};
+				level.push(node);
+			}
+			level = node.children;
+		});
+	}
+	return root;
+}
+
+function FileTree({ nodes, depth = 0 }) {
+	return nodes.map((node) => (
+		<div key={`${node.type}-${node.path}-${node.name}`}>
+			<div
+				className="flex items-center gap-2 py-1 text-xs text-zinc-800"
+				style={{ paddingLeft: depth * 16 }}
+			>
+				{node.type === "folder" ? (
+					<Folder className="h-3.5 w-3.5 shrink-0 text-zinc-800" />
+				) : (
+					<FileCode2 className="h-3.5 w-3.5 shrink-0 text-blue-800" />
+				)}
+				<span className={node.type === "folder" ? "font-semibold" : ""}>
+					{node.name}
+				</span>
+			</div>
+			{node.children.length ? (
+				<FileTree nodes={node.children} depth={depth + 1} />
+			) : null}
+		</div>
+	));
+}
+
+function BlueprintResults({
+	blueprint,
+	plannerInput,
+	activeTab,
+	setActiveTab,
+	isLight,
+}) {
 	const [copiedPrompt, setCopiedPrompt] = useState(null);
+	const [buildStatus, setBuildStatus] = useState("idle");
+	const [buildError, setBuildError] = useState("");
+	const [starter, setStarter] = useState(null);
 
 	const copyPrompt = async (prompt, index) => {
 		try {
@@ -208,6 +296,57 @@ function BlueprintResults({ blueprint, activeTab, setActiveTab, isLight }) {
 			setCopiedPrompt(null);
 		}
 	};
+
+	const generateStarter = async () => {
+		if (buildStatus === "loading") return;
+		setBuildStatus("loading");
+		setBuildError("");
+		try {
+			const response = await fetch("/api/ai/build-crm", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(plannerInput),
+			});
+			const data = await response.json().catch(() => ({}));
+			if (!response.ok) {
+				throw new Error(data.error || "Unable to build the CRM starter.");
+			}
+			setStarter(data);
+			setBuildStatus("success");
+		} catch (requestError) {
+			setBuildStatus("error");
+			setBuildError(
+				requestError?.message || "Unable to build the CRM starter."
+			);
+		}
+	};
+
+	const downloadStarter = async () => {
+		if (!starter?.files) return;
+		const JSZip = (await import("jszip")).default;
+		const zip = new JSZip();
+		const root = zip.folder(starter.ast.project.slug);
+		Object.entries(starter.files).forEach(([path, content]) => {
+			root.file(path, content);
+		});
+		root.file("crm-ast.json", JSON.stringify(starter.ast, null, 2));
+		const blob = await zip.generateAsync({ type: "blob" });
+		const url = URL.createObjectURL(blob);
+		const anchor = document.createElement("a");
+		anchor.href = url;
+		anchor.download = `${starter.ast.project.slug}.zip`;
+		document.body.appendChild(anchor);
+		anchor.click();
+		anchor.remove();
+		URL.revokeObjectURL(url);
+	};
+
+	const founderMailHref = `mailto:shreyvijayvargiya26@gmail.com?subject=${encodeURIComponent(
+		`Help me build ${starter?.ast?.project?.name || blueprint.title}`
+	)}&body=${encodeURIComponent(
+		`Hi Shrey,\n\nI used the free SaaSCRM builder for: ${blueprint.summary}\n\nI would like help turning this starter into a production CRM.\n`
+	)}`;
+	const fileTree = createFileTree(starter?.files);
 
 	return (
 		<Card
@@ -295,18 +434,7 @@ function BlueprintResults({ blueprint, activeTab, setActiveTab, isLight }) {
 						/>
 					</div>
 				</div>
-				{blueprint.notice ? (
-					<p
-						className={cn(
-							"mt-4 rounded-lg border px-3 py-2 text-xs",
-							isLight
-								? "border-amber-200 bg-amber-50 text-amber-800"
-								: "border-amber-500/25 bg-amber-500/10 text-amber-200"
-						)}
-					>
-						{blueprint.notice}
-					</p>
-				) : null}
+				
 			</div>
 
 			<div
@@ -638,6 +766,149 @@ function BlueprintResults({ blueprint, activeTab, setActiveTab, isLight }) {
 								</p>
 							</div>
 						))}
+					</div>
+				) : null}
+
+				{activeTab === "build" ? (
+					<div className="space-y-5">
+						<div
+							className={cn(
+								""
+							)}
+						>
+							<div className="flex items-start gap-3">
+								<span
+									className={cn(
+										"flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
+										isLight
+											? "text-zinc-700"
+											: "text-zinc-300"
+									)}
+								>
+									<PackageOpen className="h-5 w-5" />
+								</span>
+								<div>
+									<h3
+										className={cn(
+											"text-base font-bold",
+											isLight ? "text-zinc-900" : "text-white"
+										)}
+									>
+										Build a free CRM starter
+									</h3>
+									<p
+										className={cn(
+											"mt-1 text-xs leading-relaxed",
+											isLight ? "text-zinc-600" : "text-zinc-400"
+										)}
+									>
+										AI creates only a constrained frontend code boilerplate. Trusted
+										templates then compile it into a small Next.js starter repository
+										with navigation, dashboard cards, searchable tables, seed
+										data, and an optional GET API stub.
+									</p>
+								</div>
+							</div>
+
+							{!starter ? (
+								<Button
+									type="button"
+									onClick={generateStarter}
+									disabled={buildStatus === "loading"}
+									className="mt-5 w-full bg-zinc-600 text-white hover:bg-zinc-700"
+								>
+									{buildStatus === "loading" ? (
+										<>
+											<Loader2 className="h-4 w-4 animate-spin" />
+											Creating safe AST and starter…
+										</>
+									) : (
+										<>
+											<Code2 className="h-4 w-4" />
+											Generate free starter repository
+										</>
+									)}
+								</Button>
+							) : null}
+
+							{buildError ? (
+								<p
+									className={cn(
+										"mt-4 rounded-lg border px-3 py-2 text-xs",
+										isLight
+											? "border-red-200 bg-red-50 text-red-700"
+											: "border-red-500/25 bg-red-500/10 text-red-300"
+									)}
+								>
+									{buildError}
+								</p>
+							) : null}
+						</div>
+
+						{starter ? (
+							<>
+								
+								<div className="overflow-hidden rounded-2xl border border-zinc-100 bg-zinc-50">
+									<div className="max-h-80 overflow-auto p-4 font-mono">
+										<div className="mb-1 flex items-center gap-2 text-xs font-bold">
+											<Folder className="h-4 w-4 text-zinc-700" />
+											{starter.ast.project.slug}
+										</div>
+										<FileTree nodes={fileTree} depth={1} />
+										<div className="flex items-center gap-2 py-1 pl-4 text-xs text-zinc-700">
+											<FileCode2 className="h-3.5 w-3.5 text-violet-400" />
+											crm-ast.json
+										</div>
+									</div>
+								</div>
+
+								<Button
+									type="button"
+									onClick={downloadStarter}
+									className="w-full bg-zinc-600 text-white hover:bg-zinc-700"
+								>
+									<Download className="h-4 w-4" />
+									Download {starter.ast.project.slug}.zip
+								</Button>
+							</>
+						) : null}
+
+						<div
+							className={cn(
+								"rounded-2xl border p-5 text-center",
+								isLight
+									? "border-zinc-200 bg-gradient-to-br from-zinc-50 to-white"
+									: "border-zinc-500/25 bg-gradient-to-br from-zinc-950/40 to-zinc-900"
+							)}
+						>
+							<h3
+								className={cn(
+									"text-base font-bold",
+									isLight ? "text-zinc-900" : "text-white"
+								)}
+							>
+								Want this starter turned into a production CRM?
+							</h3>
+							<p
+								className={cn(
+									"mx-auto mt-2 max-w-lg text-xs leading-relaxed",
+									isLight ? "text-zinc-600" : "text-zinc-400"
+								)}
+							>
+								Talk directly with the founder about authentication, database
+								integration, permissions, deployment, and custom workflows.
+							</p>
+							<Button
+								asChild
+								className="mt-4 bg-zinc-600 text-white hover:bg-zinc-700"
+							>
+								<a href={founderMailHref}>
+									<Mail className="h-4 w-4" />
+									Talk to founder
+								</a>
+							</Button>
+							
+						</div>
 					</div>
 				) : null}
 			</div>
@@ -977,6 +1248,7 @@ function BlueprintContent() {
 				>
 					<BlueprintResults
 						blueprint={blueprint}
+						plannerInput={form}
 						activeTab={activeTab}
 						setActiveTab={setActiveTab}
 						isLight={isLight}

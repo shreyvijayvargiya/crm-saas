@@ -29,8 +29,7 @@ export default function AgencyFooter() {
 	return (
 		<footer
 			className={cn(
-				"mt-auto border-t pt-8",
-				isLight ? "border-zinc-200" : "border-zinc-800"
+				"mt-auto pt-8",
 			)}
 		>
 			<div className="grid gap-8 sm:grid-cols-[1.2fr_1fr]">
@@ -122,10 +121,8 @@ export default function AgencyFooter() {
 
 			<div
 				className={cn(
-					"mt-8 flex flex-col gap-2 border-t py-5 text-[11px] sm:flex-row sm:items-center sm:justify-between",
-					isLight
-						? "border-zinc-200 text-zinc-500"
-						: "border-zinc-800 text-zinc-500"
+					"mt-8 flex flex-col gap-2 py-5 text-[11px] sm:flex-row sm:items-center sm:justify-between",
+					"text-zinc-500"
 				)}
 			>
 				<p>© {new Date().getFullYear()} Shrey Vijayvargiya.</p>
