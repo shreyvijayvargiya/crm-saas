@@ -42,6 +42,8 @@ export const config = {
 			sizeLimit: "16kb",
 		},
 	},
+	// Keep AI abort (lib/ai/blueprint.js) under this Vercel limit.
+	maxDuration: 10,
 };
 
 export default async function handler(req, res) {
