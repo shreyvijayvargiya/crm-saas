@@ -1,4 +1,4 @@
-'use client';;
+'use client';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -88,7 +88,7 @@ function GravityStarsBackground({
     let clientX = 0;
     let clientY = 0;
     if ('touches' in e) {
-      const t = e.touches[0];
+      const t = e.touches?.[0] || e.changedTouches?.[0];
       if (!t) return;
       clientX = t.clientX;
       clientY = t.clientY;
@@ -98,6 +98,17 @@ function GravityStarsBackground({
     }
     mouseRef.current = { x: clientX - rect.left, y: clientY - rect.top };
   }, []);
+
+  React.useEffect(() => {
+    const onMouseMove = (e) => handlePointerMove(e);
+    const onTouchMove = (e) => handlePointerMove(e);
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('touchmove', onTouchMove);
+    };
+  }, [handlePointerMove]);
 
   const updateStars = React.useCallback(() => {
     const w = canvasSize.width;
@@ -303,11 +314,10 @@ function GravityStarsBackground({
     <div
       ref={containerRef}
       data-slot="gravity-stars-background"
-      className={cn('relative size-full overflow-hidden', className)}
-      onMouseMove={(e) => handlePointerMove(e)}
-      onTouchMove={(e) => handlePointerMove(e)}
-      {...props}>
-      <canvas ref={canvasRef} className="block w-full h-full" />
+      className={cn('relative h-full w-full overflow-hidden', className)}
+      {...props}
+    >
+      <canvas ref={canvasRef} className="block h-full w-full" />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { FollowerPointerCard } from "@/components/ui/following-pointer";
 import SiteSeo from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
+import HeroScreenshotCarousel from "../components/HeroScreenshotCarousel";
 import IntegrationsShowcase from "../components/IntegrationsShowcase";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import {
@@ -44,42 +45,49 @@ const CRM_SCREENSHOTS = [
 		alt: "SaaS CRM dashboard",
 		label: "Dashboard",
 		href: "/demo",
+		description: "Monitor sales, revenue, conversions, and recent customer activity from one focused workspace.",
 	},
 	{
 		src: "/screenshots-marketing-page/saas-crm-analytics.png",
 		alt: "SaaS CRM analytics",
 		label: "Analytics",
 		href: "/analytics",
+		description: "Turn CRM activity into clear funnels, forecasts, trends, and performance insights.",
 	},
 	{
 		src: "/screenshots-marketing-page/saas-crm-reports.png",
 		alt: "SaaS CRM reports",
 		label: "Reports",
 		href: "/reports",
+		description: "Build visual reports for revenue, pipeline health, team output, and business growth.",
 	},
 	{
 		src: "/screenshots-marketing-page/saas-crm-activity.png",
 		alt: "SaaS CRM activity",
 		label: "Activity",
 		href: "/activity",
+		description: "Keep calls, emails, meetings, notes, and record updates in one chronological timeline.",
 	},
 	{
 		src: "/screenshots-marketing-page/saas-crm-leads.png",
 		alt: "SaaS CRM leads",
 		label: "Leads",
 		href: "/leads",
+		description: "Capture, qualify, search, and progress leads through a customizable sales workflow.",
 	},
 	{
 		src: "/screenshots-marketing-page/saas-crm-sales.png",
 		alt: "SaaS CRM sales",
 		label: "Sales",
 		href: "/sales",
+		description: "Give your team a practical workspace for opportunities, values, owners, and next actions.",
 	},
 	{
 		src: "/screenshots-marketing-page/saas-crm-scheduler.png",
 		alt: "SaaS CRM scheduler",
 		label: "Content scheduler",
 		href: "/scheduler",
+		description: "Plan and manage multi-platform social content from a visual calendar and list view.",
 	},
 ];
 
@@ -101,87 +109,11 @@ function HomeContent() {
 				keywords="AI CRM template, Next.js CRM, SaaS admin dashboard, CMS template, React CRM, shadcn dashboard, Tailwind CRM, agentic CRM"
 			/>
 			<motion.header {...fadeUp} className="mb-10 text-center sm:mb-14">
-				<div
-					className={cn(
-						"relative left-1/2 w-screen -translate-x-1/2 overflow-hidden border-y",
-						isLight ? "border-zinc-200" : "border-zinc-800"
-					)}
-				>
-					<motion.div
-						className="flex w-max"
-						animate={{ x: ["0%", "-50%"] }}
-						transition={{
-							duration: 100,
-							ease: "linear",
-							repeat: Infinity,
-						}}
-					>
-						{[0, 1].map((group) => (
-							<div key={group} className="flex shrink-0 gap-6 py-5 pr-6">
-								{CRM_SCREENSHOTS.map((screenshot, index) => (
-									<motion.div
-										key={`${group}-${screenshot.src}`}
-										whileHover={{ y: -6, scale: 1.01 }}
-										transition={{ duration: 0.25, ease: "easeOut" }}
-										className="group w-[calc(100vw-2rem)] shrink-0 sm:w-[45rem]"
-									>
-										<Link href={screenshot.href} passHref>
-											<a
-												tabIndex={group === 1 ? -1 : undefined}
-												aria-hidden={group === 1}
-												aria-label={`View ${screenshot.label} in the live demo`}
-												className="block"
-											>
-												<div
-													className={cn(
-														"relative aspect-[1919/958] overflow-hidden rounded-xl border shadow-lg transition-shadow duration-300 group-hover:shadow-2xl",
-														isLight
-															? "border-zinc-200 bg-white shadow-zinc-300/30"
-															: "border-zinc-700 bg-zinc-900 shadow-black/50"
-													)}
-												>
-													<img
-														src={screenshot.src}
-														alt={group === 0 ? screenshot.alt : ""}
-														aria-hidden={group === 1}
-														loading={
-															group === 0 && index < 2 ? "eager" : "lazy"
-														}
-														className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.025]"
-														width={1919}
-														height={958}
-													/>
-													<div className="absolute inset-0 flex items-center justify-center bg-zinc-950/0 transition-colors duration-300 group-hover:bg-zinc-950/35">
-														<motion.span
-															animate={{ scale: [1, 1.08, 1] }}
-															transition={{
-																duration: 1.4,
-																repeat: Infinity,
-																ease: "easeInOut",
-															}}
-															className="flex h-12 w-12 translate-y-2 items-center justify-center rounded-full border border-white/40 bg-white/90 text-zinc-900 opacity-0 shadow-xl backdrop-blur transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
-														>
-															<lucideIcons.Projector className="h-5 w-5" />
-														</motion.span>
-													</div>
-												</div>
-												<div className="flex h-8 items-center justify-center">
-													<span
-														className={cn(
-															"translate-y-1 text-xs font-semibold opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100",
-															isLight ? "text-zinc-800" : "text-zinc-200"
-														)}
-													>
-														{screenshot.label}
-													</span>
-												</div>
-											</a>
-										</Link>
-									</motion.div>
-								))}
-							</div>
-						))}
-					</motion.div>
+				<div className="-mt-20 mb-8">
+					<HeroScreenshotCarousel
+						screenshots={CRM_SCREENSHOTS}
+						isLight={isLight}
+					/>
 				</div>
 				<Badge
 					variant="outline"
