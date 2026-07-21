@@ -38,6 +38,7 @@ import {
 import { useTheme } from "../../utils/useTheme";
 import { cn } from "@/lib/utils";
 import { CHART_MUTED } from "@/lib/chartColors";
+import SiteSeo from "@/components/seo/SiteSeo";
 import { Button } from "@/components/ui/button";
 import {
 	Table,
@@ -357,6 +358,12 @@ const Home = () => {
 
 	return (
 		<div className="p-4 sm:p-6 mx-auto transition-all duration-100 ease-in">
+			<SiteSeo
+				title="Live AI CRM Demo – Dashboard, Sales, Analytics & CMS | SaaSCRM"
+				description="Explore the live SaaSCRM demo with leads, deals, analytics, reports, tasks, content scheduling, CMS, and an AI chatbot in a customizable Next.js dashboard."
+				path="/demo"
+				keywords="live CRM demo, AI CRM dashboard, Next.js admin dashboard demo, sales CRM demo, CRM analytics, SaaS dashboard, CMS demo"
+			/>
 			<div className="mb-6">
 				<h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
 					Welcome back, John

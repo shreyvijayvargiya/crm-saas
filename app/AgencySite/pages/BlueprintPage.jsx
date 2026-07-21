@@ -1015,7 +1015,7 @@ function BlueprintContent() {
 					ready-to-use Cursor prompts—matched against the SaaSCRM template.
 				</p>
 				<div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-					{["No signup", "3 free plans / hour", "Powered by OpenRouter"].map(
+					{["No signup", "3 free plans / hour", "Powered by AI"].map(
 						(item) => (
 							<span
 								key={item}
@@ -1112,7 +1112,7 @@ function BlueprintContent() {
 
 						<div className="space-y-2">
 							<div className="flex items-center justify-between gap-3">
-								<FieldLabel isLight={isLight}>Required modules</FieldLabel>
+								<FieldLabel isLight={isLight}>Features required</FieldLabel>
 								<span
 									className={cn(
 										"text-[11px]",

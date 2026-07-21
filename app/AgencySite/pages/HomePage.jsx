@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { FollowerPointerCard } from "@/components/ui/following-pointer";
+import SiteSeo from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
 import IntegrationsShowcase from "../components/IntegrationsShowcase";
 import { useAgencyTheme } from "../AgencyThemeContext";
@@ -36,6 +37,16 @@ const AI_CHATBOT_CAPABILITIES = [
 	"Create, update, and delete records with natural language",
 ];
 
+const CRM_SCREENSHOTS = [
+	{ src: "/screenshots-marketing-page/saas-crm-dashboard.png", alt: "SaaS CRM dashboard" },
+	{ src: "/screenshots-marketing-page/saas-crm-analytics.png", alt: "SaaS CRM analytics" },
+	{ src: "/screenshots-marketing-page/saas-crm-reports.png", alt: "SaaS CRM reports" },
+	{ src: "/screenshots-marketing-page/saas-crm-activity.png", alt: "SaaS CRM activity" },
+	{ src: "/screenshots-marketing-page/saas-crm-leads.png", alt: "SaaS CRM leads" },
+	{ src: "/screenshots-marketing-page/saas-crm-sales.png", alt: "SaaS CRM sales" },
+	{ src: "/screenshots-marketing-page/saas-crm-scheduler.png", alt: "SaaS CRM scheduler" },
+];
+
 const fadeUp = {
 	initial: { opacity: 0, y: 16 },
 	animate: { opacity: 1, y: 0 },
@@ -47,8 +58,50 @@ function HomeContent() {
 
 	return (
 		<>
+			<SiteSeo
+				title="AI CRM SaaS Template – Next.js Admin Dashboard & CMS | SaaSCRM"
+				description="Build an AI-powered CRM, admin dashboard, CMS, sales pipeline, and more in days with a customizable Next.js, React, Tailwind, and shadcn/ui template."
+				path="/"
+				keywords="AI CRM template, Next.js CRM, SaaS admin dashboard, CMS template, React CRM, shadcn dashboard, Tailwind CRM, agentic CRM"
+			/>
 			<motion.header {...fadeUp} className="mb-10 text-center sm:mb-14">
-				<motion.img src="https://ovevcjixqq.ufs.sh/f/9pIU2Of3sxTfU9NP1Drb7rxhdGYe1SLHVu92gAbfPX6ytMjc" className="w-full h-full rounded-xl ring-2 ring-zinc-200 dark:ring-zinc-800 object-cover" />
+				<div
+					className={cn(
+						"relative left-1/2 w-screen -translate-x-1/2 overflow-hidden border-y",
+						isLight ? "border-zinc-200" : "border-zinc-800"
+					)}
+				>
+					<motion.div
+						className="flex w-max"
+						animate={{ x: ["0%", "-50%"] }}
+						transition={{
+							duration: 100,
+							ease: "linear",
+							repeat: Infinity,
+						}}
+					>
+						{[0, 1].map((group) => (
+							<div key={group} className="flex shrink-0 gap-4 pr-4">
+								{CRM_SCREENSHOTS.map((screenshot, index) => (
+									<div
+										key={`${group}-${screenshot.src}`}
+										className="aspect-[1919/958] w-[calc(100vw-2rem)] shrink-0 sm:w-[45rem]"
+									>
+										<img
+											src={screenshot.src}
+											alt={group === 0 ? screenshot.alt : ""}
+											aria-hidden={group === 1}
+											loading={group === 0 && index < 2 ? "eager" : "lazy"}
+											className="h-full w-full object-cover"
+											width={1919}
+											height={958}
+										/>
+									</div>
+								))}
+							</div>
+						))}
+					</motion.div>
+				</div>
 				<Badge
 					variant="outline"
 					className={cn(
@@ -59,7 +112,7 @@ function HomeContent() {
 					)}
 				>
 					<Bot className="h-3.5 w-3.5" />
-					First agentic CRM · AI chatbot included
+					First agentic CRM SaaS template with a built-in AI chatbot.
 				</Badge>
 				<h1
 					className={cn(
@@ -75,8 +128,7 @@ function HomeContent() {
 						isLight ? "text-zinc-600" : "text-zinc-400"
 					)}
 				>
-					Ask questions, run research, and manage your entire CRM by chat — then
-					buy the Next.js template and ship in days, or hire us to customize and deploy.
+					Build AI CRM, CMS, Admin dashboard in days, not months
 				</p>
 				<div className="mt-8 flex flex-wrap items-center justify-center gap-3">
 					<Button
@@ -103,7 +155,7 @@ function HomeContent() {
 							"rounded-full px-5",
 							isLight
 								? "border-zinc-300 text-zinc-800 hover:bg-zinc-100"
-								: "border-zinc-700 text-zinc-200 hover:bg-zinc-900"
+								: "border-zinc-700 text-zinc-200 hover:bg-zinc-900 text-white bg-zinc-800 hover:text-white hover:font-semibold"
 						)}
 					>
 						<a href="/pricing" passHref>
@@ -126,7 +178,7 @@ function HomeContent() {
 							: "border-orange-500/30 bg-gradient-to-br from-orange-950/40 via-zinc-900/80 to-blue-950/30"
 					)}
 				>
-					<div className="grid gap-0 lg:grid-cols-2 lg:items-stretch">
+					<div className="flex flex-col lg:items-stretch">
 						<div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
 							<Badge
 								className={cn(
@@ -145,7 +197,7 @@ function HomeContent() {
 									isLight ? "text-zinc-900" : "text-white"
 								)}
 							>
-								Get the first agentic CRM with an AI chatbot for all your work
+								Build AI CRM, CMS, Admin dashboard in days, not months
 							</h2>
 							
 							<ul className="mt-5 space-y-2.5">
@@ -191,22 +243,26 @@ function HomeContent() {
 						</div>
 						<div
 							className={cn(
-								"relative border-t p-4 sm:p-6 lg:border-l lg:border-t-0",
+								"relative border-t p-4 sm:p-6 lg:border-t lg:border-t-0",
 								isLight ? "border-orange-100 bg-white/50" : "border-orange-500/20 bg-zinc-950/50"
 							)}
 						>
 							<div
 								className={cn(
-									"overflow-hidden rounded-xl ring-2",
+									"h-full overflow-hidden rounded-xl ring-2",
 									isLight ? "ring-orange-200/80 shadow-xl" : "ring-orange-500/30 shadow-2xl"
 								)}
 							>
-								<img
-									src="/ai-chatbot-crm-saas.png"
-									alt="CRM SaaS AI chatbot — ask questions, create invoices, and manage leads from a sidebar assistant"
-									className="h-full w-full object-cover object-top"
-									width={400}
-									height={400}
+								<video
+									src="https://ovevcjixqq.ufs.sh/f/9pIU2Of3sxTfRoMalnLXf47MVOSHAj8EYKTU3uhkwdgnZca5"
+									className="max-h-[32rem] min-h-[28rem] w-full object-cover object-center sm:min-h-[32rem] lg:max-h-[24rem]"
+									autoPlay
+									muted
+									loop
+									playsInline
+									controls
+									preload="metadata"
+									aria-label="Agentic SaaS CRM AI chatbot demonstration"
 								/>
 							</div>
 						</div>
@@ -412,7 +468,7 @@ function HomeContent() {
 						)}
 					>
 						<Link href="/blueprint" passHref>
-							<a className="flex items-center gap-2">
+							<a className="flex items-center gap-2 text-white hover:font-semibold bg-violet-500 hover:bg-violet-600 px-4 py-2 rounded-full transition-all duration-300">
 								<Sparkles className="h-4 w-4" />
 								Plan your CRM free
 								<ArrowRight className="h-4 w-4" />
