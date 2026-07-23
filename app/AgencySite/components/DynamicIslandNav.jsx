@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
 	Home,
 	LayoutDashboard,
+	LayoutTemplate,
 	Sparkles,
 	CreditCard,
 	CircleHelp,
@@ -19,6 +20,7 @@ const TABS = [
 	{ id: "home", label: "Home", href: "/", icon: Home },
 	{ id: "demo", label: "Demo", href: "/demo", icon: LayoutDashboard },
 	{ id: "blueprint", label: "Builder", href: "/blueprint", icon: Sparkles },
+	{ id: "admin-builder", label: "Compose", href: "/admin-builder", icon: LayoutTemplate },
 	{ id: "pricing", label: "Pricing", href: "/pricing", icon: CreditCard },
 	{ id: "faq", label: "FAQ", href: "/faq", icon: CircleHelp },
 	{ id: "contact", label: "Contact", href: "/contact", icon: Mail },
