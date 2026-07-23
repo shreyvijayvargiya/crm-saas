@@ -10,6 +10,7 @@ import { FollowerPointerCard } from "@/components/ui/following-pointer";
 import SiteSeo from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
 import HeroScreenshotCarousel from "../components/HeroScreenshotCarousel";
+import HeroScrollReveal from "../components/HeroScrollReveal";
 import IntegrationsShowcase from "../components/IntegrationsShowcase";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import {
@@ -109,8 +110,9 @@ function HomeContent() {
 				keywords="AI CRM template, Next.js CRM, SaaS admin dashboard, CMS template, React CRM, shadcn dashboard, Tailwind CRM, agentic CRM"
 			/>
 			<motion.header {...fadeUp} className="mb-10 text-center sm:mb-14">
-				<div className="-mt-20 mb-8">
-					<HeroScreenshotCarousel
+				
+				<div className="mb-10">
+					<HeroScrollReveal
 						screenshots={CRM_SCREENSHOTS}
 						isLight={isLight}
 					/>
