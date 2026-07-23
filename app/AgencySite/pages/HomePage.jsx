@@ -11,6 +11,7 @@ import SiteSeo from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
 import HeroScreenshotCarousel from "../components/HeroScreenshotCarousel";
 import HeroScrollReveal from "../components/HeroScrollReveal";
+import HeroDragBoard from "../components/HeroDragBoard";
 import IntegrationsShowcase from "../components/IntegrationsShowcase";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import {
@@ -110,7 +111,6 @@ function HomeContent() {
 				keywords="AI CRM template, Next.js CRM, SaaS admin dashboard, CMS template, React CRM, shadcn dashboard, Tailwind CRM, agentic CRM"
 			/>
 			<motion.header {...fadeUp} className="mb-10 text-center sm:mb-14">
-				
 				<div className="mb-10">
 					<HeroScrollReveal
 						screenshots={CRM_SCREENSHOTS}
