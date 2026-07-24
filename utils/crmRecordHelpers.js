@@ -86,12 +86,14 @@ function buildContactFromContext(id, contacts) {
 		owner: OWNERS[n % OWNERS.length],
 		lifecycle: LIFECYCLES[n % LIFECYCLES.length],
 		createdAt: row.createdAt ? formatContactDate(row.createdAt) : "—",
+		stripeCustomerId: row.stripeCustomerId || null,
 	};
 }
 
 export function buildContactRecord(id, contacts) {
 	const s = String(id);
-	return (
+	const row = findById(contacts, id);
+	const base =
 		CONTACT_DB[s] ||
 		buildContactFromContext(s, contacts) || {
 			id: s,
@@ -105,6 +107,12 @@ export function buildContactRecord(id, contacts) {
 			owner: "—",
 			lifecycle: "Contact",
 			createdAt: "—",
-		}
-	);
+		};
+	return {
+		...base,
+		email: row?.email ?? base.email,
+		name: row?.name ?? base.name,
+		company: row?.company ?? base.company,
+		stripeCustomerId: row?.stripeCustomerId || base.stripeCustomerId || null,
+	};
 }

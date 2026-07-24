@@ -631,8 +631,58 @@ const Settings = () => {
 	const renderBillingSettings = () => (
 		<div className="space-y-6">
 			<Card className="p-6">
+				<div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+					<div>
+						<h2 className={`text-xl font-semibold ${colors.foreground}`}>
+							Connect Stripe
+						</h2>
+						<p className={`mt-1 text-sm ${colors.textSecondary}`}>
+							Frontend template only — show this empty state to buyers. Wire
+							keys and webhooks in your own repo when you go live.
+						</p>
+					</div>
+					<img
+						src="/companies/stripe.png"
+						alt="Stripe"
+						className="h-8 w-8 rounded-md object-contain"
+					/>
+				</div>
+				<div
+					className={`rounded-xl border border-dashed p-4 ${colors.border} ${colors.hoverSecondary}`}
+				>
+					<p className={`text-sm font-medium ${colors.foreground}`}>
+						Stripe not connected
+					</p>
+					<p className={`mt-1 text-xs ${colors.textSecondary}`}>
+						Add <code className="text-[11px]">STRIPE_SECRET_KEY</code> later in
+						your deployment. This UI is ready for customer billing on each
+						contact profile.
+					</p>
+					<div className="mt-4 flex flex-wrap gap-2">
+						<Button
+							size="sm"
+							onClick={() =>
+								toast.message("Demo only — connect Stripe in your hosted app")
+							}
+						>
+							Connect Stripe
+						</Button>
+						<Button asChild size="sm" variant="outline">
+							<a
+								href="https://stripe.com/docs"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Stripe docs
+							</a>
+						</Button>
+					</div>
+				</div>
+			</Card>
+
+			<Card className="p-6">
 				<h2 className={`text-xl font-semibold ${colors.foreground} mb-6`}>
-					Subscription Details
+					Your SaaS plan (template meta)
 				</h2>
 				<div className="space-y-4">
 					<div

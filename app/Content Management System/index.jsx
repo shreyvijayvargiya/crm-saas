@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import {
 	FileText,
@@ -96,6 +96,15 @@ const ContentManagementSystem = () => {
 		sendDate: "",
 		status: "Draft",
 	});
+
+	useEffect(() => {
+		if (!router.isReady) return;
+		if (router.query.section !== "newsletters") return;
+		const node = document.getElementById("cms-newsletters");
+		if (node) {
+			node.scrollIntoView({ behavior: "smooth", block: "start" });
+		}
+	}, [router.isReady, router.query.section]);
 
 	const stats = useMemo(() => {
 		const published = blogs.filter((b) => b.status === "Published").length;
@@ -407,7 +416,7 @@ const ContentManagementSystem = () => {
 			</Card>
 
 			{/* Newsletters */}
-			<Card>
+			<Card id="cms-newsletters" className="scroll-mt-6">
 				<CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3 space-y-0 pb-4">
 					<div>
 						<CardTitle className="text-lg text-foreground">Newsletters</CardTitle>

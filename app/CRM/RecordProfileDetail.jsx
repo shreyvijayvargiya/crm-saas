@@ -17,9 +17,11 @@ import {
 	FolderOpen,
 	Plus,
 	Download,
+	CreditCard,
 } from "lucide-react";
 import { useTheme } from "../../utils/useTheme";
 import { getRecordBundle } from "./recordDetailData";
+import ContactBillingPanel from "../Contacts/ContactBillingPanel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -89,10 +91,17 @@ function TimelineIcon({ type }) {
 	);
 }
 
-const TABS = [
+const LEAD_TABS = [
 	{ id: "activity", label: "Activity", icon: Activity },
 	{ id: "notes", label: "Notes", icon: StickyNote },
 	{ id: "deals", label: "Deals", icon: Handshake },
+	{ id: "files", label: "Files", icon: FolderOpen },
+];
+
+const CONTACT_TABS = [
+	{ id: "activity", label: "Activity", icon: Activity },
+	{ id: "notes", label: "Notes", icon: StickyNote },
+	{ id: "billing", label: "Billing", icon: CreditCard },
 	{ id: "files", label: "Files", icon: FolderOpen },
 ];
 
@@ -105,7 +114,10 @@ const TABS = [
  */
 const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 	const { colors } = useTheme();
-	const [activeTab, setActiveTab] = useState("activity");
+	const tabs = kind === "contact" ? CONTACT_TABS : LEAD_TABS;
+	const [activeTab, setActiveTab] = useState(
+		kind === "contact" ? "billing" : "activity"
+	);
 	const bundle = useMemo(
 		() => getRecordBundle(kind, record.id),
 		[kind, record.id]
@@ -282,7 +294,7 @@ const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 				<div className="xl:col-span-8 space-y-4">
 					<Card className="p-1">
 						<div className="flex flex-wrap gap-1">
-						{TABS.map(({ id, label, icon: Icon }) => {
+						{tabs.map(({ id, label, icon: Icon }) => {
 							const on = activeTab === id;
 							return (
 								<Button
@@ -508,6 +520,10 @@ const RecordProfileDetail = ({ kind, record, backHref, backLabel }) => {
 							</CardContent>
 						</Card>
 					)}
+
+					{activeTab === "billing" && kind === "contact" ? (
+						<ContactBillingPanel record={record} />
+					) : null}
 				</div>
 			</div>
 		</div>

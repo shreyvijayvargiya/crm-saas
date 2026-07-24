@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as lucideIcons from "lucide-react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
@@ -15,10 +15,55 @@ import {
 import { cn } from "@/lib/utils";
 import { navCategories } from "../navConfig";
 
+function isItemActive(router, item) {
+	const pathOnly = (item.route || "").split("?")[0];
+	const wantsNewsletter = (item.route || "").includes("section=newsletters");
+	const hasNewsletter =
+		String(router.asPath || "").includes("section=newsletters");
+
+	if (wantsNewsletter) {
+		return router.pathname.startsWith("/cms") && hasNewsletter;
+	}
+
+	if (pathOnly === "/cms") {
+		return (
+			(router.pathname === "/cms" || router.pathname.startsWith("/cms/")) &&
+			!hasNewsletter
+		);
+	}
+
+	return (
+		router.pathname === pathOnly ||
+		router.pathname.startsWith(`${pathOnly}/`)
+	);
+}
+
+function isParentActive(router, item) {
+	if (isItemActive(router, item)) return true;
+	return (item.children || []).some((child) => isItemActive(router, child));
+}
+
 const Sidebar = ({ open, setDrawerOpen }) => {
 	const router = useRouter();
 	const { colors } = useTheme();
 	const { i18n, t } = useTranslation();
+	const [expandedIds, setExpandedIds] = useState(() => new Set());
+
+	useEffect(() => {
+		const next = new Set();
+		navCategories.forEach((category) => {
+			category.items?.forEach((item) => {
+				if (item.children?.length && isParentActive(router, item)) {
+					next.add(item.id);
+				}
+			});
+		});
+		setExpandedIds((prev) => {
+			const merged = new Set(prev);
+			next.forEach((id) => merged.add(id));
+			return merged;
+		});
+	}, [router.asPath, router.pathname]);
 
 	/* Native endonyms — not passed through locale JSON / AutoTranslate (picker uses data-no-translate). */
 	const languageOptions = [
@@ -35,6 +80,44 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 	const langPrefix = (i18n.language || "en").split("-")[0];
 	const selectedLanguage =
 		languageOptions.find((lang) => lang.code === langPrefix) || languageOptions[0];
+
+	const toggleExpanded = (id) => {
+		setExpandedIds((prev) => {
+			const next = new Set(prev);
+			if (next.has(id)) next.delete(id);
+			else next.add(id);
+			return next;
+		});
+	};
+
+	const renderNavLink = (item, { nested = false } = {}) => {
+		const Icon = lucideIcons[item?.icon];
+		const isActive = isItemActive(router, item);
+		return (
+			<div key={item.id} className="relative group">
+				<Button
+					variant={isActive ? "default" : "ghost"}
+					size="sm"
+					asChild
+					className={cn(
+						open ? "py-1" : "py-1.5",
+						"w-full justify-start gap-2 px-3 my-0.5",
+						nested && open && "pl-9"
+					)}
+				>
+					<a href={item.route}>
+						{Icon ? <Icon className="w-4 h-4 shrink-0" /> : null}
+						{open ? item.label : null}
+					</a>
+				</Button>
+				{!open && (
+					<div className="fixed left-14 mb-2 w-max rounded bg-primary px-1 py-1 text-xs text-primary-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100 z-10">
+						{item.label}
+					</div>
+				)}
+			</div>
+		);
+	};
 
 	return (
 		<div
@@ -76,13 +159,9 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 										<lucideIcons.Rocket className="w-4 h-4" />
 										CRM pages
 									</DropdownMenuItem>
-									<DropdownMenuItem onClick={() => router.push("/e-commerce")}>
-										<lucideIcons.ShoppingCart className="w-4 h-4" />
-										E-commerce
-									</DropdownMenuItem>
 									<DropdownMenuItem onClick={() => router.push("/cms")}>
 										<lucideIcons.Book className="w-4 h-4" />
-										Blog
+										CMS
 									</DropdownMenuItem>
 									<DropdownMenuSeparator />
 									<DropdownMenuItem>
@@ -118,34 +197,62 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 								<div className="space-y-1">
 									{category.items?.map((item) => {
 										const Icon = lucideIcons[item?.icon];
-										const isActive =
-											router.pathname === item.route ||
-											router.pathname.startsWith(`${item.route}/`);
+										const hasChildren = Boolean(item.children?.length);
+										const expanded = expandedIds.has(item.id);
+										const parentActive = isParentActive(router, item);
+
+										if (!hasChildren) {
+											return renderNavLink(item);
+										}
+
 										return (
 											<div key={item.id} className="relative group">
-												<Button
-													variant={isActive ? "default" : "ghost"}
-													size="sm"
-													asChild
-													className={cn(
-														open ? "py-1" : "py-1.5",
-														"w-full justify-start gap-2 px-3 my-0.5"
-													)}
-													onMouseEnter={() => setDrawerOpen(!open)}
-													onMouseLeave={() => setDrawerOpen(!open)}
-												>
-													<a href={item.route}>
-														{Icon ? (
-															<Icon className="w-4 h-4" />
-														) : null}
-														{open ? item.label : null}
-													</a>
-												</Button>
+												<div className="flex items-center gap-0.5">
+													<Button
+														variant={parentActive && !expanded ? "default" : parentActive ? "secondary" : "ghost"}
+														size="sm"
+														asChild
+														className={cn(
+															open ? "py-1" : "py-1.5",
+															"flex-1 justify-start gap-2 px-3 my-0.5"
+														)}
+													>
+														<a href={item.route}>
+															{Icon ? <Icon className="w-4 h-4 shrink-0" /> : null}
+															{open ? item.label : null}
+														</a>
+													</Button>
+													{open ? (
+														<Button
+															type="button"
+															variant="ghost"
+															size="icon"
+															className="h-8 w-8 shrink-0"
+															aria-label={expanded ? "Collapse" : "Expand"}
+															aria-expanded={expanded}
+															onClick={() => toggleExpanded(item.id)}
+														>
+															<lucideIcons.ChevronDown
+																className={cn(
+																	"h-4 w-4 transition-transform",
+																	expanded && "rotate-180"
+																)}
+															/>
+														</Button>
+													) : null}
+												</div>
 												{!open && (
 													<div className="fixed left-14 mb-2 w-max rounded bg-primary px-1 py-1 text-xs text-primary-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100 z-10">
 														{item.label}
 													</div>
 												)}
+												{open && expanded ? (
+													<div className="ml-2 space-y-0.5 border-l border-zinc-200 pl-1 dark:border-zinc-800">
+														{item.children.map((child) =>
+															renderNavLink(child, { nested: true })
+														)}
+													</div>
+												) : null}
 											</div>
 										);
 									})}

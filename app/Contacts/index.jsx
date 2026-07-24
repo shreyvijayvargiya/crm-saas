@@ -110,10 +110,10 @@ const Contacts = () => {
 				>
 					<div className="flex-1">
 						<h2 className={`text-lg font-semibold ${colors.foreground}`}>
-							Recent Contacts
+							Customers
 						</h2>
 						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							View and manage all your contacts
+							Open a contact to see Stripe-shaped billing, subscriptions, and charges
 						</p>
 					</div>
 					<div className="flex items-center gap-4 flex-wrap w-full md:w-auto">

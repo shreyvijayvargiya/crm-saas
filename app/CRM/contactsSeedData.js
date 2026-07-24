@@ -14,6 +14,7 @@ export const INITIAL_CONTACTS = [
 		company: "Startup Inc.",
 		createdAt: "2024-06-25",
 		image: "./people/person-1.png",
+		stripeCustomerId: "cus_johnStartup",
 		emails: [
 			{
 				subject: "Follow-Up",
@@ -30,6 +31,7 @@ export const INITIAL_CONTACTS = [
 		company: "Agency Co.",
 		createdAt: "2024-06-24",
 		image: "./people/person-2.png",
+		stripeCustomerId: "cus_janeAgency",
 		emails: [
 			{
 				subject: "Introduction",
@@ -46,6 +48,7 @@ export const INITIAL_CONTACTS = [
 		company: "Company LLC",
 		createdAt: "2024-06-23",
 		image: "./people/person-3.png",
+		stripeCustomerId: "cus_aliceCompany",
 		emails: [
 			{
 				subject: "Meeting Request",
@@ -62,6 +65,7 @@ export const INITIAL_CONTACTS = [
 		company: "Startup LLC",
 		createdAt: "2024-06-22",
 		image: "./people/person-4.png",
+		stripeCustomerId: "cus_bobEnterprise",
 		emails: [
 			{
 				subject: "Welcome",

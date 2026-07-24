@@ -131,10 +131,10 @@ const Home = () => {
 
 	const dashboardData = {
 		stats: {
-			totalLeads: 45,
-			conversionRate: "22%",
-			sales: "95",
-			revenue: "$12,500",
+			totalLeads: 312,
+			conversionRate: "2.1%",
+			sales: "$48.2k",
+			revenue: "3",
 		},
 		upcomingMeetings: [
 			{
@@ -359,26 +359,26 @@ const Home = () => {
 	return (
 		<div className="p-4 sm:p-6 mx-auto transition-all duration-100 ease-in">
 			<SiteSeo
-				title="Live AI CRM Demo – Dashboard, Sales, Analytics & CMS | SaaSCRM"
-				description="Explore the live SaaSCRM demo with leads, deals, analytics, reports, tasks, content scheduling, CMS, and an AI chatbot in a customizable Next.js dashboard."
+				title="Indie Stripe CRM Demo – Contacts, Billing & CMS"
+				description="Stripe-ready indie hacker CRM demo: contact billing, subscriptions, payments, and CMS — frontend template with Stripe-shaped seed data."
 				path="/demo"
-				keywords="live CRM demo, AI CRM dashboard, Next.js admin dashboard demo, sales CRM demo, CRM analytics, SaaS dashboard, CMS demo"
+				keywords="Stripe CRM, indie hacker CRM, subscription CRM, contact billing, CMS template, Next.js Stripe"
 			/>
 			<div className="mb-6">
 				<h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-					Welcome back, John
+					Indie billing overview
 				</h1>
 				<p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-					Here&apos;s what&apos;s happening with your pipeline today.
+					MRR, subscriptions, and failed charges — Stripe-shaped demo data for indie hackers.
 				</p>
 			</div>
 			<div className="mb-6">
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 					<DashboardChartCard
 						icon={BarChart3}
-						title="Sales"
+						title="MRR"
 						value={dashboardData.stats.sales}
-						subtitle="Closed deals over the last 6 months"
+						subtitle="Monthly recurring revenue (demo)"
 						trend={
 							<TrendBadge positive={salesTrend >= 0}>
 								{salesTrend >= 0 ? "+" : ""}
@@ -432,9 +432,9 @@ const Home = () => {
 
 					<DashboardChartCard
 						icon={DollarSign}
-						title="Revenue"
+						title="Failed charges"
 						value={dashboardData.stats.revenue}
-						subtitle="Monthly recurring & one-time revenue"
+						subtitle="Payments needing retry (demo)"
 						trend={
 							<TrendBadge positive={revenueTrendPct >= 0}>
 								{revenueTrendPct >= 0 ? "+" : ""}
@@ -495,9 +495,9 @@ const Home = () => {
 
 					<DashboardChartCard
 						icon={TrendingUp}
-						title="Conversion rate"
+						title="Churn rate"
 						value={dashboardData.stats.conversionRate}
-						subtitle="Lead-to-deal conversion over the last 6 months"
+						subtitle="Subscription churn over the last 6 months"
 						trend={
 							<TrendBadge positive={conversionTrend >= 0}>
 								{conversionTrend >= 0 ? "+" : ""}
@@ -707,7 +707,7 @@ const Home = () => {
 								</div>
 								<div>
 									<p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-										Total leads
+										Active subscriptions
 									</p>
 									<p className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
 										{dashboardData.stats.totalLeads}
