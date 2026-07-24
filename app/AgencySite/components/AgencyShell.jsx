@@ -19,6 +19,8 @@ function AgencyShellInner({ children, className, wide = false }) {
 				className
 			)}
 		>
+			<br />
+			<DynamicIslandNav />
 			<GravityStarsBackground
 				className={cn(
 					"pointer-events-none fixed inset-0 z-0 h-screen w-screen",
@@ -36,7 +38,7 @@ function AgencyShellInner({ children, className, wide = false }) {
 				<AgencyFooter />
 			</div>
 
-			<DynamicIslandNav />
+			
 			<AgencyVideoPhone />
 		</div>
 	);

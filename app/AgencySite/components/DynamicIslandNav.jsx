@@ -41,7 +41,7 @@ export default function DynamicIslandNav() {
 	return (
 		<div
 			className={cn(
-				"pointer-events-none fixed inset-x-0 top-1 z-50 flex",
+				"pointer-events-none relative inset-x-0 top-0.5 z-50 flex",
 				"justify-stretch sm:justify-center sm:pb-6"
 			)}
 		>
@@ -51,11 +51,11 @@ export default function DynamicIslandNav() {
 				animate={{ opacity: 1, y: 0, scale: 1 }}
 				transition={{ type: "spring", stiffness: 380, damping: 28 }}
 				className={cn(
-					"pointer-events-auto flex w-full items-center shadow-2xl backdrop-blur-xl sm:w-auto sm:gap-1 sm:rounded-full sm:border sm:px-2 sm:py-2",
+					"pointer-events-auto flex w-full items-center sm:w-auto sm:gap-1 sm:rounded-full sm:border sm:px-2 sm:py-2",
 					"justify-between gap-0 border-t px-1 pt-2",
 					"pb-[max(0.625rem,env(safe-area-inset-bottom))] sm:pb-2",
 					isLight
-						? "border-zinc-200/90 bg-white/90 shadow-zinc-300/30 sm:bg-white/80"
+						? "border-zinc-200/50 bg-white/20 sm:bg-white/20"
 						: "border-zinc-800/90 bg-zinc-950/90 shadow-black/50 sm:bg-zinc-950/75"
 				)}
 				aria-label="Site navigation"
@@ -106,7 +106,7 @@ export default function DynamicIslandNav() {
 													? "text-zinc-500 group-hover:text-zinc-800"
 													: "text-zinc-500"
 										)}
-										strokeWidth={active ? 2 : 1.75}
+										strokeWidth={active ? 1.75 : 1.5}
 									/>
 
 									<AnimatePresence initial={false} mode="popLayout">

@@ -12,6 +12,7 @@ import AgencyShell from "../components/AgencyShell";
 import HeroScreenshotCarousel from "../components/HeroScreenshotCarousel";
 import HeroScrollReveal from "../components/HeroScrollReveal";
 import HeroDragBoard from "../components/HeroDragBoard";
+import HeroTabStack from "../components/HeroTabStack";
 import IntegrationsShowcase from "../components/IntegrationsShowcase";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import {
