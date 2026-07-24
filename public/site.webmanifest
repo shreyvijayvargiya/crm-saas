@@ -4,8 +4,8 @@
 	"description": "AI CRM, admin dashboard, and CMS template for startups and indie hackers.",
 	"start_url": "/",
 	"display": "standalone",
-	"background_color": "#09090b",
-	"theme_color": "#7C3AED",
+	"background_color": "#F4F4F0",
+	"theme_color": "#0A0A0A",
 	"icons": [
 		{
 			"src": "/android-chrome-192x192.png",
@@ -18,10 +18,9 @@
 			"type": "image/png"
 		},
 		{
-			"src": "/favicon.svg",
-			"sizes": "any",
-			"type": "image/svg+xml",
-			"purpose": "any"
+			"src": "/saascrm-logo.png",
+			"sizes": "2000x2000",
+			"type": "image/png"
 		}
 	]
 }

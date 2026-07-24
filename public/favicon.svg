@@ -1,12 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="8" fill="#7C3AED"/>
-  <path
-    fill="#FFFFFF"
-    d="M16 6.5l1.35 5.35L22.7 13l-5.35 1.35L16 19.7l-1.35-5.35L9.3 13l5.35-1.15L16 6.5z"
-  />
-  <path
-    fill="#FFFFFF"
-    d="M23.5 17.5l.7 2.75L27 21l-2.8.7-.7 2.8-.7-2.8L20 21l2.8-.75.7-2.75z"
-    opacity="0.9"
-  />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="SaaSCRM">
+  <rect width="32" height="32" fill="#F4F4F0"/>
+  <text
+    x="16"
+    y="19.5"
+    text-anchor="middle"
+    font-family="Arial Black, Helvetica Neue, Arial, sans-serif"
+    font-size="7"
+    font-weight="900"
+    letter-spacing="-0.4"
+    fill="#0A0A0A"
+  >SAASCRM</text>
 </svg>
