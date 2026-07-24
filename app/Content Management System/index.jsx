@@ -251,19 +251,20 @@ const ContentManagementSystem = () => {
 		<div className="min-h-screen space-y-6 p-6">
 			<div>
 				<h1 className="text-2xl font-semibold text-foreground">
-					Content Management System
+					Launch & reach
 				</h1>
 				<p className="mt-1 text-sm text-muted-foreground">
-					Manage blog posts, newsletters, and subscribers
+					Ship launch notes and subscriber emails — keep billing primary; use
+					this to announce updates and nudge past-due customers.
 				</p>
 			</div>
 
 			<div className="grid grid-cols-1 gap-4 md:grid-cols-4">
 				{[
-					{ label: "Total Blogs", value: stats.totalBlogs, hint: "All posts", icon: FileText },
-					{ label: "Published", value: stats.published, hint: "Live articles", icon: CheckCircle2 },
-					{ label: "Newsletters", value: stats.newsletters, hint: `${stats.sentNewsletters} sent`, icon: Send },
-					{ label: "Subscribers", value: stats.subscribers, hint: "Newsletter list", icon: Mail },
+					{ label: "Launch notes", value: stats.totalBlogs, hint: "All posts", icon: FileText },
+					{ label: "Published", value: stats.published, hint: "Live on site", icon: CheckCircle2 },
+					{ label: "Subscriber emails", value: stats.newsletters, hint: `${stats.sentNewsletters} sent`, icon: Send },
+					{ label: "Subscribers", value: stats.subscribers, hint: "Email list", icon: Mail },
 				].map(({ label, value, hint, icon: Icon }) => (
 					<Card key={label}>
 						<CardContent className="flex items-center justify-between p-6">
@@ -284,7 +285,7 @@ const ContentManagementSystem = () => {
 			<Card>
 				<CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3 space-y-0 pb-4">
 					<div>
-						<CardTitle className="text-lg text-foreground">Recent Blogs</CardTitle>
+						<CardTitle className="text-lg text-foreground">Launch notes</CardTitle>
 						<p className="text-sm text-muted-foreground">Click a row to view and edit</p>
 					</div>
 					<Button onClick={() => setIsAddModalOpen(true)}>
@@ -419,7 +420,7 @@ const ContentManagementSystem = () => {
 			<Card id="cms-newsletters" className="scroll-mt-6">
 				<CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3 space-y-0 pb-4">
 					<div>
-						<CardTitle className="text-lg text-foreground">Newsletters</CardTitle>
+						<CardTitle className="text-lg text-foreground">Subscriber emails</CardTitle>
 						<p className="text-sm text-muted-foreground">
 							Email campaigns — click a row to view and edit
 						</p>

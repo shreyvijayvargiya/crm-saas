@@ -1,56 +1,84 @@
 /**
- * Single source of truth for sidebar navigation and CMD+K search.
- * Indie Stripe-ready CRM — slim nav for contacts, billing, and CMS.
+ * Indie Stripe Billing OS — nav for Stripe SaaS indie hackers.
  */
 
 export const navCategories = [
 	{
 		id: "main",
-		label: "Main",
+		label: "Revenue",
 		items: [
-			{ id: 1, label: "Dashboard", route: "/demo", icon: "Home" },
+			{ id: 1, label: "Revenue", route: "/demo", icon: "DollarSign" },
+			{
+				id: 15,
+				label: "Failed charges",
+				route: "/failed-payments",
+				icon: "AlertTriangle",
+				keywords: ["dunning", "past due", "retry", "stripe"],
+			},
 		],
 	},
 	{
-		id: "crm",
+		id: "customers",
 		label: "Customers",
 		items: [
-			{ id: 4, label: "Contacts", route: "/contacts", icon: "Contact" },
+			{ id: 4, label: "Customers", route: "/contacts", icon: "Users" },
 		],
 	},
 	{
 		id: "billing",
 		label: "Billing",
 		items: [
-			{ id: 11, label: "Payments", route: "/payments", icon: "CreditCard" },
-			{ id: 41, label: "Subscriptions", route: "/subscriptions", icon: "Repeat" },
+			{ id: 11, label: "Charges", route: "/payments", icon: "CreditCard" },
+			{
+				id: 41,
+				label: "Subscriptions",
+				route: "/subscriptions",
+				icon: "Repeat",
+				keywords: ["mrr", "recurring", "stripe"],
+				children: [
+					{
+						id: 410,
+						label: "Overview",
+						route: "/subscriptions",
+						icon: "Repeat",
+						keywords: ["mrr", "churn", "renewals"],
+					},
+					{
+						id: 411,
+						label: "Plans",
+						route: "/subscriptions/plans",
+						icon: "Layers",
+						keywords: ["price", "product", "stripe", "mrr"],
+					},
+				],
+			},
 		],
 	},
 	{
 		id: "content",
-		label: "Content",
+		label: "Launch & reach",
 		items: [
 			{
 				id: 13,
-				label: "CMS",
+				label: "Content",
 				route: "/cms",
-				icon: "FileText",
+				icon: "Megaphone",
 				children: [
 					{
 						id: 131,
-						label: "Blogs",
+						label: "Launch notes",
 						route: "/cms",
 						icon: "BookOpen",
 					},
 					{
 						id: 132,
-						label: "Newsletters",
+						label: "Subscriber emails",
 						route: "/cms?section=newsletters",
 						icon: "Send",
 					},
 					{
 						id: 133,
-						label: "Emails",
+						label: "Inbox",
 						route: "/email",
 						icon: "Mail",
 					},
@@ -60,34 +88,22 @@ export const navCategories = [
 	},
 	{
 		id: "system",
-		label: "System",
+		label: "Setup",
 		items: [
-			{ id: 14, label: "Settings", route: "/settings", icon: "Settings" },
+			{
+				id: 14,
+				label: "Connect Stripe",
+				route: "/settings",
+				icon: "Cable",
+				keywords: ["stripe", "api", "keys"],
+			},
 			{ id: 20, label: "Notifications", route: "/notifications", icon: "Bell" },
 			{ id: 33, label: "Help", route: "/help", icon: "CircleHelp" },
 		],
 	},
 ];
 
-/** Nested routes surfaced in CMD+K search (not top-level sidebar items). */
-export const searchRouteExtras = [
-	{
-		id: 411,
-		label: "Subscription Plans",
-		route: "/subscriptions/plans",
-		icon: "Layers",
-		section: "billing",
-		keywords: ["billing", "mrr", "plans", "recurring", "stripe"],
-	},
-	{
-		id: 412,
-		label: "Connect Stripe",
-		route: "/settings",
-		icon: "Cable",
-		section: "system",
-		keywords: ["stripe", "payments", "connect", "billing"],
-	},
-];
+export const searchRouteExtras = [];
 
 export const navSections = navCategories.map(({ id, label }) => ({ key: id, label }));
 
@@ -101,7 +117,7 @@ export function getSearchNavItems() {
 			const kids = (item.children || []).map((child) => ({
 				...child,
 				section: category.id,
-				keywords: [...(child.keywords || []), item.label, "cms"],
+				keywords: [...(child.keywords || []), item.label, "cms", "stripe"],
 			}));
 			return [parent, ...kids];
 		})

@@ -32,6 +32,15 @@ function isItemActive(router, item) {
 		);
 	}
 
+	// Exact match for /subscriptions so Plans (/subscriptions/plans) stays a sibling highlight
+	if (pathOnly === "/subscriptions") {
+		return (
+			router.pathname === "/subscriptions" ||
+			(router.pathname.startsWith("/subscriptions/") &&
+				!router.pathname.startsWith("/subscriptions/plans"))
+		);
+	}
+
 	return (
 		router.pathname === pathOnly ||
 		router.pathname.startsWith(`${pathOnly}/`)
@@ -102,7 +111,7 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					className={cn(
 						open ? "py-1" : "py-1.5",
 						"w-full justify-start gap-2 px-3 my-0.5",
-						nested && open && "pl-9"
+						nested && open && "pl-7"
 					)}
 				>
 					<a href={item.route}>
@@ -146,7 +155,7 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 											<lucideIcons.Rocket
 												className={`w-3 h-3 ${colors.foreground}`}
 											/>
-											<p className={`text-sm ${colors.foreground}`}>CRM pages</p>
+											<p className={`text-sm ${colors.foreground}`}>Indie Stripe</p>
 										</div>
 										<lucideIcons.ChevronUp
 											className={`${colors.mutedForeground} w-3 h-3`}
@@ -154,14 +163,14 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 									</Button>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align="start" className="w-56">
-									<DropdownMenuLabel>Projects</DropdownMenuLabel>
-									<DropdownMenuItem onClick={() => router.push("/")}>
-										<lucideIcons.Rocket className="w-4 h-4" />
-										CRM pages
+									<DropdownMenuLabel>Workspace</DropdownMenuLabel>
+									<DropdownMenuItem onClick={() => router.push("/demo")}>
+										<lucideIcons.DollarSign className="w-4 h-4" />
+										Indie Stripe Billing OS
 									</DropdownMenuItem>
 									<DropdownMenuItem onClick={() => router.push("/cms")}>
-										<lucideIcons.Book className="w-4 h-4" />
-										CMS
+										<lucideIcons.Megaphone className="w-4 h-4" />
+										Launch & reach
 									</DropdownMenuItem>
 									<DropdownMenuSeparator />
 									<DropdownMenuItem>
@@ -247,7 +256,7 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 													</div>
 												)}
 												{open && expanded ? (
-													<div className="ml-2 space-y-0.5 border-l border-zinc-200 pl-1 dark:border-zinc-800">
+													<div className="mt-0.5 space-y-0.5 pl-3">
 														{item.children.map((child) =>
 															renderNavLink(child, { nested: true })
 														)}

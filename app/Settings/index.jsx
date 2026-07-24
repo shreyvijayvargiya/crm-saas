@@ -42,7 +42,7 @@ const textareaClassName = cn(
 const Settings = () => {
 	const { colors } = useTheme();
 
-	const [activeTab, setActiveTab] = useState("profile");
+	const [activeTab, setActiveTab] = useState("billing");
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [memberRole, setMemberRole] = useState("");
@@ -207,11 +207,11 @@ const Settings = () => {
 	);
 
 	const tabs = [
+		{ id: "billing", label: "Connect Stripe", icon: CreditCard },
 		{ id: "profile", label: "Profile", icon: User },
 		{ id: "account", label: "Account", icon: Lock },
 		{ id: "notifications", label: "Notifications", icon: Bell },
 		{ id: "preferences", label: "Preferences", icon: Globe },
-		{ id: "billing", label: "Billing", icon: CreditCard },
 		{ id: "team", label: "Team", icon: Users },
 		{ id: "security", label: "Security", icon: Shield },
 	];
@@ -654,10 +654,47 @@ const Settings = () => {
 						Stripe not connected
 					</p>
 					<p className={`mt-1 text-xs ${colors.textSecondary}`}>
-						Add <code className="text-[11px]">STRIPE_SECRET_KEY</code> later in
-						your deployment. This UI is ready for customer billing on each
-						contact profile.
+						Add keys in your deployment when you go live. This UI is ready for
+						customer billing on each profile — no webhooks in the ZIP.
 					</p>
+					<div className="mt-4 grid gap-3 sm:grid-cols-2">
+						<div>
+							<label
+								className={`mb-1 block text-xs font-medium ${colors.textSecondary}`}
+							>
+								Publishable key
+							</label>
+							<Input
+								readOnly
+								value="pk_live_••••••••••••••••"
+								className="font-mono text-xs"
+							/>
+						</div>
+						<div>
+							<label
+								className={`mb-1 block text-xs font-medium ${colors.textSecondary}`}
+							>
+								Secret key
+							</label>
+							<Input
+								readOnly
+								value="sk_live_••••••••••••••••"
+								className="font-mono text-xs"
+							/>
+						</div>
+						<div className="sm:col-span-2">
+							<label
+								className={`mb-1 block text-xs font-medium ${colors.textSecondary}`}
+							>
+								Webhook endpoint (placeholder)
+							</label>
+							<Input
+								readOnly
+								value="https://your-app.com/api/webhooks/stripe"
+								className="font-mono text-xs"
+							/>
+						</div>
+					</div>
 					<div className="mt-4 flex flex-wrap gap-2">
 						<Button
 							size="sm"

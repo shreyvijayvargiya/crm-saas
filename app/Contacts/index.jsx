@@ -113,7 +113,7 @@ const Contacts = () => {
 							Customers
 						</h2>
 						<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-							Open a contact to see Stripe-shaped billing, subscriptions, and charges
+							Stripe customers — open anyone to see plan, MRR, charges, and failed payments
 						</p>
 					</div>
 					<div className="flex items-center gap-4 flex-wrap w-full md:w-auto">
@@ -122,7 +122,7 @@ const Contacts = () => {
 							<div className="flex items-center gap-2">
 								<Users size={16} />
 								<p className={`text-xs ${colors.mutedForeground}`}>
-									Total Contacts
+									Total customers
 								</p>
 								<Badge variant="secondary" className="font-semibold">
 									{contacts.length}
@@ -137,8 +137,8 @@ const Contacts = () => {
 							/>
 							<Input
 								type="text"
-								placeholder="Search contacts..."
-								name="search-contacts"
+								placeholder="Search customers…"
+								name="search-customers"
 								className="pl-9"
 								value={searchTerm}
 								onChange={handleSearch}

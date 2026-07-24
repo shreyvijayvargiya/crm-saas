@@ -28,6 +28,7 @@ import FormSelect from "../../lib/ui/FormSelect";
 import PaymentMethodForm from "./PaymentMethodForm";
 import ExchangeRatesCard from "./ExchangeRatesCard";
 import { useCrmData } from "../../utils/CrmDataContext";
+import { StripeDemoBadge } from "@/components/stripe/StripeChrome";
 import {
 	Table,
 	TableHeader,
@@ -280,15 +281,16 @@ const Payments = () => {
 	return (
 		<div className="p-6 space-y-6">
 			{/* Header */}
-			<div className="flex items-center justify-between">
+			<div className="flex flex-wrap items-start justify-between gap-3">
 				<div>
 					<h1 className={`text-2xl font-semibold ${colors.foreground}`}>
-						Payments
+						Charges
 					</h1>
 					<p className={`text-sm ${colors.mutedForeground} mt-1`}>
-						Manage and track all payment transactions
+						Stripe charges & refunds — linked to customers (`ch_…` demo IDs)
 					</p>
 				</div>
+				<StripeDemoBadge />
 			</div>
 
 			{/* Total Funds Section */}

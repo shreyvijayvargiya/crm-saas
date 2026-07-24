@@ -56,6 +56,9 @@ const SubscriptionPlans = () => {
 			id: `plan_${Date.now()}`,
 			name: newPlan.name,
 			sku: newPlan.sku,
+			stripePriceId: newPlan.sku.startsWith("price_")
+				? newPlan.sku
+				: `price_${Date.now()}`,
 			tier: newPlan.tier,
 			price: parseFloat(newPlan.price) || 0,
 			currency: "USD",
@@ -77,7 +80,7 @@ const SubscriptionPlans = () => {
 	return (
 		<SubscriptionsLayout
 			title="Plans"
-			description="Subscription plan definitions — pricing tiers, features, and billing intervals."
+			description="Stripe Products & Prices — price_ IDs, intervals, and active subscriber counts."
 		>
 			<Card>
 				<CardHeader className="space-y-4">
@@ -137,6 +140,9 @@ const SubscriptionPlans = () => {
 											<div>
 												<p className="font-semibold text-lg">{plan.name}</p>
 												<p className="text-xs text-muted-foreground">{plan.tier} tier</p>
+												<p className="mt-1 font-mono text-[11px] text-violet-700 dark:text-violet-300">
+													{plan.stripePriceId || plan.sku}
+												</p>
 											</div>
 											<Badge variant={plan.status === "Active" ? "default" : "secondary"}>
 												{plan.status}
@@ -167,7 +173,7 @@ const SubscriptionPlans = () => {
 							<TableHeader>
 								<TableRow>
 									<TableHead>Plan</TableHead>
-									<TableHead>SKU</TableHead>
+									<TableHead>Price ID</TableHead>
 									<TableHead>Price</TableHead>
 									<TableHead>Interval</TableHead>
 									<TableHead>Features</TableHead>
@@ -184,8 +190,8 @@ const SubscriptionPlans = () => {
 												<p className="text-xs text-muted-foreground">{plan.tier} tier</p>
 											</div>
 										</TableCell>
-										<TableCell className="font-mono text-xs text-muted-foreground">
-											{plan.sku}
+										<TableCell className="font-mono text-xs text-violet-700 dark:text-violet-300">
+											{plan.stripePriceId || plan.sku}
 										</TableCell>
 										<TableCell className="tabular-nums font-medium">
 											${plan.price.toLocaleString()} {plan.currency}
@@ -235,11 +241,11 @@ const SubscriptionPlans = () => {
 						onChange={(e) => setNewPlan((p) => ({ ...p, name: e.target.value }))}
 					/>
 				</FormField>
-				<FormField label="SKU" required>
+				<FormField label="Price ID" required>
 					<Input
 						value={newPlan.sku}
 						onChange={(e) => setNewPlan((p) => ({ ...p, sku: e.target.value }))}
-						placeholder="CRM-TIER-001"
+						placeholder="price_1PxYourPlan"
 					/>
 				</FormField>
 				<div className="grid grid-cols-2 gap-4">

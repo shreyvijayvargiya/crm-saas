@@ -1,1116 +1,411 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
+import Link from "next/link";
 import {
-	Phone,
-	MessageCircle,
-	Eye,
-	Pen,
-	Trash,
-	ChevronUp,
-	ChevronDown,
-	ExternalLink,
-	DollarSign,
-	TrendingUp,
-	Bell,
-	Calendar,
-	FileText,
-	UserPlus,
-	Activity,
-	Target,
-	CheckCircle2,
+	AlertTriangle,
 	ArrowRight,
-	BarChart3,
+	CreditCard,
+	DollarSign,
+	ExternalLink,
+	RefreshCw,
+	Repeat,
 	Users,
 } from "lucide-react";
-import router from "next/router";
 import { toast } from "sonner";
 import {
-	AreaChart,
 	Area,
-	BarChart,
-	Bar,
-	Cell,
+	AreaChart,
+	CartesianGrid,
+	ResponsiveContainer,
+	Tooltip,
 	XAxis,
 	YAxis,
-	CartesianGrid,
-	Tooltip,
-	ResponsiveContainer,
 } from "recharts";
-import { useTheme } from "../../utils/useTheme";
-import { cn } from "@/lib/utils";
-import { CHART_MUTED } from "@/lib/chartColors";
 import SiteSeo from "@/components/seo/SiteSeo";
+import { StripeConnectBanner, StripeDemoBadge } from "@/components/stripe/StripeChrome";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
 	Table,
-	TableHeader,
 	TableBody,
-	TableFooter,
-	TableHead,
-	TableRow,
 	TableCell,
-	TableCaption,
+	TableHead,
+	TableHeader,
+	TableRow,
 } from "@/components/ui/table";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { CHART_MUTED } from "@/lib/chartColors";
+import { useCrmData } from "../../utils/CrmDataContext";
+import { useTheme } from "../../utils/useTheme";
+import { SUBSCRIPTION_MRR_TREND } from "../Subscriptions/subscriptionsSeedData";
 
-const CHART_CARD =
-	"overflow-hidden border-zinc-200/80 shadow-sm transition-shadow hover:shadow-md dark:border-zinc-800";
-
-const ICON_BOX =
-	"flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900";
-
-function monthDelta(data, key) {
-	return data[data.length - 1][key] - data[data.length - 2][key];
+function formatMoney(amount) {
+	const n = Number(amount);
+	if (Number.isNaN(n)) return "—";
+	return new Intl.NumberFormat("en-US", {
+		style: "currency",
+		currency: "USD",
+		maximumFractionDigits: 0,
+	}).format(n);
 }
 
-function monthPctChange(data, key) {
-	const last = data[data.length - 1][key];
-	const prev = data[data.length - 2][key];
-	return prev ? Math.round(((last - prev) / prev) * 100) : 0;
+function statusClass(status) {
+	const s = String(status || "").toLowerCase();
+	if (s === "active" || s === "completed") {
+		return "bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400";
+	}
+	if (s === "trialing" || s === "pending") {
+		return "bg-sky-100 text-sky-800 border-sky-200 dark:bg-sky-900/30 dark:text-sky-400";
+	}
+	if (s === "past due" || s === "failed") {
+		return "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-400";
+	}
+	return "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300";
 }
 
-function TrendBadge({ positive, children }) {
-	return (
-		<span
-			className={cn(
-				"inline-flex shrink-0 items-center rounded-full px-2.5 py-1 text-xs font-medium",
-				positive
-					? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400"
-					: "bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-400"
-			)}
-		>
-			{children}
-		</span>
-	);
-}
+/**
+ * Revenue home for Indie Stripe Billing OS.
+ */
+export default function Home() {
+	const { theme } = useTheme();
+	const { subscriptions, payments, contacts } = useCrmData();
 
-function DashboardChartCard({ icon: Icon, title, value, subtitle, trend, children }) {
-	return (
-		<Card className={CHART_CARD}>
-			<CardContent className="p-5 sm:p-6">
-				<div className="mb-1 flex items-start justify-between gap-3">
-					<div className="flex items-center gap-3">
-						<div className={ICON_BOX}>
-							<Icon
-								className="h-5 w-5 text-zinc-700 dark:text-zinc-300"
-								strokeWidth={1.75}
-							/>
-						</div>
-						<div>
-							<p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-								{title}
-							</p>
-							<p className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-								{value}
-							</p>
-						</div>
-					</div>
-					{trend}
-				</div>
-				{subtitle ? (
-					<p className="mb-4 text-xs text-zinc-500 dark:text-zinc-500">{subtitle}</p>
-				) : null}
-				{children}
-			</CardContent>
-		</Card>
-	);
-}
+	const metrics = useMemo(() => {
+		const active = subscriptions.filter((s) => s.status === "Active");
+		const trialing = subscriptions.filter((s) => s.status === "Trialing");
+		const pastDue = subscriptions.filter((s) => s.status === "Past Due");
+		const mrr = [...active, ...trialing, ...pastDue].reduce(
+			(sum, s) => sum + (Number(s.mrr) || 0),
+			0
+		);
+		const failed = payments.filter((p) => p.status === "Failed");
+		const renewals = subscriptions.filter((s) => {
+			if (!s.currentPeriodEnd) return false;
+			const end = new Date(s.currentPeriodEnd);
+			const now = new Date();
+			const inWeek = new Date();
+			inWeek.setDate(now.getDate() + 14);
+			return end >= now && end <= inWeek && s.status === "Active";
+		});
+		return {
+			mrr,
+			active: active.length,
+			trialing: trialing.length,
+			pastDue: pastDue.length,
+			failed,
+			renewals,
+			customers: contacts.length,
+		};
+	}, [subscriptions, payments, contacts]);
 
-function zincBarFill(theme, active = false) {
-	if (active) return theme === "dark" ? "#e4e4e7" : "#27272a";
-	return theme === "dark" ? "#71717a" : "#a1a1aa";
-}
-
-const Home = () => {
-	const { theme, colors } = useTheme();
-
-	const dashboardData = {
-		stats: {
-			totalLeads: 312,
-			conversionRate: "2.1%",
-			sales: "$48.2k",
-			revenue: "3",
-		},
-		upcomingMeetings: [
-			{
-				title: "Product Demo",
-				date: "2024-06-28",
-				contact: "John Doe",
-				subject: "Demo of new product",
-				iconType: "up",
-			},
-			{
-				title: "Client Follow-up",
-				date: "2024-06-29",
-				contact: "Jane Smith",
-				subject: "Follow-up on proposal",
-				iconType: "down",
-			},
-			{
-				title: "Team Sync",
-				date: "2024-06-30",
-				contact: "Alice Johnson",
-				subject: "Weekly team sync",
-				iconType: "up",
-			},
-			{
-				title: "Sales Strategy",
-				date: "2024-07-01",
-				contact: "Bob Brown",
-				subject: "Discuss sales strategy",
-				iconType: "down",
-			},
-			{
-				title: "Quarterly Review",
-				date: "2024-07-05",
-				contact: "Emily Davis",
-				subject: "Review of quarterly performance",
-				iconType: "up",
-			},
-			{
-				title: "New Client Onboarding",
-				date: "2024-07-10",
-				contact: "Michael Johnson",
-				subject: "Onboarding new client",
-				iconType: "down",
-			},
-			{
-				title: "Marketing Strategy Meeting",
-				date: "2024-07-15",
-				contact: "Sarah Connor",
-				subject: "Planning marketing strategies",
-				iconType: "up",
-			},
-			{
-				title: "Product Launch",
-				date: "2024-07-20",
-				contact: "Chris Evans",
-				subject: "Launch of new product line",
-				iconType: "down",
-			},
-		],
-		moduleStats: [
-			{
-				title: "Tasks",
-				value: "10",
-				description: "Backlog + In Progress + Done",
-				icon: "calendar",
-				route: "/tasks",
-			},
-			{
-				title: "API Keys",
-				value: "5",
-				description: "Active and revoked keys",
-				icon: "activity",
-				route: "/api-keys",
-			},
-			{
-				title: "Invoices",
-				value: "12",
-				description: "Total invoices in snapshot",
-				icon: "file",
-				route: "/invoices",
-			},
-			{
-				title: "Payments",
-				value: "10",
-				description: "Payment transactions",
-				icon: "dollar",
-				route: "/payments",
-			},
-			{
-				title: "Webhooks",
-				value: "5",
-				description: "Configured endpoints",
-				icon: "target",
-				route: "/webhooks",
-			},
-			{
-				title: "Notifications",
-				value: "6",
-				description: "Unread and read alerts",
-				icon: "bell",
-				route: "/notifications",
-			},
-			{
-				title: "Teams",
-				value: "4",
-				description: "Members in roster",
-				icon: "user",
-				route: "/teams",
-			},
-			{
-				title: "Integrations",
-				value: "13",
-				description: "Connected services",
-				icon: "check",
-				route: "/integrations",
-			},
-		],
-	};
-
-	const [allLeads, setAllLeads] = useState([
-		{
-			id: "101",
-			name: "Alice Brown",
-			email: "alice@company.com",
-			lastContacted: "06/25/2024",
-			image: "./people/person-1.png",
-		},
-		{
-			id: "102",
-			name: "Bob Wilson",
-			email: "bob@startup.io",
-			lastContacted: "06/24/2024",
-			image: "./people/person-4.png",
-		},
-		{
-			id: "103",
-			name: "Charlie Green",
-			email: "charlie@company.com",
-			lastContacted: "06/23/2024",
-			image: "./people/person-2.png",
-		},
-		{
-			id: "104",
-			name: "Diana Prince",
-			email: "diana@company.com",
-			lastContacted: "06/22/2024",
-			image: "./people/person-3.png",
-		},
-		{
-			id: "105",
-			name: "Eve Adams",
-			email: "eve@company.com",
-			lastContacted: "06/21/2024",
-			image: "./people/person-1.png",
-		},
-		{
-			id: "106",
-			name: "Frank Castle",
-			email: "frank@company.com",
-			lastContacted: "06/20/2024",
-			image: "./people/person-2.png",
-		},
-	]);
-
-	const [sortConfig, setSortConfig] = useState(null);
-
-	const sortedLeads = useMemo(() => {
-		let sortableLeads = [...allLeads];
-		if (sortConfig) {
-			sortableLeads.sort((a, b) => {
-				if (a[sortConfig.key] < b[sortConfig.key])
-					return sortConfig.direction === "ascending" ? -1 : 1;
-				if (a[sortConfig.key] > b[sortConfig.key])
-					return sortConfig.direction === "ascending" ? 1 : -1;
-				return 0;
-			});
-		}
-		return sortableLeads;
-	}, [allLeads, sortConfig]);
-
-	const requestSort = (key) => {
-		const direction =
-			sortConfig &&
-			sortConfig.key === key &&
-			sortConfig.direction === "ascending"
-				? "descending"
-				: "ascending";
-		setSortConfig({ key, direction });
-	};
-
-	const sampleData = [
-		{ name: "Jan", leads: 30, conversion: 18, sales: 50, revenue: 1000, companies: 5 },
-		{ name: "Feb", leads: 40, conversion: 22, sales: 60, revenue: 1500, companies: 7 },
-		{ name: "Mar", leads: 35, conversion: 26, sales: 70, revenue: 2000, companies: 6 },
-		{ name: "Apr", leads: 50, conversion: 30, sales: 80, revenue: 2500, companies: 8 },
-		{ name: "May", leads: 45, conversion: 28, sales: 75, revenue: 2200, companies: 7 },
-		{ name: "Jun", leads: 55, conversion: 35, sales: 95, revenue: 3100, companies: 9 },
-	];
-
-	const conversionTrend = monthDelta(sampleData, "conversion");
-	const salesTrend = monthDelta(sampleData, "sales");
-	const revenueTrendPct = monthPctChange(sampleData, "revenue");
-	const leadsTrend = monthDelta(sampleData, "leads");
-
-	const chartTooltipStyle = {
-		backgroundColor: theme === "dark" ? "#18181b" : "#ffffff",
-		border: `1px solid ${theme === "dark" ? "#3f3f46" : "#e4e4e7"}`,
-		borderRadius: "0.75rem",
-		padding: "0.625rem 0.75rem",
-		boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-		fontSize: "12px",
-	};
-
-	const chartLabelStyle = {
-		color: theme === "dark" ? "#fafafa" : "#18181b",
-		fontWeight: 600,
-	};
-
-	const zincStroke = theme === "dark" ? "#e4e4e7" : "#3f3f46";
-	const zincFillTop = theme === "dark" ? "#a1a1aa" : "#52525b";
+	const chartStroke = theme === "dark" ? "#a78bfa" : "#7c3aed";
 
 	return (
-		<div className="p-4 sm:p-6 mx-auto transition-all duration-100 ease-in">
+		<div className="mx-auto space-y-6 p-4 sm:p-6">
 			<SiteSeo
-				title="Indie Stripe CRM Demo – Contacts, Billing & CMS"
-				description="Stripe-ready indie hacker CRM demo: contact billing, subscriptions, payments, and CMS — frontend template with Stripe-shaped seed data."
+				title="Indie Stripe Revenue – Billing OS for SaaS founders"
+				description="MRR, failed charges, subscriptions, and Stripe-shaped customers — frontend CRM for indie hackers."
 				path="/demo"
-				keywords="Stripe CRM, indie hacker CRM, subscription CRM, contact billing, CMS template, Next.js Stripe"
+				keywords="Stripe CRM, indie hacker billing, MRR dashboard, failed payments, SaaS subscriptions"
 			/>
-			<div className="mb-6">
-				<h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-					Indie billing overview
-				</h1>
-				<p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-					MRR, subscriptions, and failed charges — Stripe-shaped demo data for indie hackers.
-				</p>
-			</div>
-			<div className="mb-6">
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-					<DashboardChartCard
-						icon={BarChart3}
-						title="MRR"
-						value={dashboardData.stats.sales}
-						subtitle="Monthly recurring revenue (demo)"
-						trend={
-							<TrendBadge positive={salesTrend >= 0}>
-								{salesTrend >= 0 ? "+" : ""}
-								{salesTrend} vs last month
-							</TrendBadge>
-						}
-					>
-						<ResponsiveContainer width="100%" height={210}>
-							<BarChart
-								data={sampleData}
-								margin={{ top: 8, right: 8, left: -18, bottom: 0 }}
-								barCategoryGap="28%"
-							>
-								<CartesianGrid
-									strokeDasharray="4 4"
-									className="stroke-zinc-200 dark:stroke-zinc-800"
-									vertical={false}
-								/>
-								<XAxis
-									dataKey="name"
-									stroke={CHART_MUTED}
-									fontSize={11}
-									tickLine={false}
-									axisLine={false}
-									dy={8}
-								/>
-								<YAxis
-									stroke={CHART_MUTED}
-									fontSize={11}
-									tickLine={false}
-									axisLine={false}
-									width={36}
-								/>
-								<Tooltip
-									contentStyle={chartTooltipStyle}
-									labelStyle={chartLabelStyle}
-									formatter={(value) => [value, "Sales"]}
-									cursor={{ fill: theme === "dark" ? "#27272a" : "#f4f4f5", radius: 6 }}
-								/>
-								<Bar dataKey="sales" radius={[6, 6, 0, 0]} maxBarSize={32}>
-									{sampleData.map((entry, index) => (
-										<Cell
-											key={entry.name}
-											fill={zincBarFill(theme, index === sampleData.length - 1)}
-										/>
-									))}
-								</Bar>
-							</BarChart>
-						</ResponsiveContainer>
-					</DashboardChartCard>
 
-					<DashboardChartCard
-						icon={DollarSign}
-						title="Failed charges"
-						value={dashboardData.stats.revenue}
-						subtitle="Payments needing retry (demo)"
-						trend={
-							<TrendBadge positive={revenueTrendPct >= 0}>
-								{revenueTrendPct >= 0 ? "+" : ""}
-								{revenueTrendPct}% vs last month
-							</TrendBadge>
-						}
+			<div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+				<div>
+					<div className="mb-2 flex flex-wrap items-center gap-2">
+						<h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+							Revenue
+						</h1>
+						<StripeDemoBadge />
+					</div>
+					<p className="text-sm text-zinc-500 dark:text-zinc-400">
+						Built for indie hackers billing on Stripe — customers, MRR, and
+						failed charges in one place.
+					</p>
+				</div>
+				<div className="flex flex-wrap gap-2">
+					<Button asChild variant="outline" size="sm" className="rounded-full">
+						<Link href="/contacts">
+							<a>Customers</a>
+						</Link>
+					</Button>
+					<Button asChild size="sm" className="rounded-full">
+						<Link href="/failed-payments">
+							<a className="inline-flex items-center gap-1.5">
+								Failed charges
+								<ArrowRight className="h-3.5 w-3.5" />
+							</a>
+						</Link>
+					</Button>
+				</div>
+			</div>
+
+			<StripeConnectBanner />
+
+			<div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+				{[
+					{
+						label: "MRR",
+						value: formatMoney(metrics.mrr),
+						hint: "Active + trialing + past due",
+						icon: DollarSign,
+					},
+					{
+						label: "Active subs",
+						value: String(metrics.active),
+						hint: `${metrics.trialing} trialing`,
+						icon: Repeat,
+					},
+					{
+						label: "Customers",
+						value: String(metrics.customers),
+						hint: "Stripe-shaped contacts",
+						icon: Users,
+					},
+					{
+						label: "Failed charges",
+						value: String(metrics.failed.length),
+						hint: "Needs retry / email",
+						icon: AlertTriangle,
+						danger: metrics.failed.length > 0,
+					},
+				].map((kpi) => (
+					<Card
+						key={kpi.label}
+						className={cn(
+							"border-zinc-200/80 shadow-sm dark:border-zinc-800",
+							kpi.danger && "border-red-200 dark:border-red-900/50"
+						)}
 					>
-						<ResponsiveContainer width="100%" height={210}>
-							<BarChart
-								data={sampleData}
-								margin={{ top: 8, right: 8, left: -18, bottom: 0 }}
-								barCategoryGap="28%"
+						<CardContent className="p-4">
+							<div className="flex items-start justify-between gap-2">
+								<p className="text-[11px] font-medium uppercase tracking-wide text-zinc-500">
+									{kpi.label}
+								</p>
+								<kpi.icon
+									className={cn(
+										"h-4 w-4",
+										kpi.danger
+											? "text-red-500"
+											: "text-zinc-400 dark:text-zinc-500"
+									)}
+								/>
+							</div>
+							<p
+								className={cn(
+									"mt-2 text-2xl font-bold tracking-tight",
+									kpi.danger
+										? "text-red-600 dark:text-red-400"
+										: "text-zinc-900 dark:text-zinc-50"
+								)}
 							>
+								{kpi.value}
+							</p>
+							<p className="mt-1 text-xs text-zinc-500">{kpi.hint}</p>
+						</CardContent>
+					</Card>
+				))}
+			</div>
+
+			<div className="grid gap-4 lg:grid-cols-5">
+				<Card className="border-zinc-200/80 shadow-sm dark:border-zinc-800 lg:col-span-3">
+					<CardHeader className="pb-2">
+						<CardTitle className="text-base">MRR trend</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<ResponsiveContainer width="100%" height={220}>
+							<AreaChart
+								data={SUBSCRIPTION_MRR_TREND}
+								margin={{ top: 8, right: 8, left: -18, bottom: 0 }}
+							>
+								<defs>
+									<linearGradient id="mrrFill" x1="0" y1="0" x2="0" y2="1">
+										<stop offset="0%" stopColor={chartStroke} stopOpacity={0.3} />
+										<stop offset="100%" stopColor={chartStroke} stopOpacity={0} />
+									</linearGradient>
+								</defs>
 								<CartesianGrid
 									strokeDasharray="4 4"
 									className="stroke-zinc-200 dark:stroke-zinc-800"
 									vertical={false}
 								/>
 								<XAxis
-									dataKey="name"
+									dataKey="month"
 									stroke={CHART_MUTED}
 									fontSize={11}
 									tickLine={false}
 									axisLine={false}
-									dy={8}
 								/>
 								<YAxis
 									stroke={CHART_MUTED}
 									fontSize={11}
 									tickLine={false}
 									axisLine={false}
-									tickFormatter={(v) => `$${v >= 1000 ? `${v / 1000}k` : v}`}
 									width={40}
 								/>
 								<Tooltip
-									contentStyle={chartTooltipStyle}
-									labelStyle={chartLabelStyle}
-									formatter={(value) => [
-										`$${Number(value).toLocaleString()}`,
-										"Revenue",
-									]}
-									cursor={{ fill: theme === "dark" ? "#27272a" : "#f4f4f5", radius: 6 }}
-								/>
-								<Bar dataKey="revenue" radius={[6, 6, 0, 0]} maxBarSize={32}>
-									{sampleData.map((entry, index) => (
-										<Cell
-											key={entry.name}
-											fill={zincBarFill(
-												theme,
-												index === sampleData.length - 1
-											)}
-										/>
-									))}
-								</Bar>
-							</BarChart>
-						</ResponsiveContainer>
-					</DashboardChartCard>
-
-					<DashboardChartCard
-						icon={TrendingUp}
-						title="Churn rate"
-						value={dashboardData.stats.conversionRate}
-						subtitle="Subscription churn over the last 6 months"
-						trend={
-							<TrendBadge positive={conversionTrend >= 0}>
-								{conversionTrend >= 0 ? "+" : ""}
-								{conversionTrend}% vs last month
-							</TrendBadge>
-						}
-					>
-						<ResponsiveContainer width="100%" height={210}>
-							<AreaChart
-								data={sampleData}
-								margin={{ top: 8, right: 8, left: -18, bottom: 0 }}
-							>
-								<defs>
-									<linearGradient id="conversionFill" x1="0" y1="0" x2="0" y2="1">
-										<stop offset="0%" stopColor={zincFillTop} stopOpacity={0.25} />
-										<stop offset="100%" stopColor={zincFillTop} stopOpacity={0} />
-									</linearGradient>
-								</defs>
-								<CartesianGrid
-									strokeDasharray="4 4"
-									className="stroke-zinc-200 dark:stroke-zinc-800"
-									vertical={false}
-								/>
-								<XAxis
-									dataKey="name"
-									stroke={CHART_MUTED}
-									fontSize={11}
-									tickLine={false}
-									axisLine={false}
-									dy={8}
-								/>
-								<YAxis
-									stroke={CHART_MUTED}
-									fontSize={11}
-									tickLine={false}
-									axisLine={false}
-									tickFormatter={(v) => `${v}%`}
-									domain={[0, 40]}
-									width={36}
-								/>
-								<Tooltip
-									contentStyle={chartTooltipStyle}
-									labelStyle={chartLabelStyle}
-									formatter={(value) => [`${value}%`, "Conversion"]}
-									cursor={{
-										stroke: theme === "dark" ? "#52525b" : "#d4d4d8",
-										strokeWidth: 1,
+									contentStyle={{
+										borderRadius: 12,
+										border: "1px solid #e4e4e7",
+										fontSize: 12,
 									}}
+									formatter={(value) => [formatMoney(value), "MRR"]}
 								/>
 								<Area
 									type="monotone"
-									dataKey="conversion"
-									stroke={zincStroke}
-									strokeWidth={2.5}
-									fill="url(#conversionFill)"
-									dot={{
-										fill: theme === "dark" ? "#18181b" : "#ffffff",
-										stroke: zincStroke,
-										strokeWidth: 2,
-										r: 3.5,
-									}}
-									activeDot={{
-										r: 5,
-										fill: theme === "dark" ? "#fafafa" : "#18181b",
-										stroke: theme === "dark" ? "#18181b" : "#ffffff",
-										strokeWidth: 2,
-									}}
-								/>
-							</AreaChart>
-						</ResponsiveContainer>
-					</DashboardChartCard>
-				</div>
-			</div>
-			<Button
-				variant="link"
-				className="h-auto p-0 gap-2 hover:underline"
-				onClick={() => router.push("/leads")}
-			>
-				Leads
-				<ExternalLink size={18} className="text-muted-foreground" />
-			</Button>
-			<div className="space-y-4 my-2">
-				{/* Recent Leads Table */}
-				<Card className="overflow-hidden w-full">
-					<CardHeader className="flex flex-row items-center justify-between border-b px-6 py-4">
-						<div>
-							<CardTitle className="text-lg">Recent Leads</CardTitle>
-							<CardDescription>
-								View and manage your recent leads
-							</CardDescription>
-						</div>
-						<Button
-							variant="ghost"
-							size="sm"
-							onClick={() => router.push("/leads")}
-						>
-							View all
-						</Button>
-					</CardHeader>
-					<Table className="w-full">
-							<TableHeader className={`${colors.muted} border-b ${colors.border}`}>
-								<TableRow>
-									<TableHead
-										className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider cursor-pointer ${colors.hover}`}
-										onClick={() => requestSort("name")}
-									>
-										<div className="flex items-center gap-2">
-											User Info
-											{sortConfig?.key === "name" && (
-												<>
-													{sortConfig.direction === "ascending" ? (
-														<ChevronUp className="w-4 h-4" />
-													) : (
-														<ChevronDown className="w-4 h-4" />
-													)}
-												</>
-											)}
-										</div>
-									</TableHead>
-									<TableHead
-										className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
-									>
-										Email
-									</TableHead>
-									<TableHead
-										className={`px-6 py-3 text-left text-xs font-medium ${colors.mutedForeground} uppercase tracking-wider`}
-									>
-										Actions
-									</TableHead>
-								</TableRow>
-							</TableHeader>
-							<TableBody className={`${colors.card} divide-y ${colors.border}`}>
-								{sortedLeads.length === 0 ? (
-									<TableRow>
-										<TableCell colSpan="3" className="px-6 py-12 text-center">
-											<p className={colors.mutedForeground}>No leads found</p>
-										</TableCell>
-									</TableRow>
-								) : (
-									sortedLeads.map((lead) => (
-										<TableRow
-											key={lead.id}
-											className={`${colors.hover} transition-colors`}
-										>
-											<TableCell className="px-6 py-4 whitespace-nowrap">
-												<div className="flex items-center gap-3">
-													<img
-														src={lead.image}
-														alt={lead.name}
-														className="w-10 h-10 rounded-full border-2 border-zinc-200"
-													/>
-													<div
-														className={`text-sm font-medium ${colors.foreground}`}
-													>
-														{lead.name}
-													</div>
-												</div>
-											</TableCell>
-											<TableCell className="px-6 py-4 whitespace-nowrap">
-												<div className={`text-sm ${colors.textSecondary}`}>
-													{lead.email}
-												</div>
-											</TableCell>
-											<TableCell className="px-6 py-4 whitespace-nowrap">
-												<div className="flex items-center gap-1">
-													<Button variant="ghost" size="icon" title="Call">
-														<Phone size={16} />
-													</Button>
-													<Button variant="ghost" size="icon" title="Message">
-														<MessageCircle size={16} />
-													</Button>
-													<Button variant="ghost" size="icon" title="View">
-														<Eye size={16} />
-													</Button>
-													<Button variant="ghost" size="icon" title="Edit">
-														<Pen size={16} />
-													</Button>
-													<Button
-														variant="ghost"
-														size="icon"
-														title="Delete"
-														onClick={() =>
-															toast.info(`Removing lead: ${lead.id}`)
-														}
-													>
-														<Trash size={16} />
-													</Button>
-												</div>
-											</TableCell>
-										</TableRow>
-									))
-								)}
-							</TableBody>
-						</Table>
-				</Card>
-
-				{/* Total Leads Chart */}
-				<Card className={cn(CHART_CARD, "w-full")}>
-					<CardContent className="p-5 sm:p-6">
-						<div className="mb-1 flex flex-wrap items-start justify-between gap-3">
-							<div className="flex items-center gap-3">
-								<div className={ICON_BOX}>
-									<Users
-										className="h-5 w-5 text-zinc-700 dark:text-zinc-300"
-										strokeWidth={1.75}
-									/>
-								</div>
-								<div>
-									<p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-										Active subscriptions
-									</p>
-									<p className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-										{dashboardData.stats.totalLeads}
-									</p>
-								</div>
-							</div>
-							<TrendBadge positive={leadsTrend >= 0}>
-								{leadsTrend >= 0 ? "+" : ""}
-								{leadsTrend} vs last month
-							</TrendBadge>
-						</div>
-						<p className="mb-4 text-xs text-zinc-500">
-							Inbound lead volume across all channels
-						</p>
-						<ResponsiveContainer width="100%" height={320}>
-							<AreaChart
-								data={sampleData}
-								margin={{ top: 8, right: 12, left: -12, bottom: 0 }}
-							>
-								<defs>
-									<linearGradient id="leadsFill" x1="0" y1="0" x2="0" y2="1">
-										<stop offset="0%" stopColor={zincFillTop} stopOpacity={0.3} />
-										<stop offset="100%" stopColor={zincFillTop} stopOpacity={0} />
-									</linearGradient>
-								</defs>
-								<CartesianGrid
-									strokeDasharray="4 4"
-									className="stroke-zinc-200 dark:stroke-zinc-800"
-									vertical={false}
-								/>
-								<XAxis
-									dataKey="name"
-									stroke={CHART_MUTED}
-									fontSize={11}
-									tickLine={false}
-									axisLine={false}
-									dy={8}
-								/>
-								<YAxis
-									stroke={CHART_MUTED}
-									fontSize={11}
-									tickLine={false}
-									axisLine={false}
-									width={36}
-								/>
-								<Tooltip
-									contentStyle={chartTooltipStyle}
-									labelStyle={chartLabelStyle}
-									formatter={(value) => [value, "Leads"]}
-									cursor={{
-										stroke: theme === "dark" ? "#52525b" : "#d4d4d8",
-										strokeWidth: 1,
-									}}
-								/>
-								<Area
-									type="monotone"
-									dataKey="leads"
-									stroke={zincStroke}
-									strokeWidth={2.5}
-									fill="url(#leadsFill)"
-									dot={{
-										fill: theme === "dark" ? "#18181b" : "#ffffff",
-										stroke: zincStroke,
-										strokeWidth: 2,
-										r: 3.5,
-									}}
-									activeDot={{
-										r: 5,
-										fill: theme === "dark" ? "#fafafa" : "#18181b",
-										stroke: theme === "dark" ? "#18181b" : "#ffffff",
-										strokeWidth: 2,
-									}}
+									dataKey="mrr"
+									stroke={chartStroke}
+									fill="url(#mrrFill)"
+									strokeWidth={2}
 								/>
 							</AreaChart>
 						</ResponsiveContainer>
 					</CardContent>
 				</Card>
-			</div>
 
-			{/* Quick Stats Cards */}
-			<div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-4">
-				<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300">
-					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-blue-600/10 rounded-full blur-2xl"></div>
-					<CardContent className="relative p-6">
-						<div className="flex items-center justify-between mb-2">
-							<div className="p-2 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-sm border border-blue-500/20">
-								<Target className="text-blue-500" size={20} />
-							</div>
+				<Card className="border-zinc-200/80 shadow-sm dark:border-zinc-800 lg:col-span-2">
+					<CardHeader className="pb-2">
+						<div className="flex items-center justify-between gap-2">
+							<CardTitle className="text-base">Renewals (14 days)</CardTitle>
+							<Badge variant="secondary">{metrics.renewals.length}</Badge>
 						</div>
-						<p className="text-2xl font-bold">142</p>
-						<p className="text-sm text-muted-foreground mt-1">
-							Active Deals
-						</p>
-					</CardContent>
-				</Card>
-
-				<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300">
-					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-purple-600/10 rounded-full blur-2xl"></div>
-					<CardContent className="relative p-6">
-						<div className="flex items-center justify-between mb-2">
-							<div className="p-2 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 backdrop-blur-sm border border-purple-500/20">
-								<FileText className="text-purple-500" size={20} />
-							</div>
-						</div>
-						<p className="text-2xl font-bold">28</p>
-						<p className="text-sm text-muted-foreground mt-1">
-							Pending Invoices
-						</p>
-					</CardContent>
-				</Card>
-
-				<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300">
-					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-green-400/20 to-green-600/10 rounded-full blur-2xl"></div>
-					<CardContent className="relative p-6">
-						<div className="flex items-center justify-between mb-2">
-							<div className="p-2 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-sm border border-green-500/20">
-								<CheckCircle2 className="text-green-500" size={20} />
-							</div>
-						</div>
-						<p className="text-2xl font-bold">89%</p>
-						<p className="text-sm text-muted-foreground mt-1">Win Rate</p>
-					</CardContent>
-				</Card>
-
-				<Card className="relative overflow-hidden hover:shadow-xl transition-all duration-300">
-					<div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-orange-400/20 to-orange-600/10 rounded-full blur-2xl"></div>
-					<CardContent className="relative p-6">
-						<div className="flex items-center justify-between mb-2">
-							<div className="p-2 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 backdrop-blur-sm border border-orange-500/20">
-								<Activity className="text-orange-500" size={20} />
-							</div>
-						</div>
-						<p className="text-2xl font-bold">1.2K</p>
-						<p className="text-sm text-muted-foreground mt-1">
-							Monthly Visits
-						</p>
+					</CardHeader>
+					<CardContent className="space-y-2">
+						{metrics.renewals.length === 0 ? (
+							<p className="text-sm text-zinc-500">No renewals in the next 2 weeks.</p>
+						) : (
+							metrics.renewals.slice(0, 5).map((sub) => (
+								<div
+									key={sub.id}
+									className="flex items-center justify-between rounded-xl border border-zinc-100 px-3 py-2 dark:border-zinc-800"
+								>
+									<div className="min-w-0">
+										<p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-50">
+											{sub.customerName}
+										</p>
+										<p className="truncate text-xs text-zinc-500">
+											{sub.planName} ·{" "}
+											{new Date(sub.currentPeriodEnd).toLocaleDateString()}
+										</p>
+									</div>
+									<span className="shrink-0 text-sm font-semibold">
+										{formatMoney(sub.mrr)}
+									</span>
+								</div>
+							))
+						)}
 					</CardContent>
 				</Card>
 			</div>
 
-			{/* Recent Activity & Upcoming Meetings */}
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-				{/* Recent Activity */}
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between">
-						<div>
-							<CardTitle className="text-lg">Recent Activity</CardTitle>
-							<CardDescription>
-								Latest updates and actions
-							</CardDescription>
-						</div>
-						<Bell className="text-muted-foreground" size={20} />
-					</CardHeader>
-					<CardContent>
-						<div className="space-y-4">
-						{[
-							{
-								icon: UserPlus,
-								iconColor: "text-blue-500",
-								bgColor: "bg-blue-500/10",
-								title: "New lead added",
-								description: "Alice Brown was added to the system",
-								time: "2 hours ago",
-							},
-							{
-								icon: FileText,
-								iconColor: "text-green-500",
-								bgColor: "bg-green-500/10",
-								title: "Invoice created",
-								description: "Invoice #INV-2024-001 was created",
-								time: "4 hours ago",
-							},
-							{
-								icon: CheckCircle2,
-								iconColor: "text-purple-500",
-								bgColor: "bg-purple-500/10",
-								title: "Deal closed",
-								description: "Deal with Tech Corp was successfully closed",
-								time: "6 hours ago",
-							},
-							{
-								icon: MessageCircle,
-								iconColor: "text-orange-500",
-								bgColor: "bg-orange-500/10",
-								title: "New message",
-								description: "You received a message from John Doe",
-								time: "1 day ago",
-							},
-						].map((activity, index) => {
-							const Icon = activity.icon;
-							return (
-								<div
-									key={index}
-									className={`flex items-start gap-3 p-3 rounded-xl ${colors.hoverSecondary} transition-colors`}
-								>
-									<div
-										className={`p-2 rounded-xl ${activity.bgColor} ${activity.iconColor}`}
-									>
-										<Icon size={18} />
-									</div>
-									<div className="flex-1">
-										<p className="text-sm font-medium">
-											{activity.title}
-										</p>
-										<p className="text-xs text-muted-foreground mt-0.5">
-											{activity.description}
-										</p>
-										<p className="text-xs text-muted-foreground/70 mt-1">
-											{activity.time}
-										</p>
-									</div>
-								</div>
-							);
-						})}
+			<Card className="border-zinc-200/80 shadow-sm dark:border-zinc-800">
+				<CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2 space-y-0 pb-3">
+					<div>
+						<CardTitle className="flex items-center gap-2 text-base">
+							<AlertTriangle className="h-4 w-4 text-red-500" />
+							Failed charges queue
+						</CardTitle>
+						<p className="mt-1 text-xs text-zinc-500">
+							The workflow indie hackers leave Stripe Dashboard for — retry or email the customer.
+						</p>
 					</div>
-					</CardContent>
-				</Card>
-
-				{/* Upcoming Meetings */}
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between">
-						<div>
-							<CardTitle className="text-lg">Upcoming Meetings</CardTitle>
-							<CardDescription>
-								Your scheduled meetings and events
-							</CardDescription>
-						</div>
-						<Calendar className="text-muted-foreground" size={20} />
-					</CardHeader>
-					<CardContent>
-						<div className="space-y-3">
-						{dashboardData.upcomingMeetings
-							.slice(0, 5)
-							.map((meeting, index) => (
-								<div
-									key={index}
-									className={cn(
-										"flex items-center justify-between p-3 rounded-xl transition-colors border",
-										colors.hoverSecondary
-									)}
-								>
-									<div className="flex items-center gap-3 flex-1">
-										<div
-											className={`p-2 rounded-xl ${
-												meeting.iconType === "up"
-													? "bg-blue-500/10 text-blue-500"
-													: "bg-purple-500/10 text-purple-500"
-											}`}
-										>
-											{meeting.iconType === "up" ? (
-												<ChevronUp size={16} />
-											) : (
-												<ChevronDown size={16} />
-											)}
-										</div>
-										<div className="flex-1 min-w-0">
-											<p className="text-sm font-medium truncate">
-												{meeting.title}
-											</p>
-											<p className="text-xs text-muted-foreground mt-0.5">
-												{meeting.contact}
-											</p>
-										</div>
-									</div>
-									<div className="text-right">
-										<p className="text-xs font-medium">
-											{new Date(meeting.date).toLocaleDateString("en-US", {
-												month: "short",
-												day: "numeric",
-											})}
-										</p>
-										<p className="text-xs text-muted-foreground/70 mt-0.5">
-											{new Date(meeting.date).toLocaleDateString("en-US", {
-												weekday: "short",
-											})}
-										</p>
-									</div>
-								</div>
-							))}
-					</div>
-					<Button
-						variant="ghost"
-						className="w-full mt-4"
-						onClick={() => router.push("/tasks")}
-					>
-						View all meetings
+					<Button asChild size="sm" variant="outline" className="rounded-full">
+						<Link href="/failed-payments">
+							<a>Open queue</a>
+						</Link>
 					</Button>
-					</CardContent>
-				</Card>
-			</div>
-
-			{/* Quick Actions */}
-			<Card className="my-4">
-				<CardHeader>
-					<CardTitle className="text-lg">Quick Actions</CardTitle>
-					<CardDescription>
-						Common tasks and shortcuts
-					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-					{[
-						{
-							icon: UserPlus,
-							label: "Add Lead",
-							color: "blue",
-							route: "/leads",
-						},
-						{
-							icon: FileText,
-							label: "Create Invoice",
-							color: "green",
-							route: "/invoices",
-						},
-						{
-							icon: Calendar,
-							label: "Schedule Meeting",
-							color: "purple",
-							route: "/tasks",
-						},
-						{
-							icon: DollarSign,
-							label: "Add Payment",
-							color: "orange",
-							route: "/payments",
-						},
-					].map((action, index) => {
-						const Icon = action.icon;
-						const colorClasses = {
-							blue: "bg-blue-500/10 text-blue-500 border-blue-500/20",
-							green: "bg-green-500/10 text-green-500 border-green-500/20",
-							purple: "bg-purple-500/10 text-purple-500 border-purple-500/20",
-							orange: "bg-orange-500/10 text-orange-500 border-orange-500/20",
-						};
-						return (
-							<Button
-								key={index}
-								variant="outline"
-								onClick={() => router.push(action.route)}
-								className={cn(
-									"flex h-auto flex-col items-center gap-4 p-4 rounded-xl border",
-									colorClasses[action.color],
-									"transition-all duration-200 hover:scale-105"
-								)}
-							>
-								<Icon size={24} />
-								<span className="text-xs font-medium">
-									{action.label}
-								</span>
-							</Button>
-						);
-					})}
-				</div>
+					{metrics.failed.length === 0 ? (
+						<p className="text-sm text-zinc-500">No failed charges in demo seed.</p>
+					) : (
+						<Table>
+							<TableHeader>
+								<TableRow>
+									<TableHead>Customer</TableHead>
+									<TableHead>Charge</TableHead>
+									<TableHead>Amount</TableHead>
+									<TableHead>Date</TableHead>
+									<TableHead className="text-right">Actions</TableHead>
+								</TableRow>
+							</TableHeader>
+							<TableBody>
+								{metrics.failed.map((pay) => (
+									<TableRow key={pay.id}>
+										<TableCell>
+											<div>
+												<p className="font-medium">{pay.customer}</p>
+												<p className="text-xs text-zinc-500">{pay.customerEmail}</p>
+											</div>
+										</TableCell>
+										<TableCell className="font-mono text-xs">
+											{pay.transactionId}
+										</TableCell>
+										<TableCell className="font-semibold text-red-600 dark:text-red-400">
+											{formatMoney(pay.amount)}
+										</TableCell>
+										<TableCell className="text-zinc-500">{pay.date}</TableCell>
+										<TableCell className="text-right">
+											<div className="flex justify-end gap-1">
+												<Button
+													size="sm"
+													variant="outline"
+													className="h-8"
+													onClick={() =>
+														toast.message("Demo only — retry via Stripe later")
+													}
+												>
+													<RefreshCw className="mr-1 h-3.5 w-3.5" />
+													Retry
+												</Button>
+												{pay.contactId ? (
+													<Button asChild size="sm" variant="ghost" className="h-8">
+														<Link href={`/contacts/${pay.contactId}`}>
+															<a>Customer</a>
+														</Link>
+													</Button>
+												) : null}
+											</div>
+										</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					)}
 				</CardContent>
 			</Card>
 
-			<div className="flex items-start justify-start">
-				<div className="grid w-full md:w-full grid-cols-1 md:grid-cols-4 gap-4 my-4">
-					{dashboardData.moduleStats.map((item, index) => {
-						const iconMap = {
-							calendar: Calendar,
-							activity: Activity,
-							file: FileText,
-							dollar: DollarSign,
-							target: Target,
-							bell: Bell,
-							user: UserPlus,
-							check: CheckCircle2,
-						};
-						const Icon = iconMap[item.icon] || Activity;
-
-						return (
-							<Card key={index} className="p-4">
-								<div className="flex items-start justify-between">
-									<div>
-										<p className="text-sm text-muted-foreground">{item.title}</p>
-										<p className="text-2xl font-semibold mt-1">
-											{item.value}
-										</p>
-										<p className="text-xs text-muted-foreground/70 mt-1">
-											{item.description}
-										</p>
-									</div>
-									<div className="h-10 w-10 rounded-xl border flex items-center justify-center">
-										<Icon size={18} />
-									</div>
-								</div>
-								<Button
-									variant="ghost"
-									size="sm"
-									onClick={() => router.push(item.route)}
-									className="mt-4 gap-2"
-								>
-									View details
-									<ArrowRight size={14} />
-								</Button>
-							</Card>
-						);
-					})}
-				</div>
+			<div className="grid gap-3 sm:grid-cols-3">
+				{[
+					{
+						href: "/subscriptions/plans",
+						title: "Plans & prices",
+						desc: "Stripe Products with price_… IDs",
+						icon: CreditCard,
+					},
+					{
+						href: "/subscriptions",
+						title: "Subscriptions",
+						desc: "Active, trialing, past due",
+						icon: Repeat,
+					},
+					{
+						href: "/payments",
+						title: "All charges",
+						desc: "ch_… history across customers",
+						icon: DollarSign,
+					},
+				].map((item) => (
+					<Link key={item.href} href={item.href} passHref>
+						<a className="block rounded-2xl border border-zinc-200 p-4 transition hover:border-violet-300 hover:bg-violet-50/40 dark:border-zinc-800 dark:hover:border-violet-800 dark:hover:bg-violet-950/20">
+							<item.icon className="mb-2 h-4 w-4 text-violet-600 dark:text-violet-400" />
+							<p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+								{item.title}
+							</p>
+							<p className="mt-0.5 text-xs text-zinc-500">{item.desc}</p>
+						</a>
+					</Link>
+				))}
 			</div>
 		</div>
 	);
-};
-
-export default Home;
+}
