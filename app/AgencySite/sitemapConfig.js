@@ -15,6 +15,21 @@ export const SITEMAP_GROUPS = [
 		],
 	},
 	{
+		title: "Blog",
+		description: "SEO notes on CRM, admin dashboards, and shipping faster.",
+		links: [
+			{ label: "All posts", href: "/blog" },
+			{
+				label: "Why your business needs a CRM",
+				href: "/blog/why-your-business-needs-a-crm",
+			},
+			{
+				label: "Why I keep building CRM templates",
+				href: "/blog/why-i-keep-building-crm-templates",
+			},
+		],
+	},
+	{
 		title: "Dashboard & insights",
 		description: "Overview, analytics, reporting, and activity screens.",
 		links: [
