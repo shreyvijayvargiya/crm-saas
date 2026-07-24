@@ -132,6 +132,33 @@ export default function AgencyFooter() {
 					</a>
 				</Link>
 			</div>
+
+			<div className="flex flex-wrap items-center justify-center gap-3 pb-2 pt-2">
+				<a
+					href="https://startupbase.io/products/saascrm?utm_source=startupbase&utm_medium=badge&utm_campaign=featured-badge-light"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<img
+						src="https://statics.startupbase.io/site/badges/featured-on-sb.svg"
+						alt="Featured on StartupBase"
+						height={55}
+						style={{ height: 55, width: "auto" }}
+					/>
+				</a>
+				<a
+					href="https://www.producthunt.com/products/crm-for-businesses?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-crm-for-businesses"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<img
+						alt="CRM for Businesses - SAASCRM helps to build CRM and Admin Dashboard for startups | Product Hunt"
+						width={250}
+						height={54}
+						src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1202657&theme=light&t=1784892254321"
+					/>
+				</a>
+			</div>
 		</footer>
 	);
 }
