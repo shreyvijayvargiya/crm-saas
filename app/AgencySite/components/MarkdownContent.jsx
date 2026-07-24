@@ -55,9 +55,8 @@ export default function MarkdownContent({ content, isLight = true, className }) 
 					h2: ({ children }) => (
 						<h2
 							className={cn(
-								"mt-10 scroll-mt-24 border-b pb-2 text-2xl font-semibold tracking-tight",
-								prose.heading,
-								prose.border
+								"mt-10 scroll-mt-24 text-2xl font-semibold tracking-tight",
+								prose.heading
 							)}
 						>
 							{children}

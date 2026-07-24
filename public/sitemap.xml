@@ -41,6 +41,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://saascrm.site/blog/why-i-keep-building-crm-templates</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://saascrm.site/sitemap</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
