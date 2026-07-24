@@ -6,6 +6,7 @@ export const SITEMAP_GROUPS = [
 			{ label: "Home", href: "/" },
 			{ label: "AI CRM Builder", href: "/blueprint" },
 			{ label: "CRM Admin Composer", href: "/admin-builder" },
+			{ label: "Blog", href: "/blog" },
 			{ label: "Live CRM demo", href: "/demo" },
 			{ label: "Pricing", href: "/pricing" },
 			{ label: "FAQ", href: "/faq" },

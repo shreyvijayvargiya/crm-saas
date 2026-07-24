@@ -31,6 +31,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://saascrm.site/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/why-your-business-needs-a-crm</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://saascrm.site/sitemap</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

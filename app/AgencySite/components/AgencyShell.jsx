@@ -6,8 +6,14 @@ import AgencyVideoPhone from "./AgencyVideoPhone";
 import AgencyFooter from "./AgencyFooter";
 import { GravityStarsBackground } from "@/src/components/animate-ui/components/backgrounds/gravity-stars";
 
-function AgencyShellInner({ children, className, wide = false }) {
+function AgencyShellInner({ children, className, wide = false, size }) {
 	const { isLight } = useAgencyTheme();
+	const maxWidthClass =
+		size === "article"
+			? "max-w-4xl"
+			: wide || size === "wide"
+				? "max-w-7xl"
+				: "max-w-3xl";
 
 	return (
 		<div
@@ -31,7 +37,7 @@ function AgencyShellInner({ children, className, wide = false }) {
 			<div
 				className={cn(
 					"relative z-10 mx-auto flex min-h-screen flex-col px-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-20 sm:px-6 sm:pb-28 sm:pt-20",
-					wide ? "max-w-7xl" : "max-w-3xl"
+					maxWidthClass
 				)}
 			>
 				{children}
@@ -44,10 +50,10 @@ function AgencyShellInner({ children, className, wide = false }) {
 	);
 }
 
-export default function AgencyShell({ children, className, wide = false }) {
+export default function AgencyShell({ children, className, wide = false, size }) {
 	return (
 		<AgencyThemeProvider>
-			<AgencyShellInner className={className} wide={wide}>
+			<AgencyShellInner className={className} wide={wide} size={size}>
 				{children}
 			</AgencyShellInner>
 		</AgencyThemeProvider>

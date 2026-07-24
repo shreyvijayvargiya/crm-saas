@@ -40,6 +40,7 @@ export default function SiteSeo({
 	path = "/",
 	keywords,
 	images = CRM_SOCIAL_IMAGES,
+	type = "website",
 }) {
 	const canonical = `${SITE_URL}${path === "/" ? "" : path}`;
 	const primaryImage = `${SITE_URL}${images[0].path}`;
@@ -52,7 +53,7 @@ export default function SiteSeo({
 			<meta name="robots" content="index, follow, max-image-preview:large" />
 			<link rel="canonical" href={canonical} />
 
-			<meta property="og:type" content="website" />
+			<meta property="og:type" content={type} />
 			<meta property="og:site_name" content="SaaSCRM" />
 			<meta property="og:locale" content="en_US" />
 			<meta property="og:title" content={title} />

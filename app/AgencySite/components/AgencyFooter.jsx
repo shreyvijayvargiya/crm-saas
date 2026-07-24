@@ -8,6 +8,7 @@ import { useAgencyTheme } from "../AgencyThemeContext";
 const FOOTER_LINKS = [
 	{ label: "Home", href: "/" },
 	{ label: "AI CRM Builder", href: "/blueprint", featured: true },
+	{ label: "Blog", href: "/blog" },
 	{ label: "Live demo", href: "/demo" },
 	{ label: "Pricing", href: "/pricing" },
 	{ label: "FAQ", href: "/faq" },
