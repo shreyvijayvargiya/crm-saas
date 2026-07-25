@@ -36,6 +36,7 @@ import {
 	getSearchNavItems,
 	groupSearchNavItems,
 } from "../navConfig";
+import { useCrmVertical } from "../../utils/CrmVerticalContext";
 
 const iconBtnClass =
 	"h-9 w-9 shrink-0 rounded-xl border border-border bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground";
@@ -51,8 +52,9 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 
 	const { theme, toggleTheme } = useTheme();
 	const { open: customizerOpen, toggleCustomizer } = useThemeCustomizer();
+	const { navCategories } = useCrmVertical();
 
-	const searchNavItems = getSearchNavItems();
+	const searchNavItems = getSearchNavItems(navCategories);
 
 	const handleKeyDown = (event) => {
 		if ((event.ctrlKey || event.metaKey) && event.key === "k") {
@@ -100,7 +102,7 @@ const Navbar = ({ open, setOpen, setDrawerOpen, aiChatOpen, onToggleAiChat }) =>
 	};
 
 	const filteredNavItems = filterSearchNavItems(searchNavItems, searchTerm);
-	const groupedFilteredNavItems = groupSearchNavItems(filteredNavItems);
+	const groupedFilteredNavItems = groupSearchNavItems(filteredNavItems, navCategories);
 
 	const searchModal =
 		searchModalOpen && typeof document !== "undefined"

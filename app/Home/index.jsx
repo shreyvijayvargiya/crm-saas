@@ -361,7 +361,7 @@ const Home = () => {
 			<SiteSeo
 				title="Live AI CRM Demo – Dashboard, Sales, Analytics & CMS | SaaSCRM"
 				description="Explore the live SaaSCRM demo with leads, deals, analytics, reports, tasks, content scheduling, CMS, and an AI chatbot in a customizable Next.js dashboard."
-				path="/demo"
+				path="/dashboard"
 				keywords="live CRM demo, AI CRM dashboard, Next.js admin dashboard demo, sales CRM demo, CRM analytics, SaaS dashboard, CMS demo"
 			/>
 			<div className="mb-6">

@@ -4,6 +4,7 @@ import LayoutWrapper from "../modules/Layout";
 import { ThemeProvider } from "../utils/ThemeContext";
 import { ThemeCustomizerProvider } from "../utils/ThemeCustomizerContext";
 import { CrmDataProvider } from "../utils/CrmDataContext";
+import { CrmVerticalProvider } from "../utils/CrmVerticalContext";
 import { AIChatProvider } from "../utils/AIChatContext";
 import "tailwindcss/tailwind.css";
 import "../globals.css";
@@ -15,6 +16,7 @@ function MyApp({ Component, pageProps }) {
 		<ThemeProvider>
 			<ThemeCustomizerProvider>
 				<CrmDataProvider>
+				<CrmVerticalProvider>
 				<AIChatProvider>
 				{skipLayout ? (
 					<>
@@ -28,6 +30,7 @@ function MyApp({ Component, pageProps }) {
 					</LayoutWrapper>
 				)}
 				</AIChatProvider>
+				</CrmVerticalProvider>
 				</CrmDataProvider>
 			</ThemeCustomizerProvider>
 		</ThemeProvider>

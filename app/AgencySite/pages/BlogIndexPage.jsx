@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LayoutGrid, LayoutList } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SiteSeo from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
@@ -17,8 +17,53 @@ function formatDate(iso) {
 	});
 }
 
+function ViewToggle({ view, onChange, isLight }) {
+	const options = [
+		{ id: "list", label: "List view", icon: LayoutList },
+		{ id: "grid", label: "Grid view", icon: LayoutGrid },
+	];
+
+	return (
+		<div
+			className={cn(
+				"inline-flex items-center gap-0.5 rounded-xl border p-0.5",
+				isLight ? "border-zinc-200 bg-white/80" : "border-zinc-700 bg-zinc-950"
+			)}
+			role="group"
+			aria-label="Blog layout"
+		>
+			{options.map(({ id, label, icon: Icon }) => {
+				const active = view === id;
+				return (
+					<button
+						key={id}
+						type="button"
+						onClick={() => onChange(id)}
+						aria-label={label}
+						aria-pressed={active}
+						className={cn(
+							"inline-flex h-8 w-8 items-center justify-center rounded-xl transition-colors",
+							active
+								? isLight
+									? "bg-zinc-200 text-zinc-900"
+									: "bg-zinc-800 text-zinc-200"
+								: isLight
+									? "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-800"
+									: "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100"
+						)}
+					>
+						<Icon className="h-4 w-4" />
+					</button>
+				);
+			})}
+		</div>
+	);
+}
+
 function BlogIndexContent({ posts }) {
 	const { isLight } = useAgencyTheme();
+	const [view, setView] = useState("list");
+	const isGrid = view === "grid";
 
 	return (
 		<>
@@ -30,14 +75,17 @@ function BlogIndexContent({ posts }) {
 			/>
 
 			<header className="mb-10">
-				<p
-					className={cn(
-						"text-xs font-medium uppercase tracking-wider",
-						isLight ? "text-violet-700" : "text-violet-300"
-					)}
-				>
-					Blog
-				</p>
+				<div className="flex items-center justify-between gap-3">
+					<p
+						className={cn(
+							"text-xs font-medium uppercase tracking-wider",
+							isLight ? "text-violet-700" : "text-violet-300"
+						)}
+					>
+						Blog
+					</p>
+					<ViewToggle view={view} onChange={setView} isLight={isLight} />
+				</div>
 				<h1
 					className={cn(
 						"mt-2 text-3xl font-bold tracking-tight sm:text-4xl",
@@ -52,25 +100,35 @@ function BlogIndexContent({ posts }) {
 						isLight ? "text-zinc-600" : "text-zinc-400"
 					)}
 				>
-					Markdown posts from the SaaSCRM team — practical, SEO-ready writing for
-					founders building online businesses.
+					Blog posts from the SaaSCRM team — practical tips for founders, indie-hackers, and SaaS agencies.
 				</p>
 			</header>
 
-			<ul className="space-y-6">
+			<ul
+				className={cn(
+					isGrid
+						? "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+						: "flex flex-col space-y-6"
+				)}
+			>
 				{posts.map((post) => (
-					<li key={post.slug}>
+					<li key={post.slug} className={isGrid ? "h-full" : undefined}>
 						<Link href={`/blog/${post.slug}`} passHref>
 							<a
 								className={cn(
-									"group block overflow-hidden rounded-2xl border transition-colors",
+									"group block h-full overflow-hidden rounded-2xl border transition-colors",
 									isLight
 										? "border-zinc-200 bg-white/70 hover:border-zinc-300"
 										: "border-zinc-800 bg-zinc-950/50 hover:border-zinc-700"
 								)}
 							>
 								{post.meta.image ? (
-									<div className="aspect-[2.2/1] overflow-hidden">
+									<div
+										className={cn(
+											"overflow-hidden",
+											isGrid ? "aspect-[16/10]" : "aspect-[2.2/1]"
+										)}
+									>
 										{/* eslint-disable-next-line @next/next/no-img-element */}
 										<img
 											src={post.meta.image}
@@ -79,14 +137,15 @@ function BlogIndexContent({ posts }) {
 										/>
 									</div>
 								) : null}
-								<div className="p-5 sm:p-6">
+								<div className={cn(isGrid ? "p-4" : "p-5 sm:p-6")}>
 									<p className="text-xs text-zinc-500">
 										{formatDate(post.meta.date)}
 										{post.meta.author ? ` · ${post.meta.author}` : ""}
 									</p>
 									<h2
 										className={cn(
-											"mt-2 text-xl font-semibold tracking-tight group-hover:underline group-hover:underline-offset-4",
+											"mt-2 font-semibold tracking-tight group-hover:underline group-hover:underline-offset-4",
+											isGrid ? "text-base" : "text-xl",
 											isLight ? "text-zinc-900" : "text-zinc-50"
 										)}
 									>
@@ -123,7 +182,7 @@ function BlogIndexContent({ posts }) {
 
 export default function BlogIndexPage({ posts = [] }) {
 	return (
-		<AgencyShell size="article">
+		<AgencyShell size="wide">
 			<BlogIndexContent posts={posts} />
 		</AgencyShell>
 	);

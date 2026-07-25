@@ -12,7 +12,7 @@ function AgencyShellInner({ children, className, wide = false, size }) {
 		size === "article"
 			? "max-w-4xl"
 			: wide || size === "wide"
-				? "max-w-7xl"
+				? "max-w-5xl"
 				: "max-w-3xl";
 
 	return (

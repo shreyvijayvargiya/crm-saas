@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as lucideIcons from "lucide-react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "../../utils/useTheme";
+import { useCrmVertical } from "../../utils/CrmVerticalContext";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -13,14 +14,50 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { navCategories } from "../navConfig";
+
+function isItemActive(router, item) {
+	const pathOnly = (item.route || "").split("?")[0];
+	if (pathOnly === "/subscriptions") {
+		return (
+			router.pathname === "/subscriptions" ||
+			(router.pathname.startsWith("/subscriptions/") &&
+				!router.pathname.startsWith("/subscriptions/plans"))
+		);
+	}
+	return (
+		router.pathname === pathOnly ||
+		router.pathname.startsWith(`${pathOnly}/`)
+	);
+}
+
+function isParentActive(router, item) {
+	if (isItemActive(router, item)) return true;
+	return (item.children || []).some((child) => isItemActive(router, child));
+}
 
 const Sidebar = ({ open, setDrawerOpen }) => {
 	const router = useRouter();
 	const { colors } = useTheme();
 	const { i18n, t } = useTranslation();
+	const { vertical, verticals, setVerticalId, navCategories } = useCrmVertical();
+	const [expandedIds, setExpandedIds] = useState(() => new Set());
 
-	/* Native endonyms — not passed through locale JSON / AutoTranslate (picker uses data-no-translate). */
+	useEffect(() => {
+		const next = new Set();
+		navCategories.forEach((category) => {
+			category.items?.forEach((item) => {
+				if (item.children?.length && isParentActive(router, item)) {
+					next.add(item.id);
+				}
+			});
+		});
+		setExpandedIds((prev) => {
+			const merged = new Set(prev);
+			next.forEach((id) => merged.add(id));
+			return merged;
+		});
+	}, [router.asPath, router.pathname, navCategories]);
+
 	const languageOptions = [
 		{ code: "en", label: "English", flag: "🇺🇸" },
 		{ code: "hi", label: "हिन्दी", flag: "🇮🇳" },
@@ -35,6 +72,51 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 	const langPrefix = (i18n.language || "en").split("-")[0];
 	const selectedLanguage =
 		languageOptions.find((lang) => lang.code === langPrefix) || languageOptions[0];
+
+	const toggleExpanded = (id) => {
+		setExpandedIds((prev) => {
+			const next = new Set(prev);
+			if (next.has(id)) next.delete(id);
+			else next.add(id);
+			return next;
+		});
+	};
+
+	const switchVertical = (ast) => {
+		setVerticalId(ast.id);
+		router.push(ast.homeRoute || "/dashboard");
+	};
+
+	const renderNavLink = (item, { nested = false } = {}) => {
+		const Icon = lucideIcons[item?.icon];
+		const isActive = isItemActive(router, item);
+		return (
+			<div key={item.id} className="relative group">
+				<Button
+					variant={isActive ? "default" : "ghost"}
+					size="sm"
+					asChild
+					className={cn(
+						open ? "py-1" : "py-1.5",
+						"w-full justify-start gap-2 px-3 my-0.5",
+						nested && open && "pl-7"
+					)}
+				>
+					<a href={item.route}>
+						{Icon ? <Icon className="w-4 h-4 shrink-0" /> : null}
+						{open ? item.label : null}
+					</a>
+				</Button>
+				{!open && (
+					<div className="fixed left-14 z-10 mb-2 w-max rounded bg-primary px-1 py-1 text-xs text-primary-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+						{item.label}
+					</div>
+				)}
+			</div>
+		);
+	};
+
+	const VerticalIcon = lucideIcons[vertical?.meta?.icon] || lucideIcons.LayoutDashboard;
 
 	return (
 		<div
@@ -54,47 +136,50 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 										type="button"
 										variant="ghost"
 										className={cn(
-											"flex items-center px-2 py-1 justify-between border w-full h-auto",
+											"flex h-auto w-full items-center justify-between border px-2 py-1",
 											colors.border,
 											colors.hoverSecondary
 										)}
 									>
-										<div className="flex items-center gap-2">
-											<lucideIcons.Rocket
-												className={`w-3 h-3 ${colors.foreground}`}
-											/>
-											<p className={`text-sm ${colors.foreground}`}>CRM pages</p>
+										<div className="flex min-w-0 items-center gap-2">
+											<VerticalIcon className={`h-3 w-3 shrink-0 ${colors.foreground}`} />
+											<p className={`truncate text-sm ${colors.foreground}`}>
+												{vertical?.meta?.name || "CRM"}
+											</p>
 										</div>
 										<lucideIcons.ChevronUp
-											className={`${colors.mutedForeground} w-3 h-3`}
+											className={`${colors.mutedForeground} h-3 w-3 shrink-0`}
 										/>
 									</Button>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align="start" className="w-56">
-									<DropdownMenuLabel>Projects</DropdownMenuLabel>
-									<DropdownMenuItem onClick={() => router.push("/")}>
-										<lucideIcons.Rocket className="w-4 h-4" />
-										CRM pages
-									</DropdownMenuItem>
-									<DropdownMenuItem onClick={() => router.push("/e-commerce")}>
-										<lucideIcons.ShoppingCart className="w-4 h-4" />
-										E-commerce
-									</DropdownMenuItem>
-									<DropdownMenuItem onClick={() => router.push("/cms")}>
-										<lucideIcons.Book className="w-4 h-4" />
-										Blog
-									</DropdownMenuItem>
+									<DropdownMenuLabel>CRM vertical (AST)</DropdownMenuLabel>
+									{verticals.map((ast) => {
+										const Icon = lucideIcons[ast.meta.icon] || lucideIcons.LayoutDashboard;
+										return (
+											<DropdownMenuItem
+												key={ast.id}
+												onClick={() => switchVertical(ast)}
+												className={cn(
+													vertical.id === ast.id &&
+														"bg-primary text-primary-foreground focus:bg-primary focus:text-primary-foreground"
+												)}
+											>
+												<Icon className="h-4 w-4" />
+												<span className="truncate">{ast.meta.name}</span>
+											</DropdownMenuItem>
+										);
+									})}
 									<DropdownMenuSeparator />
-									<DropdownMenuItem>
-											<Button size="xs">
-												Add project
-											</Button>
+									<DropdownMenuItem onClick={() => router.push("/demo")}>
+										<lucideIcons.LayoutGrid className="h-4 w-4" />
+										All verticals on /demo
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						) : (
-							<lucideIcons.Rocket
-								className={`w-4 h-4 my-4 mx-auto ${colors.foreground}`}
+							<VerticalIcon
+								className={`mx-auto my-4 h-4 w-4 ${colors.foreground}`}
 							/>
 						)}
 						<Button
@@ -111,41 +196,72 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 						{navCategories?.map((category) => (
 							<div key={category.id} className="mb-4">
 								{open && (
-									<p className={`text-xs font-medium ${colors.mutedForeground} mb-2 px-3 tracking-wide`}>
+									<p
+										className={`mb-2 px-3 text-xs font-medium tracking-wide ${colors.mutedForeground}`}
+									>
 										{category.label}
 									</p>
 								)}
 								<div className="space-y-1">
 									{category.items?.map((item) => {
 										const Icon = lucideIcons[item?.icon];
-										const isActive =
-											router.pathname === item.route ||
-											router.pathname.startsWith(`${item.route}/`);
+										const hasChildren = Boolean(item.children?.length);
+										const expanded = expandedIds.has(item.id);
+										const parentActive = isParentActive(router, item);
+
+										if (!hasChildren) {
+											return renderNavLink(item);
+										}
+
 										return (
 											<div key={item.id} className="relative group">
-												<Button
-													variant={isActive ? "default" : "ghost"}
-													size="sm"
-													asChild
-													className={cn(
-														open ? "py-1" : "py-1.5",
-														"w-full justify-start gap-2 px-3 my-0.5"
-													)}
-													onMouseEnter={() => setDrawerOpen(!open)}
-													onMouseLeave={() => setDrawerOpen(!open)}
-												>
-													<a href={item.route}>
-														{Icon ? (
-															<Icon className="w-4 h-4" />
-														) : null}
-														{open ? item.label : null}
-													</a>
-												</Button>
-												{!open && (
-													<div className="fixed left-14 mb-2 w-max rounded bg-primary px-1 py-1 text-xs text-primary-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100 z-10">
-														{item.label}
+												<div className="flex items-center gap-0.5">
+													<Button
+														variant={
+															parentActive && !expanded
+																? "default"
+																: parentActive
+																	? "secondary"
+																	: "ghost"
+														}
+														size="sm"
+														asChild
+														className={cn(
+															open ? "py-1" : "py-1.5",
+															"my-0.5 flex-1 justify-start gap-2 px-3"
+														)}
+													>
+														<a href={item.route}>
+															{Icon ? <Icon className="h-4 w-4 shrink-0" /> : null}
+															{open ? item.label : null}
+														</a>
+													</Button>
+													{open ? (
+														<Button
+															type="button"
+															variant="ghost"
+															size="icon"
+															className="h-8 w-8 shrink-0"
+															aria-label={expanded ? "Collapse" : "Expand"}
+															aria-expanded={expanded}
+															onClick={() => toggleExpanded(item.id)}
+														>
+															<lucideIcons.ChevronDown
+																className={cn(
+																	"h-4 w-4 transition-transform",
+																	expanded && "rotate-180"
+																)}
+															/>
+														</Button>
+													) : null}
+												</div>
+												{open && expanded ? (
+													<div className="mt-0.5 space-y-0.5 pl-3">
+														{item.children.map((child) =>
+															renderNavLink(child, { nested: true })
+														)}
 													</div>
-												)}
+												) : null}
 											</div>
 										);
 									})}
@@ -155,8 +271,10 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 					</div>
 					{open && (
 						<>
-							<div className="px-3 mb-2 relative" data-no-translate translate="no">
-								<p className={`text-xs font-medium ${colors.mutedForeground} mb-2 tracking-wide`}>
+							<div className="relative mb-2 px-3" data-no-translate translate="no">
+								<p
+									className={`mb-2 text-xs font-medium tracking-wide ${colors.mutedForeground}`}
+								>
 									{t("Language")}
 								</p>
 								<DropdownMenu>
@@ -165,7 +283,7 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 											type="button"
 											variant="outline"
 											className={cn(
-												"w-full justify-between rounded-xl px-2.5 py-2 text-xs h-auto",
+												"h-auto w-full justify-between rounded-xl px-2.5 py-2 text-xs",
 												colors.foreground
 											)}
 										>
@@ -173,17 +291,23 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 												<span aria-hidden>{selectedLanguage.flag}</span>
 												<span className="truncate">{selectedLanguage.label}</span>
 											</span>
-											<lucideIcons.ChevronDown className={`w-3.5 h-3.5 shrink-0 ${colors.mutedForeground}`} />
+											<lucideIcons.ChevronDown
+												className={`h-3.5 w-3.5 shrink-0 ${colors.mutedForeground}`}
+											/>
 										</Button>
 									</DropdownMenuTrigger>
-									<DropdownMenuContent align="start" className="w-[var(--radix-dropdown-menu-trigger-width)]">
+									<DropdownMenuContent
+										align="start"
+										className="w-[var(--radix-dropdown-menu-trigger-width)]"
+									>
 										{languageOptions.map((lang) => (
 											<DropdownMenuItem
 												key={lang.code}
 												onClick={() => i18n.changeLanguage(lang.code)}
 												className={cn(
 													"gap-2 text-xs",
-													langPrefix === lang.code && "bg-primary text-primary-foreground focus:bg-primary focus:text-primary-foreground"
+													langPrefix === lang.code &&
+														"bg-primary text-primary-foreground focus:bg-primary focus:text-primary-foreground"
 												)}
 											>
 												<span aria-hidden>{lang.flag}</span>
@@ -193,15 +317,19 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 									</DropdownMenuContent>
 								</DropdownMenu>
 							</div>
-							<p className={`text-xs font-medium ${colors.mutedForeground} mb-2 px-3 tracking-wide`}>
+							<p
+								className={`mb-2 px-3 text-xs font-medium tracking-wide ${colors.mutedForeground}`}
+							>
 								Buy Template
 							</p>
-							<div className={`w-fit p-1 flex p-1 mx-3 border ${colors.border} gap-1 rounded-xl`}>
+							<div
+								className={`mx-3 flex w-fit gap-1 rounded-xl border p-1 ${colors.border}`}
+							>
 								<a
 									href="https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX"
 									target="_blank"
 									rel="noopener noreferrer"
-									className={`w-fit rounded bg-orange-100 text-zinc-600 dark:text-zinc-800 hover:bg-orange-200 dark:hover:bg-orange-900 p-1 text-center text-xs font-semibold text-white transition-all duration-100 ease-in`}
+									className="w-fit rounded bg-orange-100 p-1 text-center text-xs font-semibold text-zinc-600 transition-all duration-100 ease-in hover:bg-orange-200 dark:text-zinc-800 dark:hover:bg-orange-900"
 								>
 									🇮🇳 INR
 								</a>
@@ -209,28 +337,9 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 									href="https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template"
 									target="_blank"
 									rel="noopener noreferrer"
-									className={`w-fit rounded text-zinc-600 dark:text-zinc-200 ${colors.hoverSecondary} px-1 py-1.5 text-center text-xs font-semibold text-white transition-all duration-100 ease-in`}
+									className={`w-fit rounded px-1 py-1.5 text-center text-xs font-semibold text-zinc-600 transition-all duration-100 ease-in dark:text-zinc-200 ${colors.hoverSecondary}`}
 								>
 									🇺🇸 USD
-								</a>
-							</div>
-							<p className={`text-xs font-medium ${colors.mutedForeground} mt-2 px-3 tracking-wide`}>
-								Contact
-							</p>
-							<div className="flex flex-col p-2 mx-3 gap-3 text-sm">
-								<a
-									href="https://x.com/treyvijay"
-									target="_blank"
-									rel="noopener noreferrer"
-									className={`${colors.mutedForeground} hover:underline`}
-								>
-									X
-								</a>
-								<a
-									href="mailto:shreyvijayvargiya26@gmail.com"
-									className={`${colors.mutedForeground} hover:underline break-all`}
-								>
-									Email
 								</a>
 							</div>
 						</>

@@ -1,0 +1,174 @@
+{
+	"version": 1,
+	"kind": "saas-crm-vertical",
+	"id": "agency",
+	"meta": {
+		"name": "Agency CRM",
+		"tagline": "Leads, pipeline, invoices, and projects for client work",
+		"description": "Built for agencies running delivery + sales in one admin. Capture leads, move deals on a pipeline, invoice clients, and track projects.",
+		"icon": "Briefcase",
+		"accent": "blue",
+		"badge": "Agencies",
+		"audience": ["agencies", "consultancies", "studios"]
+	},
+	"homeRoute": "/leads",
+	"chooserRoute": "/demo",
+	"sidebar": [
+		{
+			"id": "main",
+			"label": "Main",
+			"items": [
+				{ "id": 1, "label": "Dashboard", "route": "/dashboard", "icon": "Home" },
+				{ "id": 16, "label": "Analytics", "route": "/analytics", "icon": "BarChart3" }
+			]
+		},
+		{
+			"id": "sales",
+			"label": "Sales",
+			"items": [
+				{ "id": 2, "label": "Leads", "route": "/leads", "icon": "User" },
+				{ "id": 18, "label": "Pipeline", "route": "/pipelines", "icon": "Layers" },
+				{ "id": 21, "label": "Deals", "route": "/deals", "icon": "CircleDollarSign" },
+				{ "id": 4, "label": "Contacts", "route": "/contacts", "icon": "Contact" },
+				{ "id": 7, "label": "Companies", "route": "/companies", "icon": "Users" }
+			]
+		},
+		{
+			"id": "delivery",
+			"label": "Delivery",
+			"items": [
+				{ "id": 12, "label": "Projects", "route": "/projects", "icon": "FolderClosed" },
+				{ "id": 6, "label": "Tasks", "route": "/tasks", "icon": "ListTodo" },
+				{ "id": 15, "label": "Calendar", "route": "/calendar", "icon": "Calendar" }
+			]
+		},
+		{
+			"id": "finance",
+			"label": "Finance",
+			"items": [
+				{ "id": 8, "label": "Invoices", "route": "/invoices", "icon": "FileText" },
+				{ "id": 11, "label": "Payments", "route": "/payments", "icon": "CreditCard" }
+			]
+		},
+		{
+			"id": "content",
+			"label": "Content",
+			"items": [
+				{ "id": 13, "label": "CMS", "route": "/cms", "icon": "FileText" },
+				{ "id": 19, "label": "Email", "route": "/email", "icon": "Mail" }
+			]
+		},
+		{
+			"id": "system",
+			"label": "System",
+			"items": [
+				{ "id": 14, "label": "Settings", "route": "/settings", "icon": "Settings" },
+				{ "id": 20, "label": "Notifications", "route": "/notifications", "icon": "Bell" }
+			]
+		}
+	],
+	"pages": [
+		{
+			"id": "leads",
+			"label": "Leads",
+			"route": "/leads",
+			"templateId": "leads",
+			"blocks": [
+				{ "type": "stats" },
+				{ "type": "toolbar", "filters": ["Status", "Owner"] },
+				{
+					"type": "table",
+					"entity": "leads",
+					"columns": [
+						{ "id": "name", "label": "Name", "type": "text" },
+						{ "id": "company", "label": "Company", "type": "text" },
+						{ "id": "status", "label": "Status", "type": "badge" },
+						{ "id": "value", "label": "Value", "type": "currency" }
+					]
+				}
+			]
+		},
+		{
+			"id": "pipeline",
+			"label": "Pipeline",
+			"route": "/pipelines",
+			"templateId": "pipeline",
+			"blocks": [{ "type": "kanban", "entity": "deals" }]
+		},
+		{
+			"id": "invoices",
+			"label": "Invoices",
+			"route": "/invoices",
+			"templateId": "invoices",
+			"blocks": [
+				{ "type": "stats" },
+				{ "type": "toolbar" },
+				{
+					"type": "table",
+					"entity": "invoices",
+					"columns": [
+						{ "id": "number", "label": "Number", "type": "text" },
+						{ "id": "customer", "label": "Customer", "type": "text" },
+						{ "id": "amount", "label": "Amount", "type": "currency" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		},
+		{
+			"id": "projects",
+			"label": "Projects",
+			"route": "/projects",
+			"templateId": "projects",
+			"blocks": [
+				{ "type": "stats" },
+				{
+					"type": "table",
+					"entity": "projects",
+					"columns": [
+						{ "id": "name", "label": "Name", "type": "text" },
+						{ "id": "owner", "label": "Owner", "type": "text" },
+						{ "id": "progress", "label": "Progress", "type": "number" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		}
+	],
+	"entities": {
+		"leads": {
+			"singular": "Lead",
+			"plural": "Leads",
+			"fields": [
+				{ "name": "name", "type": "text" },
+				{ "name": "company", "type": "text" },
+				{ "name": "status", "type": "status" },
+				{ "name": "value", "type": "currency" }
+			],
+			"seedHint": "agency-pipeline"
+		},
+		"invoices": {
+			"singular": "Invoice",
+			"plural": "Invoices",
+			"fields": [
+				{ "name": "number", "type": "text" },
+				{ "name": "customer", "type": "text" },
+				{ "name": "amount", "type": "currency" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "agency-billing"
+		},
+		"projects": {
+			"singular": "Project",
+			"plural": "Projects",
+			"fields": [
+				{ "name": "name", "type": "text" },
+				{ "name": "owner", "type": "text" },
+				{ "name": "progress", "type": "number" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "agency-delivery"
+		}
+	},
+	"notes": ["Agency vertical reuses existing Leads / Pipeline / Invoices / Projects routes."]
+}

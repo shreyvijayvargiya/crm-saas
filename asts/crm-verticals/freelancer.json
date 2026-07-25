@@ -1,0 +1,152 @@
+{
+	"version": 1,
+	"kind": "saas-crm-vertical",
+	"id": "freelancer",
+	"meta": {
+		"name": "Freelancer CRM",
+		"tagline": "Clients, invoices, payments, tasks, and calendar",
+		"description": "A slim client hub for freelancers. Manage clients, send invoices, track payments, and keep tasks and calendar in one place.",
+		"icon": "UserRound",
+		"accent": "emerald",
+		"badge": "Solo",
+		"audience": ["freelancers", "consultants", "creators"]
+	},
+	"homeRoute": "/contacts",
+	"chooserRoute": "/demo",
+	"sidebar": [
+		{
+			"id": "main",
+			"label": "Main",
+			"items": [
+				{ "id": 1, "label": "Overview", "route": "/dashboard", "icon": "Home" }
+			]
+		},
+		{
+			"id": "clients",
+			"label": "Clients",
+			"items": [
+				{ "id": 4, "label": "Clients", "route": "/contacts", "icon": "Users", "keywords": ["customers", "contacts"] }
+			]
+		},
+		{
+			"id": "money",
+			"label": "Money",
+			"items": [
+				{ "id": 8, "label": "Invoices", "route": "/invoices", "icon": "FileText" },
+				{ "id": 11, "label": "Payments", "route": "/payments", "icon": "CreditCard" }
+			]
+		},
+		{
+			"id": "work",
+			"label": "Work",
+			"items": [
+				{ "id": 6, "label": "Tasks", "route": "/tasks", "icon": "ListTodo" },
+				{ "id": 15, "label": "Calendar", "route": "/calendar", "icon": "Calendar" },
+				{ "id": 12, "label": "Projects", "route": "/projects", "icon": "FolderClosed" }
+			]
+		},
+		{
+			"id": "system",
+			"label": "System",
+			"items": [
+				{ "id": 14, "label": "Settings", "route": "/settings", "icon": "Settings" },
+				{ "id": 20, "label": "Notifications", "route": "/notifications", "icon": "Bell" }
+			]
+		}
+	],
+	"pages": [
+		{
+			"id": "clients",
+			"label": "Clients",
+			"route": "/contacts",
+			"templateId": "contacts",
+			"blocks": [
+				{ "type": "toolbar", "searchPlaceholder": "Search clients…" },
+				{
+					"type": "table",
+					"entity": "clients",
+					"columns": [
+						{ "id": "name", "label": "Name", "type": "text" },
+						{ "id": "email", "label": "Email", "type": "email" },
+						{ "id": "company", "label": "Company", "type": "text" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		},
+		{
+			"id": "invoices",
+			"label": "Invoices",
+			"route": "/invoices",
+			"templateId": "invoices",
+			"blocks": [
+				{ "type": "stats" },
+				{
+					"type": "table",
+					"entity": "invoices",
+					"columns": [
+						{ "id": "number", "label": "Number", "type": "text" },
+						{ "id": "customer", "label": "Client", "type": "text" },
+						{ "id": "amount", "label": "Amount", "type": "currency" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		},
+		{
+			"id": "tasks",
+			"label": "Tasks",
+			"route": "/tasks",
+			"templateId": "tasks",
+			"blocks": [
+				{ "type": "toolbar" },
+				{
+					"type": "table",
+					"entity": "tasks",
+					"columns": [
+						{ "id": "title", "label": "Title", "type": "text" },
+						{ "id": "owner", "label": "Owner", "type": "text" },
+						{ "id": "priority", "label": "Priority", "type": "badge" },
+						{ "id": "dueDate", "label": "Due", "type": "date" }
+					]
+				}
+			]
+		}
+	],
+	"entities": {
+		"clients": {
+			"singular": "Client",
+			"plural": "Clients",
+			"fields": [
+				{ "name": "name", "type": "text" },
+				{ "name": "email", "type": "email" },
+				{ "name": "company", "type": "text" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "freelancer-clients"
+		},
+		"invoices": {
+			"singular": "Invoice",
+			"plural": "Invoices",
+			"fields": [
+				{ "name": "number", "type": "text" },
+				{ "name": "customer", "type": "text" },
+				{ "name": "amount", "type": "currency" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "freelancer-billing"
+		},
+		"tasks": {
+			"singular": "Task",
+			"plural": "Tasks",
+			"fields": [
+				{ "name": "title", "type": "text" },
+				{ "name": "owner", "type": "text" },
+				{ "name": "priority", "type": "status" },
+				{ "name": "dueDate", "type": "date" }
+			],
+			"seedHint": "freelancer-work"
+		}
+	},
+	"notes": ["Clients label maps to the existing /contacts route."]
+}

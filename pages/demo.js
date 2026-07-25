@@ -1,2 +1,2 @@
-import Home from "../app/Home";
-export default Home;
+import DemoChooser from "../app/Home/DemoChooser";
+export default DemoChooser;
