@@ -7,10 +7,19 @@ import fullKit from "./full-kit.json";
 import indieStripe from "./indie-stripe.json";
 import agency from "./agency.json";
 import freelancer from "./freelancer.json";
+import contentCreator from "./content-creator.json";
+import digitalStore from "./digital-store.json";
 import { CRM_VERTICAL_AST_KIND, CRM_VERTICAL_AST_VERSION } from "./schema";
 
 /** Ordered list — drives /demo chooser cards. */
-export const verticalAstModules = [indieStripe, agency, freelancer, fullKit];
+export const verticalAstModules = [
+	indieStripe,
+	agency,
+	freelancer,
+	contentCreator,
+	digitalStore,
+	fullKit,
+];
 
 export const DEFAULT_VERTICAL_ID = "full-kit";
 

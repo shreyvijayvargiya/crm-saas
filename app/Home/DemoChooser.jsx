@@ -26,6 +26,16 @@ const ACCENT = {
 		icon: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
 		badge: "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300",
 	},
+	amber: {
+		ring: "hover:border-amber-400/80 dark:hover:border-amber-500/60",
+		icon: "bg-amber-500/15 text-amber-700 dark:text-amber-400",
+		badge: "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300",
+	},
+	rose: {
+		ring: "hover:border-rose-400/80 dark:hover:border-rose-500/60",
+		icon: "bg-rose-500/15 text-rose-600 dark:text-rose-400",
+		badge: "border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-300",
+	},
 	zinc: {
 		ring: "hover:border-zinc-400/80 dark:hover:border-zinc-500/60",
 		icon: "bg-zinc-500/15 text-zinc-700 dark:text-zinc-300",
