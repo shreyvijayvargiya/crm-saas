@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, LucideProjector, RocketIcon, TrainFront } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CursorImageTrail } from "./cursor-trails";
+import LlmShareActions from "./LlmShareActions";
 
 function ScreenshotPanel({ screenshot, index, isLight, onActivate }) {
 	const ref = useRef(null);
@@ -88,7 +89,7 @@ export default function HeroScrollReveal({ screenshots, isLight }) {
 			<CursorImageTrail
 				images={screenshots}
 				isLight={isLight}
-				className="relative flex h-screen flex-col items-center justify-center px-6 text-center"
+				className="relative flex max-h-screen min-h-[80vh] flex-col items-center justify-center px-6 text-center"
 			>
 				<motion.p
 					initial={{ opacity: 0, y: 12 }}
@@ -96,7 +97,7 @@ export default function HeroScrollReveal({ screenshots, isLight }) {
 					viewport={{ once: true }}
 					transition={{ duration: 0.5 }}
 					className={cn(
-						"mb-5 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.28em]",
+						"mb-5 flex items-center justify-center gap-2 text-[11px] font-semibold uppercase tracking-[0.28em]",
 						isLight ? "text-zinc-600" : "text-zinc-400"
 					)}
 				>
@@ -149,7 +150,7 @@ export default function HeroScrollReveal({ screenshots, isLight }) {
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.55, delay: 0.7 }}
-					className="mt-8"
+					className="mt-8 flex flex-wrap items-start justify-center gap-2"
 				>
 					<a
 						href="/demo"
@@ -163,6 +164,7 @@ export default function HeroScrollReveal({ screenshots, isLight }) {
 						View demo
 						<ArrowRight className="h-3.5 w-3.5" />
 					</a>
+					<LlmShareActions variant="hero" />
 				</motion.div>
 
 				<motion.div

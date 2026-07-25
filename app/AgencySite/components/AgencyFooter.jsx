@@ -4,6 +4,7 @@ import { ArrowUpRight, Mail, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CONTACT } from "../agencyConfig";
 import { useAgencyTheme } from "../AgencyThemeContext";
+import LlmShareActions from "./LlmShareActions";
 
 const FOOTER_LINKS = [
 	{ label: "Home", href: "/" },
@@ -85,6 +86,17 @@ export default function AgencyFooter() {
 							{CONTACT.xHandle}
 							<ArrowUpRight className="h-3 w-3" />
 						</a>
+					</div>
+					<div className="mt-3">
+						<p
+							className={cn(
+								"mb-2 text-[10px] font-semibold uppercase tracking-wider",
+								isLight ? "text-zinc-500" : "text-zinc-500"
+							)}
+						>
+							Share with AI
+						</p>
+						<LlmShareActions />
 					</div>
 				</div>
 

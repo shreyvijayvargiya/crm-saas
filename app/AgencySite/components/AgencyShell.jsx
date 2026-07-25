@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 import { AgencyThemeProvider, useAgencyTheme } from "../AgencyThemeContext";
 import DynamicIslandNav from "./DynamicIslandNav";
 import AgencyVideoPhone from "./AgencyVideoPhone";
@@ -46,6 +47,7 @@ function AgencyShellInner({ children, className, wide = false, size }) {
 
 			
 			<AgencyVideoPhone />
+			<Toaster />
 		</div>
 	);
 }

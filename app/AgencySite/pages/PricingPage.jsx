@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { FollowerPointerCard } from "@/components/ui/following-pointer";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
-import { PRICING_TIERS, CONTACT } from "../agencyConfig";
+import { PRICING_TIERS, CONTACT, OTHER_TEMPLATES } from "../agencyConfig";
 
 function PricingContent() {
 	const { isLight } = useAgencyTheme();
@@ -183,6 +183,130 @@ function PricingContent() {
 					</motion.div>
 				))}
 			</div>
+
+			<motion.section
+				initial={{ opacity: 0, y: 16 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ delay: 0.2 }}
+				className="mt-10"
+			>
+				<div className="mb-6 text-center">
+					<p
+						className={cn(
+							"text-xs font-medium uppercase tracking-wider",
+							isLight ? "text-zinc-500" : "text-zinc-500"
+						)}
+					>
+						More templates
+					</p>
+					<h2
+						className={cn(
+							"mt-2 text-xl font-bold tracking-tight sm:text-2xl",
+							isLight ? "text-zinc-900" : "text-white"
+						)}
+					>
+						Check our other CRM templates
+					</h2>
+					<p
+						className={cn(
+							"mx-auto mt-2 max-w-lg text-sm",
+							isLight ? "text-zinc-600" : "text-zinc-400"
+						)}
+					>
+						Live demos for Indie SaaS, freelancers, and real estate — same
+						quality UI kit energy as SaaSCRM.
+					</p>
+				</div>
+
+				<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					{OTHER_TEMPLATES.map((item) => (
+						<div
+							key={item.id}
+							className={cn(
+								"group flex flex-col overflow-hidden rounded-2xl border transition-colors",
+								isLight
+									? "border-zinc-200 bg-white/70 hover:border-zinc-300"
+									: "border-zinc-800 bg-zinc-950/50 hover:border-zinc-700"
+							)}
+						>
+							<a
+								href={item.demoUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="relative block aspect-[16/10] overflow-hidden"
+							>
+								{/* eslint-disable-next-line @next/next/no-img-element */}
+								<img
+									src={item.image}
+									alt={item.imageAlt}
+									className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+									loading="lazy"
+								/>
+							</a>
+							<div className="flex flex-1 flex-col gap-3 p-4">
+								<div>
+									<h3
+										className={cn(
+											"text-sm font-semibold",
+											isLight ? "text-zinc-900" : "text-white"
+										)}
+									>
+										{item.name}
+									</h3>
+									<p
+										className={cn(
+											"mt-1 text-xs leading-relaxed",
+											isLight ? "text-zinc-600" : "text-zinc-400"
+										)}
+									>
+										{item.tagline}
+									</p>
+								</div>
+								<div className="mt-auto flex flex-wrap gap-2">
+									<Button
+										asChild
+										size="sm"
+										className={cn(
+											"rounded-full",
+											isLight
+												? "bg-zinc-900 text-white hover:bg-zinc-800"
+												: "bg-zinc-100 text-zinc-900 hover:bg-white"
+										)}
+									>
+										<a
+											href={item.demoUrl}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											Live demo
+											<ExternalLink className="h-3.5 w-3.5" />
+										</a>
+									</Button>
+									<Button
+										asChild
+										size="sm"
+										variant="outline"
+										className={cn(
+											"rounded-full",
+											isLight
+												? "border-zinc-300 bg-transparent"
+												: "border-zinc-600 bg-transparent"
+										)}
+									>
+										<a
+											href={item.gumroadUrl}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											Gumroad
+										</a>
+									</Button>
+								</div>
+							</div>
+						</div>
+					))}
+				</div>
+			</motion.section>
 
 			<p className="mt-8 text-center text-xs text-zinc-500">
 				Team or white-label licensing?{" "}

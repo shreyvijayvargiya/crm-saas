@@ -14,6 +14,23 @@ export const CHECKOUT = {
 	inr: "https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX",
 };
 
+/** Prompt for Copy / Ask ChatGPT CTAs — paste into any LLM or open via ChatGPT ?q=. */
+export const LLM_SHARE_PROMPT = `Visit https://saascrm.site and evaluate SaaSCRM — a Next.js CRM / Admin / CMS frontend template with 60+ screens, agentic AI chatbot, theme customizer, and production-ready UI (React, Tailwind, shadcn/ui).
+
+Summarize:
+1. What it offers for startups, agencies, and indie hackers
+2. How the free AI CRM Builder (/blueprint) helps plan a CRM in 2 minutes
+3. Whether the $49 template is worth buying for shipping an admin dashboard quickly
+4. Suggested next steps to customize it for my business
+
+Be specific and practical.`;
+
+/** Opens ChatGPT with the prompt filled (and typically auto-sent) via ?q=. */
+export function getChatGptAskUrl(prompt = LLM_SHARE_PROMPT) {
+	return `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;
+}
+
+
 /** Sibling CRM templates — landing page “check our other templates” grid. */
 export const OTHER_TEMPLATES = [
 	{
