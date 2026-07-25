@@ -14,6 +14,38 @@ export const CHECKOUT = {
 	inr: "https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX",
 };
 
+/** Sibling CRM templates — landing page “check our other templates” grid. */
+export const OTHER_TEMPLATES = [
+	{
+		id: "inkgest",
+		name: "CRM Template",
+		tagline: "Indie SaaS admin — MRR, subscribers, billing",
+		image: "/inkgest-crm.png",
+		imageAlt: "Inkgest CRM template dashboard preview",
+		demoUrl: "https://crm-template.buildsaas.dev/",
+		gumroadUrl: "https://shreyvijayvargiya.gumroad.com/l/inkgest-saas-admin-template",
+	},
+	{
+		id: "freelancer",
+		name: "Freelancer CRM",
+		tagline: "Clients, projects, invoices for freelancers",
+		image: "/freelance-crm.png",
+		imageAlt: "Freelancer CRM template preview",
+		demoUrl: "https://freelance-crm-template.buildsaas.dev/",
+		gumroadUrl: "https://shreyvijayvargiya.gumroad.com/l/freelancer-crm-template",
+	},
+	{
+		id: "real-estate",
+		name: "Real Estate CRM",
+		tagline: "EstateOS — listings, leads, and closings",
+		image: "/real-estate-crm.png",
+		imageAlt: "Real Estate CRM template preview",
+		demoUrl: "https://realestate-crm-template.buildsaas.dev/",
+		gumroadUrl:
+			"https://shreyvijayvargiya.gumroad.com/l/estate-os-real-estate-crm-template",
+	},
+];
+
 export const AI_BUILD_PROMPTS = [
 	{
 		category: "New CRM module",

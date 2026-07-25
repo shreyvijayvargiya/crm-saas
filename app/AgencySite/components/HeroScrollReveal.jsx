@@ -152,7 +152,7 @@ export default function HeroScrollReveal({ screenshots, isLight }) {
 					className="mt-8"
 				>
 					<a
-						href="#crm-scroll-gallery"
+						href="/demo"
 						className={cn(
 							"inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition hover:-translate-y-0.5",
 							isLight
@@ -160,7 +160,7 @@ export default function HeroScrollReveal({ screenshots, isLight }) {
 								: "border-zinc-700 bg-zinc-900 text-zinc-100 hover:border-zinc-500"
 						)}
 					>
-						See product screens
+						View demo
 						<ArrowRight className="h-3.5 w-3.5" />
 					</a>
 				</motion.div>
