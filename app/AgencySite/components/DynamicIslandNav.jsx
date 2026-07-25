@@ -51,7 +51,7 @@ export default function DynamicIslandNav() {
 				animate={{ opacity: 1, y: 0, scale: 1 }}
 				transition={{ type: "spring", stiffness: 380, damping: 28 }}
 				className={cn(
-					"pointer-events-auto flex w-full items-center sm:w-auto sm:gap-1 sm:rounded-full sm:border sm:px-2 sm:py-2",
+					"pointer-events-auto flex w-full items-center sm:w-auto sm:gap-1 rounded-xl sm:rounded-full sm:border sm:px-2 sm:py-2",
 					"justify-between gap-0 border-t px-1 pt-2",
 					"pb-[max(0.625rem,env(safe-area-inset-bottom))] sm:pb-2",
 					isLight
@@ -72,8 +72,8 @@ export default function DynamicIslandNav() {
 									whileTap={{ scale: 0.94 }}
 									transition={PILL_SPRING}
 									className={cn(
-										"relative flex h-11 items-center justify-center rounded-full transition-colors duration-200 sm:h-10",
-										active ? "px-3 sm:px-3.5" : "w-11 sm:w-10",
+										"relative flex h-11 items-center justify-center rounded-xl transition-colors duration-200 sm:h-10",
+										active ? "border border-zinc-200 px-2 sm:px-2.5" : "w-11 sm:w-10",
 										!active &&
 											(isLight
 												? "text-zinc-500 hover:text-zinc-800"
@@ -86,21 +86,20 @@ export default function DynamicIslandNav() {
 										<motion.span
 											layoutId="island-active-pill"
 											className={cn(
-												"absolute inset-0 rounded-full shadow-sm",
+												"absolute inset-0 rounded-xl",
 												isLight
-													? "bg-zinc-900 text-white shadow-zinc-900/20"
-													: "bg-zinc-100 text-zinc-900 shadow-white/10"
+													? "bg-zinc-100 text-zinc-900 shadow-zinc-100/20"
+													: "bg-zinc-50 text-zinc-900 shadow-white/10"
 											)}
 											transition={PILL_SPRING}
 										/>
 									) : null}
-
 									<Icon
 										className={cn(
 											"relative z-10 h-[18px] w-[18px] shrink-0 transition-colors duration-200",
 											active
 												? isLight
-													? "text-white"
+													? "text-black"
 													: "text-zinc-900"
 												: isLight
 													? "text-zinc-500 group-hover:text-zinc-800"
@@ -108,7 +107,6 @@ export default function DynamicIslandNav() {
 										)}
 										strokeWidth={active ? 1.75 : 1.5}
 									/>
-
 									<AnimatePresence initial={false} mode="popLayout">
 										{active ? (
 											<motion.span
@@ -128,7 +126,7 @@ export default function DynamicIslandNav() {
 												transition={LABEL_SPRING}
 												className={cn(
 													"relative z-10 hidden overflow-hidden whitespace-nowrap text-sm font-semibold tracking-tight sm:inline",
-													isLight ? "text-white" : "text-zinc-900"
+													isLight ? "text-black" : "text-zinc-900"
 												)}
 											>
 												{tab.label}

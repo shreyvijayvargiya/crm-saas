@@ -20,6 +20,10 @@ export const SITEMAP_GROUPS = [
 		links: [
 			{ label: "All posts", href: "/blog" },
 			{
+				label: "Plan your CRM in 2 minutes with AI Builder",
+				href: "/blog/plan-your-crm-in-2-minutes-with-ai-builder",
+			},
+			{
 				label: "Why your business needs a CRM",
 				href: "/blog/why-your-business-needs-a-crm",
 			},
