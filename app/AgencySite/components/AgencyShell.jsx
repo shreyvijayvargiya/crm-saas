@@ -19,7 +19,7 @@ function AgencyShellInner({ children, className, wide = false, size }) {
 	return (
 		<div
 			className={cn(
-				"relative min-h-screen antialiased transition-colors duration-300",
+				"w-full relative min-h-screen antialiased transition-colors duration-300",
 				isLight
 					? "bg-zinc-50 text-zinc-900 selection:bg-zinc-300/40"
 					: "bg-zinc-950 text-zinc-100 selection:bg-zinc-700/50",

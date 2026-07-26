@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import * as lucideIcons from "lucide-react";
 import { ArrowRight, LayoutGrid, Sparkles } from "lucide-react";
@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useCrmVertical } from "../../utils/CrmVerticalContext";
 import { useTheme } from "../../utils/useTheme";
+import { getVerticalAstById } from "../../asts/crm-verticals";
 
 const ACCENT = {
 	violet: {
@@ -57,6 +58,19 @@ export default function DemoChooser() {
 		setVerticalId(ast.id);
 		router.push(ast.homeRoute || "/dashboard");
 	};
+
+	/** Deep-link from template pages: /demo?vertical=freelancer */
+	useEffect(() => {
+		if (!router.isReady) return;
+		const raw = router.query.vertical;
+		const id = Array.isArray(raw) ? raw[0] : raw;
+		if (!id || typeof id !== "string") return;
+		const ast = getVerticalAstById(id);
+		if (!ast || ast.id !== id) return;
+		enterVertical(ast);
+		// intentionally once when query is present
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [router.isReady, router.query.vertical]);
 
 	return (
 		<div className="mx-auto max-w-5xl space-y-8 p-4 sm:p-6">

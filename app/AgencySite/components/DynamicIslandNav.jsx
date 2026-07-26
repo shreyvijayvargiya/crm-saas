@@ -48,7 +48,7 @@ export default function DynamicIslandNav() {
 				animate={{ opacity: 1, y: 0, scale: 1 }}
 				transition={{ type: "spring", stiffness: 380, damping: 28 }}
 				className={cn(
-					"pointer-events-auto flex w-full items-center sm:w-auto sm:gap-1 rounded-xl sm:rounded-full sm:border sm:px-2 sm:py-2",
+					"pointer-events-auto flex w-1/2 items-center sm:w-auto sm:gap-1 rounded-full sm:rounded-full sm:border sm:px-2 sm:py-2",
 					"justify-between gap-0 border-t px-1 pt-2",
 					"pb-[max(0.625rem,env(safe-area-inset-bottom))] sm:pb-2",
 					isLight
@@ -69,7 +69,7 @@ export default function DynamicIslandNav() {
 									whileTap={{ scale: 0.94 }}
 									transition={PILL_SPRING}
 									className={cn(
-										"relative flex h-11 items-center justify-center gap-0 rounded-xl px-2 transition-colors duration-200 sm:h-10 sm:gap-2 sm:px-2.5",
+										"relative flex h-11 items-center justify-center gap-0 rounded-full px-2 transition-colors duration-200 sm:h-10 sm:gap-2 sm:px-2.5",
 										active && "border border-zinc-200",
 										!active &&
 											(isLight
@@ -83,7 +83,7 @@ export default function DynamicIslandNav() {
 										<motion.span
 											layoutId="island-active-pill"
 											className={cn(
-												"absolute inset-0 rounded-xl",
+												"absolute inset-0 rounded-full",
 												isLight
 													? "bg-zinc-100 text-zinc-900 shadow-zinc-100/20"
 													: "bg-zinc-50 text-zinc-900 shadow-white/10"
@@ -107,14 +107,14 @@ export default function DynamicIslandNav() {
 									{/* Labels: always on sm+, hidden on small devices */}
 									<span
 										className={cn(
-											"relative z-10 hidden overflow-hidden whitespace-nowrap text-sm font-semibold tracking-tight sm:inline",
+											"relative z-10 hidden overflow-hidden whitespace-nowrap text-sm tracking-tight sm:inline",
 											active
 												? isLight
-													? "text-black"
-													: "text-zinc-900"
+													? "text-black font-semibold"
+													: "text-zinc-900 font-semibold"
 												: isLight
-													? "text-zinc-600"
-													: "text-zinc-400"
+													? "text-zinc-600 font-light"
+													: "text-zinc-400 font-light"
 										)}
 									>
 										{tab.label}

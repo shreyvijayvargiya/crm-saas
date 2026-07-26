@@ -8,6 +8,7 @@ import {
 	CheckCircle2,
 	Download,
 	ExternalLink,
+	Eye,
 	Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -28,6 +29,11 @@ function TemplateDetailContent({ template }) {
 	const [email, setEmail] = useState("");
 	const [loading, setLoading] = useState(false);
 	const Icon = lucideIcons[template.icon] || lucideIcons.LayoutDashboard;
+	const ogImage = {
+		path: template.image || TEMPLATES_PAGE_OG_IMAGE.path,
+		alt: `${template.name} – free Next.js CRM template preview`,
+	};
+	const demoHref = template.demoUrl || `/demo?vertical=${template.id}`;
 
 	const handleDownload = async (e) => {
 		e.preventDefault();
@@ -80,12 +86,14 @@ function TemplateDetailContent({ template }) {
 		operatingSystem: "Web",
 		description: template.description,
 		url: `${SITE_URL}/templates/${template.id}`,
-		image: `${SITE_URL}${template.image}`,
+		image: `${SITE_URL}${ogImage.path}`,
+		screenshot: `${SITE_URL}${ogImage.path}`,
 		offers: {
 			"@type": "Offer",
 			price: "0",
 			priceCurrency: "USD",
 			availability: "https://schema.org/InStock",
+			url: `${SITE_URL}/templates/${template.id}`,
 		},
 		author: {
 			"@type": "Organization",
@@ -117,14 +125,11 @@ function TemplateDetailContent({ template }) {
 	return (
 		<>
 			<SiteSeo
-				title={`${template.name} – Free Next.js CRM Template Download | SaaSCRM`}
-				description={`${template.description} Free Next.js + Tailwind ZIP — email to download. Customize sidebar, seed data, and ship fast.`}
+				title={`${template.name} – Free Next.js CRM Template | Live Demo & Download | SaaSCRM`}
+				description={`${template.tagline}. ${template.description} Preview the live demo, then download a free Next.js + Tailwind ZIP.`}
 				path={`/templates/${template.id}`}
-				keywords={`${template.name}, free CRM template, Next.js ${template.id}, open source CRM, ${template.tagline}, SaaSCRM`}
-				images={[
-					{ path: template.image, alt: `${template.name} preview` },
-					TEMPLATES_PAGE_OG_IMAGE,
-				]}
+				keywords={`${template.name}, free CRM template, Next.js CRM, ${template.id} CRM, open source CRM dashboard, ${template.tagline}, SaaSCRM demo`}
+				images={[ogImage, TEMPLATES_PAGE_OG_IMAGE]}
 				jsonLd={[detailJsonLd, breadcrumbJsonLd]}
 			/>
 
@@ -155,7 +160,7 @@ function TemplateDetailContent({ template }) {
 						{/* eslint-disable-next-line @next/next/no-img-element */}
 						<img
 							src={template.image}
-							alt={template.name}
+							alt={ogImage.alt}
 							className="aspect-[16/10] w-full object-cover object-top"
 						/>
 					</div>
@@ -213,6 +218,7 @@ function TemplateDetailContent({ template }) {
 								Best for: {template.audience.join(" · ")}
 							</p>
 						) : null}
+						
 					</header>
 
 					<section
@@ -286,6 +292,9 @@ function TemplateDetailContent({ template }) {
 						>
 							The ZIP is a <strong>CRM-only</strong> Next.js app (
 							<code className="text-[11px]">pages/index.js</code>
+							). No marketing site. Includes{" "}
+							<code className="text-[11px]">crm-ast.json</code> from this
+							vertical.
 						</p>
 					</section>
 
@@ -301,12 +310,16 @@ function TemplateDetailContent({ template }) {
 								isLight ? "text-zinc-900" : "text-white"
 							)}
 						>
-							What’s in the template 
+							What’s in the sidebar (AST)
 						</h2>
-						<div className="mt-3 flex flex-wrap gap-2 ">
+						<div className="mt-3 flex flex-wrap gap-2">
 							{(template.ast.sidebar || []).flatMap((cat) =>
 								(cat.items || []).map((item) => (
-									<Badge key={`${cat.id}-${item.id}`} className={isLight ? "text-zinc-900" : "text-zinc-400"} variant="outline">
+									<Badge
+										key={`${cat.id}-${item.id}`}
+										className={isLight ? "text-zinc-900" : "text-zinc-400"}
+										variant="outline"
+									>
 										{item.label}
 									</Badge>
 								))
@@ -315,7 +328,7 @@ function TemplateDetailContent({ template }) {
 					</section>
 				</div>
 
-				<aside className="lg:sticky lg:top-24 lg:self-start">
+				<aside id="download" className="scroll-mt-24 lg:sticky lg:top-24 lg:self-start">
 					<div
 						className={cn(
 							"rounded-2xl border p-5 shadow-sm",
@@ -324,6 +337,53 @@ function TemplateDetailContent({ template }) {
 								: "border-zinc-800 bg-zinc-950/80"
 						)}
 					>
+						<div className="mb-4 flex flex-wrap gap-2">
+							<Button
+								asChild
+								variant="outline"
+								className={cn(
+									"min-w-0 flex-1 rounded-full",
+									isLight
+										? "border-zinc-300 bg-transparent"
+										: "border-zinc-600 bg-transparent"
+								)}
+							>
+								<a href={demoHref}>
+									View live demo
+									<lucideIcons.Link2 className="h-3.5 w-3.5 opacity-70 rotate-45" />
+								</a>
+							</Button>
+							<Button
+								asChild
+								variant="outline"
+								className={cn(
+									"min-w-0 flex-1 rounded-full",
+									isLight
+										? "border-zinc-300 bg-transparent"
+										: "border-zinc-600 bg-transparent"
+								)}
+							>
+								<a
+									href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+										`${template.name} – free Next.js CRM template from SaaSCRM`
+									)}&url=${encodeURIComponent(
+										`${SITE_URL}/templates/${template.id}`
+									)}`}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<svg
+										viewBox="0 0 24 24"
+										className="h-3.5 w-3.5"
+										fill="currentColor"
+										aria-hidden
+									>
+										<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+									</svg>
+									Share on X
+								</a>
+							</Button>
+						</div>
 						<h2
 							className={cn(
 								"text-lg font-semibold",
