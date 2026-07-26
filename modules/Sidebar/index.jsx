@@ -184,6 +184,10 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 										);
 									})}
 									<DropdownMenuSeparator />
+									<DropdownMenuItem onSelect={() => router.push("/workspace")}>
+										<lucideIcons.FolderKanban className="h-4 w-4" />
+										My CRM projects
+									</DropdownMenuItem>
 									<DropdownMenuItem onSelect={() => router.push("/demo")}>
 										<lucideIcons.LayoutGrid className="h-4 w-4" />
 										All verticals on /demo

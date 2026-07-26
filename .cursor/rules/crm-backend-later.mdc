@@ -1,23 +1,22 @@
 ---
-description: Backend integration placeholder — Supabase/Firebase not wired yet; schemas are reference only
+description: Backend integration — Firebase Auth + Firestore projects wired; payments later
 alwaysApply: false
 ---
 
-# Backend later (Supabase / Firebase)
+# Backend (Firebase)
 
-**Current product:** frontend-only template with mock `CrmDataContext`.
+**Live now (client SDK):**
+- Auth: Google sign-in via `utils/AuthContext.jsx` + `lib/firebaseClient.js`
+- Projects: `users/{uid}/projects/{crmType}` — see `lib/projectsApi.js`
+- Entity CRUD helpers: nested `users/{uid}/projects/{crmType}/{entity}/{docId}`
+- Workspace UI: `/workspace` · Login modal on Agency `DynamicIslandNav`
 
-## Until the user asks for backend
-- Do **not** add Supabase/Firebase clients, Auth providers, or replace seed data with live fetches
-- Treat `schemas/zod-schemas/`, `schemas/sql-schemas/`, `schemas/supabase-schemas/`, and `data.json` as **contracts / docs**, not runtime wiring
-- Keep AI chat using the in-memory snapshot pattern in `lib/ai/`
+**Env:** `FIREBASE_*` in `.env.local` (bridged to `NEXT_PUBLIC_*` in `next.config.js`). Restart after changes.
 
-## When backend work starts (future rule expansion)
-Planned approach (do not invent details now):
-1. `lib/api/client.js` + env base URL
-2. Per-entity services; Zod `safeParse` on responses
-3. Swap context seed loads for fetch/subscribe
-4. Auth: replace demo login screens with provider sessions
-5. Multi-tenant: align UI with existing `tenants` / `tenant_members` reference SQL
+**Firestore rules:** deploy `firestore.rules` (user can only R/W their own `users/{uid}/**`).
 
-Ask the user: **Supabase vs Firebase (or both)** before scaffolding clients.
+**Still demo / not wired:**
+- Most CRM list pages still use in-memory `CrmDataContext` seed data — call `projectsApi` entity methods when swapping a module to live data
+- Payments (Polar / Dodo) — not started
+
+**Do not** add Supabase unless asked. Prefer extending `lib/projectsApi.js` + `CrmDataContext` swap per entity.

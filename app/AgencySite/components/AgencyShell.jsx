@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { AgencyThemeProvider, useAgencyTheme } from "../AgencyThemeContext";
 import DynamicIslandNav from "./DynamicIslandNav";
+import GoogleLoginModal from "./GoogleLoginModal";
 import AgencyVideoPhone from "./AgencyVideoPhone";
 import AgencyFooter from "./AgencyFooter";
 import { GravityStarsBackground } from "@/src/components/animate-ui/components/backgrounds/gravity-stars";
@@ -28,6 +29,7 @@ function AgencyShellInner({ children, className, wide = false, size }) {
 		>
 			<br />
 			<DynamicIslandNav />
+			<GoogleLoginModal />
 			<GravityStarsBackground
 				className={cn(
 					"pointer-events-none fixed inset-0 z-0 h-screen w-screen",
