@@ -33,7 +33,7 @@ function TemplateDetailContent({ template }) {
 		path: template.image || TEMPLATES_PAGE_OG_IMAGE.path,
 		alt: `${template.name} – free Next.js CRM template preview`,
 	};
-	const demoHref = template.demoUrl || `/demo?vertical=${template.id}`;
+	const demoHref = template.demoUrl || `/demo/template/${template.id}`;
 
 	const handleDownload = async (e) => {
 		e.preventDefault();

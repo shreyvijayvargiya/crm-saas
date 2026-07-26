@@ -39,7 +39,8 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 	const router = useRouter();
 	const { colors } = useTheme();
 	const { i18n, t } = useTranslation();
-	const { vertical, verticals, setVerticalId, navCategories } = useCrmVertical();
+	const { vertical, verticalId, verticals, setVerticalId, navCategories } =
+		useCrmVertical();
 	const [expandedIds, setExpandedIds] = useState(() => new Set());
 
 	useEffect(() => {
@@ -83,9 +84,19 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 	};
 
 	const switchVertical = (ast) => {
+		if (!ast?.id) return;
 		setVerticalId(ast.id);
-		router.push(ast.homeRoute || "/dashboard");
+		const dest = ast.homeRoute || "/dashboard";
+		if (router.pathname !== dest) {
+			router.push(dest);
+		}
 	};
+
+	const activeVertical =
+		verticals.find((ast) => ast.id === verticalId) || vertical;
+	const VerticalIcon =
+		lucideIcons[activeVertical?.meta?.icon] || lucideIcons.LayoutDashboard;
+	const verticalLabel = activeVertical?.meta?.name || "CRM";
 
 	const renderNavLink = (item, { nested = false } = {}) => {
 		const Icon = lucideIcons[item?.icon];
@@ -116,8 +127,6 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 		);
 	};
 
-	const VerticalIcon = lucideIcons[vertical?.meta?.icon] || lucideIcons.LayoutDashboard;
-
 	return (
 		<div
 			className={`h-[98vh] border ${colors.border} ${colors.primaryBackground} rounded-xl ${
@@ -130,7 +139,7 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 				<div className="flex flex-col gap-1">
 					<div className={`flex items-center justify-between gap-2 p-1`}>
 						{open ? (
-							<DropdownMenu>
+							<DropdownMenu key={verticalId}>
 								<DropdownMenuTrigger asChild>
 									<Button
 										type="button"
@@ -142,9 +151,11 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 										)}
 									>
 										<div className="flex min-w-0 items-center gap-2">
-											<VerticalIcon className={`h-3 w-3 shrink-0 ${colors.foreground}`} />
+											<VerticalIcon
+												className={`h-3 w-3 shrink-0 ${colors.foreground}`}
+											/>
 											<p className={`truncate text-sm ${colors.foreground}`}>
-												{vertical?.meta?.name || "CRM"}
+												{verticalLabel}
 											</p>
 										</div>
 										<lucideIcons.ChevronUp
@@ -155,13 +166,15 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 								<DropdownMenuContent align="start" className="w-56">
 									<DropdownMenuLabel>CRM vertical (AST)</DropdownMenuLabel>
 									{verticals.map((ast) => {
-										const Icon = lucideIcons[ast.meta.icon] || lucideIcons.LayoutDashboard;
+										const Icon =
+											lucideIcons[ast.meta.icon] || lucideIcons.LayoutDashboard;
+										const selected = verticalId === ast.id;
 										return (
 											<DropdownMenuItem
 												key={ast.id}
-												onClick={() => switchVertical(ast)}
+												onSelect={() => switchVertical(ast)}
 												className={cn(
-													vertical.id === ast.id &&
+													selected &&
 														"bg-primary text-primary-foreground focus:bg-primary focus:text-primary-foreground"
 												)}
 											>
@@ -171,7 +184,7 @@ const Sidebar = ({ open, setDrawerOpen }) => {
 										);
 									})}
 									<DropdownMenuSeparator />
-									<DropdownMenuItem onClick={() => router.push("/demo")}>
+									<DropdownMenuItem onSelect={() => router.push("/demo")}>
 										<lucideIcons.LayoutGrid className="h-4 w-4" />
 										All verticals on /demo
 									</DropdownMenuItem>

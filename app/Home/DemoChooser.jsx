@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import * as lucideIcons from "lucide-react";
 import { ArrowRight, LayoutGrid, Sparkles } from "lucide-react";
@@ -9,7 +9,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useCrmVertical } from "../../utils/CrmVerticalContext";
 import { useTheme } from "../../utils/useTheme";
-import { getVerticalAstById } from "../../asts/crm-verticals";
 
 const ACCENT = {
 	violet: {
@@ -37,6 +36,11 @@ const ACCENT = {
 		icon: "bg-rose-500/15 text-rose-600 dark:text-rose-400",
 		badge: "border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-300",
 	},
+	teal: {
+		ring: "hover:border-teal-400/80 dark:hover:border-teal-500/60",
+		icon: "bg-teal-500/15 text-teal-600 dark:text-teal-400",
+		badge: "border-teal-200 bg-teal-50 text-teal-700 dark:border-teal-800 dark:bg-teal-950/40 dark:text-teal-300",
+	},
 	zinc: {
 		ring: "hover:border-zinc-400/80 dark:hover:border-zinc-500/60",
 		icon: "bg-zinc-500/15 text-zinc-700 dark:text-zinc-300",
@@ -45,32 +49,18 @@ const ACCENT = {
 };
 
 /**
- * /demo — pick a CRM vertical AST, then enter the admin shell.
+ * /demo — pick a CRM vertical AST → /demo/template/[name] → CRM shell.
  */
 export default function DemoChooser() {
 	const router = useRouter();
 	const { colors } = useTheme();
-	const { verticals, verticalId, setVerticalId } = useCrmVertical();
+	const { verticals, verticalId } = useCrmVertical();
 	const [pendingId, setPendingId] = useState(null);
 
 	const enterVertical = (ast) => {
 		setPendingId(ast.id);
-		setVerticalId(ast.id);
-		router.push(ast.homeRoute || "/dashboard");
+		router.push(`/demo/template/${ast.id}`);
 	};
-
-	/** Deep-link from template pages: /demo?vertical=freelancer */
-	useEffect(() => {
-		if (!router.isReady) return;
-		const raw = router.query.vertical;
-		const id = Array.isArray(raw) ? raw[0] : raw;
-		if (!id || typeof id !== "string") return;
-		const ast = getVerticalAstById(id);
-		if (!ast || ast.id !== id) return;
-		enterVertical(ast);
-		// intentionally once when query is present
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [router.isReady, router.query.vertical]);
 
 	return (
 		<div className="mx-auto max-w-5xl space-y-8 p-4 sm:p-6">
@@ -100,9 +90,9 @@ export default function DemoChooser() {
 					Which SaaS CRM do you want to view?
 				</h1>
 				<p className={cn("max-w-2xl text-sm sm:text-base", colors.mutedForeground)}>
-					Each card loads a vertical AST — sidebar, pages, tables, and schemas.
-					Switch anytime from the sidebar dropdown. AI agents can add more JSON
-					files later without rewriting the app shell.
+					Each card opens <code className="text-[11px]">/demo/template/[name]</code>{" "}
+					for that vertical AST — sidebar, pages, and schemas. Switch anytime from
+					the sidebar dropdown.
 				</p>
 			</header>
 
@@ -157,8 +147,7 @@ export default function DemoChooser() {
 									</div>
 									<div className="mt-auto flex items-center justify-between pt-2">
 										<p className="font-mono text-[10px] text-muted-foreground">
-											{ast.id}.json · {ast.sidebar?.length || 0} nav groups ·{" "}
-											{ast.pages?.length || 0} pages
+											/demo/template/{ast.id}
 										</p>
 										<span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
 											{loading ? "Opening…" : "Open"}

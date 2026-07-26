@@ -1,0 +1,453 @@
+{
+	"version": 1,
+	"kind": "saas-crm-vertical",
+	"id": "ecommerce-cms",
+	"meta": {
+		"name": "Ecommerce CMS",
+		"tagline": "Products, orders, inventory, shipping, content & payments",
+		"description": "Full ecommerce + content admin for DTC and marketplace sellers. Manage products, orders, users, shipping, inventory, raw materials, invoices, payments, blogs, newsletters, and the content scheduler in one vertical.",
+		"icon": "ShoppingCart",
+		"accent": "teal",
+		"badge": "Ecommerce",
+		"audience": ["DTC brands", "marketplace sellers", "retail ops", "ecommerce content teams"]
+	},
+	"homeRoute": "/e-commerce",
+	"chooserRoute": "/demo",
+	"sidebar": [
+		{
+			"id": "main",
+			"label": "Overview",
+			"items": [
+				{ "id": 1, "label": "Dashboard", "route": "/dashboard", "icon": "Home" },
+				{ "id": 16, "label": "Analytics", "route": "/analytics", "icon": "BarChart3", "keywords": ["sales", "conversion"] }
+			]
+		},
+		{
+			"id": "catalog",
+			"label": "Catalog",
+			"items": [
+				{ "id": 23, "label": "Products", "route": "/products", "icon": "Package", "keywords": ["sku", "catalog"] },
+				{ "id": 50, "label": "Inventory", "route": "/inventory", "icon": "PackageSearch", "keywords": ["stock", "warehouse"] },
+				{ "id": 51, "label": "Raw materials", "route": "/raw-materials", "icon": "Box", "keywords": ["bom", "supply"] }
+			]
+		},
+		{
+			"id": "orders",
+			"label": "Orders & shipping",
+			"items": [
+				{ "id": 24, "label": "Storefront", "route": "/e-commerce", "icon": "ShoppingCart" },
+				{ "id": 242, "label": "Orders", "route": "/e-commerce/orders", "icon": "ShoppingBag", "keywords": ["fulfillment"] },
+				{ "id": 52, "label": "Shipping", "route": "/shipping", "icon": "Truck", "keywords": ["carriers", "tracking"] }
+			]
+		},		{
+			"id": "money",
+			"label": "Finance",
+			"items": [
+				{ "id": 8, "label": "Invoices", "route": "/invoices", "icon": "FileText" },
+				{ "id": 11, "label": "Payments", "route": "/payments", "icon": "CreditCard" }
+			]
+		},
+		{
+			"id": "people",
+			"label": "Customers",
+			"items": [
+				{ "id": 30, "label": "Users", "route": "/users", "icon": "UserCog", "keywords": ["customers", "buyers"] },
+				{ "id": 4, "label": "Contacts", "route": "/contacts", "icon": "Contact" }
+			]
+		},
+		{
+			"id": "content",
+			"label": "Content & CMS",
+			"items": [
+				{
+					"id": 13,
+					"label": "CMS",
+					"route": "/cms",
+					"icon": "FileText",
+					"keywords": ["blogs", "posts"],
+					"children": [
+						{ "id": 131, "label": "Blogs", "route": "/cms", "icon": "BookOpen" },
+						{ "id": 132, "label": "Newsletters", "route": "/cms", "icon": "Send" }
+					]
+				},
+				{ "id": 43, "label": "Scheduler", "route": "/scheduler", "icon": "CalendarClock", "keywords": ["social", "content"] },
+				{ "id": 40, "label": "Marketing", "route": "/marketing", "icon": "Megaphone" }
+			]
+		},
+		{
+			"id": "system",
+			"label": "System",
+			"items": [
+				{ "id": 14, "label": "Settings", "route": "/settings", "icon": "Settings" },
+				{ "id": 20, "label": "Notifications", "route": "/notifications", "icon": "Bell" },
+				{ "id": 33, "label": "Help", "route": "/help", "icon": "CircleHelp" }
+			]
+		}
+	],
+	"pages": [
+		{
+			"id": "storefront",
+			"label": "Storefront",
+			"route": "/e-commerce",
+			"templateId": "e-commerce",
+			"blocks": [
+				{
+					"type": "stats",
+					"items": [
+						{ "label": "GMV (30d)", "value": "$128k" },
+						{ "label": "Orders", "value": "1,842" },
+						{ "label": "AOV", "value": "$69" },
+						{ "label": "Open shipments", "value": "94" }
+					]
+				},
+				{ "type": "toolbar", "searchPlaceholder": "Search store…" }
+			]
+		},
+		{
+			"id": "products",
+			"label": "Products",
+			"route": "/products",
+			"templateId": "products",
+			"blocks": [
+				{ "type": "toolbar", "searchPlaceholder": "Search products…", "filters": ["Status", "Category"] },
+				{
+					"type": "table",
+					"entity": "products",
+					"columns": [
+						{ "id": "name", "label": "Product", "type": "text" },
+						{ "id": "sku", "label": "SKU", "type": "text" },
+						{ "id": "price", "label": "Price", "type": "currency" },
+						{ "id": "stock", "label": "Stock", "type": "number" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		},
+		{
+			"id": "inventory",
+			"label": "Inventory",
+			"route": "/inventory",
+			"templateId": "inventory",
+			"blocks": [
+				{
+					"type": "stats",
+					"items": [
+						{ "label": "SKUs tracked", "value": "412" },
+						{ "label": "Low stock", "value": "18" },
+						{ "label": "Out of stock", "value": "6" },
+						{ "label": "Warehouses", "value": "3" }
+					]
+				},
+				{ "type": "toolbar", "searchPlaceholder": "Search inventory…" },
+				{
+					"type": "table",
+					"entity": "inventory",
+					"columns": [
+						{ "id": "sku", "label": "SKU", "type": "text" },
+						{ "id": "name", "label": "Item", "type": "text" },
+						{ "id": "warehouse", "label": "Warehouse", "type": "text" },
+						{ "id": "onHand", "label": "On hand", "type": "number" },
+						{ "id": "reserved", "label": "Reserved", "type": "number" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		},
+		{
+			"id": "raw-materials",
+			"label": "Raw materials",
+			"route": "/raw-materials",
+			"templateId": "raw-materials",
+			"blocks": [
+				{ "type": "toolbar", "searchPlaceholder": "Search materials…" },
+				{
+					"type": "table",
+					"entity": "rawMaterials",
+					"columns": [
+						{ "id": "name", "label": "Material", "type": "text" },
+						{ "id": "supplier", "label": "Supplier", "type": "text" },
+						{ "id": "unit", "label": "Unit", "type": "text" },
+						{ "id": "qty", "label": "Qty", "type": "number" },
+						{ "id": "reorderAt", "label": "Reorder at", "type": "number" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		},
+		{
+			"id": "orders",
+			"label": "Orders",
+			"route": "/e-commerce/orders",
+			"templateId": "e-commerce",
+			"blocks": [
+				{
+					"type": "table",
+					"entity": "orders",
+					"columns": [
+						{ "id": "orderId", "label": "Order", "type": "text" },
+						{ "id": "customer", "label": "Customer", "type": "text" },
+						{ "id": "total", "label": "Total", "type": "currency" },
+						{ "id": "fulfillment", "label": "Fulfillment", "type": "badge" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		},
+		{
+			"id": "shipping",
+			"label": "Shipping",
+			"route": "/shipping",
+			"templateId": "shipping",
+			"blocks": [
+				{
+					"type": "stats",
+					"items": [
+						{ "label": "In transit", "value": "126" },
+						{ "label": "Delivered (7d)", "value": "540" },
+						{ "label": "Exceptions", "value": "11" },
+						{ "label": "Avg transit", "value": "3.4d" }
+					]
+				},
+				{ "type": "toolbar", "searchPlaceholder": "Search shipments…" },
+				{
+					"type": "table",
+					"entity": "shipments",
+					"columns": [
+						{ "id": "tracking", "label": "Tracking", "type": "text" },
+						{ "id": "orderId", "label": "Order", "type": "text" },
+						{ "id": "carrier", "label": "Carrier", "type": "text" },
+						{ "id": "destination", "label": "Destination", "type": "text" },
+						{ "id": "eta", "label": "ETA", "type": "date" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		},
+		{
+			"id": "invoices",
+			"label": "Invoices",
+			"route": "/invoices",
+			"templateId": "invoices",
+			"blocks": [
+				{ "type": "stats" },
+				{
+					"type": "table",
+					"entity": "invoices",
+					"columns": [
+						{ "id": "number", "label": "Number", "type": "text" },
+						{ "id": "customer", "label": "Customer", "type": "text" },
+						{ "id": "amount", "label": "Amount", "type": "currency" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		},
+		{
+			"id": "payments",
+			"label": "Payments",
+			"route": "/payments",
+			"templateId": "payments",
+			"blocks": [
+				{
+					"type": "table",
+					"entity": "payments",
+					"columns": [
+						{ "id": "transactionId", "label": "Charge", "type": "text" },
+						{ "id": "customer", "label": "Customer", "type": "text" },
+						{ "id": "amount", "label": "Amount", "type": "currency" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		},
+		{
+			"id": "users",
+			"label": "Users",
+			"route": "/users",
+			"templateId": "users",
+			"blocks": [
+				{ "type": "toolbar", "searchPlaceholder": "Search customers…" },
+				{
+					"type": "table",
+					"entity": "users",
+					"columns": [
+						{ "id": "name", "label": "Name", "type": "text" },
+						{ "id": "email", "label": "Email", "type": "email" },
+						{ "id": "orders", "label": "Orders", "type": "number" },
+						{ "id": "spend", "label": "Spend", "type": "currency" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		},
+		{
+			"id": "cms",
+			"label": "Blogs & newsletters",
+			"route": "/cms",
+			"templateId": "cms",
+			"blocks": [
+				{
+					"type": "stats",
+					"items": [
+						{ "label": "Published posts", "value": "36" },
+						{ "label": "Drafts", "value": "8" },
+						{ "label": "Newsletters", "value": "14" },
+						{ "label": "Subscribers", "value": "9.1k" }
+					]
+				},
+				{
+					"type": "table",
+					"entity": "blogs",
+					"columns": [
+						{ "id": "title", "label": "Title", "type": "text" },
+						{ "id": "status", "label": "Status", "type": "badge" },
+						{ "id": "views", "label": "Views", "type": "number" }
+					]
+				}
+			]
+		},
+		{
+			"id": "scheduler",
+			"label": "Content scheduler",
+			"route": "/scheduler",
+			"templateId": "scheduler",
+			"blocks": [
+				{ "type": "toolbar", "searchPlaceholder": "Search scheduled posts…" },
+				{
+					"type": "table",
+					"entity": "scheduledPosts",
+					"columns": [
+						{ "id": "title", "label": "Post", "type": "text" },
+						{ "id": "channel", "label": "Channel", "type": "badge" },
+						{ "id": "scheduledAt", "label": "When", "type": "date" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		}
+	],
+	"entities": {
+		"products": {
+			"singular": "Product",
+			"plural": "Products",
+			"fields": [
+				{ "name": "name", "type": "text" },
+				{ "name": "sku", "type": "text" },
+				{ "name": "price", "type": "currency" },
+				{ "name": "stock", "type": "number" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "ecommerce-products"
+		},
+		"inventory": {
+			"singular": "Stock item",
+			"plural": "Inventory",
+			"fields": [
+				{ "name": "sku", "type": "text" },
+				{ "name": "name", "type": "text" },
+				{ "name": "warehouse", "type": "text" },
+				{ "name": "onHand", "type": "number" },
+				{ "name": "reserved", "type": "number" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "ecommerce-inventory"
+		},
+		"rawMaterials": {
+			"singular": "Raw material",
+			"plural": "Raw materials",
+			"fields": [
+				{ "name": "name", "type": "text" },
+				{ "name": "supplier", "type": "text" },
+				{ "name": "unit", "type": "text" },
+				{ "name": "qty", "type": "number" },
+				{ "name": "reorderAt", "type": "number" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "ecommerce-raw-materials"
+		},
+		"orders": {
+			"singular": "Order",
+			"plural": "Orders",
+			"fields": [
+				{ "name": "orderId", "type": "text" },
+				{ "name": "customer", "type": "text" },
+				{ "name": "total", "type": "currency" },
+				{ "name": "fulfillment", "type": "status" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "ecommerce-orders"
+		},
+		"shipments": {
+			"singular": "Shipment",
+			"plural": "Shipments",
+			"fields": [
+				{ "name": "tracking", "type": "text" },
+				{ "name": "orderId", "type": "text" },
+				{ "name": "carrier", "type": "text" },
+				{ "name": "destination", "type": "text" },
+				{ "name": "eta", "type": "date" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "ecommerce-shipping"
+		},
+		"invoices": {
+			"singular": "Invoice",
+			"plural": "Invoices",
+			"fields": [
+				{ "name": "number", "type": "text" },
+				{ "name": "customer", "type": "text" },
+				{ "name": "amount", "type": "currency" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "ecommerce-invoices"
+		},
+		"payments": {
+			"singular": "Payment",
+			"plural": "Payments",
+			"fields": [
+				{ "name": "transactionId", "type": "text" },
+				{ "name": "customer", "type": "text" },
+				{ "name": "amount", "type": "currency" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "ecommerce-payments"
+		},
+		"users": {
+			"singular": "Customer",
+			"plural": "Customers",
+			"fields": [
+				{ "name": "name", "type": "text" },
+				{ "name": "email", "type": "email" },
+				{ "name": "orders", "type": "number" },
+				{ "name": "spend", "type": "currency" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "ecommerce-users"
+		},
+		"blogs": {
+			"singular": "Blog post",
+			"plural": "Blogs",
+			"fields": [
+				{ "name": "title", "type": "text" },
+				{ "name": "status", "type": "status" },
+				{ "name": "views", "type": "number" }
+			],
+			"seedHint": "ecommerce-blogs"
+		},
+		"scheduledPosts": {
+			"singular": "Scheduled post",
+			"plural": "Scheduled posts",
+			"fields": [
+				{ "name": "title", "type": "text" },
+				{ "name": "channel", "type": "status" },
+				{ "name": "scheduledAt", "type": "date" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "ecommerce-scheduler"
+		}
+	},
+	"notes": [
+		"Combines commerce ops (/products, /inventory, /shipping, /raw-materials, /e-commerce) with CMS (/cms, /scheduler).",
+		"Inventory, shipping, and raw-materials are dedicated list pages for this vertical."
+	]
+}

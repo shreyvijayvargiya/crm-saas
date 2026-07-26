@@ -9,6 +9,7 @@ import agency from "./agency.json";
 import freelancer from "./freelancer.json";
 import contentCreator from "./content-creator.json";
 import digitalStore from "./digital-store.json";
+import ecommerceCms from "./ecommerce-cms.json";
 import { CRM_VERTICAL_AST_KIND, CRM_VERTICAL_AST_VERSION } from "./schema";
 
 /** Ordered list — drives /demo chooser cards. */
@@ -18,6 +19,7 @@ export const verticalAstModules = [
 	freelancer,
 	contentCreator,
 	digitalStore,
+	ecommerceCms,
 	fullKit,
 ];
 
@@ -28,8 +30,15 @@ export function listVerticalAsts() {
 }
 
 export function getVerticalAstById(id) {
+	if (!id) return normalizeVerticalAst(fullKit);
 	const found = verticalAstModules.find((ast) => ast.id === id);
-	return found ? normalizeVerticalAst(found) : normalizeVerticalAst(fullKit);
+	if (!found) {
+		if (typeof console !== "undefined" && id !== DEFAULT_VERTICAL_ID) {
+			console.warn(`[crm-vertical] Unknown vertical id "${id}", falling back to ${DEFAULT_VERTICAL_ID}`);
+		}
+		return normalizeVerticalAst(fullKit);
+	}
+	return normalizeVerticalAst(found);
 }
 
 export function normalizeVerticalAst(raw) {

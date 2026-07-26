@@ -26,6 +26,7 @@ const ACCENT = {
 	emerald: "from-emerald-500/20 to-emerald-500/5",
 	amber: "from-amber-500/20 to-amber-500/5",
 	rose: "from-rose-500/20 to-rose-500/5",
+	teal: "from-teal-500/20 to-teal-500/5",
 	zinc: "from-zinc-500/20 to-zinc-500/5",
 };
 
@@ -121,81 +122,87 @@ function TemplatesContent() {
 				{templates.map((tpl, index) => {
 					const Icon = lucideIcons[tpl.icon] || lucideIcons.LayoutDashboard;
 					const gradient = ACCENT[tpl.accent] || ACCENT.zinc;
+					const detailHref = `/templates/${tpl.id}`;
 					return (
 						<motion.div
 							key={tpl.id}
 							initial={{ opacity: 0, y: 16 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.4, delay: 0.05 * index }}
+							className={cn(
+								"group flex h-full flex-col overflow-hidden rounded-2xl border transition-colors",
+								isLight
+									? "border-zinc-200 bg-white/70 hover:border-zinc-300"
+									: "border-zinc-800 bg-zinc-950/50 hover:border-zinc-700"
+							)}
 						>
-							<Link href={`/templates/${tpl.id}`} passHref>
+							<Link href={detailHref} passHref>
 								<a
 									className={cn(
-										"group flex h-full flex-col overflow-hidden rounded-2xl border transition-colors",
-										isLight
-											? "border-zinc-200 bg-white/70 hover:border-zinc-300"
-											: "border-zinc-800 bg-zinc-950/50 hover:border-zinc-700"
+										"relative block aspect-[16/10] overflow-hidden bg-gradient-to-br",
+										gradient
 									)}
 								>
+									{/* eslint-disable-next-line @next/next/no-img-element */}
+									<img
+										src={tpl.image}
+										alt={tpl.name}
+										className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+									/>
+									{tpl.badge ? (
+										<Badge className="absolute left-3 top-3 border-0 bg-black/70 text-white hover:bg-black/70">
+											{tpl.badge}
+										</Badge>
+									) : null}
+								</a>
+							</Link>
+							<div className="flex flex-1 flex-col gap-2 p-4">
+								<div className="flex items-start gap-2">
 									<div
 										className={cn(
-											"relative aspect-[16/10] overflow-hidden bg-gradient-to-br",
-											gradient
+											"mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg",
+											isLight ? "bg-zinc-100" : "bg-zinc-800"
 										)}
 									>
-										{/* eslint-disable-next-line @next/next/no-img-element */}
-										<img
-											src={tpl.image}
-											alt={tpl.name}
-											className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
-										/>
-										{tpl.badge ? (
-											<Badge className="absolute left-3 top-3 border-0 bg-black/70 text-white hover:bg-black/70">
-												{tpl.badge}
-											</Badge>
-										) : null}
+										<Icon className="h-4 w-4" />
 									</div>
-									<div className="flex flex-1 flex-col gap-2 p-4">
-										<div className="flex items-start gap-2">
-											<div
-												className={cn(
-													"mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg",
-													isLight ? "bg-zinc-100" : "bg-zinc-800"
-												)}
-											>
-												<Icon className="h-4 w-4" />
-											</div>
-											<div className="min-w-0">
+									<div className="min-w-0">
+										<Link href={detailHref} passHref>
+											<a>
 												<h2
 													className={cn(
-														"text-base font-semibold",
-														isLight ? "text-zinc-900" : "text-white"
+														"text-base font-semibold transition-colors",
+														isLight
+															? "text-zinc-900 hover:text-zinc-700"
+															: "text-white hover:text-zinc-200"
 													)}
 												>
 													{tpl.name}
 												</h2>
-												<p
-													className={cn(
-														"mt-0.5 text-xs leading-relaxed",
-														isLight ? "text-zinc-600" : "text-zinc-400"
-													)}
-												>
-													{tpl.tagline}
-												</p>
-											</div>
-										</div>
-										<span
+											</a>
+										</Link>
+										<p
 											className={cn(
-												"mt-auto inline-flex items-center gap-1 pt-2 text-sm font-medium",
-												isLight ? "text-zinc-900" : "text-zinc-100"
+												"mt-0.5 text-xs leading-relaxed",
+												isLight ? "text-zinc-600" : "text-zinc-400"
 											)}
 										>
-											View details
-											<ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-										</span>
+											{tpl.tagline}
+										</p>
 									</div>
-								</a>
-							</Link>
+								</div>
+								<Link href={detailHref} passHref>
+									<a
+										className={cn(
+											"mt-auto inline-flex items-center gap-1 pt-2 text-sm font-medium",
+											isLight ? "text-zinc-900" : "text-zinc-100"
+										)}
+									>
+										View details
+										<ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+									</a>
+								</Link>
+							</div>
 						</motion.div>
 					);
 				})}

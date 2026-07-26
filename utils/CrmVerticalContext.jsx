@@ -16,7 +16,11 @@ export function CrmVerticalProvider({ children }) {
 	useEffect(() => {
 		try {
 			const saved = window.localStorage.getItem(STORAGE_KEY);
-			if (saved) setVerticalIdState(saved);
+			if (saved) {
+				const ast = getVerticalAstById(saved);
+				// Only restore if the id actually resolves (not silent full-kit fallback)
+				if (ast.id === saved) setVerticalIdState(saved);
+			}
 		} catch {
 			/* ignore */
 		}
@@ -25,9 +29,11 @@ export function CrmVerticalProvider({ children }) {
 
 	const setVerticalId = useCallback((id) => {
 		const next = id || DEFAULT_VERTICAL_ID;
-		setVerticalIdState(next);
+		const ast = getVerticalAstById(next);
+		const resolved = ast.id === next ? next : DEFAULT_VERTICAL_ID;
+		setVerticalIdState(resolved);
 		try {
-			window.localStorage.setItem(STORAGE_KEY, next);
+			window.localStorage.setItem(STORAGE_KEY, resolved);
 		} catch {
 			/* ignore */
 		}
@@ -38,7 +44,8 @@ export function CrmVerticalProvider({ children }) {
 
 	const value = useMemo(
 		() => ({
-			verticalId: vertical.id,
+			/** Always the selected id (not overwritten by AST fallback). */
+			verticalId,
 			vertical,
 			verticals,
 			setVerticalId,
@@ -46,7 +53,7 @@ export function CrmVerticalProvider({ children }) {
 			homeRoute: vertical.homeRoute,
 			hydrated,
 		}),
-		[vertical, verticals, setVerticalId, hydrated]
+		[verticalId, vertical, verticals, setVerticalId, hydrated]
 	);
 
 	return (
