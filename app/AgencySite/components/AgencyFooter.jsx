@@ -9,11 +9,12 @@ import LlmShareActions from "./LlmShareActions";
 const FOOTER_LINKS = [
 	{ label: "Home", href: "/" },
 	{ label: "AI CRM Builder", href: "/blueprint", featured: true },
+	{ label: "Free CRMs", href: "/templates" },
 	{ label: "Blog", href: "/blog" },
 	{ label: "Live demo", href: "/demo" },
 	{ label: "Pricing", href: "/pricing" },
-	{ label: "FAQ", href: "/faq" },
-	{ label: "Contact", href: "/contact" },
+	{ label: "FAQ", href: "/#faq" },
+	{ label: "Contact", href: "/#contact" },
 	{ label: "All pages", href: "/sitemap" },
 ];
 

@@ -38,6 +38,7 @@
 		"clsx": "^2.1.1",
 		"date-fns": "^4.4.0",
 		"drizzle-orm": "^0.45.2",
+		"firebase": "^11.10.0",
 		"framer-motion": "^6.5.1",
 		"gray-matter": "^4.0.3",
 		"gsap": "^3.12.7",

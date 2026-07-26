@@ -7,15 +7,42 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { FollowerPointerCard } from "@/components/ui/following-pointer";
+import SiteSeo, { TEMPLATES_PAGE_OG_IMAGE, CRM_SOCIAL_IMAGES } from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import { PRICING_TIERS, CONTACT, OTHER_TEMPLATES } from "../agencyConfig";
 
+const SITE_URL = "https://saascrm.site";
+
 function PricingContent() {
 	const { isLight } = useAgencyTheme();
 
+	const pricingJsonLd = {
+		"@context": "https://schema.org",
+		"@type": "OfferCatalog",
+		name: "SaaSCRM Pricing",
+		url: `${SITE_URL}/pricing`,
+		itemListElement: PRICING_TIERS.map((tier, index) => ({
+			"@type": "Offer",
+			position: index + 1,
+			name: tier.name,
+			description: tier.tagline || tier.name,
+			price: String(tier.priceUsd ?? "").replace(/[^0-9.]/g, "") || undefined,
+			priceCurrency: "USD",
+			url: tier.checkoutUsd || tier.href || `${SITE_URL}/pricing`,
+		})),
+	};
+
 	return (
 		<>
+			<SiteSeo
+				title="Pricing – SaaSCRM Template & Custom CRM Builds"
+				description="Buy the SaaSCRM Next.js template self-serve from $49, or hire us for a custom CRM. Compare tiers, free templates, and Gumroad listings."
+				path="/pricing"
+				keywords="SaaSCRM pricing, buy CRM template, Next.js admin template price, custom CRM development cost"
+				images={[TEMPLATES_PAGE_OG_IMAGE, CRM_SOCIAL_IMAGES[0]]}
+				jsonLd={pricingJsonLd}
+			/>
 			<motion.header
 				initial={{ opacity: 0, y: 16 }}
 				animate={{ opacity: 1, y: 0 }}

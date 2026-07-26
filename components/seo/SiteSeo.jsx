@@ -3,6 +3,12 @@ import Head from "next/head";
 
 const SITE_URL = "https://saascrm.site";
 
+/** OG / Twitter image for /templates (drop file in public/). */
+export const TEMPLATES_PAGE_OG_IMAGE = {
+	path: "/templates-page.png",
+	alt: "SaaSCRM free CRM templates – Next.js dashboards for startups and freelancers",
+};
+
 export const CRM_SOCIAL_IMAGES = [
 	{
 		path: "/screenshots-marketing-page/saas-crm-dashboard.png",
@@ -41,16 +47,26 @@ export default function SiteSeo({
 	keywords,
 	images = CRM_SOCIAL_IMAGES,
 	type = "website",
+	jsonLd,
+	noIndex = false,
 }) {
 	const canonical = `${SITE_URL}${path === "/" ? "" : path}`;
 	const primaryImage = `${SITE_URL}${images[0].path}`;
+	const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 
 	return (
 		<Head>
 			<title>{title}</title>
 			<meta name="description" content={description} />
-			<meta name="keywords" content={keywords} />
-			<meta name="robots" content="index, follow, max-image-preview:large" />
+			{keywords ? <meta name="keywords" content={keywords} /> : null}
+			<meta
+				name="robots"
+				content={
+					noIndex
+						? "noindex, follow"
+						: "index, follow, max-image-preview:large"
+				}
+			/>
 			<link rel="canonical" href={canonical} />
 
 			<meta property="og:type" content={type} />
@@ -61,36 +77,15 @@ export default function SiteSeo({
 			<meta property="og:url" content={canonical} />
 			{images.map((image) => (
 				<React.Fragment key={image.path}>
+					<meta property="og:image" content={`${SITE_URL}${image.path}`} />
 					<meta
-						key={`image-${image.path}`}
-						property="og:image"
-						content={`${SITE_URL}${image.path}`}
-					/>
-					<meta
-						key={`secure-${image.path}`}
 						property="og:image:secure_url"
 						content={`${SITE_URL}${image.path}`}
 					/>
-					<meta
-						key={`alt-${image.path}`}
-						property="og:image:alt"
-						content={image.alt}
-					/>
-					<meta
-						key={`width-${image.path}`}
-						property="og:image:width"
-						content="1919"
-					/>
-					<meta
-						key={`height-${image.path}`}
-						property="og:image:height"
-						content="958"
-					/>
-					<meta
-						key={`type-${image.path}`}
-						property="og:image:type"
-						content="image/png"
-					/>
+					<meta property="og:image:alt" content={image.alt} />
+					<meta property="og:image:width" content="1919" />
+					<meta property="og:image:height" content="958" />
+					<meta property="og:image:type" content="image/png" />
 				</React.Fragment>
 			))}
 
@@ -99,6 +94,15 @@ export default function SiteSeo({
 			<meta name="twitter:description" content={description} />
 			<meta name="twitter:image" content={primaryImage} />
 			<meta name="twitter:image:alt" content={images[0].alt} />
+
+			{schemas.map((schema, i) => (
+				<script
+					// eslint-disable-next-line react/no-danger
+					key={`ld-${i}`}
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+				/>
+			))}
 		</Head>
 	);
 }

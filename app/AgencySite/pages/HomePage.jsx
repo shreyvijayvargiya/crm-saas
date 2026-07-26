@@ -22,6 +22,8 @@ import {
 	CHECKOUT,
 	OTHER_TEMPLATES,
 } from "../agencyConfig";
+import { FaqContent } from "./FaqPage";
+import { ContactContent } from "./ContactPage";
 
 const {
 	ArrowRight,
@@ -750,6 +752,24 @@ function HomeContent() {
 			</motion.section>
 
 			<motion.section
+				id="faq"
+				{...fadeUp}
+				transition={{ ...fadeUp.transition, delay: 0.12 }}
+				className="mb-10 scroll-mt-24"
+			>
+				<FaqContent embedded />
+			</motion.section>
+
+			<motion.section
+				id="contact"
+				{...fadeUp}
+				transition={{ ...fadeUp.transition, delay: 0.13 }}
+				className="mb-10 scroll-mt-24"
+			>
+				<ContactContent embedded />
+			</motion.section>
+
+			<motion.section
 				{...fadeUp}
 				transition={{ ...fadeUp.transition, delay: 0.14 }}
 				className={cn(
@@ -805,9 +825,7 @@ function HomeContent() {
 									: "border-zinc-600 bg-transparent text-zinc-100 hover:bg-zinc-800"
 							)}
 						>
-							<Link href="/contact" passHref>
-								<a>Contact us</a>
-							</Link>
+							<a href="#contact">Contact us</a>
 						</Button>
 					</div>
 				</div>

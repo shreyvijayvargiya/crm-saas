@@ -1,17 +1,16 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
 	Home,
 	LayoutDashboard,
 	Sparkles,
 	CreditCard,
-	CircleHelp,
-	Mail,
 	Sun,
 	Moon,
 	BookOpen,
+	LayoutTemplate,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAgencyTheme } from "../AgencyThemeContext";
@@ -19,15 +18,13 @@ import { useAgencyTheme } from "../AgencyThemeContext";
 const TABS = [
 	{ id: "home", label: "Home", href: "/", icon: Home },
 	{ id: "demo", label: "Demo", href: "/demo", icon: LayoutDashboard },
+	{ id: "templates", label: "Free CRMs", href: "/templates", icon: LayoutTemplate },
 	{ id: "blueprint", label: "Builder", href: "/blueprint", icon: Sparkles },
 	{ id: "blog", label: "Blog", href: "/blog", icon: BookOpen },
 	{ id: "pricing", label: "Pricing", href: "/pricing", icon: CreditCard },
-	{ id: "faq", label: "FAQ", href: "/faq", icon: CircleHelp },
-	{ id: "contact", label: "Contact", href: "/contact", icon: Mail },
 ];
 
 const PILL_SPRING = { type: "spring", stiffness: 440, damping: 34, mass: 0.75 };
-const LABEL_SPRING = { type: "spring", stiffness: 380, damping: 28, mass: 0.6 };
 
 function isActiveRoute(pathname, href) {
 	if (href === "/") return pathname === "/";
@@ -72,8 +69,8 @@ export default function DynamicIslandNav() {
 									whileTap={{ scale: 0.94 }}
 									transition={PILL_SPRING}
 									className={cn(
-										"relative flex h-11 items-center justify-center rounded-xl transition-colors duration-200 sm:h-10",
-										active ? "border border-zinc-200 px-2 sm:px-2.5" : "w-11 sm:w-10",
+										"relative flex h-11 items-center justify-center gap-0 rounded-xl px-2 transition-colors duration-200 sm:h-10 sm:gap-2 sm:px-2.5",
+										active && "border border-zinc-200",
 										!active &&
 											(isLight
 												? "text-zinc-500 hover:text-zinc-800"
@@ -102,37 +99,26 @@ export default function DynamicIslandNav() {
 													? "text-black"
 													: "text-zinc-900"
 												: isLight
-													? "text-zinc-500 group-hover:text-zinc-800"
+													? "text-zinc-500"
 													: "text-zinc-500"
 										)}
 										strokeWidth={active ? 1.75 : 1.5}
 									/>
-									<AnimatePresence initial={false} mode="popLayout">
-										{active ? (
-											<motion.span
-												key={`label-${tab.id}`}
-												layout
-												initial={{ opacity: 0, width: 0, marginLeft: 0 }}
-												animate={{
-													opacity: 1,
-													width: "auto",
-													marginLeft: 8,
-												}}
-												exit={{
-													opacity: 0,
-													width: 0,
-													marginLeft: 0,
-												}}
-												transition={LABEL_SPRING}
-												className={cn(
-													"relative z-10 hidden overflow-hidden whitespace-nowrap text-sm font-semibold tracking-tight sm:inline",
-													isLight ? "text-black" : "text-zinc-900"
-												)}
-											>
-												{tab.label}
-											</motion.span>
-										) : null}
-									</AnimatePresence>
+									{/* Labels: always on sm+, hidden on small devices */}
+									<span
+										className={cn(
+											"relative z-10 hidden overflow-hidden whitespace-nowrap text-sm font-semibold tracking-tight sm:inline",
+											active
+												? isLight
+													? "text-black"
+													: "text-zinc-900"
+												: isLight
+													? "text-zinc-600"
+													: "text-zinc-400"
+										)}
+									>
+										{tab.label}
+									</span>
 								</motion.a>
 							</Link>
 						);
@@ -146,6 +132,7 @@ export default function DynamicIslandNav() {
 						aria-hidden
 					/>
 
+					{/* Theme toggle: icon only — never show a label */}
 					<motion.button
 						type="button"
 						layout

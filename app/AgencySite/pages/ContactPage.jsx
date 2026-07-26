@@ -11,12 +11,15 @@ import {
 	Phone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import SiteSeo, { TEMPLATES_PAGE_OG_IMAGE, CRM_SOCIAL_IMAGES } from "@/components/seo/SiteSeo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import { CONTACT } from "../agencyConfig";
+
+const SITE_URL = "https://saascrm.site";
 
 function XIcon({ className }) {
 	return (
@@ -67,10 +70,11 @@ const SOCIAL_LINKS = [
 	}
 ];
 
-function ContactContent() {
+function ContactContent({ embedded = false }) {
 	const { isLight } = useAgencyTheme();
 	const [status, setStatus] = useState("idle");
 	const [errorMsg, setErrorMsg] = useState("");
+	const TitleTag = embedded ? "h2" : "h1";
 
 	async function onSubmit(e) {
 		e.preventDefault();
@@ -112,19 +116,20 @@ function ContactContent() {
 			<motion.header
 				initial={{ opacity: 0, y: 16 }}
 				animate={{ opacity: 1, y: 0 }}
-				className="mb-8 text-center"
+				className={cn("text-center", embedded ? "mb-6" : "mb-8")}
 			>
-				<h1
+				<TitleTag
 					className={cn(
-						"text-3xl font-bold tracking-tight sm:text-4xl",
+						"font-bold tracking-tight",
+						embedded ? "text-2xl sm:text-3xl" : "text-3xl sm:text-4xl",
 						isLight ? "text-zinc-900" : "text-white"
 					)}
 				>
 					Contact
-				</h1>
+				</TitleTag>
 				<p
 					className={cn(
-						"mx-auto mt-4 max-w-lg text-base",
+						"mx-auto mt-3 max-w-lg text-sm sm:text-base",
 						isLight ? "text-zinc-600" : "text-zinc-400"
 					)}
 				>
@@ -403,9 +408,35 @@ function ContactContent() {
 	);
 }
 
+export { ContactContent };
+
 export default function AgencyContactPage() {
+	const contactJsonLd = {
+		"@context": "https://schema.org",
+		"@type": "ContactPage",
+		name: "Contact SaaSCRM",
+		url: `${SITE_URL}/contact`,
+		description:
+			"Contact SaaSCRM about the CRM template, custom builds, or team licensing.",
+		mainEntity: {
+			"@type": "Organization",
+			name: "SaaSCRM",
+			url: SITE_URL,
+			email: CONTACT.email,
+			sameAs: [CONTACT.x, CONTACT.linkedin].filter(Boolean),
+		},
+	};
+
 	return (
 		<AgencyShell>
+			<SiteSeo
+				title="Contact SaaSCRM – Custom CRM Builds & Template Support"
+				description="Book a call or message us about SaaSCRM template purchases, custom Next.js CRM builds, licensing, and support."
+				path="/contact"
+				keywords="contact SaaSCRM, custom CRM development, Next.js CRM hire, SaaS template support"
+				images={[TEMPLATES_PAGE_OG_IMAGE, CRM_SOCIAL_IMAGES[0]]}
+				jsonLd={contactJsonLd}
+			/>
 			<ContactContent />
 		</AgencyShell>
 	);

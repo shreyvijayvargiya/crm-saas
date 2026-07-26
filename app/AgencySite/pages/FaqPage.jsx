@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import SiteSeo, { TEMPLATES_PAGE_OG_IMAGE, CRM_SOCIAL_IMAGES } from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import { FAQ_ITEMS } from "../agencyConfig";
+
+const SITE_URL = "https://saascrm.site";
 
 function FaqItem({ item, isOpen, onToggle, isLight }) {
 	return (
@@ -58,28 +61,30 @@ function FaqItem({ item, isOpen, onToggle, isLight }) {
 	);
 }
 
-function FaqContent() {
+function FaqContent({ embedded = false }) {
 	const { isLight } = useAgencyTheme();
 	const [openId, setOpenId] = useState(0);
+	const TitleTag = embedded ? "h2" : "h1";
 
 	return (
 		<>
 			<motion.header
 				initial={{ opacity: 0, y: 16 }}
 				animate={{ opacity: 1, y: 0 }}
-				className="mb-10 text-center"
+				className={cn("text-center", embedded ? "mb-6" : "mb-10")}
 			>
-				<h1
+				<TitleTag
 					className={cn(
-						"text-3xl font-bold tracking-tight sm:text-4xl",
+						"font-bold tracking-tight",
+						embedded ? "text-2xl sm:text-3xl" : "text-3xl sm:text-4xl",
 						isLight ? "text-zinc-900" : "text-white"
 					)}
 				>
 					FAQ
-				</h1>
+				</TitleTag>
 				<p
 					className={cn(
-						"mx-auto mt-4 max-w-lg text-base",
+						"mx-auto mt-3 max-w-lg text-sm sm:text-base",
 						isLight ? "text-zinc-600" : "text-zinc-400"
 					)}
 				>
@@ -108,9 +113,32 @@ function FaqContent() {
 	);
 }
 
+export { FaqContent };
+
 export default function AgencyFaqPage() {
+	const faqJsonLd = {
+		"@context": "https://schema.org",
+		"@type": "FAQPage",
+		mainEntity: FAQ_ITEMS.map((item) => ({
+			"@type": "Question",
+			name: item.q,
+			acceptedAnswer: {
+				"@type": "Answer",
+				text: item.a,
+			},
+		})),
+	};
+
 	return (
 		<AgencyShell>
+			<SiteSeo
+				title="FAQ – SaaSCRM Template Licensing, Support & Custom Builds"
+				description="Answers about SaaSCRM licensing, what’s included, custom CRM builds, support, and how free templates differ from the full kit + Figma."
+				path="/faq"
+				keywords="SaaSCRM FAQ, CRM template license, custom CRM build, Next.js CRM support"
+				images={[TEMPLATES_PAGE_OG_IMAGE, CRM_SOCIAL_IMAGES[0]]}
+				jsonLd={faqJsonLd}
+			/>
 			<FaqContent />
 		</AgencyShell>
 	);
