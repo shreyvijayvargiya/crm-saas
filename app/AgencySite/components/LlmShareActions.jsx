@@ -1,8 +1,20 @@
 import React, { useState } from "react";
-import { Check, Copy, ExternalLink, ShoppingBag, Sparkles } from "lucide-react";
+import { ChevronDown, ExternalLink, ShoppingBag, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { CHECKOUT, getChatGptAskUrl, LLM_SHARE_PROMPT } from "../agencyConfig";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+	CHECKOUT,
+	getLlmAskTargets,
+	LLM_SHARE_PROMPT,
+} from "../agencyConfig";
 import { useAgencyTheme } from "../AgencyThemeContext";
 
 function ChatGptIcon({ className }) {
@@ -13,8 +25,49 @@ function ChatGptIcon({ className }) {
 	);
 }
 
+function ClaudeIcon({ className }) {
+	return (
+		<svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden>
+			<path d="M4.714 15.942 11.99 3l7.277 12.942H4.714Zm8.653-6.23-1.377-2.45-1.377 2.45h2.754Zm-6.54 5.14h10.346l-5.173-9.204-5.173 9.204Z" />
+			<path d="M3 18.5h18v1.75H3z" />
+		</svg>
+	);
+}
+
+function PerplexityIcon({ className }) {
+	return (
+		<svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden>
+			<path d="M12 2 4.5 6.5v11L12 22l7.5-4.5v-11L12 2Zm0 2.2 5.5 3.3v1.9L12 6.1 6.5 9.4V7.5L12 4.2Zm-5.5 5.7L12 7.6l5.5 2.3v1.9L12 9.5l-5.5 2.3V9.9Zm0 4.2L12 11.8l5.5 2.3v1.9L12 13.7l-5.5 2.3v-1.9Zm0 4.2L12 16l5.5 2.3-.001.001L12 20.5l-5.5-2.2V18.3Z" />
+		</svg>
+	);
+}
+
+function GeminiIcon({ className }) {
+	return (
+		<svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden>
+			<path d="M12 2c.4 3.6 2.4 6.6 6 8-3.6 1.4-5.6 4.4-6 8-.4-3.6-2.4-6.6-6-8 3.6-1.4 5.6-4.4 6-8Z" />
+		</svg>
+	);
+}
+
+function GrokIcon({ className }) {
+	return (
+		<svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden>
+			<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+		</svg>
+	);
+}
+
+const TARGET_ICONS = {
+	chatgpt: ChatGptIcon,
+	claude: ClaudeIcon,
+	perplexity: PerplexityIcon,
+	gemini: GeminiIcon,
+	grok: GrokIcon,
+};
+
 /**
- * Copy prompt (any LLM) + Ask ChatGPT (?q= fills input / often auto-sends) + Buy now.
+ * Ask AI dropdown (ChatGPT, Claude, Perplexity, Gemini, Grok) + Buy now.
  * @param {"default" | "hero"} [variant]
  */
 export default function LlmShareActions({
@@ -23,21 +76,22 @@ export default function LlmShareActions({
 	prompt = LLM_SHARE_PROMPT,
 }) {
 	const { isLight } = useAgencyTheme();
-	const [copied, setCopied] = useState(false);
+	const [menuOpen, setMenuOpen] = useState(false);
 	const isHero = variant === "hero";
+	const targets = getLlmAskTargets(prompt);
 
-	const handleCopy = async () => {
-		try {
-			await navigator.clipboard.writeText(prompt);
-			setCopied(true);
-			toast.success("Prompt copied — paste into any AI");
-			setTimeout(() => setCopied(false), 2000);
-		} catch {
-			toast.error("Could not copy prompt");
+	const handleAsk = async (target) => {
+		if (target.copyFirst) {
+			try {
+				await navigator.clipboard.writeText(prompt);
+				toast.success("Prompt copied — paste into Claude");
+			} catch {
+				toast.error("Could not copy prompt — paste manually from Copy if needed");
+			}
 		}
+		window.open(target.href, "_blank", "noopener,noreferrer");
+		setMenuOpen(false);
 	};
-
-	const chatGptUrl = getChatGptAskUrl(prompt);
 
 	const baseBtn = cn(
 		"inline-flex items-center gap-1.5 font-medium transition",
@@ -46,18 +100,7 @@ export default function LlmShareActions({
 			: "rounded-full border px-3 py-1.5 text-xs"
 	);
 
-	const outlineBtn = cn(
-		baseBtn,
-		isLight
-			? isHero
-				? "border-zinc-300 bg-white text-zinc-800 shadow-sm hover:border-zinc-400"
-				: "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300"
-			: isHero
-				? "border-zinc-700 bg-zinc-900 text-zinc-100 hover:border-zinc-500"
-				: "border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-600"
-	);
-
-	const chatGptBtn = cn(
+	const askBtn = cn(
 		baseBtn,
 		isLight
 			? isHero
@@ -84,17 +127,45 @@ export default function LlmShareActions({
 			)}
 		>
 			<div className="flex flex-wrap items-center gap-2">
-				<a
-					href={chatGptUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-					className={chatGptBtn}
-					aria-label="Ask ChatGPT about SaaSCRM"
-				>
-					<ChatGptIcon className="h-3.5 w-3.5" />
-					Ask ChatGPT
-					<ExternalLink className="h-3 w-3 opacity-70" />
-				</a>
+				<DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
+					<DropdownMenuTrigger asChild>
+						<button
+							type="button"
+							className={askBtn}
+							aria-label="Ask an AI about SaaSCRM"
+						>
+							<Sparkles className="h-3.5 w-3.5" />
+							Ask AI
+							<ChevronDown className="h-3 w-3 opacity-70" />
+						</button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent
+						align={isHero ? "center" : "start"}
+						className="w-56"
+					>
+						<DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
+							Evaluate SaaSCRM with…
+						</DropdownMenuLabel>
+						<DropdownMenuSeparator />
+						{targets.map((target) => {
+							const Icon = TARGET_ICONS[target.id] || Sparkles;
+							return (
+								<DropdownMenuItem
+									key={target.id}
+									className="cursor-pointer gap-2 text-xs"
+									onSelect={(e) => {
+										e.preventDefault();
+										handleAsk(target);
+									}}
+								>
+									<Icon className="h-3.5 w-3.5 shrink-0 opacity-80" />
+									<span className="flex-1">{target.label}</span>
+									<ExternalLink className="h-3 w-3 opacity-50" />
+								</DropdownMenuItem>
+							);
+						})}
+					</DropdownMenuContent>
+				</DropdownMenu>
 				<a
 					href={CHECKOUT.usd}
 					target="_blank"

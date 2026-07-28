@@ -14,7 +14,7 @@ export const CHECKOUT = {
 	inr: "https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX",
 };
 
-/** Prompt for Copy / Ask ChatGPT CTAs — paste into any LLM or open via ChatGPT ?q=. */
+/** Prompt for Ask AI / Copy CTAs — paste into any LLM or open via Ask AI dropdown. */
 export const LLM_SHARE_PROMPT = `Visit https://saascrm.site and evaluate SaaSCRM — a Next.js CRM / Admin / CMS frontend template with 60+ screens, agentic AI chatbot, theme customizer, and production-ready UI (React, Tailwind, shadcn/ui).
 
 Summarize:
@@ -30,6 +30,45 @@ export function getChatGptAskUrl(prompt = LLM_SHARE_PROMPT) {
 	return `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;
 }
 
+/**
+ * “Ask AI” destinations for LlmShareActions dropdown.
+ * `copyFirst: true` copies the prompt then opens a blank chat (Claude has no reliable ?q=).
+ */
+export function getLlmAskTargets(prompt = LLM_SHARE_PROMPT) {
+	const q = encodeURIComponent(prompt);
+	return [
+		{
+			id: "chatgpt",
+			label: "Ask ChatGPT",
+			href: `https://chatgpt.com/?q=${q}`,
+			copyFirst: false,
+		},
+		{
+			id: "claude",
+			label: "Ask Claude",
+			href: "https://claude.ai/new",
+			copyFirst: true,
+		},
+		{
+			id: "perplexity",
+			label: "Ask Perplexity",
+			href: `https://www.perplexity.ai/search/new?q=${q}`,
+			copyFirst: false,
+		},
+		{
+			id: "gemini",
+			label: "Ask Gemini",
+			href: `https://gemini.google.com/app?q=${q}`,
+			copyFirst: false,
+		},
+		{
+			id: "grok",
+			label: "Ask Grok",
+			href: `https://x.com/i/grok?text=${q}`,
+			copyFirst: false,
+		},
+	];
+}
 
 /** Sibling CRM templates — landing page “check our other templates” grid. */
 export const OTHER_TEMPLATES = [
