@@ -1,36 +1,14 @@
----
-description: Core CRM SaaS template conventions — stack, dual surfaces, mock data, scope limits
-alwaysApply: true
----
+# Componentry — Core
 
-# CRM SaaS Template — Core
+One-page Next.js product that sells UI / motion hero components.
 
-This is a **Next.js Pages Router frontend CRM template** (demo data, no live DB). Sellable UI kit, not a production backend.
+## Stack
+- Next.js 12 Pages Router · React 17 · Tailwind · shadcn/ui · Framer Motion · Lucide · sonner
+- Theme: `AgencyThemeContext` + Dynamic Island nav (search · theme · buy)
+- Catalog: `app/AgencySite/componentryCatalog.js`
 
-## Stack (do not change without asking)
-- Next.js 12 Pages Router · React 17 · Tailwind · shadcn/ui (`components/ui/`) · Lucide · sonner
-- Data: in-memory `utils/CrmDataContext.jsx` + `*SeedData.js` — **not** Supabase/Firebase yet
-- Theme: `useTheme()` + Theme Customizer CSS vars — see `Design.md`
-- Deep context: `llm.txt` · Design: `Design.md`
-
-## Dual surfaces
-| Surface | Routes | Layout |
-|---------|--------|--------|
-| Agency marketing | `/`, `/pricing`, `/faq`, `/contact` | `disableLayout = true` · `AgencySite/` |
-| CRM app | `/demo`, `/leads`, `/deals`, … | `modules/Layout` (sidebar + navbar) |
-
-Never mix Agency Gumroad copy into buyer-facing CRM modules.
-
-## Non-negotiables
-- Thin routes: `pages/foo.js` → export from `app/Foo`
-- Register nav in `modules/navConfig.js` only
-- Prefer shadcn + `FormModal` / `FormSelect` / `ExportDropdown`
-- Icons: `lucide-react` (brand icons: `react-icons` only when needed)
-- Toasts: `sonner`
-- Match existing file style; minimize scope; no drive-by refactors
-
-## Do not
-- Invent a backend or connect Supabase/Firebase unless the user asks (see `crm-backend-later` rule)
-- Add `/agent-ops` without creating the page (or remove the nav item)
-- Hard-code a single accent color in feature modules — use `useTheme()` / CSS tokens
-- Dump 60+ screens of unrelated verticals into one flat nav
+## Rules
+- Single route `/` only — no CRM, auth, or nested app pages
+- Add components via `COMPONENTRY` registry (Cmd+K + `/?c=id`)
+- Buy CTA from `agencyConfig.js` → `CHECKOUT`
+- See `llm.txt` for full context

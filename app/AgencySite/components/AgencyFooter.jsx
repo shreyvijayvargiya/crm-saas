@@ -1,22 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowUpRight, Mail, Sparkles } from "lucide-react";
+import { Mail, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CONTACT } from "../agencyConfig";
+import { CHECKOUT, CONTACT, PRODUCT } from "../agencyConfig";
 import { useAgencyTheme } from "../AgencyThemeContext";
-import LlmShareActions from "./LlmShareActions";
-
-const FOOTER_LINKS = [
-	{ label: "Home", href: "/" },
-	{ label: "AI CRM Builder", href: "/blueprint", featured: true },
-	{ label: "Free CRMs", href: "/templates" },
-	{ label: "Blog", href: "/blog" },
-	{ label: "Live demo", href: "/demo" },
-	{ label: "Pricing", href: "/pricing" },
-	{ label: "FAQ", href: "/#faq" },
-	{ label: "Contact", href: "/#contact" },
-	{ label: "All pages", href: "/sitemap" },
-];
 
 function XIcon({ className }) {
 	return (
@@ -30,12 +17,8 @@ export default function AgencyFooter() {
 	const { isLight } = useAgencyTheme();
 
 	return (
-		<footer
-			className={cn(
-				"mt-auto pt-8",
-			)}
-		>
-			<div className="grid gap-8 sm:grid-cols-[1.2fr_1fr]">
+		<footer className="mt-auto border-t pt-8 pb-4" style={{ borderColor: isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.08)" }}>
+			<div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
 				<div>
 					<Link href="/" passHref>
 						<a
@@ -45,9 +28,9 @@ export default function AgencyFooter() {
 							)}
 						>
 							<span className="flex h-7 w-7 items-center justify-center rounded-lg bg-violet-600 text-white">
-								<Sparkles className="h-3.5 w-3.5" />
+								<Layers className="h-3.5 w-3.5" />
 							</span>
-							SaaSCRM
+							{PRODUCT.name}
 						</a>
 					</Link>
 					<p
@@ -56,10 +39,12 @@ export default function AgencyFooter() {
 							isLight ? "text-zinc-600" : "text-zinc-400"
 						)}
 					>
-						A complete Next.js CRM frontend template with 60+ screens,
-						theme customization, AI tools, and production-ready UI patterns.
+						{PRODUCT.description}
 					</p>
-					<div className="mt-4 flex flex-wrap gap-2">
+				</div>
+
+				<div className="flex flex-col gap-3 sm:items-end">
+					<div className="flex flex-wrap gap-2">
 						<a
 							href={`mailto:${CONTACT.email}`}
 							className={cn(
@@ -70,7 +55,7 @@ export default function AgencyFooter() {
 							)}
 						>
 							<Mail className="h-3.5 w-3.5" />
-							{CONTACT.email}
+							Email
 						</a>
 						<a
 							href={CONTACT.x}
@@ -85,93 +70,20 @@ export default function AgencyFooter() {
 						>
 							<XIcon className="h-3.5 w-3.5" />
 							{CONTACT.xHandle}
-							<ArrowUpRight className="h-3 w-3" />
+						</a>
+						<a
+							href={CHECKOUT.usd}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="inline-flex items-center rounded-full bg-violet-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-violet-500"
+						>
+							Buy {CHECKOUT.priceLabel}
 						</a>
 					</div>
-					<div className="mt-3">
-						<p
-							className={cn(
-								"mb-2 text-[10px] font-semibold uppercase tracking-wider",
-								isLight ? "text-zinc-500" : "text-zinc-500"
-							)}
-						>
-							Share with AI
-						</p>
-						<LlmShareActions />
-					</div>
-				</div>
-
-				<div>
-					<p
-						className={cn(
-							"text-[10px] font-semibold uppercase tracking-wider",
-							isLight ? "text-zinc-500" : "text-zinc-500"
-						)}
-					>
-						Explore
+					<p className={cn("text-[11px]", isLight ? "text-zinc-400" : "text-zinc-600")}>
+						© {new Date().getFullYear()} {PRODUCT.name}
 					</p>
-					<nav className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2" aria-label="Footer">
-						{FOOTER_LINKS.map((link) => (
-							<Link key={link.href} href={link.href} passHref>
-								<a
-									className={cn(
-										"text-xs font-medium transition",
-										link.featured
-											? isLight
-												? "text-violet-700 hover:text-violet-900"
-												: "text-violet-300 hover:text-violet-200"
-											: isLight
-												? "text-zinc-600 hover:text-zinc-900"
-												: "text-zinc-400 hover:text-white"
-									)}
-								>
-									{link.label}
-								</a>
-							</Link>
-						))}
-					</nav>
 				</div>
-			</div>
-
-			<div
-				className={cn(
-					"mt-8 flex flex-col gap-2 py-5 text-[11px] sm:flex-row sm:items-center sm:justify-between",
-					"text-zinc-500"
-				)}
-			>
-				<p>© {new Date().getFullYear()} Shrey Vijayvargiya.</p>
-				<Link href="/sitemap" passHref>
-					<a className={cn(isLight ? "hover:text-zinc-900" : "hover:text-white")}>
-						View complete sitemap
-					</a>
-				</Link>
-			</div>
-
-			<div className="flex flex-wrap items-center justify-center gap-3 pb-2 pt-2">
-				<a
-					href="https://startupbase.io/products/saascrm?utm_source=startupbase&utm_medium=badge&utm_campaign=featured-badge-light"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<img
-						src="https://statics.startupbase.io/site/badges/featured-on-sb.svg"
-						alt="Featured on StartupBase"
-						height={55}
-						style={{ height: 55, width: "auto" }}
-					/>
-				</a>
-				<a
-					href="https://www.producthunt.com/products/crm-for-businesses?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-crm-for-businesses"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<img
-						alt="CRM for Businesses - SAASCRM helps to build CRM and Admin Dashboard for startups | Product Hunt"
-						width={250}
-						height={54}
-						src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1202657&theme=light&t=1784892254321"
-					/>
-				</a>
 			</div>
 		</footer>
 	);

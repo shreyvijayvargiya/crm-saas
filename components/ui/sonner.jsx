@@ -1,14 +1,11 @@
 import { Toaster as Sonner } from "sonner";
-import { useTheme } from "@/utils/useTheme";
 import { toastSurface } from "@/lib/themeTokens";
 import { cn } from "@/lib/utils";
 
 const Toaster = ({ ...props }) => {
-	const { theme } = useTheme();
-
 	return (
 		<Sonner
-			theme={theme === "dark" ? "dark" : "light"}
+			theme="system"
 			className="toaster group"
 			position="bottom-right"
 			toastOptions={{

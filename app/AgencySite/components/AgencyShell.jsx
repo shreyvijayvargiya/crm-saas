@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { AgencyThemeProvider, useAgencyTheme } from "../AgencyThemeContext";
 import DynamicIslandNav from "./DynamicIslandNav";
-import AgencyVideoPhone from "./AgencyVideoPhone";
 import AgencyFooter from "./AgencyFooter";
 import { GravityStarsBackground } from "@/src/components/animate-ui/components/backgrounds/gravity-stars";
 
@@ -19,14 +18,13 @@ function AgencyShellInner({ children, className, wide = false, size }) {
 	return (
 		<div
 			className={cn(
-				"w-full relative min-h-screen antialiased transition-colors duration-300",
+				"relative min-h-screen w-full antialiased transition-colors duration-300",
 				isLight
 					? "bg-zinc-50 text-zinc-900 selection:bg-zinc-300/40"
 					: "bg-zinc-950 text-zinc-100 selection:bg-zinc-700/50",
 				className
 			)}
 		>
-			<br />
 			<DynamicIslandNav />
 			<GravityStarsBackground
 				className={cn(
@@ -37,7 +35,7 @@ function AgencyShellInner({ children, className, wide = false, size }) {
 
 			<div
 				className={cn(
-					"relative z-10 mx-auto flex min-h-screen flex-col px-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-20 sm:px-6 sm:pb-28 sm:pt-20",
+					"relative z-10 mx-auto flex min-h-screen flex-col px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-28",
 					maxWidthClass
 				)}
 			>
@@ -45,8 +43,6 @@ function AgencyShellInner({ children, className, wide = false, size }) {
 				<AgencyFooter />
 			</div>
 
-			
-			<AgencyVideoPhone />
 			<Toaster />
 		</div>
 	);

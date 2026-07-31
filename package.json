@@ -1,7 +1,7 @@
 {
-	"name": "CRM-SaaS-Template",
+	"name": "componentry",
 	"version": "1.0.0",
-	"description": "CRM SAAS template for your business",
+	"description": "Componentry — sellable UI motion components for Next.js",
 	"main": "pages/index.js",
 	"repository": "https://github.com/shreyvijayvargiya/crm-saas",
 	"author": "Shrey Vijayvargiya",
@@ -15,8 +15,8 @@
 		"dev": "next --port 3002",
 		"clean": "yarn cache clean",
 		"build": "NODE_OPTIONS=--openssl-legacy-provider next build",
-		"build-crm": "node scripts/build-crm.mjs",
-		"verify:schemas": "node scripts/verify-schemas.mjs"
+		"pack": "node scripts/pack-componentry.mjs",
+		"pack:componentry": "node scripts/pack-componentry.mjs"
 	},
 	"dependencies": {
 		"@dnd-kit/core": "^6.3.1",

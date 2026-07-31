@@ -72,9 +72,9 @@ export default function HeroDragBoard({
 	screenshots = [],
 	isLight,
 	title = "Explore the CRM board",
-	description = "Grab any screen, drag it around, and click to preview dashboards, leads, sales, and more from the SaaSCRM template.",
-	ctaLabel = "Open live demo",
-	ctaHref = "/demo",
+	description = "Grab any screen, drag it around, and click to preview UI layouts from the Componentry kit.",
+	ctaLabel = "Browse components",
+	ctaHref = "/#catalog",
 }) {
 	const boardRef = useRef(null);
 	const dragRef = useRef(null);

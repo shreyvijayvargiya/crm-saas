@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, LucideProjector, RocketIcon, TrainFront } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CursorImageTrail } from "./cursor-trails";
-import LlmShareActions from "./LlmShareActions";
 
 function ScreenshotPanel({ screenshot, index, isLight, onActivate }) {
 	const ref = useRef(null);
@@ -71,7 +70,7 @@ function ScreenshotPanel({ screenshot, index, isLight, onActivate }) {
 	);
 }
 
-const HEADING_WORDS = ["CRM", "for", "businesses"];
+const HEADING_WORDS = ["UI", "that", "sells"];
 
 export default function HeroScrollReveal({ screenshots, isLight }) {
 	const [activeIndex, setActiveIndex] = useState(0);
@@ -101,8 +100,7 @@ export default function HeroScrollReveal({ screenshots, isLight }) {
 						isLight ? "text-zinc-600" : "text-zinc-400"
 					)}
 				>
-					Built for <RocketIcon /> startups, <TrainFront /> agencies,{" "}
-					<LucideProjector /> freelancers
+					Built for startups, agencies, and indie makers
 				</motion.p>
 
 				<h2 className="mx-auto max-w-5xl text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl">
@@ -141,8 +139,8 @@ export default function HeroScrollReveal({ screenshots, isLight }) {
 						isLight ? "text-zinc-600" : "text-zinc-400"
 					)}
 				>
-					Scroll to explore dashboards, analytics, leads, sales, and more —
-					each screen opens full-bleed as it enters view.
+					Scroll to explore live UI previews — each screen opens full-bleed
+					as it enters view.
 				</motion.p>
 
 				<motion.div
@@ -153,7 +151,7 @@ export default function HeroScrollReveal({ screenshots, isLight }) {
 					className="mt-8 flex flex-wrap items-start justify-center gap-2"
 				>
 					<a
-						href="/demo"
+						href="#catalog"
 						className={cn(
 							"inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition hover:-translate-y-0.5",
 							isLight
@@ -161,10 +159,9 @@ export default function HeroScrollReveal({ screenshots, isLight }) {
 								: "border-zinc-700 bg-zinc-900 text-zinc-100 hover:border-zinc-500"
 						)}
 					>
-						View demo
+						Browse components
 						<ArrowRight className="h-3.5 w-3.5" />
 					</a>
-					<LlmShareActions variant="hero" />
 				</motion.div>
 
 				<motion.div
@@ -220,7 +217,7 @@ export default function HeroScrollReveal({ screenshots, isLight }) {
 							>
 								{active?.description}
 							</p>
-							<Link href={active?.href || "/demo"} passHref>
+							<Link href={active?.href || "/#catalog"} passHref>
 								<a
 									className={cn(
 										"mt-3 inline-flex items-center gap-1.5 text-xs font-semibold",

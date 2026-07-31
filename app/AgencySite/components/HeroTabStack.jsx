@@ -160,7 +160,7 @@ export default function HeroTabStack({ screenshots = [], isLight }) {
 						)}
 					>
 						<span className="truncate">
-							saascrm.site{items[activeIndex]?.href || "/demo"}
+							componentry{items[activeIndex]?.href || "/?c=tab-stack"}
 						</span>
 					</div>
 				</div>

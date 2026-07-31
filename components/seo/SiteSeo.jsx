@@ -1,42 +1,12 @@
 import React from "react";
 import Head from "next/head";
 
-const SITE_URL = "https://saascrm.site";
+const SITE_URL = "https://componentry.site";
 
-/** OG / Twitter image for /templates (drop file in public/). */
-export const TEMPLATES_PAGE_OG_IMAGE = {
-	path: "/templates-page.png",
-	alt: "SaaSCRM free CRM templates – Next.js dashboards for startups and freelancers",
-};
-
-export const CRM_SOCIAL_IMAGES = [
+export const SOCIAL_IMAGES = [
 	{
 		path: "/screenshots-marketing-page/saas-crm-dashboard.png",
-		alt: "SaaSCRM dashboard with sales, revenue, conversion, and recent leads",
-	},
-	{
-		path: "/screenshots-marketing-page/saas-crm-analytics.png",
-		alt: "SaaSCRM analytics dashboard",
-	},
-	{
-		path: "/screenshots-marketing-page/saas-crm-reports.png",
-		alt: "SaaSCRM reports dashboard",
-	},
-	{
-		path: "/screenshots-marketing-page/saas-crm-leads.png",
-		alt: "SaaSCRM lead management page",
-	},
-	{
-		path: "/screenshots-marketing-page/saas-crm-sales.png",
-		alt: "SaaSCRM sales management page",
-	},
-	{
-		path: "/screenshots-marketing-page/saas-crm-activity.png",
-		alt: "SaaSCRM activity timeline",
-	},
-	{
-		path: "/screenshots-marketing-page/saas-crm-scheduler.png",
-		alt: "SaaSCRM content scheduler",
+		alt: "Componentry UI motion preview",
 	},
 ];
 
@@ -45,7 +15,7 @@ export default function SiteSeo({
 	description,
 	path = "/",
 	keywords,
-	images = CRM_SOCIAL_IMAGES,
+	images = SOCIAL_IMAGES,
 	type = "website",
 	jsonLd,
 	noIndex = false,
@@ -70,7 +40,7 @@ export default function SiteSeo({
 			<link rel="canonical" href={canonical} />
 
 			<meta property="og:type" content={type} />
-			<meta property="og:site_name" content="SaaSCRM" />
+			<meta property="og:site_name" content="Componentry" />
 			<meta property="og:locale" content="en_US" />
 			<meta property="og:title" content={title} />
 			<meta property="og:description" content={description} />
@@ -83,9 +53,6 @@ export default function SiteSeo({
 						content={`${SITE_URL}${image.path}`}
 					/>
 					<meta property="og:image:alt" content={image.alt} />
-					<meta property="og:image:width" content="1919" />
-					<meta property="og:image:height" content="958" />
-					<meta property="og:image:type" content="image/png" />
 				</React.Fragment>
 			))}
 
