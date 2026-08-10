@@ -130,39 +130,6 @@ function ZipperPull({ openPct, isLight, onPointerDown, showHint }) {
 	);
 }
 
-function RevealDimensions({ openPct, gapPct, panelW, panelH }) {
-	if (openPct <= 0.02 || panelW <= 0 || panelH <= 0) return null;
-
-	const revealW = Math.round(openPct * panelW);
-	const revealH = Math.round((gapPct / 100) * panelH);
-	const centerX = (openPct * 100) / 2;
-	const cy = 50;
-
-	return (
-		<div
-			className="pointer-events-none absolute z-10 flex flex-col items-center justify-center"
-			style={{
-				left: `${centerX}%`,
-				top: `${cy}%`,
-				width: `${openPct * 100}%`,
-				height: `${gapPct}%`,
-				transform: "translate(0, -50%)",
-			}}
-		>
-			<div className="rounded-lg border border-white/25 bg-black/45 px-3 py-2 text-center backdrop-blur-sm">
-				<p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/60">
-					Revealed
-				</p>
-				<p className="mt-0.5 font-mono text-sm font-bold tabular-nums text-white sm:text-base">
-					{revealW} × {revealH} px
-				</p>
-				<p className="mt-0.5 font-mono text-[10px] tabular-nums text-white/55">
-					{Math.round(openPct * 100)}% × {Math.round(gapPct)}%
-				</p>
-			</div>
-		</div>
-	);
-}
 
 /**
  * HeroZipper — horizontal center zipper, closed by default.
@@ -260,7 +227,7 @@ export default function HeroZipper({
 			<div
 				ref={trackRef}
 				className={cn(
-					"relative mx-auto mt-8 h-[min(68vh,560px)] w-full max-w-2xl overflow-hidden rounded-2xl border shadow-2xl select-none touch-none",
+					"relative mx-auto mt-8 h-[min(88vh,52rem)] w-full max-w-4xl overflow-hidden rounded-2xl border shadow-2xl select-none touch-none",
 					isLight
 						? "border-zinc-200 bg-zinc-100 shadow-zinc-300/40"
 						: "border-zinc-800 bg-zinc-950 shadow-black/40"
@@ -273,11 +240,11 @@ export default function HeroZipper({
 					onPointerDown(e);
 				}}
 			>
-				<div className="absolute inset-0 z-0">
+				<div className="absolute inset-0 z-0 h-full w-full">
 					<img
 						src={reveal.src}
 						alt={reveal.alt || ""}
-						className="h-full w-full object-cover"
+						className="absolute inset-0 h-full min-h-full w-full min-w-full object-cover object-center"
 						draggable={false}
 					/>
 					<div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/30" />
@@ -285,18 +252,8 @@ export default function HeroZipper({
 						<p className="text-xs font-semibold uppercase tracking-[0.25em] text-white/70">
 							{reveal.title}
 						</p>
-						<p className="mt-3 max-w-sm text-lg font-bold leading-snug text-white sm:text-2xl">
-							{reveal.subtitle}
-						</p>
 					</div>
 				</div>
-
-				<RevealDimensions
-					openPct={openPct}
-					gapPct={gapPct}
-					panelW={panelSize.w}
-					panelH={panelSize.h}
-				/>
 
 				<div
 					className={cn("absolute inset-0 z-20", flapClass)}
@@ -356,16 +313,6 @@ export default function HeroZipper({
 				</div>
 			</div>
 
-			<p
-				className={cn(
-					"mt-4 text-center text-xs",
-					isLight ? "text-zinc-400" : "text-zinc-500"
-				)}
-			>
-				{isClosed
-					? "Drag left → right anywhere on the panel to unzip"
-					: `${Math.round(openPct * 100)}% open · ${Math.round(openPct * panelSize.w)} × ${Math.round((gapPct / 100) * panelSize.h)} px revealed`}
-			</p>
 		</section>
 	);
 }

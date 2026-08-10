@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { AgencyThemeProvider, useAgencyTheme } from "../AgencyThemeContext";
 import DynamicIslandNav from "./DynamicIslandNav";
 import AgencyFooter from "./AgencyFooter";
+import AgencyAmbientMusic from "./AgencyAmbientMusic";
 import { GravityStarsBackground } from "@/src/components/animate-ui/components/backgrounds/gravity-stars";
 
 function AgencyShellInner({ children, className, wide = false, size }) {
@@ -43,6 +44,7 @@ function AgencyShellInner({ children, className, wide = false, size }) {
 				<AgencyFooter />
 			</div>
 
+			<AgencyAmbientMusic />
 			<Toaster />
 		</div>
 	);

@@ -1,4 +1,3 @@
-import React from "react";
 import HeroScreenshotCarousel from "./components/HeroScreenshotCarousel";
 import HeroScrollReveal from "./components/HeroScrollReveal";
 import HeroDragBoard from "./components/HeroDragBoard";
@@ -19,14 +18,50 @@ import HeroOrbitRing from "./components/HeroOrbitRing";
 import HeroWorkList from "./components/HeroWorkList";
 import HeroAppleWatch from "./components/HeroAppleWatch";
 import HeroIPhone from "./components/HeroIPhone";
+import HeroIPhoneNotesPad from "./components/HeroIPhoneNotesPad";
 import HeroCursorTrails from "./components/HeroCursorTrails";
 import HeroFlipbook from "./components/HeroFlipbook";
 import HeroNarratorVoice from "./components/HeroNarratorVoice";
 import HeroScrollReadReveal from "./components/HeroScrollReadReveal";
+import HeroScrollScaleParagraphs from "./components/HeroScrollScaleParagraphs";
+import HeroScrollFaceMouth from "./components/HeroScrollFaceMouth";
+import HeroWeatherCard from "./components/HeroWeatherCard";
+import HeroSocialHoverCards from "./components/HeroSocialHoverCards";
+import HeroDockCommerce from "./components/HeroDockCommerce";
+import HeroAsciiScrollImages from "./components/HeroAsciiScrollImages";
+import HeroPinThreadBoard from "./components/HeroPinThreadBoard";
 import HeroTitanWatch from "./components/HeroTitanWatch";
 import HeroStampStack from "./components/HeroStampStack";
 import HeroPhoneFanScroll from "./components/HeroPhoneFanScroll";
 import HeroZipper from "./components/HeroZipper";
+import HeroVideoEditor from "./components/HeroVideoEditor";
+import HeroClaudeChatInput from "./components/HeroClaudeChatInput";
+import HeroDirectoryTree from "./components/HeroDirectoryTree";
+import HeroLiquidFolder from "./components/HeroLiquidFolder";
+import HeroClothesline from "./components/HeroClothesline";
+import HeroImageMarquee from "./components/HeroImageMarquee";
+import HeroWaveTranscript from "./components/HeroWaveTranscript";
+import HeroTranslateMarquee from "./components/HeroTranslateMarquee";
+import HeroWeatherSliders from "./components/HeroWeatherSliders";
+import HeroPayDrawer from "./components/HeroPayDrawer";
+import HeroCalmDrag from "./components/HeroCalmDrag";
+import HeroScrollManDog from "./components/HeroScrollManDog";
+import HeroTypewriterBill from "./components/HeroTypewriterBill";
+import HeroAIApprovalChat from "./components/HeroAIApprovalChat";
+import HeroNotesDrop from "./components/HeroNotesDrop";
+import HeroEverestScroll from "./components/HeroEverestScroll";
+import HeroHotCoffee from "./components/HeroHotCoffee";
+import HeroThreadShirt from "./components/HeroThreadShirt";
+import HeroFootballGround from "./components/HeroFootballGround";
+import HeroSpeechToText from "./components/HeroSpeechToText";
+import HeroCalendarTetris from "./components/HeroCalendarTetris";
+import HeroMilkPour from "./components/HeroMilkPour";
+import HeroReelMaker from "./components/HeroReelMaker";
+import HeroPringlesScroll from "./components/HeroPringlesScroll";
+import HeroEmojiDialer from "./components/HeroEmojiDialer";
+import HeroBirdParts from "./components/HeroBirdParts";
+import HeroGlassLogos from "./components/HeroGlassLogos";
+import HeroYearPad from "./components/HeroYearPad";
 
 /**
  * Preview images for screenshot-driven demos (no CRM routes).
@@ -237,6 +272,14 @@ export const COMPONENTRY = [
 		bare: true,
 	},
 	{
+		id: "iphone-notes",
+		name: "iPhone Notes Pad",
+		tags: ["iphone", "notes", "keyboard", "drawer", "palette"],
+		description: "Cream iPhone writing pad — Mac keyboard types on-screen, yellow drawer for paper/font/pen/marker.",
+		Component: HeroIPhoneNotesPad,
+		bare: true,
+	},
+	{
 		id: "cursor-trails",
 		name: "Cursor Trails",
 		tags: ["cursor", "trail", "emoji"],
@@ -266,6 +309,56 @@ export const COMPONENTRY = [
 		Component: HeroScrollReadReveal,
 	},
 	{
+		id: "scroll-scale",
+		name: "Scroll Scale Paragraphs",
+		tags: ["scroll", "text", "scale", "paragraph"],
+		description: "Each paragraph scales to 200% on scroll, then fades to reveal the next.",
+		Component: HeroScrollScaleParagraphs,
+	},
+	{
+		id: "scroll-face",
+		name: "Scroll Face Mouth",
+		tags: ["scroll", "face", "mouth", "svg", "reveal"],
+		description: "Face SVG — mouth opens and scales to fill 100vh while eyes shrink and text appears.",
+		Component: HeroScrollFaceMouth,
+	},
+	{
+		id: "weather-card",
+		name: "Weather Card",
+		tags: ["weather", "card", "dropdown", "tabs", "glass"],
+		description: "Glass weather widget with country/city Motion dropdowns, day tabs, and °F/°C.",
+		Component: HeroWeatherCard,
+	},
+	{
+		id: "social-hover",
+		name: "Social Hover Cards",
+		tags: ["social", "hover", "github", "cards", "framer"],
+		description: "Centered social links; hover reveals GitHub calendar, X, LinkedIn, IG, YouTube cards.",
+		Component: HeroSocialHoverCards,
+	},
+	{
+		id: "dock-commerce",
+		name: "Dock Commerce",
+		tags: ["dock", "ecommerce", "navbar", "mac", "account"],
+		description: "Light Mac dock mini store — pages open above the dock; Dashy closes the panel.",
+		Component: HeroDockCommerce,
+		bare: true,
+	},
+	{
+		id: "ascii-scroll",
+		name: "ASCII Scroll Images",
+		tags: ["scroll", "ascii", "blur", "images", "stack"],
+		description: "Centered image stack — active is sharp; previous recede with blurry ASCII nature overlay.",
+		Component: HeroAsciiScrollImages,
+	},
+	{
+		id: "pin-thread",
+		name: "Pin Thread Board",
+		tags: ["drag", "pin", "thread", "receipt", "board"],
+		description: "Pinned receipt slips connected by hanging threads — drag any card and strings follow.",
+		Component: HeroPinThreadBoard,
+	},
+	{
 		id: "titan-watch",
 		name: "Titan Watch",
 		tags: ["watch", "analog", "clock", "titan"],
@@ -293,6 +386,203 @@ export const COMPONENTRY = [
 		tags: ["zipper", "drag", "reveal", "interactive"],
 		description: "Horizontal center zipper — drag left → right to open and reveal behind.",
 		Component: HeroZipper,
+	},
+	{
+		id: "video-editor",
+		name: "Video Editor",
+		tags: ["video", "timeline", "editor", "drag", "playhead"],
+		description: "Frontend timeline editor — preview, playhead, and draggable scenes / frames / objects.",
+		Component: HeroVideoEditor,
+	},
+	{
+		id: "chat-input",
+		name: "Claude Chat Input",
+		tags: ["chat", "input", "tts", "stt", "attach", "plugins", "tools"],
+		description: "Claude-style composer — attach files/code, connectors, tools, speech, send.",
+		Component: HeroClaudeChatInput,
+	},
+	{
+		id: "directory-tree",
+		name: "Directory Tree",
+		tags: ["tree", "folder", "file", "explorer", "nested", "create", "delete"],
+		description: "Centered nested folder/file explorer — create, delete, collapse all, filter.",
+		Component: HeroDirectoryTree,
+	},
+	{
+		id: "liquid-folder",
+		name: "Liquid Folder",
+		tags: ["folder", "files", "hover", "liquid", "flip", "palette"],
+		description: "Yellow liquid folder — hover lifts two blue files, flip 180° for details, color palette.",
+		Component: HeroLiquidFolder,
+	},
+	{
+		id: "clothesline",
+		name: "Clothesline Gallery",
+		tags: ["scroll", "horizontal", "pin", "string", "sketch", "progress"],
+		description: "Rooftop clothesline — pinned cards scroll on X with progress, click to inspect.",
+		Component: HeroClothesline,
+	},
+	{
+		id: "image-marquee",
+		name: "Image Marquee",
+		tags: ["marquee", "infinite", "scroll", "images", "rows"],
+		description: "Four infinite image+label rows — alternating directions, seamless loop.",
+		Component: HeroImageMarquee,
+	},
+	{
+		id: "wave-transcript",
+		name: "Wave Transcript",
+		tags: ["audio", "waveform", "transcript", "speech", "karaoke", "timer"],
+		description: "Orange play pill with waveform + timer, tether lines, karaoke transcript.",
+		Component: HeroWaveTranscript,
+	},
+	{
+		id: "translate-marquee",
+		name: "Translate Marquee",
+		tags: ["translation", "marquee", "english", "hindi", "waveform", "live"],
+		description: "Full-bleed EN → waveform pill → HI — English in, Hindi out on black bar.",
+		Component: HeroTranslateMarquee,
+	},
+	{
+		id: "weather-sliders",
+		name: "Weather Sliders",
+		tags: ["weather", "sliders", "clouds", "storm", "sun", "wind", "heat", "rain"],
+		description: "Glass weather mixer — Clouds, Storm, Sun, Wind, Heat drive the sky live.",
+		Component: HeroWeatherSliders,
+	},
+	{
+		id: "pay-drawer",
+		name: "Pay BTC Drawer",
+		tags: ["pay", "drawer", "btc", "slider", "avatars", "phone", "wallet"],
+		description: "Phone Pay BTC sheet — avatar carousel, amount ruler, confirm → send loop.",
+		Component: HeroPayDrawer,
+	},
+	{
+		id: "calm-drag",
+		name: "Calm Drag",
+		tags: ["drag", "svg", "scribble", "calm", "slider", "interactive"],
+		description: "Tangled SVG line — drag the handle right to straighten that portion.",
+		Component: HeroCalmDrag,
+	},
+	{
+		id: "scroll-man-dog",
+		name: "Scroll Man & Dog",
+		tags: ["scroll", "svg", "sticky", "scale", "typography", "dog"],
+		description: "Studio builds things — scroll exits text+man left; dog stays and scales.",
+		Component: HeroScrollManDog,
+	},
+	{
+		id: "typewriter-bill",
+		name: "Typewriter Bill",
+		tags: ["typewriter", "invoice", "print", "scroll", "paper"],
+		description: "Typewriter prints an invoice — scroll feeds the bill upward in Y.",
+		Component: HeroTypewriterBill,
+	},
+	{
+		id: "ai-approval",
+		name: "AI Approval Chat",
+		tags: ["ai", "chat", "approval", "notion", "hubspot", "slack", "whatsapp", "agent"],
+		description: "Multi-step agent checklist — research, Notion, emails, Slack/WhatsApp with approve/cancel.",
+		Component: HeroAIApprovalChat,
+	},
+	{
+		id: "notes-drop",
+		name: "Notes Drop",
+		tags: ["scroll", "string", "notes", "confetti", "drop", "clothesline"],
+		description: "Walker on a string — scroll drops 6 stamp notes with thread + confetti.",
+		Component: HeroNotesDrop,
+	},
+	{
+		id: "everest-scroll",
+		name: "Everest Scroll",
+		tags: ["scroll", "parallax", "everest", "mountain", "tooltip", "story"],
+		description: "Pan Mount Everest on scroll — landmark tooltips, altitude HUD, summit zoom.",
+		Component: HeroEverestScroll,
+	},
+	{
+		id: "hot-coffee",
+		name: "Hot Coffee",
+		tags: ["coffee", "mug", "steam", "clouds", "svg", "loop", "animation"],
+		description: "Red latte mug — steam cloud plumes rise and fade in a continuous loop.",
+		Component: HeroHotCoffee,
+	},
+	{
+		id: "thread-shirt",
+		name: "Thread Shirt",
+		tags: ["scroll", "thread", "wool", "tshirt", "sew", "svg"],
+		description: "Wool spool feeds the tee — scroll weaves/prints the shirt in place (fast).",
+		Component: HeroThreadShirt,
+	},
+	{
+		id: "football-ground",
+		name: "Football Ground",
+		tags: ["football", "soccer", "pitch", "scroll", "team", "hover", "goal"],
+		description: "View from the goalmouth — scroll reveals the XI; hover for standing player + name.",
+		Component: HeroFootballGround,
+	},
+	{
+		id: "speech-to-text",
+		name: "Speech to Text",
+		tags: ["speech", "waveform", "text", "stt", "animation", "light"],
+		description: "Light-theme STT card — live waveform on the left, glyphs thrown to the right.",
+		Component: HeroSpeechToText,
+	},
+	{
+		id: "calendar-tetris",
+		name: "Calendar Tetris",
+		tags: ["calendar", "drag", "drop", "resize", "meetings", "week", "animation"],
+		description: "Week grid with animated meeting blocks — drag to move, bottom grip to resize time.",
+		Component: HeroCalendarTetris,
+	},
+	{
+		id: "milk-pour",
+		name: "Milk Pour",
+		tags: ["scroll", "milk", "bottle", "pour", "tilt", "svg", "glass"],
+		description: "Glass milk bottle fills, tilts ~45°, pours into a glass — milk empties and fills.",
+		Component: HeroMilkPour,
+	},
+	
+	{
+		id: "reel-maker",
+		name: "IG Reel Maker",
+		tags: ["instagram", "reel", "tabs", "scroll", "apple", "preview"],
+		description: "Apple-style scroll tabs for reel steps — text left, phone preview image right.",
+		Component: HeroReelMaker,
+	},
+	{
+		id: "pringles-scroll",
+		name: "Pringles Scroll",
+		tags: ["scroll", "3d", "cans", "rotate", "product"],
+		description: "Centered chip cans — scroll spins and swaps flavors.",
+		Component: HeroPringlesScroll,
+	},
+	{
+		id: "emoji-dialer",
+		name: "Emoji Dialer",
+		tags: ["emoji", "grid", "drawer", "upload", "ux", "toast"],
+		description: "9-pad dialer — upload opens emoji drawer; each pad and emoji has its own message.",
+		Component: HeroEmojiDialer,
+	},
+	{
+		id: "bird-parts",
+		name: "Bird Parts",
+		tags: ["svg", "hover", "anatomy", "tooltip", "interactive"],
+		description: "Paragraph hot-words highlight bird body parts with a tooltip on hover.",
+		Component: HeroBirdParts,
+	},
+	{
+		id: "glass-logos",
+		name: "Glass Logos",
+		tags: ["3d", "glass", "logos", "frosted", "brands"],
+		description: "Frosted 3D glass slab with company marks on the front face.",
+		Component: HeroGlassLogos,
+	},
+	{
+		id: "year-pad",
+		name: "Year Pad",
+		tags: ["iphone", "calendar", "365", "emoji", "journal", "notes"],
+		description: "iPhone mockup with 365 day dots — tap opens a writing pad saved as emoji.",
+		Component: HeroYearPad,
 	},
 ];
 
