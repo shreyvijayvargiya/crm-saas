@@ -27,7 +27,6 @@ import HeroScrollScaleParagraphs from "./components/HeroScrollScaleParagraphs";
 import HeroScrollFaceMouth from "./components/HeroScrollFaceMouth";
 import HeroWeatherCard from "./components/HeroWeatherCard";
 import HeroSocialHoverCards from "./components/HeroSocialHoverCards";
-import HeroDockCommerce from "./components/HeroDockCommerce";
 import HeroAsciiScrollImages from "./components/HeroAsciiScrollImages";
 import HeroPinThreadBoard from "./components/HeroPinThreadBoard";
 import HeroTitanWatch from "./components/HeroTitanWatch";
@@ -52,16 +51,16 @@ import HeroNotesDrop from "./components/HeroNotesDrop";
 import HeroEverestScroll from "./components/HeroEverestScroll";
 import HeroHotCoffee from "./components/HeroHotCoffee";
 import HeroThreadShirt from "./components/HeroThreadShirt";
-import HeroFootballGround from "./components/HeroFootballGround";
 import HeroSpeechToText from "./components/HeroSpeechToText";
-import HeroCalendarTetris from "./components/HeroCalendarTetris";
 import HeroMilkPour from "./components/HeroMilkPour";
-import HeroReelMaker from "./components/HeroReelMaker";
-import HeroPringlesScroll from "./components/HeroPringlesScroll";
-import HeroEmojiDialer from "./components/HeroEmojiDialer";
-import HeroBirdParts from "./components/HeroBirdParts";
+import HeroMeetSparrow from "./components/HeroMeetSparrow";
 import HeroGlassLogos from "./components/HeroGlassLogos";
 import HeroYearPad from "./components/HeroYearPad";
+import HeroBookLibrary from "./components/HeroBookLibrary";
+import HeroMotionBall from "./components/HeroMotionBall";
+import HeroTravelDotScroll from "./components/HeroTravelDotScroll";
+import HeroTimeGlossary from "./components/HeroTimeGlossary";
+import HeroCycleDoodle from "./components/HeroCycleDoodle";
 
 /**
  * Preview images for screenshot-driven demos (no CRM routes).
@@ -337,14 +336,6 @@ export const COMPONENTRY = [
 		Component: HeroSocialHoverCards,
 	},
 	{
-		id: "dock-commerce",
-		name: "Dock Commerce",
-		tags: ["dock", "ecommerce", "navbar", "mac", "account"],
-		description: "Light Mac dock mini store — pages open above the dock; Dashy closes the panel.",
-		Component: HeroDockCommerce,
-		bare: true,
-	},
-	{
 		id: "ascii-scroll",
 		name: "ASCII Scroll Images",
 		tags: ["scroll", "ascii", "blur", "images", "stack"],
@@ -369,8 +360,8 @@ export const COMPONENTRY = [
 	{
 		id: "stamp-stack",
 		name: "Stamp Stack",
-		tags: ["stamp", "stack", "gallery", "images"],
-		description: "Piled postage stamps with perforated edges and centered photos.",
+		tags: ["stamp", "stack", "gallery", "images", "scroll", "drag", "reveal"],
+		description: "Postage pile — scroll cycles stamp images; drag to reveal expands to full parent height.",
 		Component: HeroStampStack,
 	},
 	{
@@ -467,8 +458,8 @@ export const COMPONENTRY = [
 	{
 		id: "scroll-man-dog",
 		name: "Scroll Man & Dog",
-		tags: ["scroll", "svg", "sticky", "scale", "typography", "dog"],
-		description: "Studio builds things — scroll exits text+man left; dog stays and scales.",
+		tags: ["scroll", "svg", "sticky", "scale", "typography", "dog", "wave"],
+		description: "Man stays put and waves hi; dog scales up with scroll.",
 		Component: HeroScrollManDog,
 	},
 	{
@@ -514,25 +505,11 @@ export const COMPONENTRY = [
 		Component: HeroThreadShirt,
 	},
 	{
-		id: "football-ground",
-		name: "Football Ground",
-		tags: ["football", "soccer", "pitch", "scroll", "team", "hover", "goal"],
-		description: "View from the goalmouth — scroll reveals the XI; hover for standing player + name.",
-		Component: HeroFootballGround,
-	},
-	{
 		id: "speech-to-text",
 		name: "Speech to Text",
-		tags: ["speech", "waveform", "text", "stt", "animation", "light"],
-		description: "Light-theme STT card — live waveform on the left, glyphs thrown to the right.",
+		tags: ["speech", "waveform", "text", "stt", "scroll", "animation", "light"],
+		description: "Scroll drives right waveform + thrown glyphs; left moves reverse on scroll up.",
 		Component: HeroSpeechToText,
-	},
-	{
-		id: "calendar-tetris",
-		name: "Calendar Tetris",
-		tags: ["calendar", "drag", "drop", "resize", "meetings", "week", "animation"],
-		description: "Week grid with animated meeting blocks — drag to move, bottom grip to resize time.",
-		Component: HeroCalendarTetris,
 	},
 	{
 		id: "milk-pour",
@@ -541,48 +518,55 @@ export const COMPONENTRY = [
 		description: "Glass milk bottle fills, tilts ~45°, pours into a glass — milk empties and fills.",
 		Component: HeroMilkPour,
 	},
+	{
+		id: "meet-sparrow",
+		name: "Meet the Sparrow",
+		tags: ["scroll", "svg", "bird", "sparrow", "stroke", "color", "draw"],
+		description: "Text left + same bird SVG right — scroll reveals each line and fills matching bird parts with color.",
+		Component: HeroMeetSparrow,
+	},
 	
-	{
-		id: "reel-maker",
-		name: "IG Reel Maker",
-		tags: ["instagram", "reel", "tabs", "scroll", "apple", "preview"],
-		description: "Apple-style scroll tabs for reel steps — text left, phone preview image right.",
-		Component: HeroReelMaker,
-	},
-	{
-		id: "pringles-scroll",
-		name: "Pringles Scroll",
-		tags: ["scroll", "3d", "cans", "rotate", "product"],
-		description: "Centered chip cans — scroll spins and swaps flavors.",
-		Component: HeroPringlesScroll,
-	},
-	{
-		id: "emoji-dialer",
-		name: "Emoji Dialer",
-		tags: ["emoji", "grid", "drawer", "upload", "ux", "toast"],
-		description: "9-pad dialer — upload opens emoji drawer; each pad and emoji has its own message.",
-		Component: HeroEmojiDialer,
-	},
-	{
-		id: "bird-parts",
-		name: "Bird Parts",
-		tags: ["svg", "hover", "anatomy", "tooltip", "interactive"],
-		description: "Paragraph hot-words highlight bird body parts with a tooltip on hover.",
-		Component: HeroBirdParts,
-	},
-	{
-		id: "glass-logos",
-		name: "Glass Logos",
-		tags: ["3d", "glass", "logos", "frosted", "brands"],
-		description: "Frosted 3D glass slab with company marks on the front face.",
-		Component: HeroGlassLogos,
-	},
 	{
 		id: "year-pad",
 		name: "Year Pad",
 		tags: ["iphone", "calendar", "365", "emoji", "journal", "notes"],
 		description: "iPhone mockup with 365 day dots — tap opens a writing pad saved as emoji.",
 		Component: HeroYearPad,
+	},
+	{
+		id: "book-library",
+		name: "Book Library",
+		tags: ["books", "3d", "scroll", "horizontal", "newsletter", "archive", "shelf"],
+		description: "3D newsletter spines on a shelf — scroll pans X, hover lifts a book with tooltip.",
+		Component: HeroBookLibrary,
+	},
+	{
+		id: "motion-ball",
+		name: "Motion Ball",
+		tags: ["scroll", "ball", "typography", "pipe", "motion", "light", "story"],
+		description: "Light theme — ball + full-width line mask text; above the line stays hidden, below stays visible.",
+		Component: HeroMotionBall,
+	},
+	{
+		id: "travel-dots",
+		name: "Travel Dots",
+		tags: ["scroll", "horizontal", "travel", "dots", "scale", "cursor", "unsplash", "light"],
+		description: "Travel dots in a row — only the centered dot scales into the image; the next stays a dot until it arrives.",
+		Component: HeroTravelDotScroll,
+	},
+	{
+		id: "time-glossary",
+		name: "Time Glossary",
+		tags: ["editorial", "glossary", "story", "scroll", "rails", "serif", "light"],
+		description: "Side vertical rails open story parts; bottom marker + window scroll sync the active entry.",
+		Component: HeroTimeGlossary,
+	},
+	{
+		id: "cycle-doodle",
+		name: "Cycle Doodle",
+		tags: ["scroll", "video", "cyclist", "doodle", "scrub", "mp4", "light"],
+		description: "Hand-drawn cyclist rides left → right with scroll; tires and pedals scrub only while scrolling.",
+		Component: HeroCycleDoodle,
 	},
 ];
 
@@ -593,9 +577,10 @@ export function findComponent(id) {
 }
 
 export function searchComponents(query) {
+	let components = COMPONENTRY;
 	const q = (query || "").trim().toLowerCase();
-	if (!q) return COMPONENTRY;
-	return COMPONENTRY.filter((c) => {
+	if (!q) return components;
+	return components.filter((c) => {
 		const hay = [c.id, c.name, c.description, ...(c.tags || [])]
 			.join(" ")
 			.toLowerCase();
