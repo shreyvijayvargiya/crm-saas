@@ -172,6 +172,18 @@ export default function AgencyFooter() {
 						src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1202657&theme=light&t=1784892254321"
 					/>
 				</a>
+				<a
+					href="https://findly.tools/saascrm?utm_source=saascrm"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<img
+						src="https://findly.tools/badges/findly-tools-badge-light.svg"
+						alt="Featured on Findly.tools"
+						width={175}
+						height={55}
+					/>
+				</a>
 			</div>
 		</footer>
 	);
