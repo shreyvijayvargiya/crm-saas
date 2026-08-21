@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, Check, Copy, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import SiteSeo from "@/components/seo/SiteSeo";
+import SiteSeo, { absoluteImageUrl } from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
 import MarkdownContent from "../components/MarkdownContent";
 import { useAgencyTheme } from "../AgencyThemeContext";
@@ -36,6 +36,8 @@ function BlogPostContent({ post }) {
 	const shareHref = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
 		shareText
 	)}&url=${encodeURIComponent(pageUrl)}`;
+	const tags = Array.isArray(meta.tags) ? meta.tags : [];
+	const coverSrc = absoluteImageUrl(meta.image);
 
 	const handleCopyMarkdown = async () => {
 		try {
@@ -62,6 +64,32 @@ function BlogPostContent({ post }) {
 						alt: meta.imageAlt || meta.title,
 					},
 				]}
+				article={{
+					publishedTime: meta.date,
+					author: meta.author,
+					tags,
+				}}
+				jsonLd={{
+					"@context": "https://schema.org",
+					"@type": "BlogPosting",
+					headline: meta.title,
+					description: meta.description,
+					image: coverSrc,
+					datePublished: meta.date,
+					author: {
+						"@type": "Person",
+						name: meta.author || "Shrey",
+					},
+					publisher: {
+						"@type": "Organization",
+						name: "SaaSCRM",
+						url: "https://saascrm.site",
+					},
+					keywords: meta.keywords,
+					articleSection: tags[0] || "CRM",
+					mainEntityOfPage: pageUrl,
+					url: pageUrl,
+				}}
 			/>
 
 			<article>
@@ -137,6 +165,23 @@ function BlogPostContent({ post }) {
 						{formatDate(meta.date)}
 						{meta.author ? ` · ${meta.author}` : ""}
 					</p>
+					{tags.length ? (
+						<ul className="mt-3 flex flex-wrap gap-2">
+							{tags.map((tag) => (
+								<li
+									key={tag}
+									className={cn(
+										"rounded-full border px-2.5 py-0.5 text-xs font-medium",
+										isLight
+											? "border-zinc-200 bg-zinc-50 text-zinc-600"
+											: "border-zinc-700 bg-zinc-900 text-zinc-300"
+									)}
+								>
+									{tag}
+								</li>
+							))}
+						</ul>
+					) : null}
 					<h1
 						className={cn(
 							"mt-2 text-3xl font-bold tracking-tight sm:text-4xl",

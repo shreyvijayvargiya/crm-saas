@@ -1,7 +1,22 @@
 import React from "react";
 import Head from "next/head";
 
-const SITE_URL = "https://saascrm.site";
+export const SITE_URL = "https://saascrm.site";
+
+export function absoluteImageUrl(path) {
+	if (!path) {
+		return `${SITE_URL}/screenshots-marketing-page/saas-crm-dashboard.png`;
+	}
+	if (/^https?:\/\//i.test(path)) return path;
+	return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+function imageMimeType(path) {
+	if (/\.jpe?g(\?|$)/i.test(path)) return "image/jpeg";
+	if (/\.webp(\?|$)/i.test(path)) return "image/webp";
+	if (/\.gif(\?|$)/i.test(path)) return "image/gif";
+	return "image/png";
+}
 
 /** OG / Twitter image for /templates (drop file in public/). */
 export const TEMPLATES_PAGE_OG_IMAGE = {
@@ -49,10 +64,12 @@ export default function SiteSeo({
 	type = "website",
 	jsonLd,
 	noIndex = false,
+	article,
 }) {
 	const canonical = `${SITE_URL}${path === "/" ? "" : path}`;
-	const primaryImage = `${SITE_URL}${images[0].path}`;
+	const primaryImage = absoluteImageUrl(images[0].path);
 	const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+	const articleTags = Array.isArray(article?.tags) ? article.tags : [];
 
 	return (
 		<Head>
@@ -75,18 +92,27 @@ export default function SiteSeo({
 			<meta property="og:title" content={title} />
 			<meta property="og:description" content={description} />
 			<meta property="og:url" content={canonical} />
-			{images.map((image) => (
-				<React.Fragment key={image.path}>
-					<meta property="og:image" content={`${SITE_URL}${image.path}`} />
-					<meta
-						property="og:image:secure_url"
-						content={`${SITE_URL}${image.path}`}
-					/>
-					<meta property="og:image:alt" content={image.alt} />
-					<meta property="og:image:width" content="1919" />
-					<meta property="og:image:height" content="958" />
-					<meta property="og:image:type" content="image/png" />
-				</React.Fragment>
+			{images.map((image) => {
+				const src = absoluteImageUrl(image.path);
+				return (
+					<React.Fragment key={image.path}>
+						<meta property="og:image" content={src} />
+						<meta property="og:image:secure_url" content={src} />
+						<meta property="og:image:alt" content={image.alt} />
+						<meta property="og:image:width" content="1919" />
+						<meta property="og:image:height" content="958" />
+						<meta property="og:image:type" content={imageMimeType(image.path)} />
+					</React.Fragment>
+				);
+			})}
+			{type === "article" && article?.publishedTime ? (
+				<meta property="article:published_time" content={article.publishedTime} />
+			) : null}
+			{type === "article" && article?.author ? (
+				<meta property="article:author" content={article.author} />
+			) : null}
+			{articleTags.map((tag) => (
+				<meta key={tag} property="article:tag" content={tag} />
 			))}
 
 			<meta name="twitter:card" content="summary_large_image" />

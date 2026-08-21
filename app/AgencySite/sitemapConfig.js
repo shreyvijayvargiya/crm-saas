@@ -32,6 +32,14 @@ export const SITEMAP_GROUPS = [
 		links: [
 			{ label: "All posts", href: "/blog" },
 			{
+				label: "Best CRM for small businesses and startups",
+				href: "/blog/best-crm-for-small-businesses-and-startups",
+			},
+			{
+				label: "Finance CRM for an Australian accounting client",
+				href: "/blog/building-finance-crm-for-australian-client",
+			},
+			{
 				label: "6 CRM templates you can demo today",
 				href: "/blog/six-crm-templates-you-can-demo-today",
 			},
