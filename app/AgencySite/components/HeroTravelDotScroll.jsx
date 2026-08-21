@@ -47,27 +47,6 @@ const TRAVEL = [
 	},
 ];
 
-const ASCII_CHARS = " ·.:-+=*#%@";
-
-function buildAsciiField(cols = 180, rows = 100) {
-	const lines = [];
-	for (let r = 0; r < rows; r++) {
-		let line = "";
-		for (let c = 0; c < cols; c++) {
-			const n =
-				Math.sin(r * 0.28 + c * 0.19) * 0.45 +
-				Math.cos(c * 0.14 - r * 0.11) * 0.35 +
-				Math.sin((r + c) * 0.07) * 0.2;
-			const idx = Math.floor(((n + 1) / 2) * (ASCII_CHARS.length - 1));
-			line += ASCII_CHARS[Math.max(0, Math.min(ASCII_CHARS.length - 1, idx))];
-		}
-		lines.push(line);
-	}
-	return lines.join("\n");
-}
-
-const ASCII_FIELD = buildAsciiField();
-
 function AnimDot({ color = "#0a0a0a" }) {
 	return (
 		<motion.div
@@ -111,69 +90,58 @@ function AnimCursor({ color = "#0a0a0a" }) {
 }
 
 /**
- * Full-bleed classy wash: visible soft photo + vignette + dense ASCII across the whole screen.
+ * Full-bleed wash: photo + ASCII as CSS background layers (edge-to-edge).
+ * No separate <pre> overlay — pattern is painted in CSS so width always completes.
  */
 function AsciiBackdrop({ item, visible, isLight }) {
+	const ink = isLight ? "rgba(18,18,18,0.26)" : "rgba(255,255,255,0.24)";
+	const vignette = isLight
+		? "radial-gradient(ellipse 70% 60% at 50% 42%, rgba(255,255,255,0.16) 0%, rgba(250,249,246,0.32) 48%, rgba(236,234,228,0.65) 100%)"
+		: "radial-gradient(ellipse 70% 60% at 50% 42%, rgba(0,0,0,0.16) 0%, rgba(0,0,0,0.4) 48%, rgba(0,0,0,0.7) 100%)";
+
+	const asciiGrid = `
+		repeating-linear-gradient(0deg, transparent 0 4px, ${ink} 4px 5px),
+		repeating-linear-gradient(90deg, transparent 0 6px, ${ink} 6px 7px)
+	`;
+
+	const asciiDots = isLight
+		? "radial-gradient(circle, rgba(15,15,15,0.22) 0.65px, transparent 0.7px)"
+		: "radial-gradient(circle, rgba(255,255,255,0.22) 0.65px, transparent 0.7px)";
+
 	return (
 		<div
 			className="pointer-events-none absolute inset-0 z-0 overflow-hidden transition-opacity duration-700"
 			style={{ opacity: visible ? 1 : 0 }}
 			aria-hidden
 		>
-			{/* Photo — full viewport, soft blur, clearly visible */}
-			<img
-				key={item.id || item.src}
-				src={item.src}
-				alt=""
-				draggable={false}
-				className="absolute left-0 top-0 h-full w-full object-cover"
+			{/* Photo as CSS background — full bleed */}
+			<div
+				className="absolute inset-0 h-full w-full"
 				style={{
-					filter: "blur(14px) saturate(0.75) brightness(0.9)",
+					backgroundImage: `url(${item.src})`,
+					backgroundSize: "cover",
+					backgroundPosition: "center",
+					backgroundRepeat: "no-repeat",
+					filter: "blur(13px) saturate(0.78) brightness(0.9)",
 					transform: "scale(1.14)",
 					transformOrigin: "center center",
 				}}
 			/>
 
-			{/* Radial vignette — keeps center readable without washing the photo out */}
+			{/* ASCII grid + vignette as CSS on top of the photo layer — 100vw × 100vh */}
 			<div
-				className="absolute inset-0"
+				className="absolute inset-0 h-full w-full"
 				style={{
-					background: isLight
-						? "radial-gradient(ellipse 65% 55% at 50% 42%, rgba(255,255,255,0.22) 0%, rgba(250,249,246,0.4) 45%, rgba(236,234,228,0.72) 100%)"
-						: "radial-gradient(ellipse 65% 55% at 50% 42%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.75) 100%)",
+					backgroundImage: `${vignette}, ${asciiGrid}, ${asciiDots}`,
+					backgroundSize: "100% 100%, auto, 8px 10px",
+					backgroundPosition: "center, 0 0, 0 0",
+					backgroundRepeat: "no-repeat, repeat, repeat",
+					mixBlendMode: isLight ? "multiply" : "soft-light",
 				}}
 			/>
 
-			{/* Dense ASCII — glyph size scales so lines span the full viewport */}
-			<div className="absolute inset-0 overflow-hidden">
-				<pre
-					style={{
-						position: "absolute",
-						top: 0,
-						left: 0,
-						right: 0,
-						bottom: 0,
-						margin: 0,
-						padding: 0,
-						overflow: "hidden",
-						fontFamily:
-							"ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-						/* 180 cols → nearly 100vw; ~100 rows cover height */
-						fontSize: "calc(100vw / 175)",
-						lineHeight: 1.02,
-						letterSpacing: "0",
-						whiteSpace: "pre",
-						color: isLight ? "rgba(15,15,15,0.3)" : "rgba(255,255,255,0.28)",
-						mixBlendMode: isLight ? "multiply" : "soft-light",
-					}}
-				>
-					{ASCII_FIELD}
-				</pre>
-			</div>
-
-			{/* Fine film grain */}
 			<div
-				className="absolute inset-0 opacity-[0.09] mix-blend-overlay"
+				className="absolute inset-0 h-full w-full opacity-[0.08] mix-blend-overlay"
 				style={{
 					backgroundImage:
 						"url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
@@ -258,7 +226,7 @@ function TravelSlide({ item, index, total, progress, ink }) {
 
 /**
  * HeroTravelDotScroll — vertical scroll pans travel dots.
- * Centered image fills a classy full-bleed blur + ASCII backdrop.
+ * Centered image fills a classy full-bleed blur + CSS ASCII backdrop.
  */
 export default function HeroTravelDotScroll({
 	items = TRAVEL,

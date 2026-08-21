@@ -55,12 +55,14 @@ import HeroSpeechToText from "./components/HeroSpeechToText";
 import HeroMilkPour from "./components/HeroMilkPour";
 import HeroMeetSparrow from "./components/HeroMeetSparrow";
 import HeroGlassLogos from "./components/HeroGlassLogos";
-import HeroYearPad from "./components/HeroYearPad";
 import HeroBookLibrary from "./components/HeroBookLibrary";
 import HeroMotionBall from "./components/HeroMotionBall";
 import HeroTravelDotScroll from "./components/HeroTravelDotScroll";
 import HeroTimeGlossary from "./components/HeroTimeGlossary";
 import HeroCycleDoodle from "./components/HeroCycleDoodle";
+import HeroFoldPaper from "./components/HeroFoldPaper";
+import HeroStoryString from "./components/HeroStoryString";
+import HeroUnionReveal from "./components/HeroUnionReveal";
 
 /**
  * Preview images for screenshot-driven demos (no CRM routes).
@@ -527,13 +529,6 @@ export const COMPONENTRY = [
 	},
 	
 	{
-		id: "year-pad",
-		name: "Year Pad",
-		tags: ["iphone", "calendar", "365", "emoji", "journal", "notes"],
-		description: "iPhone mockup with 365 day dots — tap opens a writing pad saved as emoji.",
-		Component: HeroYearPad,
-	},
-	{
 		id: "book-library",
 		name: "Book Library",
 		tags: ["books", "3d", "scroll", "horizontal", "newsletter", "archive", "shelf"],
@@ -567,6 +562,27 @@ export const COMPONENTRY = [
 		tags: ["scroll", "video", "cyclist", "doodle", "scrub", "mp4", "light"],
 		description: "Hand-drawn cyclist rides left → right with scroll; tires and pedals scrub only while scrolling.",
 		Component: HeroCycleDoodle,
+	},
+	{
+		id: "fold-paper",
+		name: "Fold Paper",
+		tags: ["scroll", "paper", "fold", "letter", "3d", "story", "texture"],
+		description: "Tri-fold letter with paper grain — scroll opens and closes the flaps; story reads when unfolded.",
+		Component: HeroFoldPaper,
+	},
+	{
+		id: "story-string",
+		name: "Story String",
+		tags: ["scroll", "hover", "tooltip", "string", "chapters", "preview", "story"],
+		description: "Chapter list + preview card — scroll/hover activates; blue tooltip and curved string track to the image.",
+		Component: HeroStoryString,
+	},
+	{
+		id: "union-reveal",
+		name: "Union Reveal",
+		tags: ["scroll", "union", "doodle", "video", "scale", "reveal", "mp4"],
+		description: "Big UNION with cycling doodle inside O — scroll fades UNI/N, scales O to ~200, then only the rider + message.",
+		Component: HeroUnionReveal,
 	},
 ];
 

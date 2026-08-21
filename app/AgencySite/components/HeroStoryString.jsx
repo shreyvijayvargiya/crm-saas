@@ -1,0 +1,324 @@
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
+import { cn } from "@/lib/utils";
+
+/**
+ * Story chapters — scroll / hover activates; string + tooltip follow the active row.
+ */
+const STORIES = [
+	{
+		id: "harbor",
+		title: "Harbor Ledger",
+		tooltip: "Finance CRM · AU",
+		src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
+		alt: "Mountain lake at dawn",
+	},
+	{
+		id: "inkline",
+		title: "Inkline Press",
+		tooltip: "Editorial product",
+		src: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1200&q=80",
+		alt: "Open book and soft light",
+	},
+	{
+		id: "drift",
+		title: "Drift Signal",
+		tooltip: "Ambient agent",
+		src: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80",
+		alt: "Fog over mountain ridge",
+	},
+	{
+		id: "sparrow",
+		title: "Meet Sparrow",
+		tooltip: "Brand motion",
+		src: "https://images.unsplash.com/photo-1444464666168-49d633b86797?auto=format&fit=crop&w=1200&q=80",
+		alt: "Bird in soft foliage",
+	},
+	{
+		id: "fold",
+		title: "Studio Fold",
+		tooltip: "Letterfold story",
+		src: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80",
+		alt: "Handwritten letter on desk",
+	},
+	{
+		id: "kiln",
+		title: "Kiln Market",
+		tooltip: "Commerce UI",
+		src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+		alt: "Warm coastal horizon",
+	},
+	{
+		id: "north",
+		title: "North Thread",
+		tooltip: "Systems design",
+		src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80",
+		alt: "Starry mountain night",
+	},
+];
+
+function buildCurve(x1, y1, x2, y2) {
+	const dx = Math.max(x2 - x1, 40);
+	const c1x = x1 + dx * 0.35;
+	const c1y = y1;
+	const c2x = x1 + dx * 0.65;
+	const c2y = y2;
+	return `M ${x1} ${y1} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${x2} ${y2}`;
+}
+
+/**
+ * HeroStoryString — chapter list + image preview.
+ * Dot sits just after the active word; tooltip floats above that end; string runs to the image.
+ */
+export default function HeroStoryString({
+	isLight = true,
+	className,
+	scrollHeightVh = 380,
+}) {
+	const sectionRef = useRef(null);
+	const stageRef = useRef(null);
+	const cardRef = useRef(null);
+	const wordRefs = useRef([]);
+	const lockRef = useRef(false);
+
+	const [scrollIndex, setScrollIndex] = useState(0);
+	const [hoverIndex, setHoverIndex] = useState(null);
+	const [link, setLink] = useState({
+		path: "",
+		tip: { x: 0, y: 0 },
+		node: { x: 0, y: 0 },
+		ready: false,
+	});
+
+	const activeIndex = hoverIndex !== null ? hoverIndex : scrollIndex;
+	const active = STORIES[activeIndex] || STORIES[0];
+	const count = STORIES.length;
+
+	const bg = isLight ? "#eceae6" : "#0c0c0b";
+	const ink = isLight ? "#1a1a18" : "#f3f0e8";
+	const muted = isLight ? "#9a9690" : "#6b6660";
+	const tipBg = "#3b6cff";
+
+	const { scrollYProgress } = useScroll({
+		target: sectionRef,
+		offset: ["start start", "end end"],
+	});
+
+	const smooth = useSpring(scrollYProgress, {
+		stiffness: 100,
+		damping: 28,
+		restDelta: 0.001,
+	});
+
+	const measure = useCallback(() => {
+		const stage = stageRef.current;
+		const card = cardRef.current;
+		const word = wordRefs.current[activeIndex];
+		if (!stage || !card || !word) return;
+
+		const s = stage.getBoundingClientRect();
+		const w = word.getBoundingClientRect();
+		const c = card.getBoundingClientRect();
+
+		/* Dot flush after the last character of the active title */
+		const x1 = w.right - s.left + 10;
+		const y1 = w.top + w.height / 2 - s.top;
+
+		/* String lands on left-center of the image */
+		const x2 = c.left - s.left + 4;
+		const y2 = c.top + c.height * 0.5 - s.top;
+
+		setLink({
+			path: buildCurve(x1, y1, x2, y2),
+			/* Tooltip centered above the word-end / dot */
+			tip: { x: x1, y: y1 - 14 },
+			node: { x: x1, y: y1 },
+			ready: true,
+		});
+	}, [activeIndex]);
+
+	useLayoutEffect(() => {
+		measure();
+	}, [measure, active, isLight]);
+
+	useEffect(() => {
+		const onResize = () => measure();
+		window.addEventListener("resize", onResize);
+		const id = window.setInterval(measure, 320);
+		return () => {
+			window.removeEventListener("resize", onResize);
+			window.clearInterval(id);
+		};
+	}, [measure]);
+
+	useEffect(() => {
+		const unsub = smooth.onChange((p) => {
+			if (lockRef.current) return;
+			const t = Math.max(0, Math.min(1, p));
+			const idx = Math.min(count - 1, Math.max(0, Math.round(t * (count - 1))));
+			setScrollIndex(idx);
+		});
+		return unsub;
+	}, [smooth, count]);
+
+	useEffect(() => {
+		const t = window.setTimeout(measure, 40);
+		return () => window.clearTimeout(t);
+	}, [activeIndex, measure]);
+
+	const scrollToIndex = (index) => {
+		const el = sectionRef.current;
+		if (!el) return;
+		const rect = el.getBoundingClientRect();
+		const absoluteTop = window.scrollY + rect.top;
+		const travel = Math.max(el.offsetHeight - window.innerHeight, 0);
+		const target = absoluteTop + (index / Math.max(count - 1, 1)) * travel;
+		lockRef.current = true;
+		setScrollIndex(index);
+		window.scrollTo({ top: target, behavior: "smooth" });
+		window.setTimeout(() => {
+			lockRef.current = false;
+		}, 500);
+	};
+
+	return (
+		<section
+			ref={sectionRef}
+			className={cn("relative left-1/2 w-screen -translate-x-1/2", className)}
+			style={{ height: `${scrollHeightVh}vh` }}
+			aria-label="Story string chapters"
+		>
+			<div
+				ref={stageRef}
+				className="sticky top-0 flex h-screen items-center overflow-hidden px-6 sm:px-12 lg:px-16"
+				style={{ background: bg, color: ink }}
+			>
+				<div className="relative z-10 mx-auto flex w-full max-w-6xl items-center gap-10 lg:gap-20">
+					{/* Left list — buttons hug text so word-end = node */}
+					<div className="relative w-auto max-w-[min(48vw,360px)] shrink-0">
+						<p
+							className="mb-8 font-sans text-[10px] font-medium uppercase tracking-[0.28em]"
+							style={{ color: muted }}
+						>
+							Chapters
+						</p>
+						<ul className="relative space-y-1" onMouseLeave={() => setHoverIndex(null)}>
+							{STORIES.map((story, i) => {
+								const on = i === activeIndex;
+								return (
+									<li key={story.id} className="relative">
+										<button
+											type="button"
+											onMouseEnter={() => setHoverIndex(i)}
+											onFocus={() => setHoverIndex(i)}
+											onClick={() => scrollToIndex(i)}
+											className={cn(
+												"relative inline-block max-w-full py-2.5 pr-4 text-left font-serif text-[clamp(1.15rem,2.4vw,1.65rem)] leading-tight transition-colors duration-200",
+												on ? "font-semibold italic" : "font-normal"
+											)}
+											style={{ color: on ? ink : muted }}
+											aria-current={on ? "true" : undefined}
+										>
+											<span
+												ref={(el) => {
+													wordRefs.current[i] = el;
+												}}
+												className="relative inline"
+											>
+												{story.title}
+											</span>
+										</button>
+									</li>
+								);
+							})}
+						</ul>
+					</div>
+
+					{/* Right — image only */}
+					<div className="relative ml-auto hidden min-w-0 flex-1 justify-end md:flex">
+						<motion.div
+							ref={cardRef}
+							layout
+							className="relative w-full max-w-[400px] overflow-hidden rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.12)]"
+						>
+							<AnimatePresence mode="wait">
+								<motion.div
+									key={active.id}
+									initial={{ opacity: 0, y: 8 }}
+									animate={{ opacity: 1, y: 0 }}
+									exit={{ opacity: 0, y: -6 }}
+									transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+									className="relative aspect-[4/5] overflow-hidden bg-zinc-200 sm:aspect-[3/4]"
+								>
+									<div className="absolute left-1/2 top-0 z-10 h-3.5 w-20 -translate-x-1/2 rounded-b-xl bg-black/85" />
+									<img
+										src={active.src}
+										alt={active.alt}
+										draggable={false}
+										className="h-full w-full object-cover"
+									/>
+								</motion.div>
+							</AnimatePresence>
+						</motion.div>
+					</div>
+				</div>
+
+				{/* Mobile image */}
+				<div className="absolute inset-x-6 bottom-10 z-10 md:hidden">
+					<div className="overflow-hidden rounded-2xl shadow-lg">
+						<div className="relative aspect-[16/11] overflow-hidden">
+							<img src={active.src} alt={active.alt} className="h-full w-full object-cover" />
+						</div>
+					</div>
+				</div>
+
+				{/* Dot (after word) + tooltip (above word end) + string → image */}
+				{link.ready ? (
+					<div className="pointer-events-none absolute inset-0 z-20 hidden md:block" aria-hidden>
+						<svg className="absolute inset-0 h-full w-full overflow-visible">
+							<motion.path
+								d={link.path}
+								fill="none"
+								stroke={ink}
+								strokeWidth="1.25"
+								strokeLinecap="round"
+								initial={false}
+								animate={{ d: link.path }}
+								transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+							/>
+						</svg>
+
+						<motion.span
+							className="absolute h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+							style={{ background: ink, left: link.node.x, top: link.node.y }}
+							transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+						/>
+
+						<motion.div
+							className="absolute -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-full px-3 py-1 text-[11px] font-medium text-white shadow-sm"
+							style={{
+								background: tipBg,
+								left: link.tip.x,
+								top: link.tip.y,
+							}}
+							key={active.id}
+							initial={{ opacity: 0, y: 4, scale: 0.96 }}
+							animate={{ opacity: 1, y: 0, scale: 1 }}
+							transition={{ duration: 0.22 }}
+						>
+							{active.tooltip}
+						</motion.div>
+					</div>
+				) : null}
+
+				<p
+					className="absolute bottom-6 left-6 font-sans text-[10px] uppercase tracking-[0.2em] sm:left-12"
+					style={{ color: muted }}
+				>
+					Scroll or hover · {String(activeIndex + 1).padStart(2, "0")} /{" "}
+					{String(count).padStart(2, "0")}
+				</p>
+			</div>
+		</section>
+	);
+}

@@ -188,6 +188,62 @@ const ENTRIES = [
 		prev: "storydusk",
 		body: "the last word in a season of waiting — when the page turns and the glossary begins again.",
 	},
+	{
+		id: "inkwait",
+		word: "inkwait",
+		pos: "v",
+		prev: "finalight",
+		body: "to hold a thought until the pen catches up — the pause between knowing and writing.",
+	},
+	{
+		id: "loomhour",
+		word: "loomhour",
+		pos: "n",
+		prev: "inkwait",
+		body: "an hour that gathers at the edge of the day, thicker than the ones before it.",
+	},
+	{
+		id: "softbell",
+		word: "softbell",
+		pos: "n",
+		prev: "loomhour",
+		body: "a reminder that arrives without urgency — more invitation than alarm.",
+	},
+	{
+		id: "driftfold",
+		word: "driftfold",
+		pos: "v",
+		prev: "softbell",
+		body: "to let one afternoon crease into the next until the seam is almost invisible.",
+	},
+	{
+		id: "amberrest",
+		word: "amberrest",
+		pos: "n",
+		prev: "driftfold",
+		body: "the warm stillness after work when the room glows and nothing needs naming yet.",
+	},
+	{
+		id: "pagewind",
+		word: "pagewind",
+		pos: "n",
+		prev: "amberrest",
+		body: "the small draft that turns a corner of paper — a reminder that stories want air.",
+	},
+	{
+		id: "quietspan",
+		word: "quietspan",
+		pos: "n",
+		prev: "pagewind",
+		body: "a stretch of days with no announcement — only coffee, weather, and unfinished sentences.",
+	},
+	{
+		id: "rethread",
+		word: "rethread",
+		pos: "v",
+		prev: "quietspan",
+		body: "to pick up a conversation weeks later as if the needle never left the cloth.",
+	},
 ];
 
 const BG = "#f7f5f0";

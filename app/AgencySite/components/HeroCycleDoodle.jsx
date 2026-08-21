@@ -66,7 +66,7 @@ export default function HeroCycleDoodle({
 	  Doodle is ~1/4 page wide; travel runs the full string
 	  (left padding → almost right edge, leaving room for the figure).
 	*/
-	const x = useTransform(p, [0, 1], ["2vw", "108vw"]);
+	const x = useTransform(p, [0, 1], ["2vw", "108papervw"]);
 	const hintOpacity = useTransform(p, [0, 0.08, 0.2], [1, 1, 0]);
 
 	const paintFrame = () => {

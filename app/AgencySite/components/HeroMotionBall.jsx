@@ -29,10 +29,8 @@ function MotionBall({ size = 56, fill, core }) {
 }
 
 /**
- * HeroMotionBall — light theme.
- * Full-width line + ball act as a mask edge:
- * text ABOVE the line is hidden; text BELOW stays visible.
- * Scroll drives the text upward through that edge.
+ * HeroMotionBall — ball + full-width line scan DOWN with scroll.
+ * Text ABOVE the moving edge stays hidden; text BELOW stays visible.
  */
 export default function HeroMotionBall({
 	isLight = true,
@@ -57,9 +55,16 @@ export default function HeroMotionBall({
 		restDelta: 0.001,
 	});
 
-	/* Ball sits near the top third; text travels up through it */
-	const ballTop = "28%";
-	const textY = useTransform(p, [0, 1], ["18vh", "-110vh"]);
+	/* Ball + line travel top → bottom as you scroll */
+	const ballTop = useTransform(p, [0, 1], ["16%", "88%"]);
+	const coverHeight = useTransform(p, [0, 1], ["16%", "88%"]);
+	const clipPath = useTransform(
+		p,
+		[0, 1],
+		["inset(16% 0 0 0)", "inset(88% 0 0 0)"]
+	);
+	/* Slight text drift so lines keep meeting the scanning edge */
+	const textY = useTransform(p, [0, 1], ["8vh", "-28vh"]);
 
 	return (
 		<section
@@ -72,20 +77,17 @@ export default function HeroMotionBall({
 				className="sticky top-0 h-screen overflow-hidden"
 				style={{ background: bg, color: ink }}
 			>
-				{/*
-				  Text layer — clipped so only the region BELOW the ball line shows.
-				  clip-path top edge matches ballTop (28%).
-				*/}
-				<div
+				{/* Text — only the region BELOW the moving ball line shows */}
+				<motion.div
 					className="pointer-events-none absolute inset-0 flex justify-center px-4"
 					style={{
-						clipPath: "inset(28% 0 0 0)",
-						WebkitClipPath: "inset(28% 0 0 0)",
+						clipPath,
+						WebkitClipPath: clipPath,
 					}}
 				>
 					<motion.div
 						style={{ y: textY }}
-						className="w-full max-w-5xl pt-[32vh] text-center"
+						className="w-full max-w-5xl pt-[18vh] text-center"
 					>
 						{HEADLINE.map((line) => (
 							<p
@@ -96,32 +98,29 @@ export default function HeroMotionBall({
 							</p>
 						))}
 					</motion.div>
-				</div>
+				</motion.div>
 
-				{/*
-				  Solid cover above the line — guarantees nothing above the ball is visible
-				  (extra safety on top of clip-path).
-				*/}
-				<div
+				{/* Solid cover above the scanning edge */}
+				<motion.div
 					className="pointer-events-none absolute inset-x-0 top-0 z-10"
-					style={{ height: "28%", background: bg }}
+					style={{ height: coverHeight, background: bg }}
 				/>
 
-				{/* Full-width scanning line */}
-				<div
+				{/* Full-width scanning line — moves with scroll */}
+				<motion.div
 					className="pointer-events-none absolute inset-x-0 z-20"
 					style={{ top: ballTop }}
 				>
 					<div className="h-px w-full" style={{ background: ink }} />
-				</div>
+				</motion.div>
 
-				{/* Ball centered on the line */}
-				<div
+				{/* Ball rides the line downward */}
+				<motion.div
 					className="pointer-events-none absolute left-1/2 z-30 -translate-x-1/2 -translate-y-1/2"
 					style={{ top: ballTop }}
 				>
 					<MotionBall size={56} fill={ballFill} core={ballCore} />
-				</div>
+				</motion.div>
 			</div>
 		</section>
 	);
