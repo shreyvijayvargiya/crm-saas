@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { FollowerPointerCard } from "@/components/ui/following-pointer";
 import SiteSeo, { HOME_OG_IMAGE } from "@/components/seo/SiteSeo";
+import { HOME_NOSCRIPT_HTML } from "@/lib/agent/markdownPages";
+import { BRAND_JSON_LD } from "@/lib/agent/brandJsonLd";
 import AgencyShell from "../components/AgencyShell";
 import HeroScrollReveal from "../components/HeroScrollReveal";
 import IntegrationsShowcase from "../components/IntegrationsShowcase";
@@ -106,12 +108,19 @@ function HomeContent() {
 	return (
 		<>
 			<SiteSeo
-				title="AI CRM SaaS Template – Next.js Admin Dashboard & CMS | SaaSCRM"
-				description="Build an AI-powered CRM, admin dashboard, CMS, sales pipeline, and more in days with a customizable Next.js, React, Tailwind, and shadcn/ui template."
+				title="SaaSCRM – AI CRM SaaS Template for Next.js Admin Dashboards & CMS"
+				description="SaaSCRM is the Next.js CRM, admin dashboard, and CMS template with 60+ screens and an agentic AI chatbot. Build AI CRM, CMS, and admin dashboards in days."
 				path="/"
-				keywords="AI CRM template, Next.js CRM, SaaS admin dashboard, CMS template, React CRM, shadcn dashboard, Tailwind CRM, agentic CRM"
+				keywords="SaaSCRM, SaaS CRM, AI CRM template, Next.js CRM, SaaS admin dashboard, CMS template, React CRM, shadcn dashboard, Tailwind CRM, agentic CRM, saascrm.site"
 				images={[HOME_OG_IMAGE]}
+				jsonLd={BRAND_JSON_LD}
 			/>
+			<noscript>
+				<div
+					// eslint-disable-next-line react/no-danger
+					dangerouslySetInnerHTML={{ __html: HOME_NOSCRIPT_HTML }}
+				/>
+			</noscript>
 			<motion.header {...fadeUp} className="mb-10 text-center sm:mb-14">
 				<div className="mb-10">
 					<HeroScrollReveal
@@ -131,14 +140,14 @@ function HomeContent() {
 					<Bot className="h-3.5 w-3.5" />
 					First agentic CRM SaaS template with a built-in AI chatbot.
 				</Badge>
-				<h1
+				<h2
 					className={cn(
 						"text-3xl font-bold tracking-tight sm:text-4xl sm:leading-[1.15]",
 						isLight ? "text-zinc-900" : "text-white"
 					)}
 				>
 					The first agentic CRM SaaS template with a built-in AI chatbot.
-				</h1>
+				</h2>
 				<p
 					className={cn(
 						"mx-auto mt-5 max-w-xl text-base leading-relaxed sm:text-lg",

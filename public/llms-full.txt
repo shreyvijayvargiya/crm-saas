@@ -1,0 +1,28 @@
+# SaaSCRM
+
+> SaaSCRM is a Next.js CRM, admin dashboard, and CMS frontend template at https://saascrm.site. It ships 60+ screens, an agentic AI chatbot, theme customizer, Zod schemas, and Cursor-ready source. Runtime data is demo-only; wire your own backend.
+
+SaaSCRM (also searched as SaaS CRM) is the product name for this template. Start with the developer links below, then fetch only the markdown files you need. HTML pages at the same paths support Accept: text/markdown.
+
+## Developer resources
+
+- [SaaSCRM API docs](https://saascrm.site/docs/api.md): REST resource map for leads, contacts, deals, invoices, and tasks
+- [SaaSCRM OpenAPI spec](https://saascrm.site/openapi.yaml): OpenAPI 3.0 reference contract for a buyer-hosted API
+- [SaaSCRM auth docs](https://saascrm.site/docs/auth.md): Demo login screens and how to attach a real identity provider
+- [SaaSCRM webhooks](https://saascrm.site/docs/webhooks.md): Event names, payload example, and HMAC signature header
+- [SaaSCRM MCP server](https://saascrm.site/docs/mcp.md): How in-app AI tools map to a Model Context Protocol server
+- [SaaSCRM developer resources](https://saascrm.site/docs.md): Index of API, OpenAPI, auth, webhooks, and MCP URLs
+
+## Docs
+
+- [SaaSCRM home](https://saascrm.site/index.md): Product overview for agents
+- [SaaSCRM sitemap](https://saascrm.site/sitemap.md): Where to find marketing pages and CRM screens
+- [About SaaSCRM schemas](https://saascrm.site/about.md): Zod, SQL, and data.json browser
+
+## Optional
+
+- [Live CRM demo](https://saascrm.site/demo.md): Interactive app shell with the AI chatbot
+- [SaaSCRM pricing](https://saascrm.site/pricing.md): Template license and custom build
+- [SaaSCRM FAQ](https://saascrm.site/faq.md): Licensing and support
+- [SaaSCRM blog](https://saascrm.site/blog.md): CRM template notes
+- [GitHub repository](https://github.com/shreyvijayvargiya/crm-saas): Source listing (purchase required for the full kit)

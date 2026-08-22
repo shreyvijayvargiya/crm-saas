@@ -16,7 +16,10 @@
 		"clean": "yarn cache clean",
 		"build": "NODE_OPTIONS=--openssl-legacy-provider next build",
 		"build-crm": "node scripts/build-crm.mjs",
-		"verify:schemas": "node scripts/verify-schemas.mjs"
+		"verify:schemas": "node scripts/verify-schemas.mjs",
+		"write:agent-files": "node scripts/write-agent-files.mjs",
+		"test": "node scripts/write-agent-files.mjs && node --test lib/agent/*.test.js",
+		"verify:agentic": "node scripts/verify-agentic.mjs"
 	},
 	"dependencies": {
 		"@dnd-kit/core": "^6.3.1",

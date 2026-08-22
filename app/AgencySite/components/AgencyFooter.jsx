@@ -15,6 +15,8 @@ const FOOTER_LINKS = [
 	{ label: "Pricing", href: "/pricing" },
 	{ label: "FAQ", href: "/#faq" },
 	{ label: "Contact", href: "/#contact" },
+	{ label: "Developer docs", href: "/docs" },
+	{ label: "API docs", href: "/docs/api" },
 	{ label: "All pages", href: "/sitemap" },
 ];
 
