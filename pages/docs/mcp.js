@@ -1,8 +1,5 @@
 import DocsArticlePage from "../../app/AgencySite/pages/DocsArticlePage";
 import { MCP_DOCS_MARKDOWN } from "../../lib/agent/markdownPages";
-import { markdownAwareGetServerSideProps } from "../../lib/agent/negotiate";
-
-export const getServerSideProps = markdownAwareGetServerSideProps("/docs/mcp");
 
 export default function SaaSCRMMCPDocsPage() {
 	return (

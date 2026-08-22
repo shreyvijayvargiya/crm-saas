@@ -1,8 +1,5 @@
 import DocsArticlePage from "../../app/AgencySite/pages/DocsArticlePage";
 import { AUTH_DOCS_MARKDOWN } from "../../lib/agent/markdownPages";
-import { markdownAwareGetServerSideProps } from "../../lib/agent/negotiate";
-
-export const getServerSideProps = markdownAwareGetServerSideProps("/docs/auth");
 
 export default function SaaSCRMAuthDocsPage() {
 	return (

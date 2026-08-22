@@ -1,8 +1,5 @@
 import DocsArticlePage from "../app/AgencySite/pages/DocsArticlePage";
 import { BRAND_MARKDOWN } from "../lib/agent/markdownPages";
-import { markdownAwareGetServerSideProps } from "../lib/agent/negotiate";
-
-export const getServerSideProps = markdownAwareGetServerSideProps("/saascrm");
 
 export default function SaaSCRMBrandPage() {
 	return (
