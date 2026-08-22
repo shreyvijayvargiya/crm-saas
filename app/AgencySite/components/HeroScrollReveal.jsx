@@ -105,11 +105,19 @@ export default function HeroScrollReveal({ screenshots, isLight }) {
 					<LucideProjector /> freelancers
 				</motion.p>
 
-				<h2 className="mx-auto max-w-5xl text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl">
+				<h1 className="mx-auto max-w-5xl text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl">
+					<span
+						className={cn(
+							"mb-4 block text-lg font-semibold tracking-[0.2em] sm:text-xl",
+							isLight ? "text-zinc-800" : "text-zinc-100"
+						)}
+					>
+						SaaSCRM{" "}
+					</span>
 					{HEADING_WORDS.map((word, index) => (
 						<motion.span
 							key={word}
-							initial={{ opacity: 0, y: 48, filter: "blur(10px)" }}
+							initial={false}
 							whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
 							viewport={{ once: true }}
 							transition={{
@@ -127,9 +135,10 @@ export default function HeroScrollReveal({ screenshots, isLight }) {
 							)}
 						>
 							{word}
+							{index < HEADING_WORDS.length - 1 ? " " : ""}
 						</motion.span>
 					))}
-				</h2>
+				</h1>
 
 				<motion.p
 					initial={{ opacity: 0, y: 16 }}

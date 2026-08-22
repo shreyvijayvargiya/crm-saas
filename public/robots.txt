@@ -1,5 +1,10 @@
 User-agent: *
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /openapi.yaml
+Allow: /docs
 Disallow: /api/
 
 Sitemap: https://saascrm.site/sitemap.xml
+# Agent index: https://saascrm.site/llms.txt

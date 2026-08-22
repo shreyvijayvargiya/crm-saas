@@ -80,6 +80,7 @@ export default function SiteSeo({
 }) {
 	const list = images?.length ? images : [HOME_OG_IMAGE];
 	const canonical = `${SITE_URL}${path === "/" ? "" : path}`;
+	const markdownHref = path === "/" ? `${SITE_URL}/index.md` : `${SITE_URL}${path}.md`;
 	const primaryImage = absoluteImageUrl(list[0].path);
 	const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 	const articleTags = Array.isArray(article?.tags) ? article.tags : [];
@@ -98,6 +99,8 @@ export default function SiteSeo({
 				}
 			/>
 			<link rel="canonical" href={canonical} />
+			<link rel="describedby" href={`${SITE_URL}/llms.txt`} />
+			<link rel="alternate" type="text/markdown" href={markdownHref} />
 
 			<meta property="og:type" content={type} />
 			<meta property="og:site_name" content="SaaSCRM" />
