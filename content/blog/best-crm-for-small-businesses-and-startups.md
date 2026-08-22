@@ -3,7 +3,7 @@ title: "Best CRM for Small Businesses and Startups"
 description: "Looking for the best CRM for startups and small companies? Compare a cool, cheap HubSpot alternative with free open-source CRMs, Frappe, Twenty, and an AI CRM you can plan in two minutes."
 date: "2026-08-21"
 author: "Shrey"
-image: "/blog/best-crm-for-small-businesses-og.png"
+image: "/og/best-crm-for-small-businesses.jpg"
 imageAlt: "Best CRM for small businesses and startups — SaaSCRM dashboard and pipeline overview"
 keywords: "best CRM for small businesses and startups, best crm for startups, cool and cheap hubspot alternative, free open-source crm, crm for startups, crm for small companies, frappe CRM alternative, twenty CRM alternative, Ai CRM, AI CRM Builder"
 tags:

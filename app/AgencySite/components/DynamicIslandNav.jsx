@@ -38,8 +38,11 @@ export default function DynamicIslandNav() {
 	return (
 		<div
 			className={cn(
-				"pointer-events-none relative inset-x-0 top-0.5 z-50 flex",
-				"justify-stretch sm:justify-center sm:pb-6"
+				"pointer-events-none z-50 flex",
+				/* Phone: full-width bottom dock so 7 icons never overflow */
+				"fixed inset-x-0 bottom-0 justify-stretch",
+				/* Desktop: floating island at the top */
+				"sm:relative sm:inset-auto sm:justify-center sm:pb-6"
 			)}
 		>
 			<motion.nav
@@ -48,16 +51,16 @@ export default function DynamicIslandNav() {
 				animate={{ opacity: 1, y: 0, scale: 1 }}
 				transition={{ type: "spring", stiffness: 380, damping: 28 }}
 				className={cn(
-					"pointer-events-auto flex w-1/2 items-center sm:w-auto sm:gap-1 rounded-full sm:rounded-full sm:border sm:px-2 sm:py-2",
-					"justify-between gap-0 border-t px-1 pt-2",
-					"pb-[max(0.625rem,env(safe-area-inset-bottom))] sm:pb-2",
+					"pointer-events-auto flex w-full max-w-full items-center justify-between gap-0",
+					"border-t px-1 pt-1.5 pb-[max(0.5rem,env(safe-area-inset-bottom))]",
+					"sm:w-auto sm:gap-1 sm:rounded-full sm:border sm:px-2 sm:py-2 sm:pb-2",
 					isLight
-						? "border-zinc-200/50 bg-white/20 sm:bg-white/20"
-						: "border-zinc-800/90 bg-zinc-950/90 shadow-black/50 sm:bg-zinc-950/75"
+						? "border-zinc-200/80 bg-white/95 backdrop-blur-md sm:border-zinc-200/50 sm:bg-white/80"
+						: "border-zinc-800/90 bg-zinc-950/95 shadow-black/50 backdrop-blur-md sm:bg-zinc-950/75"
 				)}
 				aria-label="Site navigation"
 			>
-				<div className="flex flex-1 items-center justify-between gap-0 sm:flex-none sm:justify-start sm:gap-0.5">
+				<div className="flex min-w-0 flex-1 items-center justify-between sm:flex-none sm:justify-start sm:gap-0.5">
 					{TABS.map((tab) => {
 						const Icon = tab.icon;
 						const active = isActiveRoute(router.pathname, tab.href);
@@ -69,8 +72,9 @@ export default function DynamicIslandNav() {
 									whileTap={{ scale: 0.94 }}
 									transition={PILL_SPRING}
 									className={cn(
-										"relative flex h-11 items-center justify-center gap-0 rounded-full px-2 transition-colors duration-200 sm:h-10 sm:gap-2 sm:px-2.5",
-										active && "border border-zinc-200",
+										"relative flex h-11 min-w-0 flex-1 items-center justify-center rounded-full px-1 transition-colors duration-200",
+										"sm:h-10 sm:flex-none sm:gap-2 sm:px-2.5",
+										active && "sm:border sm:border-zinc-200",
 										!active &&
 											(isLight
 												? "text-zinc-500 hover:text-zinc-800"
@@ -104,7 +108,6 @@ export default function DynamicIslandNav() {
 										)}
 										strokeWidth={active ? 1.75 : 1.5}
 									/>
-									{/* Labels: always on sm+, hidden on small devices */}
 									<span
 										className={cn(
 											"relative z-10 hidden overflow-hidden whitespace-nowrap text-sm tracking-tight sm:inline",
@@ -126,13 +129,12 @@ export default function DynamicIslandNav() {
 
 					<div
 						className={cn(
-							"mx-1 hidden h-5 w-px sm:block",
+							"mx-0.5 hidden h-5 w-px sm:mx-1 sm:block",
 							isLight ? "bg-zinc-200" : "bg-zinc-700"
 						)}
 						aria-hidden
 					/>
 
-					{/* Theme toggle: icon only — never show a label */}
 					<motion.button
 						type="button"
 						layout

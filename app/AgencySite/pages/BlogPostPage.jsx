@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Check, Copy, ExternalLink } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Copy, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import SiteSeo, { absoluteImageUrl } from "@/components/seo/SiteSeo";
+import SiteSeo, { absoluteImageUrl, HOME_OG_IMAGE } from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
 import MarkdownContent from "../components/MarkdownContent";
 import { useAgencyTheme } from "../AgencyThemeContext";
@@ -27,7 +27,96 @@ function XIcon({ className }) {
 	);
 }
 
-function BlogPostContent({ post }) {
+function MorePostsGrid({ posts, isLight }) {
+	if (!posts?.length) return null;
+
+	return (
+		<section className="mt-16 pt-12 dark:border-zinc-800">
+			<div className="mb-6 flex items-end justify-between gap-3">
+				<div>
+					<p
+						className={cn(
+							"text-xs font-medium uppercase tracking-wider",
+							isLight ? "text-violet-700" : "text-violet-300"
+						)}
+					>
+						Keep reading
+					</p>
+					<h2
+						className={cn(
+							"mt-1 text-xl font-bold tracking-tight sm:text-2xl",
+							isLight ? "text-zinc-900" : "text-white"
+						)}
+					>
+						More from the blog
+					</h2>
+				</div>
+				<Link href="/blog" passHref>
+					<a
+						className={cn(
+							"hidden text-sm font-medium sm:inline-flex sm:items-center sm:gap-1",
+							isLight ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white"
+						)}
+					>
+						All posts
+						<ArrowRight className="h-3.5 w-3.5" />
+					</a>
+				</Link>
+			</div>
+
+			<ul className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-5">
+				{posts.map((post) => (
+					<li key={post.slug} className="h-full">
+						<Link href={`/blog/${post.slug}`} passHref>
+							<a
+								className={cn(
+									"group flex h-full flex-col overflow-hidden rounded-2xl border transition-colors",
+									isLight
+										? "border-zinc-200 bg-white/70 hover:border-zinc-300"
+										: "border-zinc-800 bg-zinc-950/50 hover:border-zinc-700"
+								)}
+							>
+								{post.meta.image ? (
+									<div className="aspect-[16/10] overflow-hidden">
+										{/* eslint-disable-next-line @next/next/no-img-element */}
+										<img
+											src={post.meta.image}
+											alt={post.meta.imageAlt || post.meta.title}
+											className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+										/>
+									</div>
+								) : null}
+								<div className="flex flex-1 flex-col p-4">
+									<p className="text-xs text-zinc-500">{formatDate(post.meta.date)}</p>
+									<h3
+										className={cn(
+											"mt-1.5 text-sm font-semibold leading-snug tracking-tight group-hover:underline group-hover:underline-offset-4 sm:text-base",
+											isLight ? "text-zinc-900" : "text-zinc-50"
+										)}
+									>
+										{post.meta.title}
+									</h3>
+									{post.meta.description ? (
+										<p
+											className={cn(
+												"mt-2 line-clamp-2 flex-1 text-xs sm:text-sm",
+												isLight ? "text-zinc-600" : "text-zinc-400"
+											)}
+										>
+											{post.meta.description}
+										</p>
+									) : null}
+								</div>
+							</a>
+						</Link>
+					</li>
+				))}
+			</ul>
+		</section>
+	);
+}
+
+function BlogPostContent({ post, morePosts = [] }) {
 	const { isLight } = useAgencyTheme();
 	const [copied, setCopied] = useState(false);
 	const { meta, content, slug } = post;
@@ -60,8 +149,10 @@ function BlogPostContent({ post }) {
 				type="article"
 				images={[
 					{
-						path: meta.image,
+						path: meta.image || HOME_OG_IMAGE.path,
 						alt: meta.imageAlt || meta.title,
+						width: 1200,
+						height: 630,
 					},
 				]}
 				article={{
@@ -204,16 +295,18 @@ function BlogPostContent({ post }) {
 
 				<MarkdownContent content={content} isLight={isLight} />
 			</article>
+
+			<MorePostsGrid posts={morePosts} isLight={isLight} />
 		</>
 	);
 }
 
-export default function BlogPostPage({ post }) {
+export default function BlogPostPage({ post, morePosts = [] }) {
 	if (!post) return null;
 
 	return (
-		<AgencyShell size="article">
-			<BlogPostContent post={post} />
+		<AgencyShell size="wide">
+			<BlogPostContent post={post} morePosts={morePosts} />
 		</AgencyShell>
 	);
 }

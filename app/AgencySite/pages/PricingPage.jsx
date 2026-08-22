@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { FollowerPointerCard } from "@/components/ui/following-pointer";
-import SiteSeo, { TEMPLATES_PAGE_OG_IMAGE, CRM_SOCIAL_IMAGES } from "@/components/seo/SiteSeo";
+import SiteSeo, { TEMPLATES_PAGE_OG_IMAGE } from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import { PRICING_TIERS, CONTACT, OTHER_TEMPLATES } from "../agencyConfig";
@@ -40,7 +40,7 @@ function PricingContent() {
 				description="Buy the SaaSCRM Next.js template self-serve from $49, or hire us for a custom CRM. Compare tiers, free templates, and Gumroad listings."
 				path="/pricing"
 				keywords="SaaSCRM pricing, buy CRM template, Next.js admin template price, custom CRM development cost"
-				images={[TEMPLATES_PAGE_OG_IMAGE, CRM_SOCIAL_IMAGES[0]]}
+				images={[TEMPLATES_PAGE_OG_IMAGE]}
 				jsonLd={pricingJsonLd}
 			/>
 			<motion.header
