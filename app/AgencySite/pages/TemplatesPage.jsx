@@ -79,10 +79,7 @@ function TemplatesContent() {
 				description="Download free open-source Next.js CRM templates for Stripe billing, agencies, freelancers, creators, and digital stores. Slim Tailwind starters — full SaaSCRM kit + Figma on Gumroad."
 				path="/templates"
 				keywords="free CRM template, Next.js CRM, open source CRM, freelancer CRM, Stripe CRM UI, agency CRM template, SaaS admin template free download"
-				images={[TEMPLATES_PAGE_OG_IMAGE, ...templates.slice(0, 3).map((t) => ({
-					path: t.image,
-					alt: t.name,
-				}))]}
+				images={[TEMPLATES_PAGE_OG_IMAGE]}
 				jsonLd={[templatesJsonLd, breadcrumbJsonLd]}
 			/>
 

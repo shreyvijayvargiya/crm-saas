@@ -21,16 +21,25 @@ export const SITEMAP_GROUPS = [
 			{ label: "Demo · Ecommerce CMS", href: "/demo/template/ecommerce-cms" },
 			{ label: "Dashboard", href: "/dashboard" },
 			{ label: "Pricing", href: "/pricing" },
-			{ label: "FAQ", href: "/#faq" },
-			{ label: "Contact", href: "/#contact" },
+			{ label: "FAQ", href: "/faq" },
+			{ label: "Contact", href: "/contact" },
 			{ label: "Sitemap", href: "/sitemap" },
 		],
 	},
 	{
 		title: "Blog",
 		description: "SEO notes on CRM, admin dashboards, and shipping faster.",
+		/** Filled at build time via getSitemapGroups(blogPosts) — keep a static fallback. */
 		links: [
 			{ label: "All posts", href: "/blog" },
+			{
+				label: "Best CRM for small businesses and startups",
+				href: "/blog/best-crm-for-small-businesses-and-startups",
+			},
+			{
+				label: "Finance CRM for an Australian accounting client",
+				href: "/blog/building-finance-crm-for-australian-client",
+			},
 			{
 				label: "6 CRM templates you can demo today",
 				href: "/blog/six-crm-templates-you-can-demo-today",
@@ -138,6 +147,26 @@ export const SITEMAP_GROUPS = [
 		],
 	},
 ];
+
+/**
+ * Merge live blog posts into the Blog group (newest first).
+ * @param {Array<{ slug: string, meta: { title?: string } }>} [blogPosts]
+ */
+export function getSitemapGroups(blogPosts = []) {
+	if (!blogPosts.length) return SITEMAP_GROUPS;
+
+	const blogLinks = [
+		{ label: "All posts", href: "/blog" },
+		...blogPosts.map((post) => ({
+			label: post.meta?.title || post.slug,
+			href: `/blog/${post.slug}`,
+		})),
+	];
+
+	return SITEMAP_GROUPS.map((group) =>
+		group.title === "Blog" ? { ...group, links: blogLinks } : group
+	);
+}
 
 export const SITEMAP_PATHS = Array.from(
 	new Set(SITEMAP_GROUPS.flatMap((group) => group.links.map((link) => link.href)))

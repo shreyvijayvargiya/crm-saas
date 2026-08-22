@@ -1,12 +1,39 @@
 import React from "react";
 import Head from "next/head";
 
-const SITE_URL = "https://saascrm.site";
+export const SITE_URL = "https://saascrm.site";
+export const TWITTER_HANDLE = "@treyvijay";
+
+export function absoluteImageUrl(path) {
+	if (!path) {
+		return `${SITE_URL}/screenshots-marketing-page/saas-crm-dashboard.png`;
+	}
+	if (/^https?:\/\//i.test(path)) return path;
+	return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+function imageMimeType(path) {
+	if (/\.jpe?g(\?|$)/i.test(path)) return "image/jpeg";
+	if (/\.webp(\?|$)/i.test(path)) return "image/webp";
+	if (/\.gif(\?|$)/i.test(path)) return "image/gif";
+	return "image/png";
+}
+
+/** Shared OG / X (Twitter) images for marketing pages — 1200-class PNG in public/. */
+export const HOME_OG_IMAGE = {
+	path: "/screenshots-marketing-page/saas-crm-dashboard.png",
+	alt: "SaaSCRM AI CRM template dashboard with sales, revenue, and recent leads",
+};
 
 /** OG / Twitter image for /templates (drop file in public/). */
 export const TEMPLATES_PAGE_OG_IMAGE = {
 	path: "/templates-page.png",
 	alt: "SaaSCRM free CRM templates – Next.js dashboards for startups and freelancers",
+};
+
+export const BLUEPRINT_OG_IMAGE = {
+	path: "/ai-builder-saas-crm.png",
+	alt: "SaaSCRM AI CRM Builder – plan a custom CRM in two minutes",
 };
 
 export const CRM_SOCIAL_IMAGES = [
@@ -45,14 +72,17 @@ export default function SiteSeo({
 	description,
 	path = "/",
 	keywords,
-	images = CRM_SOCIAL_IMAGES,
+	images = [HOME_OG_IMAGE],
 	type = "website",
 	jsonLd,
 	noIndex = false,
+	article,
 }) {
+	const list = images?.length ? images : [HOME_OG_IMAGE];
 	const canonical = `${SITE_URL}${path === "/" ? "" : path}`;
-	const primaryImage = `${SITE_URL}${images[0].path}`;
+	const primaryImage = absoluteImageUrl(list[0].path);
 	const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+	const articleTags = Array.isArray(article?.tags) ? article.tags : [];
 
 	return (
 		<Head>
@@ -75,25 +105,42 @@ export default function SiteSeo({
 			<meta property="og:title" content={title} />
 			<meta property="og:description" content={description} />
 			<meta property="og:url" content={canonical} />
-			{images.map((image) => (
-				<React.Fragment key={image.path}>
-					<meta property="og:image" content={`${SITE_URL}${image.path}`} />
+			{list.flatMap((image) => {
+				const src = absoluteImageUrl(image.path);
+				const width = image.width || "1200";
+				const height = image.height || "630";
+				return [
+					<meta key={`og-image-${image.path}`} property="og:image" content={src} />,
+					<meta key={`og-secure-${image.path}`} property="og:image:secure_url" content={src} />,
+					<meta key={`og-alt-${image.path}`} property="og:image:alt" content={image.alt} />,
+					<meta key={`og-w-${image.path}`} property="og:image:width" content={String(width)} />,
+					<meta key={`og-h-${image.path}`} property="og:image:height" content={String(height)} />,
 					<meta
-						property="og:image:secure_url"
-						content={`${SITE_URL}${image.path}`}
-					/>
-					<meta property="og:image:alt" content={image.alt} />
-					<meta property="og:image:width" content="1919" />
-					<meta property="og:image:height" content="958" />
-					<meta property="og:image:type" content="image/png" />
-				</React.Fragment>
+						key={`og-type-${image.path}`}
+						property="og:image:type"
+						content={imageMimeType(image.path)}
+					/>,
+				];
+			})}
+			<link rel="image_src" href={primaryImage} />
+			{type === "article" && article?.publishedTime ? (
+				<meta property="article:published_time" content={article.publishedTime} />
+			) : null}
+			{type === "article" && article?.author ? (
+				<meta property="article:author" content={article.author} />
+			) : null}
+			{articleTags.map((tag) => (
+				<meta key={tag} property="article:tag" content={tag} />
 			))}
 
 			<meta name="twitter:card" content="summary_large_image" />
+			<meta name="twitter:site" content={TWITTER_HANDLE} />
+			<meta name="twitter:creator" content={TWITTER_HANDLE} />
 			<meta name="twitter:title" content={title} />
 			<meta name="twitter:description" content={description} />
 			<meta name="twitter:image" content={primaryImage} />
-			<meta name="twitter:image:alt" content={images[0].alt} />
+			<meta name="twitter:image:src" content={primaryImage} />
+			<meta name="twitter:image:alt" content={list[0].alt} />
 
 			{schemas.map((schema, i) => (
 				<script

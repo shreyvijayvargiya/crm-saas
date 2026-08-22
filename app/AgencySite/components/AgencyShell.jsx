@@ -26,7 +26,6 @@ function AgencyShellInner({ children, className, wide = false, size }) {
 				className
 			)}
 		>
-			<br />
 			<DynamicIslandNav />
 			<GravityStarsBackground
 				className={cn(
@@ -37,7 +36,7 @@ function AgencyShellInner({ children, className, wide = false, size }) {
 
 			<div
 				className={cn(
-					"relative z-10 mx-auto flex min-h-screen flex-col px-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-20 sm:px-6 sm:pb-28 sm:pt-20",
+					"relative z-10 mx-auto flex min-h-screen flex-col px-4 pb-[calc(5.75rem+env(safe-area-inset-bottom))] pt-8 sm:px-6 sm:pb-28 sm:pt-20",
 					maxWidthClass
 				)}
 			>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import SiteSeo, { TEMPLATES_PAGE_OG_IMAGE, CRM_SOCIAL_IMAGES } from "@/components/seo/SiteSeo";
+import SiteSeo, { TEMPLATES_PAGE_OG_IMAGE } from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import { FAQ_ITEMS } from "../agencyConfig";
@@ -136,7 +136,7 @@ export default function AgencyFaqPage() {
 				description="Answers about SaaSCRM licensing, what’s included, custom CRM builds, support, and how free templates differ from the full kit + Figma."
 				path="/faq"
 				keywords="SaaSCRM FAQ, CRM template license, custom CRM build, Next.js CRM support"
-				images={[TEMPLATES_PAGE_OG_IMAGE, CRM_SOCIAL_IMAGES[0]]}
+				images={[TEMPLATES_PAGE_OG_IMAGE]}
 				jsonLd={faqJsonLd}
 			/>
 			<FaqContent />

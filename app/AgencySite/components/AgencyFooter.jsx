@@ -88,6 +88,25 @@ export default function AgencyFooter() {
 							<ArrowUpRight className="h-3 w-3" />
 						</a>
 					</div>
+					<p
+						className={cn(
+							"mt-3 text-xs",
+							isLight ? "text-zinc-500" : "text-zinc-500"
+						)}
+					>
+						Brought you by{" "}
+						<a
+							href="https://buildsaas.dev"
+							target="_blank"
+							rel="noopener noreferrer"
+							className={cn(
+								"font-medium underline-offset-2 hover:underline",
+								isLight ? "text-zinc-800" : "text-zinc-200"
+							)}
+						>
+							Buildsaas.dev
+						</a>
+					</p>
 					<div className="mt-3">
 						<p
 							className={cn(

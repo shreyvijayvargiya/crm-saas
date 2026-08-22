@@ -44,7 +44,7 @@ import {
 } from "@/components/ui/popover";
 import FormSelect from "@/lib/ui/FormSelect";
 import AgencyShell from "../components/AgencyShell";
-import SiteSeo from "@/components/seo/SiteSeo";
+import SiteSeo, { BLUEPRINT_OG_IMAGE } from "@/components/seo/SiteSeo";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import {
 	ADMIN_BLOCK_TYPES,
@@ -867,6 +867,7 @@ function AdminBuilderContent() {
 				title="CRM Admin Builder – Compose pages & tables | SaaSCRM"
 				description="Form-based CRM admin builder: pick pages, edit tables and stats, preview side by side, download the admin AST."
 				path="/admin-builder"
+				images={[BLUEPRINT_OG_IMAGE]}
 			/>
 
 			<header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">

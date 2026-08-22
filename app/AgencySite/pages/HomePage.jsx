@@ -7,12 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { FollowerPointerCard } from "@/components/ui/following-pointer";
-import SiteSeo from "@/components/seo/SiteSeo";
+import SiteSeo, { HOME_OG_IMAGE } from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
-import HeroScreenshotCarousel from "../components/HeroScreenshotCarousel";
 import HeroScrollReveal from "../components/HeroScrollReveal";
-import HeroDragBoard from "../components/HeroDragBoard";
-import HeroTabStack from "../components/HeroTabStack";
 import IntegrationsShowcase from "../components/IntegrationsShowcase";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import {
@@ -113,6 +110,7 @@ function HomeContent() {
 				description="Build an AI-powered CRM, admin dashboard, CMS, sales pipeline, and more in days with a customizable Next.js, React, Tailwind, and shadcn/ui template."
 				path="/"
 				keywords="AI CRM template, Next.js CRM, SaaS admin dashboard, CMS template, React CRM, shadcn dashboard, Tailwind CRM, agentic CRM"
+				images={[HOME_OG_IMAGE]}
 			/>
 			<motion.header {...fadeUp} className="mb-10 text-center sm:mb-14">
 				<div className="mb-10">

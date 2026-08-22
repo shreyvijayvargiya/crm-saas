@@ -37,6 +37,7 @@ import {
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import { CHECKOUT } from "../agencyConfig";
+import SiteSeo, { BLUEPRINT_OG_IMAGE } from "@/components/seo/SiteSeo";
 
 const BUSINESS_TYPES = [
 	"SaaS",
@@ -1305,6 +1306,13 @@ function BlueprintContent() {
 export default function BlueprintPage() {
 	return (
 		<AgencyShell>
+			<SiteSeo
+				title="AI CRM Builder – Plan your CRM in 2 minutes | SaaSCRM"
+				description="Describe your business and get a CRM blueprint: modules, screens, and a build plan. Free AI planner for the SaaSCRM Next.js template."
+				path="/blueprint"
+				keywords="AI CRM builder, CRM planner, custom CRM blueprint, Next.js CRM generator, SaaSCRM builder"
+				images={[BLUEPRINT_OG_IMAGE]}
+			/>
 			<BlueprintContent />
 		</AgencyShell>
 	);

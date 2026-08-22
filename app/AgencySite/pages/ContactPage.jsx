@@ -11,7 +11,7 @@ import {
 	Phone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import SiteSeo, { TEMPLATES_PAGE_OG_IMAGE, CRM_SOCIAL_IMAGES } from "@/components/seo/SiteSeo";
+import SiteSeo, { TEMPLATES_PAGE_OG_IMAGE } from "@/components/seo/SiteSeo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -434,7 +434,7 @@ export default function AgencyContactPage() {
 				description="Book a call or message us about SaaSCRM template purchases, custom Next.js CRM builds, licensing, and support."
 				path="/contact"
 				keywords="contact SaaSCRM, custom CRM development, Next.js CRM hire, SaaS template support"
-				images={[TEMPLATES_PAGE_OG_IMAGE, CRM_SOCIAL_IMAGES[0]]}
+				images={[TEMPLATES_PAGE_OG_IMAGE]}
 				jsonLd={contactJsonLd}
 			/>
 			<ContactContent />

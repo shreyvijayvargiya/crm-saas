@@ -16,24 +16,28 @@ import { Input } from "@/components/ui/input";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import { CONTACT } from "../agencyConfig";
-import { SITEMAP_GROUPS, SITEMAP_PATHS } from "../sitemapConfig";
+import { getSitemapGroups, SITEMAP_PATHS } from "../sitemapConfig";
+import SiteSeo, { HOME_OG_IMAGE } from "@/components/seo/SiteSeo";
 
-function SitemapContent() {
+function SitemapContent({ blogPosts = [] }) {
 	const { isLight } = useAgencyTheme();
 	const [query, setQuery] = useState("");
 	const normalizedQuery = query.trim().toLowerCase();
+	const sitemapGroups = useMemo(() => getSitemapGroups(blogPosts), [blogPosts]);
 
 	const groups = useMemo(() => {
-		if (!normalizedQuery) return SITEMAP_GROUPS;
-		return SITEMAP_GROUPS.map((group) => ({
-			...group,
-			links: group.links.filter(
-				(link) =>
-					link.label.toLowerCase().includes(normalizedQuery) ||
-					link.href.toLowerCase().includes(normalizedQuery)
-			),
-		})).filter((group) => group.links.length > 0);
-	}, [normalizedQuery]);
+		if (!normalizedQuery) return sitemapGroups;
+		return sitemapGroups
+			.map((group) => ({
+				...group,
+				links: group.links.filter(
+					(link) =>
+						link.label.toLowerCase().includes(normalizedQuery) ||
+						link.href.toLowerCase().includes(normalizedQuery)
+				),
+			}))
+			.filter((group) => group.links.length > 0);
+	}, [normalizedQuery, sitemapGroups]);
 
 	const resultCount = groups.reduce((total, group) => total + group.links.length, 0);
 
@@ -286,10 +290,16 @@ function SitemapContent() {
 	);
 }
 
-export default function SitemapPage() {
+export default function SitemapPage({ blogPosts = [] }) {
 	return (
 		<AgencyShell>
-			<SitemapContent />
+			<SiteSeo
+				title="Sitemap – SaaSCRM marketing & product pages"
+				description="Index of SaaSCRM marketing pages, free CRM templates, AI builder, blog, and product demos."
+				path="/sitemap"
+				images={[HOME_OG_IMAGE]}
+			/>
+			<SitemapContent blogPosts={blogPosts} />
 		</AgencyShell>
 	);
 }

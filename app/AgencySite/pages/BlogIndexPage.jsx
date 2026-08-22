@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { ArrowRight, LayoutGrid, LayoutList } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import SiteSeo from "@/components/seo/SiteSeo";
+import SiteSeo, { HOME_OG_IMAGE } from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
 
@@ -17,53 +17,8 @@ function formatDate(iso) {
 	});
 }
 
-function ViewToggle({ view, onChange, isLight }) {
-	const options = [
-		{ id: "list", label: "List view", icon: LayoutList },
-		{ id: "grid", label: "Grid view", icon: LayoutGrid },
-	];
-
-	return (
-		<div
-			className={cn(
-				"inline-flex items-center gap-0.5 rounded-xl border p-0.5",
-				isLight ? "border-zinc-200 bg-white/80" : "border-zinc-700 bg-zinc-950"
-			)}
-			role="group"
-			aria-label="Blog layout"
-		>
-			{options.map(({ id, label, icon: Icon }) => {
-				const active = view === id;
-				return (
-					<button
-						key={id}
-						type="button"
-						onClick={() => onChange(id)}
-						aria-label={label}
-						aria-pressed={active}
-						className={cn(
-							"inline-flex h-8 w-8 items-center justify-center rounded-xl transition-colors",
-							active
-								? isLight
-									? "bg-zinc-200 text-zinc-900"
-									: "bg-zinc-800 text-zinc-200"
-								: isLight
-									? "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-800"
-									: "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100"
-						)}
-					>
-						<Icon className="h-4 w-4" />
-					</button>
-				);
-			})}
-		</div>
-	);
-}
-
 function BlogIndexContent({ posts }) {
 	const { isLight } = useAgencyTheme();
-	const [view, setView] = useState("list");
-	const isGrid = view === "grid";
 
 	return (
 		<>
@@ -72,20 +27,18 @@ function BlogIndexContent({ posts }) {
 				description="SEO-friendly notes on CRM, admin dashboards, and CMS — from the creator of SaaSCRM for startups, agencies, and indie hackers."
 				path="/blog"
 				keywords="CRM blog, SaaS CRM tips, indie hacker CRM, admin dashboard, CMS for startups"
+				images={[HOME_OG_IMAGE]}
 			/>
 
 			<header className="mb-10">
-				<div className="flex items-center justify-between gap-3">
-					<p
-						className={cn(
-							"text-xs font-medium uppercase tracking-wider",
-							isLight ? "text-violet-700" : "text-violet-300"
-						)}
-					>
-						Blog
-					</p>
-					<ViewToggle view={view} onChange={setView} isLight={isLight} />
-				</div>
+				<p
+					className={cn(
+						"text-xs font-medium uppercase tracking-wider",
+						isLight ? "text-violet-700" : "text-violet-300"
+					)}
+				>
+					Blog
+				</p>
 				<h1
 					className={cn(
 						"mt-2 text-3xl font-bold tracking-tight sm:text-4xl",
@@ -104,31 +57,20 @@ function BlogIndexContent({ posts }) {
 				</p>
 			</header>
 
-			<ul
-				className={cn(
-					isGrid
-						? "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-						: "flex flex-col space-y-6"
-				)}
-			>
+			<ul className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
 				{posts.map((post) => (
-					<li key={post.slug} className={isGrid ? "h-full" : undefined}>
+					<li key={post.slug} className="h-full">
 						<Link href={`/blog/${post.slug}`} passHref>
 							<a
 								className={cn(
-									"group block h-full overflow-hidden rounded-2xl border transition-colors",
+									"group flex h-full flex-col overflow-hidden rounded-2xl border transition-colors",
 									isLight
 										? "border-zinc-200 bg-white/70 hover:border-zinc-300"
 										: "border-zinc-800 bg-zinc-950/50 hover:border-zinc-700"
 								)}
 							>
 								{post.meta.image ? (
-									<div
-										className={cn(
-											"overflow-hidden",
-											isGrid ? "aspect-[16/10]" : "aspect-[2.2/1]"
-										)}
-									>
+									<div className="aspect-[16/10] overflow-hidden">
 										{/* eslint-disable-next-line @next/next/no-img-element */}
 										<img
 											src={post.meta.image}
@@ -137,15 +79,14 @@ function BlogIndexContent({ posts }) {
 										/>
 									</div>
 								) : null}
-								<div className={cn(isGrid ? "p-4" : "p-5 sm:p-6")}>
+								<div className="flex flex-1 flex-col p-4 sm:p-5">
 									<p className="text-xs text-zinc-500">
 										{formatDate(post.meta.date)}
 										{post.meta.author ? ` · ${post.meta.author}` : ""}
 									</p>
 									<h2
 										className={cn(
-											"mt-2 font-semibold tracking-tight group-hover:underline group-hover:underline-offset-4",
-											isGrid ? "text-base" : "text-xl",
+											"mt-2 text-base font-semibold tracking-tight group-hover:underline group-hover:underline-offset-4 sm:text-lg",
 											isLight ? "text-zinc-900" : "text-zinc-50"
 										)}
 									>
@@ -154,7 +95,7 @@ function BlogIndexContent({ posts }) {
 									{post.meta.description ? (
 										<p
 											className={cn(
-												"mt-2 line-clamp-2 text-sm",
+												"mt-2 line-clamp-3 flex-1 text-sm",
 												isLight ? "text-zinc-600" : "text-zinc-400"
 											)}
 										>
