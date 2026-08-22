@@ -3,8 +3,19 @@ Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
 Allow: /openapi.yaml
+Allow: /openapi.json
 Allow: /docs
+Allow: /docs/api
+Allow: /docs/auth
+Allow: /docs/webhooks
+Allow: /docs/mcp
+Allow: /developers
+Allow: /saascrm
+Allow: /agents.md
+Allow: /.well-known/llms.txt
 Disallow: /api/
 
 Sitemap: https://saascrm.site/sitemap.xml
 # Agent index: https://saascrm.site/llms.txt
+# Developer resources: https://saascrm.site/docs
+# Brand: SaaSCRM (https://saascrm.site)

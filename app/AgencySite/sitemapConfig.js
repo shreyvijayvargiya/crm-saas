@@ -28,6 +28,8 @@ export const SITEMAP_GROUPS = [
 			{ label: "SaaSCRM auth docs", href: "/docs/auth" },
 			{ label: "SaaSCRM webhooks docs", href: "/docs/webhooks" },
 			{ label: "SaaSCRM MCP server", href: "/docs/mcp" },
+			{ label: "SaaSCRM brand", href: "/saascrm" },
+			{ label: "SaaSCRM agent instructions", href: "/agents.md" },
 			{ label: "Sitemap", href: "/sitemap" },
 		],
 	},

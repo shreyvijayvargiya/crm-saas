@@ -1,0 +1,5 @@
+# SaaSCRM
+
+llms.txt: https://saascrm.site/llms.txt
+docs: https://saascrm.site/docs
+openapi: https://saascrm.site/openapi.yaml

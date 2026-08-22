@@ -27,9 +27,11 @@ export default function NotFoundPage() {
 			>
 				<article style={{ maxWidth: "40rem", margin: "0 auto" }}>
 					<p style={{ fontSize: "0.75rem", letterSpacing: "0.16em", color: "#a1a1aa" }}>
-						SAASCRM
+						SaaSCRM
 					</p>
-					<h1 style={{ fontSize: "2rem", margin: "0.75rem 0 1rem" }}>Page not found</h1>
+					<h1 style={{ fontSize: "2rem", margin: "0.75rem 0 1rem" }}>
+						SaaSCRM page not found
+					</h1>
 					<p style={{ lineHeight: 1.7, color: "#d4d4d8" }}>
 						This path does not exist on SaaSCRM. Agents and humans should recover from
 						the links below instead of treating this URL as a real product page.

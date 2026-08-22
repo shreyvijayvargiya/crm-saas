@@ -1,4 +1,13 @@
 {
+	"headers": [
+		{
+			"source": "/(.*)",
+			"headers": [
+				{ "key": "Vary", "value": "Accept, Accept-Encoding" },
+				{ "key": "Link", "value": "</llms.txt>; rel=\"describedby\"" }
+			]
+		}
+	],
 	"functions": {
 		"pages/api/ai/blueprint.js": {
 			"maxDuration": 10

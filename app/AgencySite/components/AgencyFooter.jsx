@@ -15,8 +15,10 @@ const FOOTER_LINKS = [
 	{ label: "Pricing", href: "/pricing" },
 	{ label: "FAQ", href: "/#faq" },
 	{ label: "Contact", href: "/#contact" },
-	{ label: "Developer docs", href: "/docs" },
-	{ label: "API docs", href: "/docs/api" },
+	{ label: "SaaSCRM docs", href: "/docs" },
+	{ label: "SaaSCRM API", href: "/docs/api" },
+	{ label: "llms.txt", href: "/llms.txt" },
+	{ label: "OpenAPI", href: "/openapi.yaml" },
 	{ label: "All pages", href: "/sitemap" },
 ];
 
@@ -132,24 +134,31 @@ export default function AgencyFooter() {
 						Explore
 					</p>
 					<nav className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2" aria-label="Footer">
-						{FOOTER_LINKS.map((link) => (
-							<Link key={link.href} href={link.href} passHref>
-								<a
-									className={cn(
-										"text-xs font-medium transition",
-										link.featured
-											? isLight
-												? "text-violet-700 hover:text-violet-900"
-												: "text-violet-300 hover:text-violet-200"
-											: isLight
-												? "text-zinc-600 hover:text-zinc-900"
-												: "text-zinc-400 hover:text-white"
-									)}
-								>
-									{link.label}
-								</a>
-							</Link>
-						))}
+						{FOOTER_LINKS.map((link) => {
+							const className = cn(
+								"text-xs font-medium transition",
+								link.featured
+									? isLight
+										? "text-violet-700 hover:text-violet-900"
+										: "text-violet-300 hover:text-violet-200"
+									: isLight
+										? "text-zinc-600 hover:text-zinc-900"
+										: "text-zinc-400 hover:text-white"
+							);
+							const staticFile = /\.(txt|yaml|yml|json|md)$/i.test(link.href);
+							if (staticFile) {
+								return (
+									<a key={link.href} href={link.href} className={className}>
+										{link.label}
+									</a>
+								);
+							}
+							return (
+								<Link key={link.href} href={link.href} passHref>
+									<a className={className}>{link.label}</a>
+								</Link>
+							);
+						})}
 					</nav>
 				</div>
 			</div>

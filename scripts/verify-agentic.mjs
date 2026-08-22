@@ -41,6 +41,9 @@ async function main() {
 	else pass(`GET / text length ${homeText.length}`);
 	if (!/SaaSCRM/.test(home.text)) fail("GET / missing SaaSCRM");
 	else pass("GET / mentions SaaSCRM");
+	if (!/accept/i.test(header(home.res, "vary"))) {
+		fail(`GET / Vary missing Accept (${header(home.res, "vary") || "none"})`);
+	} else pass(`GET / Vary: ${header(home.res, "vary")}`);
 
 	const missing = await fetchText("/some-path-that-does-not-exist");
 	if (missing.res.status !== 404) fail(`missing path status ${missing.res.status}`);
@@ -48,6 +51,21 @@ async function main() {
 	if (!/llms\.txt/.test(missing.text) || !/sitemap/.test(missing.text)) {
 		fail("404 body missing recovery links");
 	} else pass("404 body has sitemap + llms.txt");
+
+	const missingMd = await fetchText("/some-path-that-does-not-exist", {
+		Accept: "text/markdown",
+	});
+	if (missingMd.res.status !== 404) fail(`markdown 404 status ${missingMd.res.status}`);
+	else pass("Accept: text/markdown nonexistent path → 404");
+	if (!/text\/markdown/i.test(header(missingMd.res, "content-type"))) {
+		fail(`markdown 404 Content-Type ${header(missingMd.res, "content-type")}`);
+	} else pass("markdown 404 Content-Type text/markdown");
+	if (!/accept/i.test(header(missingMd.res, "vary"))) {
+		fail(`markdown 404 Vary missing Accept (${header(missingMd.res, "vary") || "none"})`);
+	} else pass(`markdown 404 Vary: ${header(missingMd.res, "vary")}`);
+	if (!/^# /m.test(missingMd.text) || !/llms\.txt/.test(missingMd.text)) {
+		fail("markdown 404 body missing heading or recovery links");
+	} else pass("markdown 404 has markdown recovery body");
 
 	const md = await fetchText("/", { Accept: "text/markdown" });
 	const mdType = header(md.res, "content-type");
@@ -67,11 +85,19 @@ async function main() {
 	if (!llms.text.startsWith("# SaaSCRM")) fail("llms.txt missing H1");
 	else pass("llms.txt starts with # SaaSCRM");
 
+	const wellKnown = await fetchText("/.well-known/llms.txt");
+	if (wellKnown.res.status !== 200) fail(`/.well-known/llms.txt status ${wellKnown.res.status}`);
+	else pass("/.well-known/llms.txt → 200");
+
 	const spec = await fetchText("/openapi.yaml");
 	if (spec.res.status !== 200) fail(`/openapi.yaml status ${spec.res.status}`);
 	else pass("/openapi.yaml → 200");
 	if (!spec.text.startsWith("openapi: 3.")) fail("openapi.yaml not OpenAPI 3");
 	else pass("openapi.yaml is OpenAPI 3");
+
+	const specJson = await fetchText("/openapi.json");
+	if (specJson.res.status !== 200) fail(`/openapi.json status ${specJson.res.status}`);
+	else pass("/openapi.json → 200");
 
 	const docs = await fetchText("/docs");
 	if (docs.res.status !== 200) fail(`/docs status ${docs.res.status}`);
@@ -82,6 +108,16 @@ async function main() {
 	const apiMd = await fetchText("/docs/api.md");
 	if (apiMd.res.status !== 200) fail(`/docs/api.md status ${apiMd.res.status}`);
 	else pass("/docs/api.md → 200");
+
+	const brand = await fetchText("/saascrm");
+	if (brand.res.status !== 200) fail(`/saascrm status ${brand.res.status}`);
+	else pass("/saascrm → 200");
+	if (!/SaaSCRM/.test(brand.text)) fail("/saascrm missing brand name");
+	else pass("/saascrm mentions SaaSCRM");
+
+	const agents = await fetchText("/agents.md");
+	if (agents.res.status !== 200) fail(`/agents.md status ${agents.res.status}`);
+	else pass("/agents.md → 200");
 
 	if (process.exitCode) {
 		console.error(`\nAgentic verification failed against ${BASE}`);

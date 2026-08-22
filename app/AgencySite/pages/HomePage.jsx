@@ -140,21 +140,22 @@ function HomeContent() {
 					<Bot className="h-3.5 w-3.5" />
 					First agentic CRM SaaS template with a built-in AI chatbot.
 				</Badge>
-				<h2
+				<h1
 					className={cn(
 						"text-3xl font-bold tracking-tight sm:text-4xl sm:leading-[1.15]",
 						isLight ? "text-zinc-900" : "text-white"
 					)}
 				>
+					<span className="sr-only">SaaSCRM — </span>
 					The first agentic CRM SaaS template with a built-in AI chatbot.
-				</h2>
+				</h1>
 				<p
 					className={cn(
 						"mx-auto mt-5 max-w-xl text-base leading-relaxed sm:text-lg",
 						isLight ? "text-zinc-600" : "text-zinc-400"
 					)}
 				>
-					Build AI CRM, CMS, Admin dashboard in days, not months
+					SaaSCRM helps you build AI CRM, CMS, and admin dashboards in days, not months.
 				</p>
 				<div className="mt-8 flex flex-wrap items-center justify-center gap-3">
 					<Button
@@ -854,6 +855,11 @@ function HomeContent() {
 export default function AgencyHomePage() {
 	return (
 		<AgencyShell>
+			<div
+				className="sr-only"
+				// eslint-disable-next-line react/no-danger
+				dangerouslySetInnerHTML={{ __html: HOME_NOSCRIPT_HTML }}
+			/>
 			<HomeContent />
 		</AgencyShell>
 	);

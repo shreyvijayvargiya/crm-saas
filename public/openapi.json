@@ -1,0 +1,60 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SaaSCRM API",
+    "version": "1.0.0",
+    "description": "Reference OpenAPI contract for SaaSCRM (https://saascrm.site). SaaSCRM is a Next.js CRM frontend template; host this API yourself.",
+    "contact": {
+      "name": "SaaSCRM",
+      "email": "shreyvijayvargiya26@gmail.com",
+      "url": "https://saascrm.site/docs"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{customerHost}/api/v1",
+      "description": "Buyer-hosted SaaSCRM API",
+      "variables": {
+        "customerHost": {
+          "default": "api.example.com"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/leads": {
+      "get": {
+        "summary": "List SaaSCRM leads"
+      },
+      "post": {
+        "summary": "Create a SaaSCRM lead"
+      }
+    },
+    "/contacts": {
+      "get": {
+        "summary": "List SaaSCRM contacts"
+      }
+    },
+    "/deals": {
+      "get": {
+        "summary": "List SaaSCRM deals"
+      }
+    },
+    "/invoices": {
+      "get": {
+        "summary": "List SaaSCRM invoices"
+      }
+    },
+    "/webhooks": {
+      "get": {
+        "summary": "List SaaSCRM webhooks"
+      },
+      "post": {
+        "summary": "Create a SaaSCRM webhook"
+      }
+    }
+  }
+}

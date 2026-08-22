@@ -20,23 +20,39 @@ const nextConfig = {
 		];
 	},
 	async rewrites() {
-		const acceptMarkdown = {
+		const acceptMarkdownExact = {
+			type: "header",
+			key: "accept",
+			value: "text/markdown",
+		};
+		const acceptMarkdownPreferred = {
 			type: "header",
 			key: "accept",
 			value:
 				"(?=.*(?:text/plain|text/markdown))(?!.*text/html.*(?:text/plain|text/markdown)).*",
 		};
+		const skipApi = "/:path((?!api|_next|_vercel).*)";
 		return {
 			beforeFiles: [
 				{
 					source: "/",
 					destination: "/api/markdown",
-					has: [acceptMarkdown],
+					has: [acceptMarkdownExact],
 				},
 				{
-					source: "/:path((?!api|_next).*)",
+					source: skipApi,
 					destination: "/api/markdown/:path",
-					has: [acceptMarkdown],
+					has: [acceptMarkdownExact],
+				},
+				{
+					source: "/",
+					destination: "/api/markdown",
+					has: [acceptMarkdownPreferred],
+				},
+				{
+					source: skipApi,
+					destination: "/api/markdown/:path",
+					has: [acceptMarkdownPreferred],
 				},
 			],
 		};

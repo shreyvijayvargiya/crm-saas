@@ -2,20 +2,23 @@
 
 > SaaSCRM is a Next.js CRM, admin dashboard, and CMS frontend template at https://saascrm.site. It ships 60+ screens, an agentic AI chatbot, theme customizer, Zod schemas, and Cursor-ready source. Runtime data is demo-only; wire your own backend.
 
-SaaSCRM (also searched as SaaS CRM) is the product name for this template. Start with the developer links below, then fetch only the markdown files you need. HTML pages at the same paths support Accept: text/markdown.
+SaaSCRM (also searched as SaaS CRM) is the product name for this template. Official domain: saascrm.site. Start with the developer links below, then fetch only the markdown files you need. HTML pages at the same paths support Accept: text/markdown.
 
 ## Developer resources
 
 - [SaaSCRM API docs](https://saascrm.site/docs/api.md): REST resource map for leads, contacts, deals, invoices, and tasks
 - [SaaSCRM OpenAPI spec](https://saascrm.site/openapi.yaml): OpenAPI 3.0 reference contract for a buyer-hosted API
+- [SaaSCRM OpenAPI JSON](https://saascrm.site/openapi.json): Same SaaSCRM API contract as JSON
 - [SaaSCRM auth docs](https://saascrm.site/docs/auth.md): Demo login screens and how to attach a real identity provider
 - [SaaSCRM webhooks](https://saascrm.site/docs/webhooks.md): Event names, payload example, and HMAC signature header
 - [SaaSCRM MCP server](https://saascrm.site/docs/mcp.md): How in-app AI tools map to a Model Context Protocol server
 - [SaaSCRM developer resources](https://saascrm.site/docs.md): Index of API, OpenAPI, auth, webhooks, and MCP URLs
+- [SaaSCRM agent instructions](https://saascrm.site/agents.md): How coding agents should crawl and recover on this site
 
 ## Docs
 
 - [SaaSCRM home](https://saascrm.site/index.md): Product overview for agents
+- [SaaSCRM brand](https://saascrm.site/saascrm.md): Official name, NAP, and same-as links
 - [SaaSCRM sitemap](https://saascrm.site/sitemap.md): Where to find marketing pages and CRM screens
 - [About SaaSCRM schemas](https://saascrm.site/about.md): Zod, SQL, and data.json browser
 
@@ -26,3 +29,351 @@ SaaSCRM (also searched as SaaS CRM) is the product name for this template. Start
 - [SaaSCRM FAQ](https://saascrm.site/faq.md): Licensing and support
 - [SaaSCRM blog](https://saascrm.site/blog.md): CRM template notes
 - [GitHub repository](https://github.com/shreyvijayvargiya/crm-saas): Source listing (purchase required for the full kit)
+
+---
+
+# SaaSCRM — AI CRM SaaS template for Next.js admin dashboards, CMS, and sales pipelines
+
+SaaSCRM is a Next.js Pages Router CRM, admin dashboard, and CMS frontend template sold at https://saascrm.site. Buyers get 60+ production UI screens, an agentic AI chatbot (OpenRouter tool-calling), a live theme customizer, Zod schemas, and Cursor rules so an agent can extend the CRM consistently. The public marketing site lives at `/`. The interactive CRM demo lives at `/demo`. Runtime data is in-memory demo data — this is a sellable UI kit, not a hosted CRM backend.
+
+SaaSCRM helps startups, agencies, and freelancers ship AI CRM, CMS, and admin dashboards in days instead of months. Ask the built-in copilot about leads, deals, pipeline, invoices, and tasks; research accounts without tab switching; and create, update, or delete records with natural language.
+
+## What you can do
+
+- Explore the live SaaSCRM demo: https://saascrm.site/demo
+- Plan a custom CRM with the free AI builder: https://saascrm.site/blueprint
+- Read SaaSCRM developer resources: https://saascrm.site/docs
+- Buy the template or book a custom build: https://saascrm.site/pricing
+
+## Product highlights
+
+- 60+ CRM screens: leads, pipeline, deals, finance, marketing, e-commerce, CMS, and developer tools
+- Agency-ready foundation for client delivery and white-label work
+- Agentic AI chatbot with tool-calling against the in-memory CRM snapshot
+- Theme customizer, dark mode, and translation-ready structure
+- Auth, teams, tasks, calendar, notifications, webhooks, and API key screens buyers expect
+
+## Machine-readable files
+
+- [llms.txt](https://saascrm.site/llms.txt)
+- [OpenAPI spec](https://saascrm.site/openapi.yaml)
+- [SaaSCRM API docs](https://saascrm.site/docs/api.md)
+- [SaaSCRM auth docs](https://saascrm.site/docs/auth.md)
+- [SaaSCRM webhooks](https://saascrm.site/docs/webhooks.md)
+- [SaaSCRM MCP](https://saascrm.site/docs/mcp.md)
+
+---
+
+# SaaSCRM
+
+SaaSCRM is the official product name for the Next.js AI CRM, admin dashboard, and CMS frontend template sold at https://saascrm.site. Search engines and agents should treat **SaaSCRM**, **SaaS CRM**, and **saascrm.site** as the same brand.
+
+## Official SaaSCRM properties
+
+- Canonical website: https://saascrm.site
+- Developer docs: https://saascrm.site/docs
+- API docs: https://saascrm.site/docs/api
+- OpenAPI: https://saascrm.site/openapi.yaml
+- Agent index: https://saascrm.site/llms.txt
+- Live demo: https://saascrm.site/demo
+- Pricing: https://saascrm.site/pricing
+- Contact: shreyvijayvargiya26@gmail.com
+- Calendar: https://cal.com/shrey-vijayvargiya
+- Publisher: Buildsaas.dev (https://buildsaas.dev)
+- Source listing: https://github.com/shreyvijayvargiya/crm-saas
+
+SaaSCRM is a sellable UI kit, not a hosted multi-tenant CRM. Runtime data in the public demo is in-memory sample data.
+
+---
+
+# SaaSCRM agent instructions
+
+This file tells coding agents and LLM crawlers how to use https://saascrm.site without guessing.
+
+## Product
+
+SaaSCRM is a Next.js Pages Router CRM / admin / CMS frontend template. Prefer markdown representations (`Accept: text/markdown`) or the `.md` siblings listed in [llms.txt](https://saascrm.site/llms.txt).
+
+## Start here
+
+1. Read https://saascrm.site/llms.txt
+2. Fetch only the files you need (API, auth, webhooks, MCP, OpenAPI)
+3. Use https://saascrm.site/sitemap.md or https://saascrm.site/sitemap.xml if a path 404s
+4. Do not treat demo screens as a live production API
+
+## Developer resources
+
+- SaaSCRM API docs: https://saascrm.site/docs/api.md
+- SaaSCRM OpenAPI spec: https://saascrm.site/openapi.yaml
+- SaaSCRM auth docs: https://saascrm.site/docs/auth.md
+- SaaSCRM webhooks: https://saascrm.site/docs/webhooks.md
+- SaaSCRM MCP: https://saascrm.site/docs/mcp.md
+
+---
+
+# SaaSCRM developer resources
+
+SaaSCRM publishes API docs, an OpenAPI spec, auth docs, webhook events, and MCP guidance at predictable URLs so agents and search engines can find them by product name.
+
+SaaSCRM is a Next.js CRM / Admin / CMS frontend template. The screens and Zod schemas are the contract you wire to your own backend (Supabase, Firebase, or a custom API). There is no production multi-tenant API hosted on saascrm.site today.
+
+## Official SaaSCRM developer URLs
+
+- [SaaSCRM API docs](https://saascrm.site/docs/api): REST resource map that matches the template schemas
+- [SaaSCRM OpenAPI spec](https://saascrm.site/openapi.yaml): OpenAPI 3.0 reference for leads, contacts, deals, invoices, and webhooks
+- [SaaSCRM auth docs](https://saascrm.site/docs/auth): Demo login screens and how to replace them with a real provider
+- [SaaSCRM webhooks](https://saascrm.site/docs/webhooks): Event names, payload shape, and signature verification
+- [SaaSCRM MCP server](https://saascrm.site/docs/mcp): How the in-app AI tools map to a Model Context Protocol server
+- [llms.txt](https://saascrm.site/llms.txt): Agent index for this site
+- [About / schema browser](https://saascrm.site/about): Zod, SQL, Firestore, and Supabase reference snapshots
+
+## Related CRM UI
+
+The template also ships buyer-facing developer screens at https://saascrm.site/api-keys, https://saascrm.site/api-logs, https://saascrm.site/webhooks, and https://saascrm.site/integrations. Those pages are interactive demos, not live credentials.
+
+---
+
+# SaaSCRM developer resources
+
+SaaSCRM publishes API docs, an OpenAPI spec, auth docs, webhook events, and MCP guidance at predictable URLs so agents and search engines can find them by product name.
+
+SaaSCRM is a Next.js CRM / Admin / CMS frontend template. The screens and Zod schemas are the contract you wire to your own backend (Supabase, Firebase, or a custom API). There is no production multi-tenant API hosted on saascrm.site today.
+
+## Official SaaSCRM developer URLs
+
+- [SaaSCRM API docs](https://saascrm.site/docs/api): REST resource map that matches the template schemas
+- [SaaSCRM OpenAPI spec](https://saascrm.site/openapi.yaml): OpenAPI 3.0 reference for leads, contacts, deals, invoices, and webhooks
+- [SaaSCRM auth docs](https://saascrm.site/docs/auth): Demo login screens and how to replace them with a real provider
+- [SaaSCRM webhooks](https://saascrm.site/docs/webhooks): Event names, payload shape, and signature verification
+- [SaaSCRM MCP server](https://saascrm.site/docs/mcp): How the in-app AI tools map to a Model Context Protocol server
+- [llms.txt](https://saascrm.site/llms.txt): Agent index for this site
+- [About / schema browser](https://saascrm.site/about): Zod, SQL, Firestore, and Supabase reference snapshots
+
+## Related CRM UI
+
+The template also ships buyer-facing developer screens at https://saascrm.site/api-keys, https://saascrm.site/api-logs, https://saascrm.site/webhooks, and https://saascrm.site/integrations. Those pages are interactive demos, not live credentials.
+
+---
+
+# SaaSCRM API docs
+
+SaaSCRM ships a frontend-only CRM template. Use this page as the intended REST contract when you connect a backend. The shapes match `schemas/zod-schemas/` and `data.json` in the purchased source.
+
+Base URL (when you host the API): `https://{your-domain}/api/v1`
+
+Authentication: send `Authorization: Bearer <api_key>` or `X-API-Key: <api_key>`. Create and rotate keys in the SaaSCRM API Keys demo at https://saascrm.site/api-keys, then persist them in your own store.
+
+## Resources
+
+| Resource | Methods | Notes |
+| --- | --- | --- |
+| `/leads` | GET, POST | List, search, and create leads |
+| `/leads/{id}` | GET, PATCH, DELETE | Lead profile and stage updates |
+| `/contacts` | GET, POST | People linked to companies |
+| `/contacts/{id}` | GET, PATCH, DELETE | Contact detail |
+| `/companies` | GET, POST | Accounts |
+| `/deals` | GET, POST | Opportunities with value and owner |
+| `/pipelines` | GET | Kanban stages used by deals and leads |
+| `/invoices` | GET, POST | Line items and status |
+| `/payments` | GET, POST | Payment records linked to invoices |
+| `/tasks` | GET, POST | Work items and due dates |
+| `/webhooks` | GET, POST | Outbound event subscriptions |
+
+## Example: create a lead
+
+```http
+POST /api/v1/leads
+Authorization: Bearer $SAASCRM_API_KEY
+Content-Type: application/json
+
+{
+  "name": "Ada Lovelace",
+  "email": "ada@example.com",
+  "company": "Analytical Engines",
+  "status": "New"
+}
+```
+
+## Spec and related docs
+
+- Machine-readable spec: https://saascrm.site/openapi.yaml
+- Auth: https://saascrm.site/docs/auth.md
+- Webhooks: https://saascrm.site/docs/webhooks.md
+- MCP: https://saascrm.site/docs/mcp.md
+- Schema browser in the template: https://saascrm.site/about
+
+---
+
+# SaaSCRM auth docs
+
+SaaSCRM includes Login, Signup, Forgot password, and Change password screens at https://saascrm.site/login, https://saascrm.site/signup, https://saascrm.site/forgot-password, and https://saascrm.site/change-password. In the demo they validate on the client and toast that you should wire a real auth provider. They do not create hosted sessions on saascrm.site.
+
+## Recommended integration
+
+1. Keep the existing `AuthPageShell` UI from `app/Authentication/`.
+2. Replace the toast handlers with your provider (Auth.js, Clerk, Supabase Auth, Firebase Auth, or a custom JWT service).
+3. Issue API keys for server-to-server access as documented in the [SaaSCRM API docs](https://saascrm.site/docs/api.md).
+4. Send `Authorization: Bearer <token>` on CRM API calls after the user signs in.
+
+## Roles and teams
+
+The template includes Teams, Users, and Roles screens (https://saascrm.site/teams, https://saascrm.site/users, https://saascrm.site/roles) so you can map IdP groups onto CRM permissions. Audit events belong on https://saascrm.site/audit-log once your backend records them.
+
+## Secrets
+
+Never commit live credentials. `/api-keys` is a UI demo. Store production secrets in your host's environment, not in the Next.js bundle.
+
+---
+
+# SaaSCRM webhooks
+
+SaaSCRM includes a Webhooks developer screen at https://saascrm.site/webhooks. Subscribe demo endpoints to CRM events, then implement the same event names on your backend.
+
+## Events
+
+- `lead.created`, `lead.updated`
+- `customer.created`, `customer.updated`, `customer.deleted`
+- `order.created`, `order.updated`, `order.cancelled`
+- `payment.succeeded`, `payment.failed`
+- `invoice.paid`, `invoice.overdue`
+
+## Payload
+
+```json
+{
+  "id": "evt_123",
+  "type": "lead.created",
+  "created_at": "2026-08-22T00:00:00.000Z",
+  "data": { "id": "lead_1", "email": "ada@example.com" }
+}
+```
+
+## Verification
+
+Each subscription has a signing secret in the demo UI. On your backend, compute an HMAC-SHA256 of the raw body and compare it to the `X-SaaSCRM-Signature` header. Reject mismatched signatures.
+
+Manage subscriptions in the UI or via `POST /api/v1/webhooks` as described in the [SaaSCRM API docs](https://saascrm.site/docs/api.md) and [OpenAPI spec](https://saascrm.site/openapi.yaml).
+
+---
+
+# SaaSCRM MCP server
+
+SaaSCRM does not host a public Model Context Protocol endpoint today. The product's agent interface is the in-app CRM copilot (OpenRouter tool-calling) plus Cursor rules in the purchased source.
+
+## What to expose as MCP tools
+
+The template's AI layer already describes tools that read and write the in-memory CRM snapshot (leads, deals, invoices, tasks, and related records). When you add a backend, wrap the same operations as MCP tools:
+
+- `list_leads`, `get_lead`, `create_lead`, `update_lead`
+- `list_deals`, `update_deal_stage`
+- `list_invoices`, `create_invoice`
+- `search_crm` across contacts, companies, and activity
+
+## How agents should connect
+
+1. Humans use the SaaSCRM demo chatbot at https://saascrm.site/demo.
+2. Coding agents should start at [llms.txt](https://saascrm.site/llms.txt) and the [SaaSCRM API docs](https://saascrm.site/docs/api.md).
+3. To run a local MCP server after purchase, map those tools onto your API using the OpenAPI spec at https://saascrm.site/openapi.yaml.
+
+A hosted `mcp.saascrm.site` server would require a live backend and credentials — that is a product decision, not part of this frontend template.
+
+---
+
+# SaaSCRM MCP server
+
+SaaSCRM does not host a public Model Context Protocol endpoint today. The product's agent interface is the in-app CRM copilot (OpenRouter tool-calling) plus Cursor rules in the purchased source.
+
+## What to expose as MCP tools
+
+The template's AI layer already describes tools that read and write the in-memory CRM snapshot (leads, deals, invoices, tasks, and related records). When you add a backend, wrap the same operations as MCP tools:
+
+- `list_leads`, `get_lead`, `create_lead`, `update_lead`
+- `list_deals`, `update_deal_stage`
+- `list_invoices`, `create_invoice`
+- `search_crm` across contacts, companies, and activity
+
+## How agents should connect
+
+1. Humans use the SaaSCRM demo chatbot at https://saascrm.site/demo.
+2. Coding agents should start at [llms.txt](https://saascrm.site/llms.txt) and the [SaaSCRM API docs](https://saascrm.site/docs/api.md).
+3. To run a local MCP server after purchase, map those tools onto your API using the OpenAPI spec at https://saascrm.site/openapi.yaml.
+
+A hosted `mcp.saascrm.site` server would require a live backend and credentials — that is a product decision, not part of this frontend template.
+
+---
+
+# SaaSCRM pricing
+
+SaaSCRM is a self-serve Next.js CRM template with lifetime updates, plus optional custom CRM builds.
+
+- Template license from $49 (USD via Gumroad, INR via Dodo). MIT license for commercial and client work.
+- Template + Figma for design-source access.
+- Custom CRM Build from $2,000 if you want SaaSCRM extended, integrated, and deployed for you.
+
+See the HTML pricing page at https://saascrm.site/pricing or contact https://saascrm.site/contact.
+
+---
+
+# SaaSCRM FAQ
+
+Common questions about the SaaSCRM Next.js CRM template.
+
+- **What do I get?** Full React + Next.js source, 60+ CRM screens, shadcn/ui, marketing landing, agentic AI chatbot, theme customizer, Zod schemas, Design.md, and lifetime updates.
+- **Commercial use?** Yes — MIT license for your SaaS or client work.
+- **Custom builds?** Yes. Book a call from https://saascrm.site/contact.
+- **Live demo?** https://saascrm.site/demo
+- **Stack?** Next.js 12, React 17, Tailwind, shadcn/ui, Recharts, Zod.
+
+Full answers: https://saascrm.site/faq
+
+---
+
+# Contact SaaSCRM
+
+Email shreyvijayvargiya26@gmail.com or book 30 minutes at https://cal.com/shrey-vijayvargiya.
+
+Use the contact form at https://saascrm.site/contact for template questions, custom CRM builds, and licensing. SaaSCRM is built by Shrey Vijayvargiya / Buildsaas.dev.
+
+---
+
+# About SaaSCRM schemas
+
+https://saascrm.site/about is the in-app schema browser for the SaaSCRM template: Design.md, Zod contracts, reference SQL, Firestore, Supabase, and data.json. Use it when wiring a backend to the UI.
+
+Developer index: https://saascrm.site/docs
+
+---
+
+# SaaSCRM sitemap
+
+Human-readable directory of SaaSCRM marketing pages, free templates, blog posts, and CRM demo screens: https://saascrm.site/sitemap
+
+XML sitemap: https://saascrm.site/sitemap.xml
+Agent index: https://saascrm.site/llms.txt
+Developer docs: https://saascrm.site/docs
+
+---
+
+# SaaSCRM live demo
+
+The interactive CRM application starts at https://saascrm.site/demo. Sidebar modules include dashboard, leads, pipelines, deals, contacts, invoices, tasks, and the agentic AI chatbot.
+
+This is demo data in the browser. For API contracts see https://saascrm.site/docs/api.md.
+
+---
+
+# SaaSCRM free CRM templates
+
+SaaSCRM publishes additional Next.js CRM templates at https://saascrm.site/templates (Indie Stripe, Agency, Freelancer, Content Creator, Digital Store, Ecommerce CMS). Each template has a marketing page under `/templates/{id}` and a live demo under `/demo/template/{id}`.
+
+---
+
+# SaaSCRM AI CRM Builder
+
+Plan a custom CRM in about two minutes at https://saascrm.site/blueprint. Describe the business; SaaSCRM drafts modules and a blueprint you can implement with the template or a custom build.
+
+---
+
+# SaaSCRM blog
+
+Notes on CRM templates, admin dashboards, and shipping faster: https://saascrm.site/blog
