@@ -2,47 +2,47 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-/** Same bird parts + copy as HeroBirdParts — scroll paints fills instead of hover. */
+/** Making-of: scroll paints each SVG part as we explain how Meet Sparrow was built. */
 const PARTS = {
 	beak: {
 		word: "beak",
 		fill: "#f59e0b",
-		tip: "Beak — short and stout for cracking seeds.",
+		tip: "Beak — first path we drew; scroll unlocks its fill.",
 	},
 	eye: {
 		word: "eye",
 		fill: "#0ea5e9",
-		tip: "Eye — wide field of view to spot movement.",
+		tip: "Eye — active highlight follows the current story line.",
 	},
 	wing: {
 		word: "wing",
 		fill: "#8b5cf6",
-		tip: "Wing — primary feathers drive lift on takeoff.",
+		tip: "Wing — shared PARTS map keeps tip + fill in sync.",
 	},
 	breast: {
 		word: "breast",
 		fill: "#f43f5e",
-		tip: "Breast — warm plumage for insulation.",
+		tip: "Breast — fills accumulate; completed parts stay lit.",
 	},
 	tail: {
 		word: "tail",
 		fill: "#14b8a6",
-		tip: "Tail — steers and brakes in short flights.",
+		tip: "Tail — same SVG reused from hover; scroll owns the paint.",
 	},
 	feet: {
 		word: "feet",
 		fill: "#eab308",
-		tip: "Feet — perching grip with three toes forward.",
+		tip: "Feet — last beat; full scroll colors the whole bird.",
 	},
 };
 
 const LINES = [
-	{ before: "Watch the ", part: "beak", after: " tip seed into the air," },
-	{ before: "then catch the bright ", part: "eye", after: " tracking crumbs," },
-	{ before: "feel the ", part: "wing", after: " fold tight against the breeze," },
-	{ before: "the warm ", part: "breast", after: " holding steady heat," },
-	{ before: "a fan of ", part: "tail", after: " feathers for balance," },
-	{ before: "and tiny ", part: "feet", after: " locked on the branch." },
+	{ before: "Start with the ", part: "beak", after: " path — the first fill on scroll," },
+	{ before: "wire the bright ", part: "eye", after: " to the active story line," },
+	{ before: "paint the ", part: "wing", after: " from the shared PARTS map," },
+	{ before: "keep the ", part: "breast", after: " lit once its chapter passes," },
+	{ before: "reveal the ", part: "tail", after: " as progress accumulates," },
+	{ before: "and lock the ", part: "feet", after: " when the making-of is complete." },
 ];
 
 const MUTED = "#d4d4d8";

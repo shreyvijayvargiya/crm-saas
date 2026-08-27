@@ -2,55 +2,55 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-/** Landscape Unsplash shots for the horizontal strip. */
+/** Making-of story: vertical scroll → horizontal strip of how this gallery was built. */
 const DEFAULT_IMAGES = [
 	{
 		id: "hx-1",
-		src: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
-		alt: "Abstract gradient art",
-		label: "Abstract",
+		src: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",
+		alt: "Planning the sticky stage",
+		label: "01 · Sticky stage",
 	},
 	{
 		id: "hx-2",
-		src: "https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=1200&q=80",
-		alt: "Purple blue gradient",
-		label: "Gradient",
+		src: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80",
+		alt: "Measuring track overflow",
+		label: "02 · Measure overflow",
 	},
 	{
 		id: "hx-3",
-		src: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80",
-		alt: "Colorful soft blur",
-		label: "Color field",
+		src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80",
+		alt: "Wiring useScroll progress",
+		label: "03 · useScroll progress",
 	},
 	{
 		id: "hx-4",
-		src: "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?auto=format&fit=crop&w=1200&q=80",
-		alt: "Geometric shapes",
-		label: "Geometry",
+		src: "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=80",
+		alt: "Mapping progress to X",
+		label: "04 · Map progress → X",
 	},
 	{
 		id: "hx-5",
-		src: "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=1200&q=80",
-		alt: "Neon light trails",
-		label: "Neon",
+		src: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+		alt: "Spring smoothing the travel",
+		label: "05 · Spring the travel",
 	},
 	{
 		id: "hx-6",
-		src: "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?auto=format&fit=crop&w=1200&q=80",
-		alt: "Fluid 3D render",
-		label: "Fluid",
+		src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+		alt: "Laying the flex strip",
+		label: "06 · Flex image strip",
 	},
 	{
 		id: "hx-7",
-		src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
-		alt: "Forest in the morning mist",
-		label: "Forest",
+		src: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83b?auto=format&fit=crop&w=1200&q=80",
+		alt: "Captioning each frame",
+		label: "07 · Caption each step",
 	},
 	{
 		id: "hx-8",
-		src: "https://images.unsplash.com/photo-1614851099175-e5b30eb6f696?auto=format&fit=crop&w=1200&q=80",
-		alt: "Soft pastel waves",
-		label: "Waves",
+		src: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80",
+		alt: "Shipping the horizontal gallery",
+		label: "08 · Ship the gallery",
 	},
 ];
 
@@ -115,7 +115,7 @@ export default function HeroHorizontalScroll({
 							isLight ? "text-teal-600" : "text-teal-400"
 						)}
 					>
-						Scroll to explore
+						Scroll the making-of
 					</p>
 					<h2
 						className={cn(
@@ -123,7 +123,7 @@ export default function HeroHorizontalScroll({
 							isLight ? "text-zinc-950" : "text-white"
 						)}
 					>
-						Horizontal gallery
+						How we built Horizontal Scroll
 					</h2>
 				</div>
 

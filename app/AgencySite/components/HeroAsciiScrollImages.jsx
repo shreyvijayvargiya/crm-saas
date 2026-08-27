@@ -4,24 +4,24 @@ import { cn } from "@/lib/utils";
 
 const DEFAULT_IMAGES = [
 	{
-		src: "/screenshots-marketing-page/saas-crm-dashboard.png",
-		label: "Dashboard",
+		src: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",
+		label: "01 · Stack frames",
 	},
 	{
-		src: "/screenshots-marketing-page/saas-crm-analytics.png",
-		label: "Analytics",
+		src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80",
+		label: "02 · Map scroll index",
 	},
 	{
-		src: "/screenshots-marketing-page/saas-crm-leads.png",
-		label: "Leads",
+		src: "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=80",
+		label: "03 · ASCII blur overlay",
 	},
 	{
-		src: "/screenshots-marketing-page/saas-crm-sales.png",
-		label: "Sales",
+		src: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+		label: "04 · Crossfade stills",
 	},
 	{
-		src: "/screenshots-marketing-page/saas-crm-scheduler.png",
-		label: "Scheduler",
+		src: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83b?auto=format&fit=crop&w=1200&q=80",
+		label: "05 · Ship ASCII scroll",
 	},
 ];
 

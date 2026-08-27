@@ -6,15 +6,15 @@ const PORTRAIT =
 	"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&q=80";
 
 const STORY = {
-	greeting: "Dear reader,",
+	greeting: "Dear builder,",
 	paras: [
-		"I keep a small notebook for days that refuse to end on time — the ones where the clock softens and a single conversation stretches across an afternoon like wet ink.",
-		"This year I learned that the best work arrives the way paper does: scored once, folded twice, and opened again when someone is ready to look closely.",
-		"If you are holding this letter on a screen, treat the scroll as a crease. What was sealed becomes readable only as you move.",
+		"We scored the paper in CSS first — three panels, shared grain, and a crease shadow that only appears while the letter is mid-fold.",
+		"Scroll progress drives two rotateX transforms: the top flap lifts, the bottom flap drops, and the middle paragraph becomes readable only when both are nearly flat.",
+		"No new chrome was added. The making-of lives inside the same tri-fold — open it slowly and you can feel every step we used to ship Fold Paper.",
 	],
-	closing: "Keep the fold soft. Keep the story unfinished on purpose.",
-	sign: "M. Ellery",
-	role: "Letterpress & late nights",
+	closing: "Keep the UI folded the same. Change only the letter.",
+	sign: "Componentry",
+	role: "HeroFoldPaper.jsx",
 	mark: "Studio Fold®",
 };
 

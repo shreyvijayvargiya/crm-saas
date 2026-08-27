@@ -6,59 +6,60 @@ import { cn } from "@/lib/utils";
  * Each scene: Tailwind bg + text colors, headline, and exit→enter transition kind.
  * Transitions: wipe | swipe | doors | pixels | stagger | blend | mix
  */
+/** Making-of story: how the curtain / door reel was built — each beat uses its own transition. */
 const DEFAULT_SCENES = [
 	{
 		id: "s1",
-		text: "Build.",
+		text: "Sketch.",
 		bg: "bg-zinc-950",
 		fg: "text-zinc-50",
 		transition: "wipe",
 	},
 	{
 		id: "s2",
-		text: "Ship.",
+		text: "Curtains.",
 		bg: "bg-orange-500",
 		fg: "text-white",
 		transition: "doors",
 	},
 	{
 		id: "s3",
-		text: "Scale.",
+		text: "Split.",
 		bg: "bg-emerald-500",
 		fg: "text-emerald-950",
 		transition: "swipe",
 	},
 	{
 		id: "s4",
-		text: "Automate.",
+		text: "Pixels.",
 		bg: "bg-violet-600",
 		fg: "text-violet-100",
 		transition: "pixels",
 	},
 	{
 		id: "s5",
-		text: "Close.",
+		text: "Stagger.",
 		bg: "bg-rose-500",
 		fg: "text-rose-50",
 		transition: "stagger",
 	},
 	{
 		id: "s6",
-		text: "Repeat.",
+		text: "Blend.",
 		bg: "bg-sky-400",
 		fg: "text-sky-950",
 		transition: "blend",
 	},
 	{
 		id: "s7",
-		text: "CRM.",
+		text: "Hold.",
 		bg: "bg-amber-300",
 		fg: "text-amber-950",
 		transition: "mix",
 	},
 	{
 		id: "s8",
-		text: "SaaSCRM",
+		text: "Reel.",
 		bg: "bg-indigo-950",
 		fg: "text-indigo-200",
 		transition: "wipe",

@@ -4,14 +4,14 @@ import { cn } from "@/lib/utils";
 
 const DEFAULT_SEGMENTS = [
 	{
-		text: "Framer Components are reusable, interactive building blocks that you can seamlessly drop onto your ",
+		text: "We built Scroll Read Reveal by mapping scroll progress to characters: each glyph starts dim, then lights as the wheel advances. The accent phrase ",
 	},
 	{
-		text: "Framer canvas",
+		text: "useScroll → opacity",
 		accent: true,
 	},
 	{
-		text: " just like native elements but with powerful, extended capabilities. They allow you to combine design and logic in one place, enabling dynamic behavior, animations, and state-driven interactions without starting from scratch each time. This makes it easier to build consistent, polished experiences while saving time and keeping your projects flexible and scalable.",
+		text: " is the whole trick — one sticky stage, tokenized text, and a reading line that teaches how the component itself was wired, without changing the UI shell.",
 	},
 ];
 

@@ -3,10 +3,10 @@ import { motion, useScroll } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const DEFAULT_PARAGRAPHS = [
-	"Build reusable motion blocks once, drop them into any landing page, and keep every interaction consistent across your product story.",
-	"Scroll drives the narrative — each beat grows larger until it dissolves, making room for the next idea to take the stage.",
-	"Scale to two hundred percent, fade to silence, reveal what follows. One sticky viewport, many chapters of type.",
-	"Ship the component as a single file: sticky stage, scroll progress, and paragraph choreography you can restyle in minutes.",
+	"We pinned one sticky viewport and sliced scroll into equal chapters — each paragraph owns its own rise before the next takes the stage.",
+	"Inside a chapter, scale walks from 1 to 200% while opacity holds, then a late fade clears the type so the following beat can enter soft.",
+	"No new UI chrome: the making-of is the copy itself — sticky stage, progress math, and fade timing written as sentences you can feel.",
+	"Ship HeroScrollScaleParagraphs as one file: same motion shell, new storytelling about how the scale-and-fade choreography was built.",
 ];
 
 const SCALE_START = 1;

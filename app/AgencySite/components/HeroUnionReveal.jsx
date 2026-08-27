@@ -3,7 +3,7 @@ import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const VIDEO_SRC = "/agency/doodle-6.mp4";
-const MESSAGE = "Keep pedaling — the long way is still the way.";
+const MESSAGE = "Fade UNI + N, scale the O, keep the doodle fixed — that is how Union Reveal was built.";
 
 /** Display face for UNI / N / O — not the default UI sans */
 const DISPLAY_FONT =
