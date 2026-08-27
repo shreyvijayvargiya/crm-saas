@@ -234,41 +234,45 @@ export default function HeroStoryString({
 						</ul>
 					</div>
 
-					{/* Right — image only */}
+					{/* Right — fixed frame; images fade in so aspect swaps don’t jump */}
 					<div className="relative ml-auto hidden min-w-0 flex-1 justify-end md:flex">
-						<motion.div
+						<div
 							ref={cardRef}
-							layout
-							className="relative w-full max-w-[400px] overflow-hidden rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.12)]"
+							className="relative aspect-[4/5] w-full max-w-[400px] overflow-hidden rounded-2xl bg-zinc-300/40 shadow-[0_24px_60px_rgba(0,0,0,0.12)] sm:aspect-[3/4]"
 						>
-							<AnimatePresence mode="wait">
-								<motion.div
+							<div className="absolute left-1/2 top-0 z-20 h-3.5 w-20 -translate-x-1/2 rounded-b-xl bg-black/85" />
+							<AnimatePresence mode="sync" initial={false}>
+								<motion.img
 									key={active.id}
-									initial={{ opacity: 0, y: 8 }}
-									animate={{ opacity: 1, y: 0 }}
-									exit={{ opacity: 0, y: -6 }}
-									transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-									className="relative aspect-[4/5] overflow-hidden bg-zinc-200 sm:aspect-[3/4]"
-								>
-									<div className="absolute left-1/2 top-0 z-10 h-3.5 w-20 -translate-x-1/2 rounded-b-xl bg-black/85" />
-									<img
-										src={active.src}
-										alt={active.alt}
-										draggable={false}
-										className="h-full w-full object-cover"
-									/>
-								</motion.div>
+									src={active.src}
+									alt={active.alt}
+									draggable={false}
+									initial={{ opacity: 0, scale: 1.04 }}
+									animate={{ opacity: 1, scale: 1 }}
+									exit={{ opacity: 0, scale: 0.98 }}
+									transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+									className="absolute inset-0 h-full w-full object-cover"
+								/>
 							</AnimatePresence>
-						</motion.div>
+						</div>
 					</div>
 				</div>
 
 				{/* Mobile image */}
 				<div className="absolute inset-x-6 bottom-10 z-10 md:hidden">
-					<div className="overflow-hidden rounded-2xl shadow-lg">
-						<div className="relative aspect-[16/11] overflow-hidden">
-							<img src={active.src} alt={active.alt} className="h-full w-full object-cover" />
-						</div>
+					<div className="relative aspect-[16/11] overflow-hidden rounded-2xl bg-zinc-300/40 shadow-lg">
+						<AnimatePresence mode="sync" initial={false}>
+							<motion.img
+								key={`m-${active.id}`}
+								src={active.src}
+								alt={active.alt}
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+								className="absolute inset-0 h-full w-full object-cover"
+							/>
+						</AnimatePresence>
 					</div>
 				</div>
 

@@ -28,16 +28,6 @@ const PAPER_GRAIN_LIGHT = `url("data:image/svg+xml,${encodeURIComponent(
 	</svg>`
 )}")`;
 
-const PAPER_GRAIN_DARK = `url("data:image/svg+xml,${encodeURIComponent(
-	`<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'>
-		<filter id='n'>
-			<feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/>
-			<feColorMatrix values='0 0 0 0 0.92  0 0 0 0 0.9  0 0 0 0 0.86  0 0 0 0.12 0'/>
-		</filter>
-		<rect width='100%' height='100%' filter='url(%23n)'/>
-	</svg>`
-)}")`;
-
 function PaperSkin({ children, className, rounded, paperBg, grain, ink }) {
 	return (
 		<div
@@ -58,8 +48,7 @@ function PaperSkin({ children, className, rounded, paperBg, grain, ink }) {
 
 /**
  * HeroFoldPaper — tri-fold letter opens / closes with scroll.
- * Light theme: light stage + cream paper + dark ink.
- * Dark theme: charcoal stage + dark paper + light ink.
+ * Always cream/white paper + black ink (readable on any agency theme).
  */
 export default function HeroFoldPaper({
 	isLight = true,
@@ -69,15 +58,15 @@ export default function HeroFoldPaper({
 	const sectionRef = useRef(null);
 	const [phase, setPhase] = useState("Closed");
 
-	const stage = isLight ? "#e4e2dd" : "#0c0c0b";
-	const paperBg = isLight ? "#f8f5ed" : "#1a1916";
-	const ink = isLight ? "#1c1b19" : "#f3f0e8";
-	const muted = isLight ? "#6a6660" : "#a39e96";
-	const hint = isLight ? "#6a6660" : "#9a9590";
-	const crease = isLight ? "rgba(0,0,0,0.14)" : "rgba(255,255,255,0.12)";
-	const shade = isLight ? "rgba(0,0,0,0.16)" : "rgba(0,0,0,0.45)";
-	const grain = isLight ? PAPER_GRAIN_LIGHT : PAPER_GRAIN_DARK;
-	const rule = isLight ? "bg-black/20" : "bg-white/20";
+	const stage = isLight ? "#e8e6e1" : "#121211";
+	const paperBg = "#faf8f3";
+	const ink = "#111110";
+	const muted = "#5c5852";
+	const hint = isLight ? "#6a6660" : "#a39e96";
+	const crease = "rgba(0,0,0,0.14)";
+	const shade = "rgba(0,0,0,0.16)";
+	const grain = PAPER_GRAIN_LIGHT;
+	const rule = isLight ? "bg-black/20" : "bg-white/25";
 
 	const { scrollYProgress } = useScroll({
 		target: sectionRef,
@@ -228,9 +217,7 @@ export default function HeroFoldPaper({
 							style={{
 								top: "33.334%",
 								height: "33.334%",
-								boxShadow: isLight
-									? "0 6px 20px rgba(0,0,0,0.07)"
-									: "0 8px 28px rgba(0,0,0,0.4)",
+						boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
 							}}
 						>
 							<PaperSkin paperBg={paperBg} grain={grain} ink={ink}>

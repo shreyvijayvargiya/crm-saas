@@ -50,20 +50,26 @@ const TRAVEL = [
 function AnimDot({ color = "#0a0a0a" }) {
 	return (
 		<motion.div
-			className="relative flex h-12 w-12 items-center justify-center"
+			className="relative flex h-20 w-20 items-center justify-center sm:h-24 sm:w-24"
 			aria-hidden
 		>
 			<motion.span
 				className="absolute inset-0 rounded-full"
-				style={{ border: `1.5px solid ${color}` }}
-				animate={{ scale: [1, 1.55, 1], opacity: [0.45, 0, 0.45] }}
-				transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+				style={{ border: `2px solid ${color}` }}
+				animate={{ scale: [1, 1.7, 1], opacity: [0.5, 0, 0.5] }}
+				transition={{ duration: 1.9, repeat: Infinity, ease: "easeOut" }}
 			/>
 			<motion.span
-				className="h-3.5 w-3.5 rounded-full"
+				className="absolute inset-[18%] rounded-full opacity-30"
+				style={{ border: `1.5px solid ${color}` }}
+				animate={{ scale: [1, 1.35, 1], opacity: [0.35, 0, 0.35] }}
+				transition={{ duration: 1.9, repeat: Infinity, ease: "easeOut", delay: 0.25 }}
+			/>
+			<motion.span
+				className="h-5 w-5 rounded-full sm:h-6 sm:w-6"
 				style={{ background: color }}
-				animate={{ scale: [0.92, 1.08, 0.92] }}
-				transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+				animate={{ scale: [0.9, 1.12, 0.9] }}
+				transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
 			/>
 		</motion.div>
 	);
@@ -160,12 +166,14 @@ function TravelSlide({ item, index, total, progress, ink }) {
 		return 0.5 + 0.5 * Math.cos((d / 0.55) * Math.PI);
 	});
 
-	const seedOpacity = useTransform(reveal, [0, 0.35], [1, 0]);
-	const seedScale = useTransform(reveal, [0, 0.5], [1, 0.35]);
-	const contentOpacity = useTransform(reveal, [0.2, 0.55], [0, 1]);
-	const imageScale = useTransform(reveal, [0, 0.25, 1], [0.06, 0.45, 1]);
-	const captionOpacity = useTransform(reveal, [0.55, 0.9], [0, 1]);
-	const captionY = useTransform(reveal, [0.55, 1], [16, 0]);
+	/* Dot stays visible until image grows out of it */
+	const seedOpacity = useTransform(reveal, [0, 0.28, 0.5], [1, 0.55, 0]);
+	const seedScale = useTransform(reveal, [0, 0.55], [1, 0.2]);
+	/* Image only appears / scales up from the dot — capped ~25% of the screen */
+	const contentOpacity = useTransform(reveal, [0.12, 0.42], [0, 1]);
+	const imageScale = useTransform(reveal, [0, 0.22, 0.7, 1], [0.04, 0.35, 0.92, 1]);
+	const captionOpacity = useTransform(reveal, [0.5, 0.85], [0, 1]);
+	const captionY = useTransform(reveal, [0.5, 1], [14, 0]);
 	const cursorOpacity = useTransform(reveal, [0.35, 0.7], [0, 1]);
 
 	return (
@@ -182,10 +190,10 @@ function TravelSlide({ item, index, total, progress, ink }) {
 				style={{ opacity: contentOpacity, scale: imageScale }}
 			>
 				<div
-					className="relative overflow-hidden shadow-[0_28px_70px_rgba(0,0,0,0.18)] ring-1 ring-black/5"
+					className="relative overflow-hidden shadow-[0_28px_70px_rgba(0,0,0,0.22)] ring-1 ring-white/10"
 					style={{
-						width: "min(48vw, 300px)",
-						height: "min(64vh, 520px)",
+						width: "min(25vw, 260px)",
+						height: "min(38vh, 400px)",
 						borderRadius: 28,
 					}}
 				>
@@ -196,8 +204,8 @@ function TravelSlide({ item, index, total, progress, ink }) {
 						className="h-full w-full object-cover"
 						loading={index < 2 ? "eager" : "lazy"}
 					/>
-					<div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent px-4 pb-5 pt-16">
-						<p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">
+					<div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent px-4 pb-5 pt-16">
+						<p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/80">
 							{item.place}
 						</p>
 						<p className="mt-1 text-sm font-medium text-white">
@@ -207,8 +215,8 @@ function TravelSlide({ item, index, total, progress, ink }) {
 				</div>
 
 				<motion.p
-					className="mt-6 max-w-md px-4 text-center font-mono text-[13px] leading-relaxed sm:text-[14px]"
-					style={{ color: ink, opacity: captionOpacity, y: captionY }}
+					className="mt-6 max-w-md px-4 text-center font-mono text-[13px] leading-relaxed text-white sm:text-[14px]"
+					style={{ opacity: captionOpacity, y: captionY }}
 				>
 					{item.caption}
 				</motion.p>

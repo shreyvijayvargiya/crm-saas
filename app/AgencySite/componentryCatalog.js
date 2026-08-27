@@ -32,8 +32,6 @@ import HeroPinThreadBoard from "./components/HeroPinThreadBoard";
 import HeroTitanWatch from "./components/HeroTitanWatch";
 import HeroStampStack from "./components/HeroStampStack";
 import HeroPhoneFanScroll from "./components/HeroPhoneFanScroll";
-import HeroZipper from "./components/HeroZipper";
-import HeroVideoEditor from "./components/HeroVideoEditor";
 import HeroClaudeChatInput from "./components/HeroClaudeChatInput";
 import HeroDirectoryTree from "./components/HeroDirectoryTree";
 import HeroLiquidFolder from "./components/HeroLiquidFolder";
@@ -372,20 +370,6 @@ export const COMPONENTRY = [
 		tags: ["phone", "video", "fan", "scroll", "rotate"],
 		description: "Vertical phone reels fanned on scroll, straighten and shift −x.",
 		Component: HeroPhoneFanScroll,
-	},
-	{
-		id: "zipper",
-		name: "Zipper Reveal",
-		tags: ["zipper", "drag", "reveal", "interactive"],
-		description: "Horizontal center zipper — drag left → right to open and reveal behind.",
-		Component: HeroZipper,
-	},
-	{
-		id: "video-editor",
-		name: "Video Editor",
-		tags: ["video", "timeline", "editor", "drag", "playhead"],
-		description: "Frontend timeline editor — preview, playhead, and draggable scenes / frames / objects.",
-		Component: HeroVideoEditor,
 	},
 	{
 		id: "chat-input",
