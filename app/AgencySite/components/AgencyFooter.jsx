@@ -214,6 +214,7 @@ export default function AgencyFooter() {
 						height={55}
 					/>
 				</a>
+				<a href="https://nicklaunches.com/products/saascrm/?utm_source=saascrm.site&utm_medium=badge&utm_campaign=featured" target="_blank" rel="noopener"><img src="https://nicklaunches.com/badges/featured.png" alt="SaaSCRM on Nick Launches" width="244" height="56" /></a>
 			</div>
 		</footer>
 	);
