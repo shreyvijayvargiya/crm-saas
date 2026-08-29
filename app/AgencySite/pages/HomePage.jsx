@@ -11,7 +11,9 @@ import SiteSeo, { HOME_OG_IMAGE } from "@/components/seo/SiteSeo";
 import { HOME_NOSCRIPT_HTML } from "@/lib/agent/markdownPages";
 import { BRAND_JSON_LD } from "@/lib/agent/brandJsonLd";
 import AgencyShell from "../components/AgencyShell";
-import HeroScrollReveal from "../components/HeroScrollReveal";
+import HeroCrmIntro from "../components/HeroCrmIntro";
+import HeroScreenshotGrid from "../components/HeroScreenshotGrid";
+import WhatWeBuildSection from "../components/WhatWeBuildSection";
 import IntegrationsShowcase from "../components/IntegrationsShowcase";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import {
@@ -121,13 +123,8 @@ function HomeContent() {
 					dangerouslySetInnerHTML={{ __html: HOME_NOSCRIPT_HTML }}
 				/>
 			</noscript>
+			<HeroCrmIntro screenshots={CRM_SCREENSHOTS} isLight={isLight} />
 			<motion.header {...fadeUp} className="mb-10 text-center sm:mb-14">
-				<div className="mb-10">
-					<HeroScrollReveal
-						screenshots={CRM_SCREENSHOTS}
-						isLight={isLight}
-					/>
-				</div>
 				<Badge
 					variant="outline"
 					className={cn(
@@ -140,15 +137,14 @@ function HomeContent() {
 					<Bot className="h-3.5 w-3.5" />
 					First agentic CRM SaaS template with a built-in AI chatbot.
 				</Badge>
-				<h1
+				<h2
 					className={cn(
 						"text-3xl font-bold tracking-tight sm:text-4xl sm:leading-[1.15]",
 						isLight ? "text-zinc-900" : "text-white"
 					)}
 				>
-					<span className="sr-only">SaaSCRM — </span>
 					The first agentic CRM SaaS template with a built-in AI chatbot.
-				</h1>
+				</h2>
 				<p
 					className={cn(
 						"mx-auto mt-5 max-w-xl text-base leading-relaxed sm:text-lg",
@@ -190,7 +186,15 @@ function HomeContent() {
 						</a>
 					</Button>
 				</div>
+				<div className="mb-2 mt-12">
+					<HeroScreenshotGrid
+						screenshots={CRM_SCREENSHOTS}
+						isLight={isLight}
+					/>
+				</div>
 			</motion.header>
+
+			<WhatWeBuildSection />
 
 			<motion.section
 				{...fadeUp}
