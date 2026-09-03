@@ -11,6 +11,7 @@ const FOOTER_LINKS = [
 	{ label: "AI CRM Builder", href: "/blueprint", featured: true },
 	{ label: "Free CRMs", href: "/templates" },
 	{ label: "Blog", href: "/blog" },
+	{ label: "RSS", href: "/rss.xml" },
 	{ label: "Live demo", href: "/demo" },
 	{ label: "Pricing", href: "/pricing" },
 	{ label: "FAQ", href: "/#faq" },
@@ -145,7 +146,7 @@ export default function AgencyFooter() {
 										? "text-zinc-600 hover:text-zinc-900"
 										: "text-zinc-400 hover:text-white"
 							);
-							const staticFile = /\.(txt|yaml|yml|json|md)$/i.test(link.href);
+							const staticFile = /\.(txt|yaml|yml|json|md|xml)$/i.test(link.href);
 							if (staticFile) {
 								return (
 									<a key={link.href} href={link.href} className={className}>

@@ -54,6 +54,16 @@ function BlogIndexContent({ posts }) {
 					)}
 				>
 					Blog posts from the SaaSCRM team — practical tips for founders, indie-hackers, and SaaS agencies.
+					{" "}
+					<a
+						href="/rss.xml"
+						className={cn(
+							"font-medium underline underline-offset-4",
+							isLight ? "text-violet-700 hover:text-violet-900" : "text-violet-300 hover:text-violet-200"
+						)}
+					>
+						RSS feed
+					</a>
 				</p>
 			</header>
 

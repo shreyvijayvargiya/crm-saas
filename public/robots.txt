@@ -16,6 +16,7 @@ Allow: /.well-known/llms.txt
 Disallow: /api/
 
 Sitemap: https://saascrm.site/sitemap.xml
+# Blog RSS: https://saascrm.site/rss.xml
 # Agent index: https://saascrm.site/llms.txt
 # Developer resources: https://saascrm.site/docs
 # Brand: SaaSCRM (https://saascrm.site)

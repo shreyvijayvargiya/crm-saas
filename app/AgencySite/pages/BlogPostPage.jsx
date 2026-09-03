@@ -126,7 +126,76 @@ function BlogPostContent({ post, morePosts = [] }) {
 		shareText
 	)}&url=${encodeURIComponent(pageUrl)}`;
 	const tags = Array.isArray(meta.tags) ? meta.tags : [];
+	const faq = Array.isArray(meta.faq) ? meta.faq : [];
 	const coverSrc = absoluteImageUrl(meta.image);
+	const seoTitle = meta.metaTitle || meta.title;
+
+	const jsonLd = [
+		{
+			"@context": "https://schema.org",
+			"@type": "BlogPosting",
+			headline: meta.title,
+			description: meta.description,
+			image: coverSrc,
+			datePublished: meta.date,
+			author: {
+				"@type": "Person",
+				name: meta.author || "Shrey",
+				url: "https://saascrm.site",
+			},
+			publisher: {
+				"@type": "Organization",
+				name: "SaaSCRM",
+				url: "https://saascrm.site",
+			},
+			keywords: meta.keywords,
+			articleSection: tags[0] || "CRM",
+			mainEntityOfPage: pageUrl,
+			url: pageUrl,
+			speakable: {
+				"@type": "SpeakableSpecification",
+				cssSelector: ["article h1", "article h2"],
+			},
+		},
+		{
+			"@context": "https://schema.org",
+			"@type": "BreadcrumbList",
+			itemListElement: [
+				{
+					"@type": "ListItem",
+					position: 1,
+					name: "Home",
+					item: "https://saascrm.site",
+				},
+				{
+					"@type": "ListItem",
+					position: 2,
+					name: "Blog",
+					item: "https://saascrm.site/blog",
+				},
+				{
+					"@type": "ListItem",
+					position: 3,
+					name: meta.title,
+					item: pageUrl,
+				},
+			],
+		},
+	];
+	if (faq.length) {
+		jsonLd.push({
+			"@context": "https://schema.org",
+			"@type": "FAQPage",
+			mainEntity: faq.map((item) => ({
+				"@type": "Question",
+				name: item.q,
+				acceptedAnswer: {
+					"@type": "Answer",
+					text: item.a,
+				},
+			})),
+		});
+	}
 
 	const handleCopyMarkdown = async () => {
 		try {
@@ -142,7 +211,7 @@ function BlogPostContent({ post, morePosts = [] }) {
 	return (
 		<>
 			<SiteSeo
-				title={`${meta.title} | SaaSCRM Blog`}
+				title={`${seoTitle} | SaaSCRM Blog`}
 				description={meta.description}
 				path={`/blog/${slug}`}
 				keywords={meta.keywords}
@@ -160,27 +229,7 @@ function BlogPostContent({ post, morePosts = [] }) {
 					author: meta.author,
 					tags,
 				}}
-				jsonLd={{
-					"@context": "https://schema.org",
-					"@type": "BlogPosting",
-					headline: meta.title,
-					description: meta.description,
-					image: coverSrc,
-					datePublished: meta.date,
-					author: {
-						"@type": "Person",
-						name: meta.author || "Shrey",
-					},
-					publisher: {
-						"@type": "Organization",
-						name: "SaaSCRM",
-						url: "https://saascrm.site",
-					},
-					keywords: meta.keywords,
-					articleSection: tags[0] || "CRM",
-					mainEntityOfPage: pageUrl,
-					url: pageUrl,
-				}}
+				jsonLd={jsonLd}
 			/>
 
 			<article>
