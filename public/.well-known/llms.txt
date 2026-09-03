@@ -26,6 +26,8 @@ SaaSCRM (also searched as SaaS CRM) is the product name for this template. Offic
 
 - [Live CRM demo](https://saascrm.site/demo.md): Interactive app shell with the AI chatbot
 - [SaaSCRM pricing](https://saascrm.site/pricing.md): Template license and custom build
-- [SaaSCRM FAQ](https://saascrm.site/faq.md): Licensing and support
-- [SaaSCRM blog](https://saascrm.site/blog.md): CRM template notes
+- [SaaSCRM FAQ](https://saascrm.site/faq.md): Licensing, agency CRM, and support
+- [SaaSCRM blog](https://saascrm.site/blog.md): CRM template notes and agency CRM guides
+- [Agency CRM article](https://saascrm.site/blog/agency-crm.md): Manage leads, clients, projects, and invoices in one system
+- [SaaSCRM blog RSS](https://saascrm.site/rss.xml): Subscribe to new CRM posts
 - [GitHub repository](https://github.com/shreyvijayvargiya/crm-saas): Source listing (purchase required for the full kit)

@@ -256,6 +256,14 @@ export const FAQ_ITEMS = [
 		q: "Do you offer support after purchase?",
 		a: "Six months of priority email support for bugs and setup questions. Custom build clients get a dedicated handoff and optional retainer.",
 	},
+	{
+		q: "Do you have an agency CRM for leads, clients, projects, and invoices?",
+		a: "Yes. SaaSCRM ships agency client management software — leads, pipeline, projects, and invoices in one Next.js kit. Read https://saascrm.site/blog/agency-crm and demo https://saascrm.site/templates/agency.",
+	},
+	{
+		q: "Where can I read more CRM guides from SaaSCRM?",
+		a: "The blog is at https://saascrm.site/blog. Start with https://saascrm.site/blog/best-crm-for-small-businesses-and-startups, https://saascrm.site/blog/why-your-business-needs-a-crm, https://saascrm.site/blog/six-crm-templates-you-can-demo-today, and https://saascrm.site/blog/plan-your-crm-in-2-minutes-with-ai-builder.",
+	},
 ];
 
 export const HOME_FEATURES = [

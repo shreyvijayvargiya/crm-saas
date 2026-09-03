@@ -9,6 +9,30 @@ import { FAQ_ITEMS } from "../agencyConfig";
 
 const SITE_URL = "https://saascrm.site";
 
+function linkifyFaqAnswer(text, isLight) {
+	const parts = String(text).split(/(https?:\/\/[^\s]+)/g);
+	return parts.map((part, i) => {
+		if (!/^https?:\/\//.test(part)) return part;
+		const href = part.replace(/[.,)]+$/, "");
+		const trailing = part.slice(href.length);
+		const label = href.replace(/^https?:\/\//, "");
+		return (
+			<span key={`${href}-${i}`}>
+				<a
+					href={href}
+					className={cn(
+						"font-medium underline underline-offset-4",
+						isLight ? "text-violet-700 hover:text-violet-900" : "text-violet-300 hover:text-violet-200"
+					)}
+				>
+					{label}
+				</a>
+				{trailing}
+			</span>
+		);
+	});
+}
+
 function FaqItem({ item, isOpen, onToggle, isLight }) {
 	return (
 		<div
@@ -52,7 +76,7 @@ function FaqItem({ item, isOpen, onToggle, isLight }) {
 								isLight ? "text-zinc-600" : "text-zinc-400"
 							)}
 						>
-							{item.a}
+							{linkifyFaqAnswer(item.a, isLight)}
 						</p>
 					</motion.div>
 				) : null}

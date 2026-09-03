@@ -14,6 +14,7 @@ export const SITEMAP_GROUPS = [
 			{ label: "Ecommerce CMS (free)", href: "/templates/ecommerce-cms" },
 			{ label: "CRM Admin Composer", href: "/admin-builder" },
 			{ label: "Blog", href: "/blog" },
+			{ label: "Agency CRM guide", href: "/blog/agency-crm" },
 			{ label: "Live CRM demo", href: "/demo" },
 			{ label: "Demo · Indie Stripe", href: "/demo/template/indie-stripe" },
 			{ label: "Demo · Agency", href: "/demo/template/agency" },
@@ -39,6 +40,11 @@ export const SITEMAP_GROUPS = [
 		/** Filled at build time via getSitemapGroups(blogPosts) — keep a static fallback. */
 		links: [
 			{ label: "All posts", href: "/blog" },
+			{ label: "RSS feed", href: "/rss.xml" },
+			{
+				label: "Agency CRM: leads, clients, projects & invoices",
+				href: "/blog/agency-crm",
+			},
 			{
 				label: "Best CRM for small businesses and startups",
 				href: "/blog/best-crm-for-small-businesses-and-startups",
@@ -164,6 +170,7 @@ export function getSitemapGroups(blogPosts = []) {
 
 	const blogLinks = [
 		{ label: "All posts", href: "/blog" },
+		{ label: "RSS feed", href: "/rss.xml" },
 		...blogPosts.map((post) => ({
 			label: post.meta?.title || post.slug,
 			href: `/blog/${post.slug}`,
