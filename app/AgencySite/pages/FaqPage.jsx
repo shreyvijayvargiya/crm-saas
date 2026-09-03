@@ -13,13 +13,16 @@ function linkifyFaqAnswer(text, isLight) {
 	const parts = String(text).split(/(https?:\/\/[^\s]+)/g);
 	return parts.map((part, i) => {
 		if (!/^https?:\/\//.test(part)) return part;
-		const href = part.replace(/[.,)]+$/, "");
-		const trailing = part.slice(href.length);
-		const label = href.replace(/^https?:\/\//, "");
+		const raw = part.replace(/[.,)]+$/, "");
+		const trailing = part.slice(raw.length);
+		const isOwnSite = /^https:\/\/saascrm\.site(?:\/|$)/i.test(raw);
+		const href = isOwnSite ? raw.replace(/^https:\/\/saascrm\.site/i, "") || "/" : raw;
+		const label = href.startsWith("/") ? `saascrm.site${href}` : href.replace(/^https?:\/\//, "");
 		return (
 			<span key={`${href}-${i}`}>
 				<a
 					href={href}
+					{...(isOwnSite ? {} : { target: "_blank", rel: "noopener noreferrer" })}
 					className={cn(
 						"font-medium underline underline-offset-4",
 						isLight ? "text-violet-700 hover:text-violet-900" : "text-violet-300 hover:text-violet-200"
