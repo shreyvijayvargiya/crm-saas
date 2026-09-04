@@ -7,17 +7,11 @@ import AgencyShell from "../components/AgencyShell";
 import MarkdownContent from "../components/MarkdownContent";
 import { useAgencyTheme } from "../AgencyThemeContext";
 
-export default function DocsArticlePage({
-	title,
-	description,
-	path,
-	keywords,
-	markdown,
-}) {
+function DocsArticleContent({ title, description, path, keywords, markdown }) {
 	const { isLight } = useAgencyTheme();
 
 	return (
-		<AgencyShell size="article">
+		<>
 			<SiteSeo
 				title={title}
 				description={description}
@@ -39,6 +33,26 @@ export default function DocsArticlePage({
 			<article>
 				<MarkdownContent content={markdown} isLight={isLight} />
 			</article>
+		</>
+	);
+}
+
+export default function DocsArticlePage({
+	title,
+	description,
+	path,
+	keywords,
+	markdown,
+}) {
+	return (
+		<AgencyShell size="article">
+			<DocsArticleContent
+				title={title}
+				description={description}
+				path={path}
+				keywords={keywords}
+				markdown={markdown}
+			/>
 		</AgencyShell>
 	);
 }

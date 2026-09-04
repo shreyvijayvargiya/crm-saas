@@ -1,5 +1,5 @@
 import BlogIndexPage from "../../app/AgencySite/pages/BlogIndexPage";
-import { getAllBlogPosts } from "../../lib/blog";
+import { BLOG_ISR_SECONDS, getAllBlogPosts } from "../../lib/blog";
 
 export default BlogIndexPage;
 
@@ -9,5 +9,6 @@ export async function getStaticProps() {
 		props: {
 			posts,
 		},
+		revalidate: BLOG_ISR_SECONDS,
 	};
 }

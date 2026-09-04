@@ -9,15 +9,15 @@ import { cn } from "@/lib/utils";
 export default function MarkdownContent({ content, isLight = true, className }) {
 	const prose = isLight
 		? {
-				text: "text-zinc-700",
-				muted: "text-zinc-500",
+				text: "text-zinc-800",
+				muted: "text-zinc-600",
 				heading: "text-zinc-900",
 				border: "border-zinc-200",
 				quoteBorder: "border-zinc-300",
 				quoteBg: "bg-zinc-100/80",
 				codeBg: "bg-zinc-100 text-zinc-800",
 				tableHead: "bg-zinc-100/80",
-				link: "text-violet-700 hover:text-violet-900",
+				link: "text-violet-800 hover:text-violet-950",
 		  }
 		: {
 				text: "text-zinc-300",
@@ -72,7 +72,9 @@ export default function MarkdownContent({ content, isLight = true, className }) 
 							{children}
 						</h3>
 					),
-					p: ({ children }) => <p className="my-4">{children}</p>,
+					p: ({ children }) => (
+						<p className={cn("my-4", prose.text)}>{children}</p>
+					),
 					a: ({ href, children }) => (
 						<a
 							href={href}
@@ -100,7 +102,9 @@ export default function MarkdownContent({ content, isLight = true, className }) 
 							{children}
 						</ol>
 					),
-					li: ({ children }) => <li className="pl-1">{children}</li>,
+					li: ({ children }) => (
+						<li className={cn("pl-1", prose.text)}>{children}</li>
+					),
 					blockquote: ({ children }) => (
 						<blockquote
 							className={cn(

@@ -69,6 +69,10 @@ export const SITEMAP_GROUPS = [
 				label: "Why I keep building CRM templates",
 				href: "/blog/why-i-keep-building-crm-templates",
 			},
+			{
+				label: "We made SaaSCRM agent-ready",
+				href: "/blog/we-made-saascrm-agent-ready-llms-txt",
+			},
 		],
 	},
 	{

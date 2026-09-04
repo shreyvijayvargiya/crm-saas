@@ -18,5 +18,11 @@
 		"pages/api/ai/chat.js": {
 			"maxDuration": 10
 		}
-	}
+	},
+	"crons": [
+		{
+			"path": "/api/cron/publish-blog",
+			"schedule": "30 18 * * *"
+		}
+	]
 }
