@@ -17,7 +17,7 @@ tags:
 
 Hello folks
 
-If you searched **best CRM for small businesses and startups**, you already know the trap: HubSpot is powerful until the bill shows up, spreadsheets break the moment you hire a second person, and “just use Notion” stops working the week you actually have a pipeline.
+If you searched **best CRM for small businesses and startups**, you already know the trap: HubSpot is powerful until the bill shows up, spreadsheets break the moment you hire a second person, and “just use Notion” stops working the week you actually have a pipeline. When you are ready to leave the sheet, use the [Excel to CRM migration](https://saascrm.site/blog/excel-to-crm-migration) playbook.
 
 This is a short, practical take from me, **Shrey**, creator of [SaaSCRM](https://saascrm.site) — what I’d pick today as a [crm for startups](https://saascrm.site/blueprint), a [crm for small companies](https://saascrm.site/demo), and a [cool and cheap hubspot alternative](https://saascrm.site/templates) that you can actually own.
 

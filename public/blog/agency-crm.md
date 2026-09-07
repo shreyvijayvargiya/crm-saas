@@ -40,7 +40,7 @@ A current industry dataset estimates roughly **2.9K monthly searches** for “ag
 ## Key takeaways
 
 - An **agency CRM** must connect **leads → pipeline → clients → projects → tasks → invoices → payments → activity**.
-- Spreadsheets fail after ~10–30 clients because five people edit the same file and follow-ups live in Slack or WhatsApp.
+- Spreadsheets fail after ~10–30 clients because five people edit the same file and follow-ups live in Slack or WhatsApp. The fix is a real [Excel to CRM migration](https://saascrm.site/blog/excel-to-crm-migration), not another shared workbook.
 - [SaaSCRM](https://saascrm.site) already ships this shape: [Agency CRM template](https://saascrm.site/templates/agency), [live demo](https://saascrm.site/demo/template/agency), and [custom builds from $2,000](https://saascrm.site/pricing).
 - Path: **free CRM template → SaaSCRM template → custom CRM build**.
 

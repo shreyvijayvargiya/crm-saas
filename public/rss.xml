@@ -5,8 +5,26 @@
     <link>https://saascrm.site/blog</link>
     <description>CRM tips for startups, agencies, and indie hackers from SaaSCRM — Next.js CRM templates, agency CRM, and custom builds.</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 07 Sep 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://saascrm.site/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>How to migrate an Excel or Google Sheets CRM into a real CRM</title>
+      <link>https://saascrm.site/blog/excel-to-crm-migration</link>
+      <guid isPermaLink="true">https://saascrm.site/blog/excel-to-crm-migration</guid>
+      <pubDate>Mon, 07 Sep 2026 00:00:00 GMT</pubDate>
+      <author>shreyvijayvargiya26@gmail.com (Shrey)</author>
+      <description>Excel to CRM migration for small business: how to migrate an Excel spreadsheet to CRM or Google Sheets CRM, map fields, deduplicate, and roll out a custom CRM without importing chaos.</description>
+      <enclosure url="https://saascrm.site/og/excel-to-crm-migration.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>We Made SaaSCRM Agent-Ready: llms.txt, agents.md, MCP, and an OpenAPI Spec Explained</title>
+      <link>https://saascrm.site/blog/we-made-saascrm-agent-ready-llms-txt</link>
+      <guid isPermaLink="true">https://saascrm.site/blog/we-made-saascrm-agent-ready-llms-txt</guid>
+      <pubDate>Mon, 07 Sep 2026 00:00:00 GMT</pubDate>
+      <author>shreyvijayvargiya26@gmail.com (Shrey)</author>
+      <description>Why saascrm.site ships llms.txt, agents.md, an OpenAPI spec, and MCP docs — what each file actually does, what it does not do for AI citations, and how to copy the pattern for your own SaaS.</description>
+      <enclosure url="https://saascrm.site/screenshots-marketing-page/saas-crm-dashboard.png" type="image/jpeg" />
+    </item>
     <item>
       <title>Agency CRM: How to Manage Leads, Clients, Projects and Invoices in One System</title>
       <link>https://saascrm.site/blog/agency-crm</link>
