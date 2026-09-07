@@ -20,7 +20,7 @@ The last client we built a custom CRM for (still in progress): a **Finance CRM**
 
 ## Why do we need a CRM?
 
-The most basic question we always ask clients or pitch leads is: *Why do we need a CRM?*
+The most basic question we always ask clients or pitch leads is: *Why do we need a CRM?* If the answer is “we outgrew Excel,” read [how to migrate a spreadsheet into a CRM](https://saascrm.site/blog/excel-to-crm-migration) next.
 
 The obvious answer is to manage work in one platform — a more centralised system, less prone to error, and a more secure, modern way of doing business online is to have an agency CRM.
 
