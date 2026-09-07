@@ -266,7 +266,7 @@ export const FAQ_ITEMS = [
 	},
 	{
 		q: "Where can I read more CRM guides from SaaSCRM?",
-		a: "The blog is at https://saascrm.site/blog. Start with https://saascrm.site/blog/excel-to-crm-migration, https://saascrm.site/blog/best-crm-for-small-businesses-and-startups, https://saascrm.site/blog/why-your-business-needs-a-crm, https://saascrm.site/blog/six-crm-templates-you-can-demo-today, and https://saascrm.site/blog/plan-your-crm-in-2-minutes-with-ai-builder.",
+		a: "The blog is at https://saascrm.site/blog. Start with https://saascrm.site/blog/free-crm-and-top-crm-directory, https://saascrm.site/blog/excel-to-crm-migration, https://saascrm.site/blog/best-crm-for-small-businesses-and-startups, https://saascrm.site/blog/why-your-business-needs-a-crm, https://saascrm.site/blog/six-crm-templates-you-can-demo-today, and https://saascrm.site/blog/plan-your-crm-in-2-minutes-with-ai-builder.",
 	},
 ];
 

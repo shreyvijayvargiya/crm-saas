@@ -75,19 +75,31 @@ export default function MarkdownContent({ content, isLight = true, className }) 
 					p: ({ children }) => (
 						<p className={cn("my-4", prose.text)}>{children}</p>
 					),
-					a: ({ href, children }) => (
-						<a
-							href={href}
-							target={href?.startsWith("http") ? "_blank" : undefined}
-							rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
-							className={cn(
-								"font-medium underline underline-offset-4 decoration-violet-400/50 transition-colors",
-								prose.link
-							)}
-						>
-							{children}
-						</a>
-					),
+					a: ({ href, children }) => {
+						const isExternal = Boolean(href?.startsWith("http"));
+						const isReferral = Boolean(
+							href && /[?&]utm_medium=referral(?:&|$)/.test(href)
+						);
+						return (
+							<a
+								href={href}
+								target={isExternal ? "_blank" : undefined}
+								rel={
+									isExternal
+										? isReferral
+											? "noopener noreferrer sponsored"
+											: "noopener noreferrer"
+										: undefined
+								}
+								className={cn(
+									"font-medium underline underline-offset-4 decoration-violet-400/50 transition-colors",
+									prose.link
+								)}
+							>
+								{children}
+							</a>
+						);
+					},
 					strong: ({ children }) => (
 						<strong className={cn("font-semibold", prose.heading)}>{children}</strong>
 					),
