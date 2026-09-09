@@ -14,7 +14,9 @@ export const SITEMAP_GROUPS = [
 			{ label: "Ecommerce CMS (free)", href: "/templates/ecommerce-cms" },
 			{ label: "CRM Admin Composer", href: "/admin-builder" },
 			{ label: "Blog", href: "/blog" },
+			{ label: "Free CRM and top CRM directory", href: "/blog/free-crm-and-top-crm-directory" },
 			{ label: "Agency CRM guide", href: "/blog/agency-crm" },
+			{ label: "Excel to CRM migration", href: "/blog/excel-to-crm-migration" },
 			{ label: "Live CRM demo", href: "/demo" },
 			{ label: "Demo · Indie Stripe", href: "/demo/template/indie-stripe" },
 			{ label: "Demo · Agency", href: "/demo/template/agency" },
@@ -41,6 +43,14 @@ export const SITEMAP_GROUPS = [
 		links: [
 			{ label: "All posts", href: "/blog" },
 			{ label: "RSS feed", href: "/rss.xml" },
+			{
+				label: "Free CRM and top CRM directory",
+				href: "/blog/free-crm-and-top-crm-directory",
+			},
+			{
+				label: "Excel to CRM migration",
+				href: "/blog/excel-to-crm-migration",
+			},
 			{
 				label: "Agency CRM: leads, clients, projects & invoices",
 				href: "/blog/agency-crm",

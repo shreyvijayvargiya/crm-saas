@@ -2,6 +2,8 @@ import { SITE_URL } from "../../../lib/agent/site";
 
 const WARM_PATHS = [
 	"/blog",
+	"/blog/free-crm-and-top-crm-directory",
+	"/blog/excel-to-crm-migration",
 	"/blog/we-made-saascrm-agent-ready-llms-txt",
 	"/sitemap",
 ];

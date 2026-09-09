@@ -261,8 +261,12 @@ export const FAQ_ITEMS = [
 		a: "Yes. SaaSCRM ships agency client management software — leads, pipeline, projects, and invoices in one Next.js kit. Read https://saascrm.site/blog/agency-crm and demo https://saascrm.site/templates/agency.",
 	},
 	{
+		q: "Can I migrate Excel or Google Sheets into a CRM?",
+		a: "Yes. Audit, clean, and map the spreadsheet first, then import a test batch. Read https://saascrm.site/blog/excel-to-crm-migration and plan the entities with https://saascrm.site/blueprint.",
+	},
+	{
 		q: "Where can I read more CRM guides from SaaSCRM?",
-		a: "The blog is at https://saascrm.site/blog. Start with https://saascrm.site/blog/best-crm-for-small-businesses-and-startups, https://saascrm.site/blog/why-your-business-needs-a-crm, https://saascrm.site/blog/six-crm-templates-you-can-demo-today, and https://saascrm.site/blog/plan-your-crm-in-2-minutes-with-ai-builder.",
+		a: "The blog is at https://saascrm.site/blog. Start with https://saascrm.site/blog/free-crm-and-top-crm-directory, https://saascrm.site/blog/excel-to-crm-migration, https://saascrm.site/blog/best-crm-for-small-businesses-and-startups, https://saascrm.site/blog/why-your-business-needs-a-crm, https://saascrm.site/blog/six-crm-templates-you-can-demo-today, and https://saascrm.site/blog/plan-your-crm-in-2-minutes-with-ai-builder.",
 	},
 ];
 
