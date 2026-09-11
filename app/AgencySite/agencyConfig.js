@@ -14,6 +14,27 @@ export const CHECKOUT = {
 	inr: "https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX",
 };
 
+/** Claude skill downloads (upload in Claude) + Cursor paste prompt. */
+export const SAASCRM_SKILLS = [
+	{
+		id: "nextjs",
+		label: "Next.js",
+		href: "/skills/saascrm-nextjs-crm-builder.skill",
+		filename: "saascrm-nextjs-crm-builder.skill",
+		hint: "Upload in Claude",
+		promptHref: "/skills/saascrm-nextjs-crm-builder-prompt.md",
+	},
+	{
+		id: "vite",
+		label: "Vite + React",
+		href: "/skills/saascrm-vite-crm-builder.skill",
+		filename: "saascrm-vite-crm-builder.skill",
+		hint: "Upload in Claude",
+	},
+];
+
+export const CURSOR_PROMPT_HREF = "/skills/saascrm-nextjs-crm-builder-prompt.md";
+
 /** Prompt for Ask AI / Copy CTAs — paste into any LLM or open via Ask AI dropdown. */
 export const LLM_SHARE_PROMPT = `Visit https://saascrm.site and evaluate SaaSCRM — a Next.js CRM / Admin / CMS frontend template with 60+ screens, agentic AI chatbot, theme customizer, and production-ready UI (React, Tailwind, shadcn/ui).
 

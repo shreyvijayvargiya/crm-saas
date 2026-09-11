@@ -96,7 +96,7 @@ export default function LlmShareActions({
 	const baseBtn = cn(
 		"inline-flex items-center gap-1.5 font-medium transition",
 		isHero
-			? "rounded-full border px-4 py-2 text-xs font-semibold hover:-translate-y-0.5"
+			? "rounded-full border px-5 py-2.5 text-sm font-semibold hover:-translate-y-0.5"
 			: "rounded-full border px-3 py-1.5 text-xs"
 	);
 
@@ -126,7 +126,7 @@ export default function LlmShareActions({
 				className
 			)}
 		>
-			<div className="flex flex-wrap items-center gap-2">
+			<div className={cn("flex flex-wrap items-center gap-2", isHero && "justify-center")}>
 				<DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
 					<DropdownMenuTrigger asChild>
 						<button

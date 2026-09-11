@@ -12,6 +12,7 @@ import { HOME_NOSCRIPT_HTML } from "@/lib/agent/markdownPages";
 import { BRAND_JSON_LD } from "@/lib/agent/brandJsonLd";
 import AgencyShell from "../components/AgencyShell";
 import HeroCrmIntro from "../components/HeroCrmIntro";
+import BuildWithClaudeSection from "../components/BuildWithClaudeSection";
 import HeroScreenshotGrid from "../components/HeroScreenshotGrid";
 import WhatWeBuildSection from "../components/WhatWeBuildSection";
 import IntegrationsShowcase from "../components/IntegrationsShowcase";
@@ -124,6 +125,7 @@ function HomeContent() {
 				/>
 			</noscript>
 			<HeroCrmIntro screenshots={CRM_SCREENSHOTS} isLight={isLight} />
+			<BuildWithClaudeSection />
 			<motion.header {...fadeUp} className="mb-10 text-center sm:mb-14">
 				<Badge
 					variant="outline"
@@ -153,39 +155,6 @@ function HomeContent() {
 				>
 					SaaSCRM helps you build AI CRM, CMS, and admin dashboards in days, not months.
 				</p>
-				<div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-					<Button
-						asChild
-						target="_blank"
-						rel="noopener noreferrer"
-						type="button"
-						className={cn(
-							"rounded-full px-5",
-							isLight
-								? "bg-zinc-900 text-white hover:bg-zinc-800"
-								: "bg-zinc-100 text-zinc-900 hover:bg-white"
-						)}
-					>
-						<a href="/demo" passHref className="flex gap-2">
-							Explore live demo
-							<ArrowRight className="h-4 w-4" />
-						</a>
-					</Button>
-					<Button
-						variant="outline"
-						asChild
-						className={cn(
-							"rounded-full px-5",
-							isLight
-								? "border-zinc-300 text-zinc-800 hover:bg-zinc-100"
-								: "border-zinc-700 text-zinc-200 hover:bg-zinc-900 text-white bg-zinc-800 hover:text-white hover:font-semibold"
-						)}
-					>
-						<a href="/pricing" passHref>
-							<a>View pricing</a>
-						</a>
-					</Button>
-				</div>
 				<div className="mb-2 mt-12">
 					<HeroScreenshotGrid
 						screenshots={CRM_SCREENSHOTS}

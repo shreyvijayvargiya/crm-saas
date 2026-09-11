@@ -87,32 +87,21 @@ export default function HeroCrmIntro({ screenshots, isLight }) {
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.55, delay: 0.7 }}
-					className="mt-8 flex flex-wrap items-center justify-center gap-2"
+					className="mt-8 flex flex-col items-center gap-3"
 				>
 					<a
 						href="/demo"
 						className={cn(
-							"inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5",
+							"inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold shadow-sm transition hover:-translate-y-0.5",
 							isLight
-								? "border-zinc-300 bg-white text-zinc-800 shadow-sm hover:border-zinc-400"
-								: "border-zinc-700 bg-zinc-900 text-zinc-100 hover:border-zinc-500"
+								? "bg-zinc-900 text-white hover:bg-zinc-800"
+								: "bg-white text-zinc-900 hover:bg-zinc-100"
 						)}
 					>
 						View demo
 						<ArrowRight className="h-4 w-4" />
 					</a>
-					<a
-						href="/pricing"
-						className={cn(
-							"inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5",
-							isLight
-								? "border-zinc-200 bg-zinc-100 text-zinc-800 hover:bg-zinc-200"
-								: "border-zinc-700 bg-zinc-800 text-zinc-100 hover:bg-zinc-700"
-						)}
-					>
-						View pricing
-					</a>
-					<LlmShareActions variant="hero" />
+					<LlmShareActions variant="hero" className="items-center" />
 				</motion.div>
 			</CursorImageTrail>
 		</section>
