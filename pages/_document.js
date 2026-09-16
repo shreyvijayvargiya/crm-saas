@@ -19,6 +19,7 @@ class MyDocument extends Document {
 						href="https://saascrm.site/rss.xml"
 					/>
 					<meta name="theme-color" content="#F4F4F0" />
+					<meta name="directree-verify" content="directree-verify=bf0649aa800a168e93778c4fec37610f" />
 					<meta name="msapplication-TileColor" content="#F4F4F0" />
 					<meta name="application-name" content="SaaSCRM" />
 					<meta name="apple-mobile-web-app-title" content="SaaSCRM" />
