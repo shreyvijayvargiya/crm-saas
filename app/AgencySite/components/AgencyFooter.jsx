@@ -11,6 +11,7 @@ const FOOTER_LINKS = [
 	{ label: "AI CRM Builder", href: "/blueprint", featured: true },
 	{ label: "Free CRMs", href: "/templates" },
 	{ label: "Blog", href: "/blog" },
+	{ label: "Prompts", href: "/prompts" },
 	{ label: "RSS", href: "/rss.xml" },
 	{ label: "Live demo", href: "/demo" },
 	{ label: "Pricing", href: "/pricing" },

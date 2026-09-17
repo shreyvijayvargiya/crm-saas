@@ -11,6 +11,7 @@ import {
 	Moon,
 	BookOpen,
 	LayoutTemplate,
+	MessageSquareCode,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAgencyTheme } from "../AgencyThemeContext";
@@ -21,6 +22,7 @@ const TABS = [
 	{ id: "templates", label: "Free CRMs", href: "/templates", icon: LayoutTemplate },
 	{ id: "blueprint", label: "Builder", href: "/blueprint", icon: Sparkles },
 	{ id: "blog", label: "Blog", href: "/blog", icon: BookOpen },
+	{ id: "prompts", label: "Prompts", href: "/prompts", icon: MessageSquareCode },
 	{ id: "pricing", label: "Pricing", href: "/pricing", icon: CreditCard },
 ];
 

@@ -61,6 +61,24 @@ export default function BuildWithClaudeSection() {
 				<div className="mt-6">
 					<HeroSkillActions />
 				</div>
+				<p
+					className={cn(
+						"mt-4 text-sm",
+						isLight ? "text-zinc-500" : "text-zinc-500"
+					)}
+				>
+					<a
+						href="/prompts"
+						className={cn(
+							"font-medium underline underline-offset-4",
+							isLight ? "text-violet-700 hover:text-violet-900" : "text-violet-300 hover:text-violet-200"
+						)}
+					>
+						Browse all prompts
+					</a>
+					{" "}
+					— Next.js, Vite, editable tables, and the full 60+ page kit.
+				</p>
 			</Card>
 		</motion.section>
 	);
