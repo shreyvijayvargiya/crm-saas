@@ -1,6 +1,15 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Layers, Sparkles, Table2 } from "lucide-react";
+import {
+	ArrowRight,
+	CalendarDays,
+	Columns3,
+	CreditCard,
+	Layers,
+	Receipt,
+	Sparkles,
+	Table2,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import SiteSeo, { HOME_OG_IMAGE } from "@/components/seo/SiteSeo";
 import AgencyShell from "../components/AgencyShell";
@@ -10,6 +19,11 @@ const ICONS = {
 	sparkles: Sparkles,
 	table: Table2,
 	layers: Layers,
+	calendar: CalendarDays,
+	"credit-card": CreditCard,
+	kanban: Columns3,
+	project: Columns3,
+	invoice: Receipt,
 };
 
 const ACCENT = {
@@ -27,6 +41,21 @@ const ACCENT = {
 		wash: "from-amber-500/20 via-orange-400/10 to-transparent",
 		iconLight: "border-amber-200 bg-amber-50 text-amber-800",
 		iconDark: "border-amber-500/30 bg-amber-500/10 text-amber-300",
+	},
+	rose: {
+		wash: "from-rose-500/15 via-pink-400/8 to-transparent",
+		iconLight: "border-rose-200 bg-rose-50 text-rose-700",
+		iconDark: "border-rose-500/30 bg-rose-500/10 text-rose-300",
+	},
+	indigo: {
+		wash: "from-indigo-500/15 via-violet-400/8 to-transparent",
+		iconLight: "border-indigo-200 bg-indigo-50 text-indigo-700",
+		iconDark: "border-indigo-500/30 bg-indigo-500/10 text-indigo-300",
+	},
+	orange: {
+		wash: "from-orange-500/20 via-amber-400/10 to-transparent",
+		iconLight: "border-orange-200 bg-orange-50 text-orange-800",
+		iconDark: "border-orange-500/30 bg-orange-500/10 text-orange-300",
 	},
 };
 
