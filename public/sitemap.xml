@@ -194,6 +194,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://saascrm.site/blog/why-every-crm-looks-the-same</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
     <loc>https://saascrm.site/blog/i-trained-claude-to-build-my-crm</loc>
     <lastmod>2026-09-11</lastmod>
     <changefreq>monthly</changefreq>

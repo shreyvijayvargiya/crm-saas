@@ -52,6 +52,10 @@ export const SITEMAP_GROUPS = [
 			{ label: "All posts", href: "/blog" },
 			{ label: "RSS feed", href: "/rss.xml" },
 			{
+				label: "Why every AI-built CRM looks the same",
+				href: "/blog/why-every-crm-looks-the-same",
+			},
+			{
 				label: "Free CRM and top CRM directory",
 				href: "/blog/free-crm-and-top-crm-directory",
 			},
