@@ -1,0 +1,121 @@
+{
+	"version": 1,
+	"kind": "saas-crm-vertical",
+	"id": "clinic",
+	"meta": {
+		"name": "Clinic Appointments",
+		"tagline": "Queue, UPI booking, WhatsApp position, digital Rx",
+		"description": "For independent Indian doctors and small clinics. Book slots, show live token position, collect mock UPI, issue prescriptions from a drug catalog, and queue follow-up reminders. No heavy EMR.",
+		"icon": "Stethoscope",
+		"accent": "teal",
+		"badge": "India",
+		"audience": ["clinics", "independent doctors", "OPD desks"]
+	},
+	"homeRoute": "/clinic",
+	"chooserRoute": "/demo",
+	"sidebar": [
+		{
+			"id": "main",
+			"label": "Clinic",
+			"items": [
+				{ "id": 1, "label": "Today", "route": "/clinic", "icon": "Home", "keywords": ["opd", "dashboard"] },
+				{ "id": 2, "label": "Live queue", "route": "/queue", "icon": "ListOrdered", "keywords": ["token", "waiting"] }
+			]
+		},
+		{
+			"id": "front-desk",
+			"label": "Front desk",
+			"items": [
+				{ "id": 3, "label": "Appointments", "route": "/appointments", "icon": "CalendarClock", "keywords": ["booking", "slots"] },
+				{ "id": 4, "label": "Patients", "route": "/patients", "icon": "Users", "keywords": ["register"] }
+			]
+		},
+		{
+			"id": "care",
+			"label": "Care",
+			"items": [
+				{ "id": 5, "label": "Prescriptions", "route": "/prescriptions", "icon": "Pill", "keywords": ["rx", "drugs"] },
+				{ "id": 6, "label": "Follow-ups", "route": "/follow-ups", "icon": "MessageCircle", "keywords": ["whatsapp", "reminders"] }
+			]
+		},
+		{
+			"id": "money",
+			"label": "Money",
+			"items": [
+				{ "id": 7, "label": "UPI payments", "route": "/clinic-payments", "icon": "IndianRupee", "keywords": ["upi", "fee"] }
+			]
+		},
+		{
+			"id": "system",
+			"label": "System",
+			"items": [
+				{ "id": 8, "label": "Settings", "route": "/settings", "icon": "Settings" },
+				{ "id": 9, "label": "Notifications", "route": "/notifications", "icon": "Bell" }
+			]
+		}
+	],
+	"pages": [
+		{
+			"id": "appointments",
+			"label": "Appointments",
+			"route": "/appointments",
+			"templateId": "appointments",
+			"blocks": [
+				{ "type": "toolbar", "searchPlaceholder": "Search appointments…" },
+				{
+					"type": "table",
+					"entity": "appointments",
+					"columns": [
+						{ "id": "slot", "label": "Slot", "type": "text" },
+						{ "id": "patient", "label": "Patient", "type": "text" },
+						{ "id": "token", "label": "Token", "type": "number" },
+						{ "id": "status", "label": "Status", "type": "badge" }
+					]
+				}
+			]
+		},
+		{
+			"id": "patients",
+			"label": "Patients",
+			"route": "/patients",
+			"templateId": "patients",
+			"blocks": [
+				{
+					"type": "table",
+					"entity": "patients",
+					"columns": [
+						{ "id": "name", "label": "Name", "type": "text" },
+						{ "id": "phone", "label": "Phone", "type": "text" },
+						{ "id": "city", "label": "City", "type": "text" }
+					]
+				}
+			]
+		}
+	],
+	"entities": {
+		"appointments": {
+			"singular": "Appointment",
+			"plural": "Appointments",
+			"fields": [
+				{ "name": "slot", "type": "text" },
+				{ "name": "patient", "type": "text" },
+				{ "name": "token", "type": "number" },
+				{ "name": "status", "type": "status" }
+			],
+			"seedHint": "clinic-opd"
+		},
+		"patients": {
+			"singular": "Patient",
+			"plural": "Patients",
+			"fields": [
+				{ "name": "name", "type": "text" },
+				{ "name": "phone", "type": "text" },
+				{ "name": "city", "type": "text" }
+			],
+			"seedHint": "clinic-register"
+		}
+	},
+	"notes": [
+		"Frontend-only clinic CRM. WhatsApp and UPI are mocked with toasts and QR placeholder."
+	]
+}

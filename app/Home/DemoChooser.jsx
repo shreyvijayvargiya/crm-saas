@@ -66,7 +66,7 @@ export default function DemoChooser() {
 		<div className="mx-auto max-w-5xl space-y-8 p-4 sm:p-6">
 			<SiteSeo
 				title="Choose your SaaS CRM demo – SaaSCRM"
-				description="Pick Indie Stripe Billing, Agency, Freelancer, or the Full CRM kit. Each vertical is driven by a JSON AST you can extend with AI."
+				description="Pick Clinic Appointments, Indie Stripe Billing, Agency, Freelancer, or the Full CRM kit. Each vertical is driven by a JSON AST you can extend with AI."
 				path="/demo"
 				keywords="CRM demo, Stripe CRM, agency CRM, freelancer CRM, SaaS admin template"
 			/>

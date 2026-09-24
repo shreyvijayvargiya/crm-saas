@@ -6,6 +6,8 @@ RSS feed: https://saascrm.site/rss.xml
 
 ## Posts
 
+- [Clinic Appointment Software for India: Queue, UPI Booking, and Digital Prescriptions](https://saascrm.site/blog/clinic-appointment-software-india) — Independent Indian clinics still run OPD on phone calls and paper. A lightweight clinic CRM for booking, token queue, UPI, digital Rx, and WhatsApp follow-ups.
+
 - [Why Every AI-Built CRM Looks the Same — And How a 15-Minute Spec Fixes It](https://saascrm.site/blog/why-every-crm-looks-the-same) — Why AI-generated CRMs look so similar, and how a 15-minute business spec plus a SaaSCRM prompt helps Claude or Cursor build a layout that actually fits your workflow.
 
 - [How to migrate an Excel or Google Sheets CRM into a real CRM](https://saascrm.site/blog/excel-to-crm-migration) — Excel to CRM migration for small business: how to migrate an Excel spreadsheet to CRM or Google Sheets CRM, map fields, deduplicate, and roll out a custom CRM without importing chaos.

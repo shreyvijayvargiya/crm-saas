@@ -56,7 +56,7 @@ export const searchRouteExtras = [
 		route: "/demo",
 		icon: "LayoutGrid",
 		section: "main",
-		keywords: ["preset", "vertical", "ast", "stripe", "agency"],
+		keywords: ["preset", "vertical", "ast", "stripe", "agency", "clinic"],
 	},
 ];
 

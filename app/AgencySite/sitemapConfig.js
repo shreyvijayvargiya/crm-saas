@@ -6,6 +6,7 @@ export const SITEMAP_GROUPS = [
 			{ label: "Home", href: "/" },
 			{ label: "AI CRM Builder", href: "/blueprint" },
 			{ label: "Free CRM templates", href: "/templates" },
+			{ label: "Clinic Appointments CRM (free)", href: "/templates/clinic" },
 			{ label: "Indie Stripe CRM (free)", href: "/templates/indie-stripe" },
 			{ label: "Agency CRM (free)", href: "/templates/agency" },
 			{ label: "Freelancer CRM (free)", href: "/templates/freelancer" },
@@ -26,6 +27,7 @@ export const SITEMAP_GROUPS = [
 			{ label: "Agency CRM guide", href: "/blog/agency-crm" },
 			{ label: "Excel to CRM migration", href: "/blog/excel-to-crm-migration" },
 			{ label: "Live CRM demo", href: "/demo" },
+			{ label: "Demo · Clinic Appointments", href: "/demo/template/clinic" },
 			{ label: "Demo · Indie Stripe", href: "/demo/template/indie-stripe" },
 			{ label: "Demo · Agency", href: "/demo/template/agency" },
 			{ label: "Demo · Freelancer", href: "/demo/template/freelancer" },
@@ -51,6 +53,10 @@ export const SITEMAP_GROUPS = [
 		links: [
 			{ label: "All posts", href: "/blog" },
 			{ label: "RSS feed", href: "/rss.xml" },
+			{
+				label: "Clinic appointment software for India",
+				href: "/blog/clinic-appointment-software-india",
+			},
 			{
 				label: "Why every AI-built CRM looks the same",
 				href: "/blog/why-every-crm-looks-the-same",

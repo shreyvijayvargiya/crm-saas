@@ -3,6 +3,7 @@
  * AI agents: add a new `*.json` here and append it to `verticalAstModules`.
  */
 
+import clinic from "./clinic.json";
 import fullKit from "./full-kit.json";
 import indieStripe from "./indie-stripe.json";
 import agency from "./agency.json";
@@ -14,6 +15,7 @@ import { CRM_VERTICAL_AST_KIND, CRM_VERTICAL_AST_VERSION } from "./schema";
 
 /** Ordered list — drives /demo chooser cards. */
 export const verticalAstModules = [
+	clinic,
 	indieStripe,
 	agency,
 	freelancer,
