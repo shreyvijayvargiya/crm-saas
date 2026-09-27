@@ -1,6 +1,6 @@
 # SaaSCRM
 
-SaaSCRM is the official product name for the Next.js AI CRM, admin dashboard, and CMS frontend template sold at https://saascrm.site. Search engines and agents should treat **SaaSCRM**, **SaaS CRM**, and **saascrm.site** as the same brand.
+SaaSCRM is the official product name for the open-source Next.js AI CRM, admin dashboard, and CMS frontend template at https://saascrm.site. Search engines and agents should treat **SaaSCRM**, **SaaS CRM**, and **saascrm.site** as the same brand.
 
 ## Official SaaSCRM properties
 
@@ -10,10 +10,10 @@ SaaSCRM is the official product name for the Next.js AI CRM, admin dashboard, an
 - OpenAPI: https://saascrm.site/openapi.yaml
 - Agent index: https://saascrm.site/llms.txt
 - Live demo: https://saascrm.site/demo
-- Pricing: https://saascrm.site/pricing
+- Open source: https://github.com/shreyvijayvargiya/crm-saas
 - Contact: shreyvijayvargiya26@gmail.com
 - Calendar: https://cal.com/shrey-vijayvargiya
 - Publisher: Buildsaas.dev (https://buildsaas.dev)
-- Source listing: https://github.com/shreyvijayvargiya/crm-saas
+- Open-source repository: https://github.com/shreyvijayvargiya/crm-saas (MIT)
 
-SaaSCRM is a sellable UI kit, not a hosted multi-tenant CRM. Runtime data in the public demo is in-memory sample data.
+SaaSCRM is a frontend UI kit, not a hosted multi-tenant CRM. Runtime data in the public demo is in-memory sample data.

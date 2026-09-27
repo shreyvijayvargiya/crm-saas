@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
-import { CHECKOUT } from "../agencyConfig";
+import { CHECKOUT, GITHUB_REPO } from "../agencyConfig";
 
 const SITE_URL = "https://saascrm.site";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -456,14 +456,26 @@ function TemplateDetailContent({ template }) {
 									isLight ? "text-zinc-800" : "text-zinc-200"
 								)}
 							>
-								Need the full 60+ page kit + Figma?
+								Need the full 60+ screen kit?
 							</p>
 							<Button asChild variant="outline" size="sm" className="mt-2 bg-emerald-500/15 border-none dark:border-none dark:bg-emerald-500/15 hover:bg-emerald-500/20 text-emerald-700 hover:text-emerald-800 rounded-full">
-								<a href={CHECKOUT.usd} target="_blank" rel="noopener noreferrer">
-									Buy Complete Kit
+								<a href={GITHUB_REPO.url} target="_blank" rel="noopener noreferrer">
+									Open on GitHub
 									<lucideIcons.Link2 className="h-3.5 w-3.5" />
 								</a>
 							</Button>
+							<p className="mt-2 text-[11px] text-muted-foreground">
+								Optional{" "}
+								<a
+									href={CHECKOUT.usd}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="underline underline-offset-2"
+								>
+									Figma kit
+								</a>{" "}
+								on Gumroad.
+							</p>
 						</div>
 					</div>
 				</aside>

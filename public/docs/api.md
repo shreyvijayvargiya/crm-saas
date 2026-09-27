@@ -1,6 +1,6 @@
 # SaaSCRM API docs
 
-SaaSCRM ships a frontend-only CRM template. Use this page as the intended REST contract when you connect a backend. The shapes match `schemas/zod-schemas/` and `data.json` in the purchased source.
+SaaSCRM ships a frontend-only CRM template. Use this page as the intended REST contract when you connect a backend. The shapes match `schemas/zod-schemas/` and `data.json` in the GitHub repository.
 
 Base URL (when you host the API): `https://{your-domain}/api/v1`
 

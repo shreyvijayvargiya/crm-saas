@@ -166,20 +166,20 @@ function SitemapContent({ blogPosts = [] }) {
 									)}
 									aria-label={group.title}
 								>
-									{group.links.map((link) => (
-										<Link key={link.href} href={link.href} passHref>
-											<a
-												className={cn(
-													"group flex items-center justify-between gap-3 py-2.5 text-xs font-medium transition",
-													link.href === "/blueprint"
-														? isLight
-															? "text-violet-700"
-															: "text-violet-300"
-														: isLight
-															? "text-zinc-700 hover:text-zinc-950"
-															: "text-zinc-300 hover:text-white"
-												)}
-											>
+									{group.links.map((link) => {
+										const external = /^https?:\/\//i.test(link.href);
+										const rowClass = cn(
+											"group flex items-center justify-between gap-3 py-2.5 text-xs font-medium transition",
+											link.href === "/blueprint"
+												? isLight
+													? "text-violet-700"
+													: "text-violet-300"
+												: isLight
+													? "text-zinc-700 hover:text-zinc-950"
+													: "text-zinc-300 hover:text-white"
+										);
+										const inner = (
+											<>
 												<span className="flex items-center gap-2">
 													{link.href === "/blueprint" ? (
 														<Sparkles className="h-3.5 w-3.5" />
@@ -195,11 +195,30 @@ function SitemapContent({ blogPosts = [] }) {
 													>
 														{link.href}
 													</code>
-													<ArrowUpRight className="h-3.5 w-3.5 opacity-40 transition group-hover:opacity-100" />
+													{external ? (
+														<ExternalLink className="h-3.5 w-3.5 opacity-40 transition group-hover:opacity-100" />
+													) : (
+														<ArrowUpRight className="h-3.5 w-3.5 opacity-40 transition group-hover:opacity-100" />
+													)}
 												</span>
+											</>
+										);
+										return external ? (
+											<a
+												key={link.href}
+												href={link.href}
+												target="_blank"
+												rel="noopener noreferrer"
+												className={rowClass}
+											>
+												{inner}
 											</a>
-										</Link>
-									))}
+										) : (
+											<Link key={link.href} href={link.href} passHref>
+												<a className={rowClass}>{inner}</a>
+											</Link>
+										);
+									})}
 								</nav>
 							</Card>
 						</motion.div>

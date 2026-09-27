@@ -36,8 +36,8 @@ function PricingContent() {
 	return (
 		<>
 			<SiteSeo
-				title="Pricing – SaaSCRM Template & Custom CRM Builds"
-				description="Buy the SaaSCRM Next.js template self-serve from $49, or hire us for a custom CRM. Compare tiers, free templates, and Gumroad listings."
+				title="Pricing – Open Source SaaSCRM & Custom CRM Builds"
+				description="SaaSCRM is free and open source on GitHub (MIT). Optional Figma kit, slim free templates, and custom CRM builds from $2,000."
 				path="/pricing"
 				keywords="SaaSCRM pricing, buy CRM template, Next.js admin template price, custom CRM development cost"
 				images={[TEMPLATES_PAGE_OG_IMAGE]}
@@ -62,8 +62,8 @@ function PricingContent() {
 						isLight ? "text-zinc-600" : "text-zinc-400"
 					)}
 				>
-					Buy the template self-serve, or hire us to build a tailored CRM for your
-					startup or agency.
+					Clone the full template on GitHub for free, or hire us to build a tailored
+					CRM for your startup or agency.
 				</p>
 			</motion.header>
 
@@ -140,7 +140,9 @@ function PricingContent() {
 								>
 									{tier.priceUsd}
 								</span>
-								<span className="text-sm text-zinc-500">· {tier.priceInr} INR</span>
+								{tier.priceInr ? (
+									<span className="text-sm text-zinc-500">· {tier.priceInr} INR</span>
+								) : null}
 								<span className="w-full text-xs text-zinc-500">{tier.period}</span>
 							</div>
 							<ul className="mb-6 space-y-2">
@@ -166,13 +168,17 @@ function PricingContent() {
 								{tier.href ? (
 									<Button
 										asChild
-										variant="outline"
-										className={cn(
-											"rounded-full",
-										)}
+										className={cn("rounded-full")}
 									>
-										<a href={tier.href} passHref>
-											<a>{tier.cta}</a>
+										<a
+											href={tier.href}
+											target={tier.external ? "_blank" : undefined}
+											rel={tier.external ? "noopener noreferrer" : undefined}
+										>
+											{tier.cta}
+											{tier.external ? (
+												<ExternalLink className="h-4 w-4" />
+											) : null}
 										</a>
 									</Button>
 								) : (

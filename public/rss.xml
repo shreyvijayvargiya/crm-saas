@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>SaaSCRM Blog</title>
+    <title>SaaSCRM Blog — Open-source CRM for founders &amp; vibe coders</title>
     <link>https://saascrm.site/blog</link>
-    <description>CRM tips for startups, agencies, and indie hackers from SaaSCRM — Next.js CRM templates, agency CRM, and custom builds.</description>
+    <description>The first open-source Next.js CRM template for business, founders, and vibe coders — guides on templates, AI agents, clinic CRM, and shipping faster.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 07 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 24 Sep 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://saascrm.site/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Clinic Appointment Software for India: Queue, UPI Booking, and Digital Prescriptions</title>
+      <link>https://saascrm.site/blog/clinic-appointment-software-india</link>
+      <guid isPermaLink="true">https://saascrm.site/blog/clinic-appointment-software-india</guid>
+      <pubDate>Thu, 24 Sep 2026 00:00:00 GMT</pubDate>
+      <author>shreyvijayvargiya26@gmail.com (Shrey)</author>
+      <description>Independent Indian clinics still run OPD on phone calls and paper. See how a lightweight clinic CRM handles online booking, live token queue, mock UPI, digital Rx, and WhatsApp follow-ups — without a heavy EMR.</description>
+      <enclosure url="https://ovevcjixqq.ufs.sh/f/9pIU2Of3sxTfT69NDR5uGo1IfQ5DLR6MnCzWU3dckPqgwhJZ" type="image/jpeg" />
+    </item>
+    <item>
+      <title>Why Every AI-Built CRM Looks the Same — And How a 15-Minute Spec Fixes It</title>
+      <link>https://saascrm.site/blog/why-every-crm-looks-the-same</link>
+      <guid isPermaLink="true">https://saascrm.site/blog/why-every-crm-looks-the-same</guid>
+      <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
+      <author>shreyvijayvargiya26@gmail.com (Shrey)</author>
+      <description>Why AI-generated CRMs look so similar, and how a 15-minute business spec plus a SaaSCRM prompt helps Claude or Cursor build a layout that actually fits your workflow.</description>
+      <enclosure url="https://saascrm.site/og/why-every-crm-looks-the-same.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>I Trained Claude to Build My CRM Using SaaSCRM.site</title>
+      <link>https://saascrm.site/blog/i-trained-claude-to-build-my-crm</link>
+      <guid isPermaLink="true">https://saascrm.site/blog/i-trained-claude-to-build-my-crm</guid>
+      <pubDate>Fri, 11 Sep 2026 00:00:00 GMT</pubDate>
+      <author>shreyvijayvargiya26@gmail.com (Shrey)</author>
+      <description>How I packaged SaaSCRM.site into Claude Skills and a Cursor CRM prompt template so Claude scaffolds a frontend CRM from a business description — Next.js or Vite, no generic AI UI.</description>
+      <enclosure url="https://saascrm.site/og/trained-claude-to-build-crm.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>SaaS CRM for Small Business in 2026: What Actually Matters When You&apos;re Choosing One</title>
+      <link>https://saascrm.site/blog/saas-crm-for-small-business-in-2026</link>
+      <guid isPermaLink="true">https://saascrm.site/blog/saas-crm-for-small-business-in-2026</guid>
+      <pubDate>Wed, 09 Sep 2026 00:00:00 GMT</pubDate>
+      <author>shreyvijayvargiya26@gmail.com (Shrey)</author>
+      <description>Most CRM implementations fail from poor adoption, not missing features. A practical 2026 guide to choosing a SaaS CRM for small business — workflow, pricing, AI agents, and templates vs subscriptions.</description>
+      <enclosure url="https://saascrm.site/og/saas-crm-for-small-business-2026.jpg" type="image/jpeg" />
+    </item>
     <item>
       <title>How to migrate an Excel or Google Sheets CRM into a real CRM</title>
       <link>https://saascrm.site/blog/excel-to-crm-migration</link>

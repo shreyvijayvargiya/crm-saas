@@ -1,17 +1,18 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, LucideProjector, RocketIcon, TrainFront } from "lucide-react";
+import { ArrowRight, Code2, LayoutDashboard, RocketIcon, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CursorImageTrail } from "./cursor-trails";
 import LlmShareActions from "./LlmShareActions";
+import GitHubStarsLink from "./GitHubStarsLink";
 
-const HEADING_WORDS = ["CRM", "for", "businesses"];
+const HEADING_WORDS = ["Business,", "Founders,", "Vibe", "Coders"];
 
 export default function HeroCrmIntro({ screenshots, isLight }) {
 	return (
 		<section
 			className="relative left-1/2 mb-10 w-screen -translate-x-1/2 sm:mb-14"
-			aria-label="SaaSCRM — CRM for businesses"
+			aria-label="SaaSCRM — first open-source CRM for business, founders, and vibe coders"
 		>
 			<CursorImageTrail
 				images={screenshots}
@@ -28,12 +29,12 @@ export default function HeroCrmIntro({ screenshots, isLight }) {
 						isLight ? "text-zinc-600" : "text-zinc-400"
 					)}
 				>
-					Built for <RocketIcon className="h-3.5 w-3.5" /> startups,{" "}
-					<TrainFront className="h-3.5 w-3.5" /> agencies,{" "}
-					<LucideProjector className="h-3.5 w-3.5" /> freelancers
+					Built for <Briefcase className="h-3.5 w-3.5" /> business,{" "}
+					<RocketIcon className="h-3.5 w-3.5" /> founders,{" "}
+					<Code2 className="h-3.5 w-3.5" /> vibe coders
 				</motion.p>
 
-				<h1 className="mx-auto max-w-5xl text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl">
+				<h1 className="mx-auto max-w-5xl text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
 					<span
 						className={cn(
 							"mb-4 block text-lg font-semibold tracking-[0.2em] sm:text-xl",
@@ -41,6 +42,14 @@ export default function HeroCrmIntro({ screenshots, isLight }) {
 						)}
 					>
 						SaaSCRM
+					</span>
+					<span
+						className={cn(
+							"block text-2xl font-bold sm:text-3xl lg:text-4xl",
+							isLight ? "text-zinc-800" : "text-zinc-200"
+						)}
+					>
+						The first open-source CRM for
 					</span>
 					{HEADING_WORDS.map((word, index) => (
 						<motion.span
@@ -50,7 +59,7 @@ export default function HeroCrmIntro({ screenshots, isLight }) {
 							viewport={{ once: true }}
 							transition={{
 								duration: 0.7,
-								delay: 0.12 + index * 0.14,
+								delay: 0.12 + index * 0.12,
 								ease: [0.22, 1, 0.36, 1],
 							}}
 							className={cn(
@@ -78,8 +87,8 @@ export default function HeroCrmIntro({ screenshots, isLight }) {
 						isLight ? "text-zinc-600" : "text-zinc-400"
 					)}
 				>
-					The Next.js CRM, admin dashboard, and CMS template with 60+ screens and a
-					built-in AI chatbot — ship in days, not months.
+					MIT-licensed Next.js CRM, admin dashboard, and CMS template with 60+
+					screens and a built-in AI chatbot — clone on GitHub and ship in days.
 				</motion.p>
 
 				<motion.div
@@ -87,21 +96,23 @@ export default function HeroCrmIntro({ screenshots, isLight }) {
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.55, delay: 0.7 }}
-					className="mt-8 flex flex-col items-center gap-3"
+					className="mt-8 flex w-full max-w-md flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center"
 				>
 					<a
 						href="/demo"
 						className={cn(
-							"inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold shadow-sm transition hover:-translate-y-0.5",
+							"order-1 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold shadow-md transition hover:-translate-y-0.5 sm:w-auto",
 							isLight
 								? "bg-zinc-900 text-white hover:bg-zinc-800"
 								: "bg-white text-zinc-900 hover:bg-zinc-100"
 						)}
 					>
+						<LayoutDashboard className="h-4 w-4 shrink-0" />
 						View demo
-						<ArrowRight className="h-4 w-4" />
+						<ArrowRight className="h-4 w-4 shrink-0" />
 					</a>
-					<LlmShareActions variant="hero" className="items-center" />
+					<GitHubStarsLink isLight={isLight} variant="hero" />
+					<LlmShareActions variant="hero" hideGithub />
 				</motion.div>
 			</CursorImageTrail>
 		</section>

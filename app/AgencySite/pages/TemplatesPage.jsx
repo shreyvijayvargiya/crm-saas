@@ -5,6 +5,7 @@ import * as lucideIcons from "lucide-react";
 import { ArrowRight, Download, ExternalLink, LayoutTemplate } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SiteSeo, { TEMPLATES_PAGE_OG_IMAGE } from "@/components/seo/SiteSeo";
+import { GITHUB_REPO } from "../agencyConfig";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import AgencyShell from "../components/AgencyShell";
@@ -76,7 +77,7 @@ function TemplatesContent() {
 		<>
 			<SiteSeo
 				title="Free CRM Templates – Next.js Dashboards for Startups | SaaSCRM"
-				description="Download free open-source Next.js CRM templates for Stripe billing, agencies, freelancers, creators, and digital stores. Slim Tailwind starters — full SaaSCRM kit + Figma on Gumroad."
+				description="Download free open-source Next.js CRM templates for Stripe billing, agencies, freelancers, creators, and clinics. Slim AST-backed starters — full 60+ screen SaaSCRM kit on GitHub (MIT)."
 				path="/templates"
 				keywords="free CRM template, Next.js CRM, open source CRM, freelancer CRM, Stripe CRM UI, agency CRM template, SaaS admin template free download"
 				images={[TEMPLATES_PAGE_OG_IMAGE]}
@@ -213,9 +214,14 @@ function TemplatesContent() {
 			>
 				<Download className="mr-1 inline h-3.5 w-3.5" />
 				Email required once per download · We never sell your address ·{" "}
-				<Link href="/pricing">
-					<a className="underline underline-offset-2">Full kit on pricing</a>
-				</Link>
+				<a
+					href={GITHUB_REPO.url}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="underline underline-offset-2"
+				>
+					Full kit on GitHub
+				</a>
 			</p>
 
 			<section className="mt-14">

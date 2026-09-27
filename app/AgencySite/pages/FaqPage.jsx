@@ -160,7 +160,7 @@ export default function AgencyFaqPage() {
 		<AgencyShell>
 			<SiteSeo
 				title="FAQ – SaaSCRM Template Licensing, Support & Custom Builds"
-				description="Answers about SaaSCRM licensing, what’s included, custom CRM builds, support, and how free templates differ from the full kit + Figma."
+				description="Answers about SaaSCRM open-source licensing on GitHub, what’s included, optional Figma kit, custom CRM builds, and support."
 				path="/faq"
 				keywords="SaaSCRM FAQ, CRM template license, custom CRM build, Next.js CRM support"
 				images={[TEMPLATES_PAGE_OG_IMAGE]}

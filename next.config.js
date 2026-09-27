@@ -19,6 +19,15 @@ const nextConfig = {
 			},
 		];
 	},
+	async redirects() {
+		return [
+			{
+				source: "/pricing",
+				destination: "https://github.com/shreyvijayvargiya/crm-saas",
+				permanent: true,
+			},
+		];
+	},
 	async rewrites() {
 		const acceptMarkdownExact = {
 			type: "header",

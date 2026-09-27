@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowUpRight, Mail, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CONTACT } from "../agencyConfig";
+import { CONTACT, GITHUB_REPO } from "../agencyConfig";
 import { useAgencyTheme } from "../AgencyThemeContext";
 import LlmShareActions from "./LlmShareActions";
 
@@ -14,7 +14,6 @@ const FOOTER_LINKS = [
 	{ label: "Prompts", href: "/prompts" },
 	{ label: "RSS", href: "/rss.xml" },
 	{ label: "Live demo", href: "/demo" },
-	{ label: "Pricing", href: "/pricing" },
 	{ label: "FAQ", href: "/#faq" },
 	{ label: "Contact", href: "/#contact" },
 	{ label: "SaaSCRM docs", href: "/docs" },
@@ -62,7 +61,7 @@ export default function AgencyFooter() {
 							isLight ? "text-zinc-600" : "text-zinc-400"
 						)}
 					>
-						A complete Next.js CRM frontend template with 60+ screens,
+						Open-source (MIT) Next.js CRM frontend template with 60+ screens,
 						theme customization, AI tools, and production-ready UI patterns.
 					</p>
 					<div className="mt-4 flex flex-wrap gap-2">
@@ -77,6 +76,20 @@ export default function AgencyFooter() {
 						>
 							<Mail className="h-3.5 w-3.5" />
 							{CONTACT.email}
+						</a>
+						<a
+							href={GITHUB_REPO.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							className={cn(
+								"inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium transition",
+								isLight
+									? "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300"
+									: "border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-600"
+							)}
+						>
+							GitHub
+							<ArrowUpRight className="h-3 w-3" />
 						</a>
 						<a
 							href={CONTACT.x}

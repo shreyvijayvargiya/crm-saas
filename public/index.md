@@ -1,6 +1,6 @@
-# SaaSCRM — AI CRM SaaS template for Next.js admin dashboards, CMS, and sales pipelines
+# SaaSCRM — The first open-source CRM for business, founders, and vibe coders — Next.js admin dashboards, CMS, and sales pipelines
 
-SaaSCRM is a Next.js Pages Router CRM, admin dashboard, and CMS frontend template sold at https://saascrm.site. Buyers get 60+ production UI screens, an agentic AI chatbot (OpenRouter tool-calling), a live theme customizer, Zod schemas, and Cursor rules so an agent can extend the CRM consistently. The public marketing site lives at `/`. The interactive CRM demo lives at `/demo`. Runtime data is in-memory demo data — this is a sellable UI kit, not a hosted CRM backend.
+SaaSCRM is an open-source (MIT) Next.js Pages Router CRM, admin dashboard, and CMS frontend template at https://saascrm.site and https://github.com/shreyvijayvargiya/crm-saas. It includes 60+ production UI screens, an agentic AI chatbot (OpenRouter tool-calling), a live theme customizer, Zod schemas, and Cursor rules so an agent can extend the CRM consistently. The public marketing site lives at `/`. The interactive CRM demo lives at `/demo`. Runtime data is in-memory demo data — this is a frontend UI kit, not a hosted CRM backend.
 
 SaaSCRM helps startups, agencies, and freelancers ship AI CRM, CMS, and admin dashboards in days instead of months. Ask the built-in copilot about leads, deals, pipeline, invoices, and tasks; research accounts without tab switching; and create, update, or delete records with natural language.
 
@@ -9,7 +9,7 @@ SaaSCRM helps startups, agencies, and freelancers ship AI CRM, CMS, and admin da
 - Explore the live SaaSCRM demo: https://saascrm.site/demo
 - Plan a custom CRM with the free AI builder: https://saascrm.site/blueprint
 - Read SaaSCRM developer resources: https://saascrm.site/docs
-- Buy the template or book a custom build: https://saascrm.site/pricing
+- Clone on GitHub: https://github.com/shreyvijayvargiya/crm-saas · Custom builds: https://saascrm.site/contact
 
 ## Product highlights
 

@@ -13,6 +13,7 @@ const {
 	listBlogPosts,
 	getBlogMarkdownBySlug,
 } = require("../lib/agent/blogFeed.js");
+const { buildSitemapXml } = require("../lib/agent/buildSitemapXml.js");
 
 const root = process.cwd();
 const publicDir = path.join(root, "public");
@@ -38,6 +39,7 @@ writeTracked("openapi.yaml", OPENAPI_YAML);
 writeTracked("openapi.json", OPENAPI_JSON);
 writeTracked("agents.md", AGENTS_MARKDOWN);
 writeTracked("rss.xml", buildBlogRss());
+writeTracked("sitemap.xml", buildSitemapXml());
 writeTracked("blog.md", buildBlogIndexMarkdown());
 for (const post of listBlogPosts()) {
 	const markdown = getBlogMarkdownBySlug(post.slug);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ChevronDown, ExternalLink, ShoppingBag, Sparkles } from "lucide-react";
+import { ChevronDown, ExternalLink, Github, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import {
@@ -11,7 +11,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-	CHECKOUT,
+	GITHUB_REPO,
 	getLlmAskTargets,
 	LLM_SHARE_PROMPT,
 } from "../agencyConfig";
@@ -67,17 +67,19 @@ const TARGET_ICONS = {
 };
 
 /**
- * Ask AI dropdown (ChatGPT, Claude, Perplexity, Gemini, Grok) + Buy now.
+ * Ask AI dropdown (ChatGPT, Claude, Perplexity, Gemini, Grok) + GitHub.
  * @param {"default" | "hero"} [variant]
  */
 export default function LlmShareActions({
 	className,
 	variant = "default",
 	prompt = LLM_SHARE_PROMPT,
+	hideGithub = false,
 }) {
 	const { isLight } = useAgencyTheme();
 	const [menuOpen, setMenuOpen] = useState(false);
 	const isHero = variant === "hero";
+	const heroAskOnly = isHero && hideGithub;
 	const targets = getLlmAskTargets(prompt);
 
 	const handleAsk = async (target) => {
@@ -102,13 +104,17 @@ export default function LlmShareActions({
 
 	const askBtn = cn(
 		baseBtn,
-		isLight
-			? isHero
-				? "border-emerald-300 bg-emerald-50 text-emerald-900 shadow-sm hover:border-emerald-400"
-				: "border-emerald-200 bg-emerald-50 text-emerald-800 hover:border-emerald-300"
-			: isHero
-				? "border-emerald-500/40 bg-emerald-500/15 text-emerald-200 hover:border-emerald-400/60"
-				: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:border-emerald-400/50"
+		heroAskOnly
+			? isLight
+				? "border-violet-300 bg-violet-50/80 text-violet-900 shadow-sm hover:border-violet-400 hover:bg-violet-50"
+				: "border-violet-500/45 bg-violet-500/10 text-violet-200 hover:border-violet-400/70 hover:bg-violet-500/20"
+			: isLight
+				? isHero
+					? "border-emerald-300 bg-emerald-50 text-emerald-900 shadow-sm hover:border-emerald-400"
+					: "border-emerald-200 bg-emerald-50 text-emerald-800 hover:border-emerald-300"
+				: isHero
+					? "border-emerald-500/40 bg-emerald-500/15 text-emerald-200 hover:border-emerald-400/60"
+					: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:border-emerald-400/50"
 	);
 
 	const buyBtn = cn(
@@ -121,17 +127,30 @@ export default function LlmShareActions({
 	return (
 		<div
 			className={cn(
-				"flex flex-col gap-2",
-				isHero ? "items-center" : "items-start",
+				heroAskOnly ? "contents" : "flex flex-col gap-2",
+				!heroAskOnly && (isHero ? "items-center" : "items-start"),
 				className
 			)}
 		>
-			<div className={cn("flex flex-wrap items-center gap-2", isHero && "justify-center")}>
+			<div
+				className={cn(
+					"flex flex-wrap items-center gap-2",
+					isHero && !heroAskOnly && "justify-center",
+					heroAskOnly &&
+						cn(
+							"order-3 w-full sm:w-auto",
+							"inline-flex"
+						)
+				)}
+			>
 				<DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
 					<DropdownMenuTrigger asChild>
 						<button
 							type="button"
-							className={askBtn}
+							className={cn(
+								askBtn,
+								heroAskOnly && "w-full justify-center sm:w-auto"
+							)}
 							aria-label="Ask an AI about SaaSCRM"
 						>
 							<Sparkles className="h-3.5 w-3.5" />
@@ -166,17 +185,19 @@ export default function LlmShareActions({
 						})}
 					</DropdownMenuContent>
 				</DropdownMenu>
-				<a
-					href={CHECKOUT.usd}
-					target="_blank"
-					rel="noopener noreferrer"
-					className={buyBtn}
-					aria-label="Buy SaaSCRM template on Gumroad"
-				>
-					<ShoppingBag className="h-3.5 w-3.5" />
-					Buy now
-					<ExternalLink className="h-3 w-3 opacity-70" />
-				</a>
+				{hideGithub ? null : (
+					<a
+						href={GITHUB_REPO.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						className={buyBtn}
+						aria-label="SaaSCRM on GitHub"
+					>
+						<Github className="h-3.5 w-3.5" />
+						GitHub
+						<ExternalLink className="h-3 w-3 opacity-70" />
+					</a>
+				)}
 			</div>
 		</div>
 	);

@@ -36,7 +36,7 @@ import {
 } from "@/components/ui/select";
 import AgencyShell from "../components/AgencyShell";
 import { useAgencyTheme } from "../AgencyThemeContext";
-import { CHECKOUT } from "../agencyConfig";
+import { GITHUB_REPO } from "../agencyConfig";
 import SiteSeo, { BLUEPRINT_OG_IMAGE } from "@/components/seo/SiteSeo";
 
 const BUSINESS_TYPES = [
@@ -1277,13 +1277,13 @@ function BlueprintContent() {
 								isLight ? "text-zinc-600" : "text-zinc-400"
 							)}
 						>
-							Start with the $49 source template, use the generated Cursor
+							Clone the open-source template on GitHub, use the generated Cursor
 							prompts, and customize the remaining workflows.
 						</p>
 						<div className="mt-5 flex flex-wrap justify-center gap-3">
 							<Button asChild>
-								<a href={CHECKOUT.usd} target="_blank" rel="noopener noreferrer">
-									Buy template
+								<a href={GITHUB_REPO.url} target="_blank" rel="noopener noreferrer">
+									View on GitHub
 									<ExternalLink className="h-4 w-4" />
 								</a>
 							</Button>

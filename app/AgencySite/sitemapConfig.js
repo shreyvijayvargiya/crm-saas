@@ -33,7 +33,7 @@ export const SITEMAP_GROUPS = [
 			{ label: "Demo · Freelancer", href: "/demo/template/freelancer" },
 			{ label: "Demo · Ecommerce CMS", href: "/demo/template/ecommerce-cms" },
 			{ label: "Dashboard", href: "/dashboard" },
-			{ label: "Pricing", href: "/pricing" },
+			{ label: "GitHub (open source)", href: "https://github.com/shreyvijayvargiya/crm-saas" },
 			{ label: "FAQ", href: "/faq" },
 			{ label: "Contact", href: "/contact" },
 			{ label: "SaaSCRM developer docs", href: "/docs" },

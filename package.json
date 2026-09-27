@@ -6,7 +6,7 @@
 	"repository": "https://github.com/shreyvijayvargiya/crm-saas",
 	"author": "Shrey Vijayvargiya",
 	"license": "MIT",
-	"private": true,
+	"private": false,
 	"engines": {
 		"node": ">=18.0.0",
 		"npm": ">=9.0.0"

@@ -6,7 +6,6 @@ import {
 	Home,
 	LayoutDashboard,
 	Sparkles,
-	CreditCard,
 	Sun,
 	Moon,
 	BookOpen,
@@ -15,6 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAgencyTheme } from "../AgencyThemeContext";
+import GitHubStarsLink from "./GitHubStarsLink";
 
 const TABS = [
 	{ id: "home", label: "Home", href: "/", icon: Home },
@@ -23,7 +23,6 @@ const TABS = [
 	{ id: "blueprint", label: "Builder", href: "/blueprint", icon: Sparkles },
 	{ id: "blog", label: "Blog", href: "/blog", icon: BookOpen },
 	{ id: "prompts", label: "Prompts", href: "/prompts", icon: MessageSquareCode },
-	{ id: "pricing", label: "Pricing", href: "/pricing", icon: CreditCard },
 ];
 
 const PILL_SPRING = { type: "spring", stiffness: 440, damping: 34, mass: 0.75 };
@@ -128,6 +127,8 @@ export default function DynamicIslandNav() {
 							</Link>
 						);
 					})}
+
+					<GitHubStarsLink isLight={isLight} compact />
 
 					<div
 						className={cn(

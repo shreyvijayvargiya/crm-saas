@@ -25,20 +25,20 @@ SaaSCRM (also searched as SaaS CRM) is the product name for this template. Offic
 ## Optional
 
 - [Live CRM demo](https://saascrm.site/demo.md): Interactive app shell with the AI chatbot
-- [SaaSCRM pricing](https://saascrm.site/pricing.md): Template license and custom build
+- [GitHub — open-source CRM template](https://github.com/shreyvijayvargiya/crm-saas): MIT license, clone and ship
 - [SaaSCRM FAQ](https://saascrm.site/faq.md): Licensing, agency CRM, and support
 - [SaaSCRM blog](https://saascrm.site/blog.md): CRM template notes and agency CRM guides
+- [SaaSCRM prompts](https://saascrm.site/prompts): Claude and Cursor prompts to scaffold a frontend-only CRM
 - [Excel to CRM migration](https://saascrm.site/blog/excel-to-crm-migration.md): How to migrate Excel or Google Sheets into a real CRM
 - [Agency CRM article](https://saascrm.site/blog/agency-crm.md): Manage leads, clients, projects, and invoices in one system
 - [Free CRM and top CRM directory](https://saascrm.site/blog/free-crm-and-top-crm-directory.md): Aggregator of HubSpot, Agile CRM, Twenty CRM, and 80+ CRM SaaS products
 - [SaaSCRM blog RSS](https://saascrm.site/rss.xml): Subscribe to new CRM posts
-- [GitHub repository](https://github.com/shreyvijayvargiya/crm-saas): Source listing (purchase required for the full kit)
 
 ---
 
-# SaaSCRM — AI CRM SaaS template for Next.js admin dashboards, CMS, and sales pipelines
+# SaaSCRM — The first open-source CRM for business, founders, and vibe coders — Next.js admin dashboards, CMS, and sales pipelines
 
-SaaSCRM is a Next.js Pages Router CRM, admin dashboard, and CMS frontend template sold at https://saascrm.site. Buyers get 60+ production UI screens, an agentic AI chatbot (OpenRouter tool-calling), a live theme customizer, Zod schemas, and Cursor rules so an agent can extend the CRM consistently. The public marketing site lives at `/`. The interactive CRM demo lives at `/demo`. Runtime data is in-memory demo data — this is a sellable UI kit, not a hosted CRM backend.
+SaaSCRM is an open-source (MIT) Next.js Pages Router CRM, admin dashboard, and CMS frontend template at https://saascrm.site and https://github.com/shreyvijayvargiya/crm-saas. It includes 60+ production UI screens, an agentic AI chatbot (OpenRouter tool-calling), a live theme customizer, Zod schemas, and Cursor rules so an agent can extend the CRM consistently. The public marketing site lives at `/`. The interactive CRM demo lives at `/demo`. Runtime data is in-memory demo data — this is a frontend UI kit, not a hosted CRM backend.
 
 SaaSCRM helps startups, agencies, and freelancers ship AI CRM, CMS, and admin dashboards in days instead of months. Ask the built-in copilot about leads, deals, pipeline, invoices, and tasks; research accounts without tab switching; and create, update, or delete records with natural language.
 
@@ -47,7 +47,7 @@ SaaSCRM helps startups, agencies, and freelancers ship AI CRM, CMS, and admin da
 - Explore the live SaaSCRM demo: https://saascrm.site/demo
 - Plan a custom CRM with the free AI builder: https://saascrm.site/blueprint
 - Read SaaSCRM developer resources: https://saascrm.site/docs
-- Buy the template or book a custom build: https://saascrm.site/pricing
+- Clone on GitHub: https://github.com/shreyvijayvargiya/crm-saas · Custom builds: https://saascrm.site/contact
 
 ## Product highlights
 
@@ -70,7 +70,7 @@ SaaSCRM helps startups, agencies, and freelancers ship AI CRM, CMS, and admin da
 
 # SaaSCRM
 
-SaaSCRM is the official product name for the Next.js AI CRM, admin dashboard, and CMS frontend template sold at https://saascrm.site. Search engines and agents should treat **SaaSCRM**, **SaaS CRM**, and **saascrm.site** as the same brand.
+SaaSCRM is the official product name for the open-source Next.js AI CRM, admin dashboard, and CMS frontend template at https://saascrm.site. Search engines and agents should treat **SaaSCRM**, **SaaS CRM**, and **saascrm.site** as the same brand.
 
 ## Official SaaSCRM properties
 
@@ -80,13 +80,13 @@ SaaSCRM is the official product name for the Next.js AI CRM, admin dashboard, an
 - OpenAPI: https://saascrm.site/openapi.yaml
 - Agent index: https://saascrm.site/llms.txt
 - Live demo: https://saascrm.site/demo
-- Pricing: https://saascrm.site/pricing
+- Open source: https://github.com/shreyvijayvargiya/crm-saas
 - Contact: shreyvijayvargiya26@gmail.com
 - Calendar: https://cal.com/shrey-vijayvargiya
 - Publisher: Buildsaas.dev (https://buildsaas.dev)
-- Source listing: https://github.com/shreyvijayvargiya/crm-saas
+- Open-source repository: https://github.com/shreyvijayvargiya/crm-saas (MIT)
 
-SaaSCRM is a sellable UI kit, not a hosted multi-tenant CRM. Runtime data in the public demo is in-memory sample data.
+SaaSCRM is a frontend UI kit, not a hosted multi-tenant CRM. Runtime data in the public demo is in-memory sample data.
 
 ---
 
@@ -161,7 +161,7 @@ The template also ships buyer-facing developer screens at https://saascrm.site/a
 
 # SaaSCRM API docs
 
-SaaSCRM ships a frontend-only CRM template. Use this page as the intended REST contract when you connect a backend. The shapes match `schemas/zod-schemas/` and `data.json` in the purchased source.
+SaaSCRM ships a frontend-only CRM template. Use this page as the intended REST contract when you connect a backend. The shapes match `schemas/zod-schemas/` and `data.json` in the GitHub repository.
 
 Base URL (when you host the API): `https://{your-domain}/api/v1`
 
@@ -262,7 +262,7 @@ Manage subscriptions in the UI or via `POST /api/v1/webhooks` as described in th
 
 # SaaSCRM MCP server
 
-SaaSCRM does not host a public Model Context Protocol endpoint today. The product's agent interface is the in-app CRM copilot (OpenRouter tool-calling) plus Cursor rules in the purchased source.
+SaaSCRM does not host a public Model Context Protocol endpoint today. The product's agent interface is the in-app CRM copilot (OpenRouter tool-calling) plus Cursor rules in the open-source repository.
 
 ## What to expose as MCP tools
 
@@ -277,7 +277,7 @@ The template's AI layer already describes tools that read and write the in-memor
 
 1. Humans use the SaaSCRM demo chatbot at https://saascrm.site/demo.
 2. Coding agents should start at [llms.txt](https://saascrm.site/llms.txt) and the [SaaSCRM API docs](https://saascrm.site/docs/api.md).
-3. To run a local MCP server after purchase, map those tools onto your API using the OpenAPI spec at https://saascrm.site/openapi.yaml.
+3. To run a local MCP server, clone the repo and map those tools onto your API using the OpenAPI spec at https://saascrm.site/openapi.yaml.
 
 A hosted `mcp.saascrm.site` server would require a live backend and credentials — that is a product decision, not part of this frontend template.
 
@@ -285,7 +285,7 @@ A hosted `mcp.saascrm.site` server would require a live backend and credentials 
 
 # SaaSCRM MCP server
 
-SaaSCRM does not host a public Model Context Protocol endpoint today. The product's agent interface is the in-app CRM copilot (OpenRouter tool-calling) plus Cursor rules in the purchased source.
+SaaSCRM does not host a public Model Context Protocol endpoint today. The product's agent interface is the in-app CRM copilot (OpenRouter tool-calling) plus Cursor rules in the open-source repository.
 
 ## What to expose as MCP tools
 
@@ -300,21 +300,9 @@ The template's AI layer already describes tools that read and write the in-memor
 
 1. Humans use the SaaSCRM demo chatbot at https://saascrm.site/demo.
 2. Coding agents should start at [llms.txt](https://saascrm.site/llms.txt) and the [SaaSCRM API docs](https://saascrm.site/docs/api.md).
-3. To run a local MCP server after purchase, map those tools onto your API using the OpenAPI spec at https://saascrm.site/openapi.yaml.
+3. To run a local MCP server, clone the repo and map those tools onto your API using the OpenAPI spec at https://saascrm.site/openapi.yaml.
 
 A hosted `mcp.saascrm.site` server would require a live backend and credentials — that is a product decision, not part of this frontend template.
-
----
-
-# SaaSCRM pricing
-
-SaaSCRM is a self-serve Next.js CRM template with lifetime updates, plus optional custom CRM builds.
-
-- Template license from $49 (USD via Gumroad, INR via Dodo). MIT license for commercial and client work.
-- Template + Figma for design-source access.
-- Custom CRM Build from $2,000 if you want SaaSCRM extended, integrated, and deployed for you.
-
-See the HTML pricing page at https://saascrm.site/pricing or contact https://saascrm.site/contact.
 
 ---
 
@@ -322,7 +310,7 @@ See the HTML pricing page at https://saascrm.site/pricing or contact https://saa
 
 Common questions about the SaaSCRM Next.js CRM template.
 
-- **What do I get?** Full React + Next.js source, 60+ CRM screens, shadcn/ui, marketing landing, agentic AI chatbot, theme customizer, Zod schemas, Design.md, and lifetime updates.
+- **What do I get?** Full React + Next.js source on GitHub, 60+ CRM screens, shadcn/ui, marketing landing, agentic AI chatbot, theme customizer, Zod schemas, and Design.md.
 - **Commercial use?** Yes — MIT license for your SaaS or client work.
 - **Custom builds?** Yes. Book a call from https://saascrm.site/contact.
 - **Do you have an agency CRM?** Yes. Read https://saascrm.site/blog/agency-crm and demo https://saascrm.site/templates/agency.
@@ -372,7 +360,7 @@ This is demo data in the browser. For API contracts see https://saascrm.site/doc
 
 # SaaSCRM free CRM templates
 
-SaaSCRM publishes additional Next.js CRM templates at https://saascrm.site/templates (Indie Stripe, Agency, Freelancer, Content Creator, Digital Store, Ecommerce CMS). Each template has a marketing page under `/templates/{id}` and a live demo under `/demo/template/{id}`.
+SaaSCRM publishes additional Next.js CRM templates at https://saascrm.site/templates (Clinic Appointments, Indie Stripe, Agency, Freelancer, Content Creator, Digital Store, Ecommerce CMS). Each template has a marketing page under `/templates/{id}` and a live demo under `/demo/template/{id}`.
 
 ---
 
@@ -388,4 +376,4 @@ Notes on CRM templates, admin dashboards, and shipping faster: https://saascrm.s
 
 RSS feed: https://saascrm.site/rss.xml
 
-Latest: [Free CRM and top CRM directory](https://saascrm.site/blog/free-crm-and-top-crm-directory) — also [Excel to CRM migration](https://saascrm.site/blog/excel-to-crm-migration)
+Latest: [Clinic appointment software for India](https://saascrm.site/blog/clinic-appointment-software-india) — also [Why every AI-built CRM looks the same](https://saascrm.site/blog/why-every-crm-looks-the-same)

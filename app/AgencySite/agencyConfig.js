@@ -9,6 +9,11 @@ export const CONTACT = {
 	whatsapp: "+91 7030226230",
 };
 
+export const GITHUB_REPO = {
+	url: "https://github.com/shreyvijayvargiya/crm-saas",
+	clone: "https://github.com/shreyvijayvargiya/crm-saas.git",
+};
+
 export const CHECKOUT = {
 	usd: "https://shreyvijayvargiya.gumroad.com/l/saas-crm-react-template",
 	inr: "https://checkout.dodopayments.com/buy/pdt_0NdFsoIah9Nc7oQ5SZScQ?session=sess_iZe1X7I6XX",
@@ -36,13 +41,13 @@ export const SAASCRM_SKILLS = [
 export const CURSOR_PROMPT_HREF = "/skills/saascrm-nextjs-crm-builder-prompt.md";
 
 /** Prompt for Ask AI / Copy CTAs — paste into any LLM or open via Ask AI dropdown. */
-export const LLM_SHARE_PROMPT = `Visit https://saascrm.site and evaluate SaaSCRM — a Next.js CRM / Admin / CMS frontend template with 60+ screens, agentic AI chatbot, theme customizer, and production-ready UI (React, Tailwind, shadcn/ui).
+export const LLM_SHARE_PROMPT = `Visit https://saascrm.site and https://github.com/shreyvijayvargiya/crm-saas — evaluate SaaSCRM, an open-source (MIT) Next.js CRM / Admin / CMS frontend template with 60+ screens, agentic AI chatbot, theme customizer, and production-ready UI (React, Tailwind, shadcn/ui).
 
 Summarize:
 1. What it offers for startups, agencies, and indie hackers
-2. How the free AI CRM Builder (/blueprint) helps plan a CRM in 2 minutes
-3. Whether the $49 template is worth buying for shipping an admin dashboard quickly
-4. Suggested next steps to customize it for my business
+2. How to clone the repo, run locally, and explore /demo
+3. How the free AI CRM Builder (/blueprint) helps plan a CRM in 2 minutes
+4. Suggested next steps to customize it for my business (custom build: saascrm.site/contact)
 
 Be specific and practical.`;
 
@@ -176,18 +181,18 @@ export const AI_BUILD_PROMPTS = [
 
 export const PRICING_TIERS = [
 	{
-		id: "template",
-		name: "CRM Template",
-		tagline: "Ship your CRM UI in days, not months",
-		priceUsd: "$49",
-		priceInr: "₹920+",
-		period: "one-time · lifetime updates",
-		featured: false,
-		cta: "Buy template",
-		pointerTitle: "Buy template (USD)",
-		pointerColor: "#3b82f6",
-		checkoutUsd: CHECKOUT.usd,
-		checkoutInr: CHECKOUT.inr,
+		id: "opensource",
+		name: "Open source (MIT)",
+		tagline: "Full template on GitHub — clone, fork, ship commercially",
+		priceUsd: "Free",
+		priceInr: null,
+		period: "MIT license · pull updates from Git",
+		featured: true,
+		cta: "View on GitHub",
+		pointerTitle: "Star on GitHub",
+		pointerColor: "#10b981",
+		href: GITHUB_REPO.url,
+		external: true,
 		image:
 			"https://ovevcjixqq.ufs.sh/f/9pIU2Of3sxTfU9NP1Drb7rxhdGYe1SLHVu92gAbfPX6ytMjc",
 		features: [
@@ -196,30 +201,30 @@ export const PRICING_TIERS = [
 			"Agentic AI chatbot with OpenRouter + tool-calling",
 			"Marketing landing + lead capture API",
 			"Zod schemas + Drizzle SQL reference",
-			"6 months priority email support",
-			"MIT license for commercial use",
+			"Vertical demos: clinic, agency, indie Stripe, and more",
+			"MIT license for commercial & client work",
 		],
 	},
 	{
 		id: "template-figma",
-		name: "Template + Figma",
-		tagline: "Design system handoff included",
+		name: "Figma kit (optional)",
+		tagline: "Support the project — design handoff for faster rebranding",
 		priceUsd: "$79",
 		priceInr: "Via Dodo link",
-		period: "one-time",
-		featured: true,
-		cta: "Get template + Figma",
-		pointerTitle: "Get template + Figma",
+		period: "one-time · optional",
+		featured: false,
+		cta: "Get Figma kit",
+		pointerTitle: "Get Figma kit",
 		pointerColor: "#a855f7",
 		checkoutUsd: CHECKOUT.usd,
 		checkoutInr: CHECKOUT.inr,
 		image:
 			"https://ovevcjixqq.ufs.sh/f/9pIU2Of3sxTf0oTGf0ItJ0bOPyYln79LjfwsKrFWgTAe4Emd",
 		features: [
-			"Everything in CRM Template",
 			"Figma component kit (request via receipt)",
 			"Matching tokens, spacing & typography",
 			"Faster white-label rebranding",
+			"Optional thank-you for maintaining the open-source repo",
 		],
 	},
 	{
@@ -246,36 +251,36 @@ export const PRICING_TIERS = [
 
 export const FAQ_ITEMS = [
 	{
-		q: "What do I get when I buy the template?",
-		a: "Full React + Next.js source code, 60+ CRM screens with demo data, shadcn/ui components, marketing landing, agentic AI chatbot (OpenRouter + tool-calling), theme customizer, Zod schemas, Design.md, and lifetime updates.",
+		q: "Is SaaSCRM really open source?",
+		a: "Yes. The full template is on GitHub at https://github.com/shreyvijayvargiya/crm-saas under the MIT license — clone, customize, and ship in commercial or client projects.",
+	},
+	{
+		q: "What's included in the repository?",
+		a: "Full React + Next.js source, 60+ CRM screens with demo data, shadcn/ui components, marketing landing, agentic AI chatbot (OpenRouter + tool-calling), theme customizer, Zod schemas, Design.md, vertical demos, and Cursor rules.",
 	},
 	{
 		q: "Can I use this in commercial client projects?",
-		a: "Yes. The template ships with an MIT license — use it in your own SaaS, client work, or agency deliverables. Team or white-label licensing is available on request.",
+		a: "Yes. MIT license — use it in your own SaaS, client work, or agency deliverables. Team or white-label licensing is available on request.",
 	},
 	{
 		q: "Do you build custom CRMs for startups?",
 		a: "Yes. We use this template as a battle-tested foundation and extend it with your data model, branding, integrations, and deployment. Book a call via the contact page to scope timeline and budget.",
 	},
 	{
-		q: "What's the difference between USD and INR checkout?",
-		a: "Same source ZIP and lifetime updates. Gumroad (USD) accepts card and PayPal. Dodo (INR) supports UPI, cards, and net banking for India-based buyers.",
-	},
-	{
-		q: "Is there a live demo before I buy?",
+		q: "Is there a live demo?",
 		a: "Yes — open the Demo tab in the top nav or visit /demo to explore the full interactive CRM, including the AI chatbot sidebar: ask questions, create records, and see live UI updates.",
 	},
 	{
 		q: "How do I get the Figma files?",
-		a: "Purchase Template + Figma ($79 on Gumroad) or the INR listing, then email your receipt to shreyvijayvargiya26@gmail.com for Figma access.",
+		a: "The code is free on GitHub. The optional Figma kit ($79 on Gumroad or INR checkout) is a paid design handoff — email your receipt to shreyvijayvargiya26@gmail.com for access.",
 	},
 	{
 		q: "What stack does the template use?",
 		a: "Next.js 12, React 17, Tailwind CSS 3.4, shadcn/ui (Radix), Recharts, Framer Motion, TanStack Table, Zod, and i18n-ready structure.",
 	},
 	{
-		q: "Do you offer support after purchase?",
-		a: "Six months of priority email support for bugs and setup questions. Custom build clients get a dedicated handoff and optional retainer.",
+		q: "How do I get help or report bugs?",
+		a: "Open a GitHub issue on the repo for bugs and ideas. Optional Figma buyers get email support for setup questions. Custom build clients get a dedicated handoff and optional retainer.",
 	},
 	{
 		q: "Do you have an agency CRM for leads, clients, projects, and invoices?",
@@ -350,12 +355,13 @@ export const HOME_FEATURES = [
 
 export const SERVICES = [
 	{
-		title: "Buy the template",
-		desc: "Self-serve license with lifetime updates. Rebrand, connect your API, deploy.",
-		cta: "View pricing",
-		href: "/pricing",
-		pointerTitle: "View pricing",
-		pointerColor: "#3b82f6",
+		title: "Clone on GitHub",
+		desc: "MIT-licensed source — fork, rebrand, connect your API, deploy.",
+		cta: "Open repository",
+		href: GITHUB_REPO.url,
+		external: true,
+		pointerTitle: "Star on GitHub",
+		pointerColor: "#10b981",
 		image:
 			"https://ovevcjixqq.ufs.sh/f/9pIU2Of3sxTfU9NP1Drb7rxhdGYe1SLHVu92gAbfPX6ytMjc",
 	},

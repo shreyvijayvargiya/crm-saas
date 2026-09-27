@@ -21,7 +21,7 @@ import {
 	AI_BUILD_PROMPTS,
 	HOME_FEATURES,
 	SERVICES,
-	CHECKOUT,
+	GITHUB_REPO,
 	OTHER_TEMPLATES,
 } from "../agencyConfig";
 import { FaqContent } from "./FaqPage";
@@ -111,8 +111,8 @@ function HomeContent() {
 	return (
 		<>
 			<SiteSeo
-				title="SaaSCRM – AI CRM SaaS Template for Next.js Admin Dashboards & CMS"
-				description="SaaSCRM is the Next.js CRM, admin dashboard, and CMS template with 60+ screens and an agentic AI chatbot. Build AI CRM, CMS, and admin dashboards in days."
+				title="SaaSCRM – First Open-Source CRM for Business, Founders & Vibe Coders"
+				description="The first open-source CRM for business, founders, and vibe coders — MIT Next.js template with 60+ screens and an agentic AI chatbot. Clone on GitHub or explore the live demo."
 				path="/"
 				keywords="SaaSCRM, SaaS CRM, AI CRM template, Next.js CRM, SaaS admin dashboard, CMS template, React CRM, shadcn dashboard, Tailwind CRM, agentic CRM, saascrm.site"
 				images={[HOME_OG_IMAGE]}
@@ -490,8 +490,13 @@ function HomeContent() {
 						title={service.pointerTitle || service.cta}
 						accentColor={service.pointerColor}
 					>
-						<Link href={service.href} passHref>
-							<a className="block h-full">
+						{service.external ? (
+							<a
+								href={service.href}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="block h-full"
+							>
 							<Card
 								className={cn(
 									"group h-full overflow-hidden p-5 transition",
@@ -539,7 +544,58 @@ function HomeContent() {
 								</span>
 							</Card>
 							</a>
-						</Link>
+						) : (
+							<Link href={service.href} passHref>
+								<a className="block h-full">
+								<Card
+									className={cn(
+										"group h-full overflow-hidden p-5 transition",
+										isLight
+											? "border-zinc-200 bg-white shadow-sm hover:border-zinc-400 hover:shadow-md"
+											: "border-zinc-800 bg-zinc-900/50 hover:border-zinc-600 hover:bg-zinc-900"
+									)}
+								>
+									{service.image ? (
+										<img
+											src={service.image}
+											alt=""
+											className={cn(
+												"mb-3 h-24 w-full rounded-xl object-cover object-top",
+												isLight
+													? "ring-1 ring-zinc-200"
+													: "ring-1 ring-zinc-700"
+											)}
+										/>
+									) : null}
+									<h2
+										className={cn(
+											"font-semibold",
+											isLight ? "text-zinc-900" : "text-white"
+										)}
+									>
+										{service.title}
+									</h2>
+									<p
+										className={cn(
+											"mt-2 text-sm leading-relaxed",
+											isLight ? "text-zinc-600" : "text-zinc-400"
+										)}
+									>
+										{service.desc}
+									</p>
+									<span
+										className={cn(
+											"mt-4 inline-flex items-center gap-1 text-sm font-medium",
+											isLight ? "text-zinc-700" : "text-zinc-300"
+										)}
+									>
+										{service.cta}
+										<ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+									</span>
+								</Card>
+								</a>
+							</Link>
+						)}
 					</FollowerPointerCard>
 				))}
 			</motion.section>
@@ -778,8 +834,8 @@ function HomeContent() {
 							isLight ? "text-zinc-600" : "text-zinc-300"
 						)}
 					>
-						Grab the template from $49, or talk to us about a custom CRM for your
-						startup or agency client.
+						Clone the MIT template on GitHub, or talk to us about a custom CRM for
+						your startup or agency client.
 					</p>
 					<div className="mt-5 flex flex-wrap items-center justify-center gap-3">
 						<Button
@@ -791,8 +847,8 @@ function HomeContent() {
 									: "bg-zinc-100 text-zinc-900 hover:bg-white"
 							)}
 						>
-							<a href={CHECKOUT.usd} target="_blank" rel="noopener noreferrer">
-								Buy on Gumroad
+							<a href={GITHUB_REPO.url} target="_blank" rel="noopener noreferrer">
+								Star on GitHub
 								<ExternalLink className="h-4 w-4" />
 							</a>
 						</Button>
@@ -818,7 +874,7 @@ function HomeContent() {
 					)}
 				>
 					<div>CRM SaaS Template</div>
-					<div className="opacity-80">From $49</div>
+					<div className="opacity-80">Open source · MIT</div>
 				</div>
 			</motion.section>
 		</>

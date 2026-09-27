@@ -7,8 +7,8 @@
   </url>
   <url>
     <loc>https://saascrm.site/docs</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://saascrm.site/docs/api</loc>
@@ -18,41 +18,36 @@
   <url>
     <loc>https://saascrm.site/docs/auth</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://saascrm.site/docs/webhooks</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://saascrm.site/docs/mcp</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://saascrm.site/developers</loc>
-    <changefreq>weekly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://saascrm.site/saascrm</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://saascrm.site/agents.md</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://saascrm.site/openapi.json</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/llms.txt</loc>
-    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
@@ -61,64 +56,34 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://saascrm.site/blueprint</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/demo</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/demo/template/clinic</loc>
+    <loc>https://saascrm.site/llms.txt</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://saascrm.site/demo/template/indie-stripe</loc>
+    <loc>https://saascrm.site/about</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://saascrm.site/demo/template/agency</loc>
+    <loc>https://saascrm.site/demo</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.95</priority>
   </url>
   <url>
-    <loc>https://saascrm.site/demo/template/freelancer</loc>
+    <loc>https://saascrm.site/blueprint</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/demo/template/content-creator</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/demo/template/digital-store</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/demo/template/ecommerce-cms</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/demo/template/full-kit</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.95</priority>
   </url>
   <url>
     <loc>https://saascrm.site/templates</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
   </url>
   <url>
     <loc>https://saascrm.site/templates/clinic</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://saascrm.site/templates/indie-stripe</loc>
@@ -151,14 +116,34 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://saascrm.site/dashboard</loc>
+    <loc>https://saascrm.site/demo/template/clinic</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://saascrm.site/pricing</loc>
+    <loc>https://saascrm.site/demo/template/indie-stripe</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/demo/template/agency</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/demo/template/freelancer</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/demo/template/ecommerce-cms</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/dashboard</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://saascrm.site/faq</loc>
@@ -173,167 +158,136 @@
   <url>
     <loc>https://saascrm.site/prompts</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://saascrm.site/prompts/saascrm-crm-builder</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://saascrm.site/prompts/build-an-editable-crm</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://saascrm.site/prompts/build-a-full-saas-crm</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/prompts/calendar-scheduling-app</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/prompts/payment-tracking-app</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/prompts/kanban-project-management-app</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/prompts/invoice-management-app</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://saascrm.site/blog</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/rss.xml</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/blog/clinic-appointment-software-india</loc>
-    <lastmod>2026-09-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/blog/why-every-crm-looks-the-same</loc>
-    <lastmod>2026-09-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/blog/i-trained-claude-to-build-my-crm</loc>
-    <lastmod>2026-09-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/blog/saas-crm-for-small-business-in-2026</loc>
-    <lastmod>2026-09-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/blog/agency-crm</loc>
-    <lastmod>2026-09-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/blog/ai-reddit-trend-scraper-saved-1000-month-content-creation</loc>
-    <lastmod>2026-08-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/blog/best-crm-for-small-businesses-and-startups</loc>
-    <lastmod>2026-08-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/blog/building-finance-crm-for-australian-client</loc>
-    <lastmod>2026-08-10</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/blog/six-crm-templates-you-can-demo-today</loc>
-    <lastmod>2026-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/blog/plan-your-crm-in-2-minutes-with-ai-builder</loc>
-    <lastmod>2026-07-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/blog/why-your-business-needs-a-crm</loc>
-    <lastmod>2026-07-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/blog/why-i-keep-building-crm-templates</loc>
-    <lastmod>2026-07-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/blog/we-made-saascrm-agent-ready-llms-txt</loc>
-    <lastmod>2026-09-07</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saascrm.site/admin-builder</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://saascrm.site/sitemap</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
-  <url><loc>https://saascrm.site/analytics</loc></url>
-  <url><loc>https://saascrm.site/reports</loc></url>
-  <url><loc>https://saascrm.site/activity</loc></url>
-  <url><loc>https://saascrm.site/leads</loc></url>
-  <url><loc>https://saascrm.site/sales</loc></url>
-  <url><loc>https://saascrm.site/pipelines</loc></url>
-  <url><loc>https://saascrm.site/deals</loc></url>
-  <url><loc>https://saascrm.site/contacts</loc></url>
-  <url><loc>https://saascrm.site/companies</loc></url>
-  <url><loc>https://saascrm.site/e-commerce</loc></url>
-  <url><loc>https://saascrm.site/e-commerce/orders</loc></url>
-  <url><loc>https://saascrm.site/marketing</loc></url>
-  <url><loc>https://saascrm.site/marketing/segments</loc></url>
-  <url><loc>https://saascrm.site/marketing/forms</loc></url>
-  <url><loc>https://saascrm.site/tasks</loc></url>
-  <url><loc>https://saascrm.site/calendar</loc></url>
-  <url><loc>https://saascrm.site/scheduler</loc></url>
-  <url><loc>https://saascrm.site/scheduler/apps</loc></url>
-  <url><loc>https://saascrm.site/email</loc></url>
-  <url><loc>https://saascrm.site/projects</loc></url>
-  <url><loc>https://saascrm.site/files</loc></url>
-  <url><loc>https://saascrm.site/support</loc></url>
-  <url><loc>https://saascrm.site/products</loc></url>
-  <url><loc>https://saascrm.site/invoices</loc></url>
-  <url><loc>https://saascrm.site/payments</loc></url>
-  <url><loc>https://saascrm.site/subscriptions</loc></url>
-  <url><loc>https://saascrm.site/subscriptions/plans</loc></url>
-  <url><loc>https://saascrm.site/integrations</loc></url>
-  <url><loc>https://saascrm.site/webhooks</loc></url>
-  <url><loc>https://saascrm.site/api-keys</loc></url>
-  <url><loc>https://saascrm.site/api-logs</loc></url>
-  <url><loc>https://saascrm.site/cms</loc></url>
-  <url><loc>https://saascrm.site/teams</loc></url>
-  <url><loc>https://saascrm.site/users</loc></url>
-  <url><loc>https://saascrm.site/roles</loc></url>
-  <url><loc>https://saascrm.site/audit-log</loc></url>
-  <url><loc>https://saascrm.site/notifications</loc></url>
-  <url><loc>https://saascrm.site/settings</loc></url>
-  <url><loc>https://saascrm.site/help</loc></url>
-  <url><loc>https://saascrm.site/about</loc></url>
-  <url><loc>https://saascrm.site/ui-components</loc></url>
-  <url><loc>https://saascrm.site/login</loc></url>
-  <url><loc>https://saascrm.site/signup</loc></url>
-  <url><loc>https://saascrm.site/forgot-password</loc></url>
-  <url><loc>https://saascrm.site/change-password</loc></url>
+  <url>
+    <loc>https://saascrm.site/rss.xml</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/clinic-appointment-software-india</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/why-every-crm-looks-the-same</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/i-trained-claude-to-build-my-crm</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/saas-crm-for-small-business-in-2026</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/excel-to-crm-migration</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/free-crm-and-top-crm-directory</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/we-made-saascrm-agent-ready-llms-txt</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/agency-crm</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/ai-reddit-trend-scraper-saved-1000-month-content-creation</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/nexts-shade-crm-cms-admin-template</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/best-crm-for-small-businesses-and-startups</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/building-finance-crm-for-australian-client</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/six-crm-templates-you-can-demo-today</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/plan-your-crm-in-2-minutes-with-ai-builder</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/why-i-keep-building-crm-templates</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://saascrm.site/blog/why-your-business-needs-a-crm</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
 </urlset>
