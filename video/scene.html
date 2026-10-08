@@ -1,0 +1,482 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>SaaSCRM Promo</title>
+<style>
+	* { box-sizing: border-box; margin: 0; padding: 0; }
+	html, body { width: 1920px; height: 1080px; overflow: hidden; background: #06060a; }
+	body { font-family: "Inter", "Inter Display", system-ui, sans-serif; color: #fafafa; -webkit-font-smoothing: antialiased; }
+	#stage { position: absolute; inset: 0; overflow: hidden; }
+	.abs { position: absolute; }
+	.center { left: 50%; top: 50%; transform: translate(-50%, -50%); }
+
+	/* backdrop */
+	#grid { inset: -64px; background-image:
+		linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+		background-size: 64px 64px;
+		-webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, #000 30%, transparent 85%); }
+	.glow { border-radius: 50%; filter: blur(120px); will-change: transform; }
+	#glowA { width: 900px; height: 900px; background: #7c3aed; opacity: .38; }
+	#glowB { width: 800px; height: 800px; background: #4f46e5; opacity: .34; }
+	#glowC { width: 600px; height: 600px; background: #c026d3; opacity: .16; }
+	#vignette { inset: 0; background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.6) 100%); pointer-events: none; }
+	#particles .p { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #c4b5fd; }
+
+	/* type */
+	.display { font-family: "Inter Display", "Inter", sans-serif; font-weight: 800; letter-spacing: -0.045em; line-height: 1; }
+	.grad { background: linear-gradient(100deg, #ffffff 0%, #ddd6fe 40%, #a78bfa 70%, #818cf8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+	.eyebrow { font-size: 22px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: #a78bfa; }
+	.pill { display: inline-flex; align-items: center; gap: 12px; padding: 12px 22px; border-radius: 999px;
+		background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); font-size: 22px; font-weight: 500; color: #e4e4e7;
+		backdrop-filter: blur(8px); white-space: nowrap; }
+	.dot { width: 10px; height: 10px; border-radius: 50%; background: #34d399; box-shadow: 0 0 12px #34d399; }
+
+	/* logo */
+	.logoTile { width: 168px; height: 168px; border-radius: 40px; background: linear-gradient(135deg, #7c3aed, #4f46e5);
+		box-shadow: 0 30px 80px rgba(124,58,237,.55), inset 0 1px 0 rgba(255,255,255,.35); display: grid; place-items: center; }
+	.logoTile .mono { font-family: "Inter Display", "Inter", sans-serif; font-weight: 900; font-size: 112px; line-height: 1; color: #fff; letter-spacing: -.04em; text-shadow: 0 6px 20px rgba(0,0,0,.25); }
+
+	/* browser frame */
+	.browser { border-radius: 18px; overflow: hidden; background: #18181b; border: 1px solid rgba(255,255,255,.12);
+		box-shadow: 0 50px 120px rgba(0,0,0,.6), 0 0 0 1px rgba(0,0,0,.4), 0 0 80px rgba(124,58,237,.18); }
+	.browser .bar { height: 40px; background: #1f1f23; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid rgba(255,255,255,.06); }
+	.browser .bar i { width: 12px; height: 12px; border-radius: 50%; display: block; }
+	.browser .bar i:nth-child(1) { background: #ff5f57; } .browser .bar i:nth-child(2) { background: #febc2e; } .browser .bar i:nth-child(3) { background: #28c840; }
+	.browser .bar .url { margin-left: 18px; flex: 1; max-width: 520px; height: 24px; border-radius: 8px; background: #2a2a30; color: #a1a1aa; font-size: 13px; display: flex; align-items: center; padding-left: 12px; }
+	.browser img { display: block; width: 100%; }
+
+	/* captions */
+	.cap { font-size: 30px; font-weight: 600; color: #fafafa; display: flex; align-items: center; gap: 14px; white-space: nowrap; }
+	.cap b { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: rgba(167,139,250,.16); color: #c4b5fd; font-size: 20px; border: 1px solid rgba(167,139,250,.3); }
+
+	.chip { position: absolute; padding: 14px 26px; border-radius: 999px; font-size: 26px; font-weight: 600; white-space: nowrap;
+		background: rgba(24,24,27,.82); border: 1px solid rgba(167,139,250,.35); color: #ede9fe; box-shadow: 0 10px 40px rgba(0,0,0,.45); backdrop-filter: blur(6px); }
+	.chip::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #a78bfa; margin-right: 12px; vertical-align: middle; box-shadow: 0 0 10px #a78bfa; }
+
+	/* terminal */
+	.terminal { width: 1120px; border-radius: 18px; background: rgba(12,12,16,.92); border: 1px solid rgba(255,255,255,.1); overflow: hidden;
+		box-shadow: 0 50px 120px rgba(0,0,0,.6), 0 0 100px rgba(79,70,229,.2); }
+	.terminal .bar { height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 18px; background: rgba(255,255,255,.03); border-bottom: 1px solid rgba(255,255,255,.06); color: #71717a; font-size: 15px; }
+	.terminal .bar i { width: 12px; height: 12px; border-radius: 50%; display: block; }
+	.terminal .bar i:nth-child(1) { background: #ff5f57; } .terminal .bar i:nth-child(2) { background: #febc2e; } .terminal .bar i:nth-child(3) { background: #28c840; }
+	.terminal pre { padding: 34px 40px 40px; font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 27px; line-height: 1.7; color: #e4e4e7; min-height: 360px; white-space: pre; }
+	.t-prompt { color: #a78bfa; } .t-ok { color: #34d399; } .t-dim { color: #71717a; } .t-link { color: #93c5fd; text-decoration: underline; }
+	.caret { display: inline-block; width: 14px; height: 30px; background: #c4b5fd; vertical-align: -5px; margin-left: 2px; }
+
+	.badge { display: inline-flex; align-items: center; gap: 12px; padding: 16px 26px; border-radius: 16px; font-size: 26px; font-weight: 600;
+		background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); color: #f4f4f5; white-space: nowrap; }
+	.badge span { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
+
+	/* AI */
+	.phone { width: 400px; border-radius: 44px; padding: 12px; background: #0f0f12; border: 1px solid rgba(255,255,255,.14);
+		box-shadow: 0 60px 120px rgba(0,0,0,.65), 0 0 120px rgba(124,58,237,.35); }
+	.phone img { width: 100%; display: block; border-radius: 34px; }
+	.prompt { width: 760px; padding: 28px 32px; border-radius: 22px; background: rgba(24,24,27,.9); border: 1px solid rgba(167,139,250,.4);
+		box-shadow: 0 30px 80px rgba(0,0,0,.5), 0 0 0 6px rgba(124,58,237,.12); font-size: 28px; line-height: 1.45; color: #f4f4f5; min-height: 150px; }
+	.prompt .lbl { font-size: 17px; font-weight: 600; color: #a78bfa; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px; }
+	.gen { display: inline-flex; padding: 10px 18px; margin: 6px 8px 0 0; border-radius: 12px; font-size: 21px; font-weight: 600; background: rgba(52,211,153,.12); border: 1px solid rgba(52,211,153,.35); color: #a7f3d0; }
+
+	.star { display: inline-flex; align-items: center; gap: 16px; padding: 22px 40px; border-radius: 999px; background: #fafafa; color: #09090b; font-size: 32px; font-weight: 700;
+		box-shadow: 0 20px 60px rgba(167,139,250,.45); white-space: nowrap; }
+	.star svg { width: 34px; height: 34px; }
+	.url { font-size: 30px; font-weight: 500; color: #a1a1aa; letter-spacing: -.01em; white-space: nowrap; }
+	.url strong { color: #e4e4e7; font-weight: 600; }
+	#flash { inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+	<!-- backdrop -->
+	<div id="glowA" class="abs glow"></div>
+	<div id="glowB" class="abs glow"></div>
+	<div id="glowC" class="abs glow"></div>
+	<div id="grid" class="abs"></div>
+	<div id="particles" class="abs" style="inset:0"></div>
+
+	<!-- S1: intro -->
+	<div id="s1" class="abs" style="inset:0">
+		<div id="s1logo" class="abs center logoTile"><span class="mono">S</span></div>
+		<div id="s1word" class="abs display grad" style="left:0;right:0;top:600px;text-align:center;font-size:150px">SaaSCRM</div>
+		<div id="s1tag" class="abs" style="left:0;right:0;top:790px;text-align:center;font-size:36px;color:#a1a1aa;font-weight:500">The open-source CRM for founders &amp; vibe coders</div>
+		<div id="s1pill" class="abs" style="left:0;right:0;top:140px;text-align:center"><span class="pill"><span class="dot"></span>Free &amp; MIT licensed · Next.js + shadcn/ui</span></div>
+	</div>
+
+	<!-- S2: kinetic words -->
+	<div id="s2" class="abs" style="inset:0">
+		<div class="abs eyebrow" id="s2eye" style="left:0;right:0;top:330px;text-align:center">Everything you need to ship a CRM</div>
+		<div id="s2w0" class="abs display grad" style="left:0;right:0;top:430px;text-align:center;font-size:200px">60+ screens.</div>
+		<div id="s2w1" class="abs display grad" style="left:0;right:0;top:430px;text-align:center;font-size:200px">Agentic AI.</div>
+		<div id="s2w2" class="abs display grad" style="left:0;right:0;top:430px;text-align:center;font-size:200px">Zero lock-in.</div>
+	</div>
+
+	<!-- S3: screenshot carousel -->
+	<div id="s3" class="abs" style="inset:0;perspective:2400px">
+		<div id="s3title" class="abs display" style="left:0;right:0;top:70px;text-align:center;font-size:72px">A real product, <span class="grad">not a wireframe.</span></div>
+		<div id="s3cards"></div>
+		<div id="s3caps"></div>
+	</div>
+
+	<!-- S4: module wall -->
+	<div id="s4" class="abs" style="inset:0">
+		<div id="s4wall" class="abs" style="left:50%;top:50%;width:3000px;height:1700px"></div>
+		<div id="s4chips"></div>
+		<div id="s4title" class="abs display" style="left:0;right:0;top:455px;text-align:center;font-size:120px;text-shadow:0 10px 60px rgba(0,0,0,.8)">Every module.<br/><span class="grad">Ready to wire.</span></div>
+	</div>
+
+	<!-- S5: AI -->
+	<div id="s5" class="abs" style="inset:0">
+		<div id="s5builder" class="abs browser" style="left:150px;top:200px;width:1100px"><div class="bar"><i></i><i></i><i></i><div class="url">saascrm.site/blueprint</div></div><img src="../public/ai-builder-saas-crm.png" alt="" /></div>
+		<div id="s5phone" class="abs phone" style="left:1380px;top:130px"><img src="../public/ai-chatbot-crm-saas.png" alt="" /></div>
+		<div id="s5text" class="abs" style="left:150px;top:96px">
+			<div class="eyebrow">Built-in AI copilot</div>
+		</div>
+		<div id="s5head" class="abs display" style="left:150px;top:140px;font-size:84px">Describe it. <span class="grad">Get a CRM plan.</span></div>
+		<div id="s5prompt" class="abs prompt" style="left:330px;top:620px">
+			<div class="lbl">What are you building?</div>
+			<div id="s5typed"></div>
+			<div id="s5gens" style="margin-top:14px"></div>
+		</div>
+	</div>
+
+	<!-- S6: terminal -->
+	<div id="s6" class="abs" style="inset:0">
+		<div id="s6head" class="abs display" style="left:0;right:0;top:110px;text-align:center;font-size:96px">Up and running in <span class="grad">60 seconds.</span></div>
+		<div id="s6term" class="abs terminal" style="left:400px;top:290px">
+			<div class="bar"><i></i><i></i><i></i><span style="margin-left:14px">~/projects — zsh</span></div>
+			<pre id="s6pre"></pre>
+		</div>
+		<div id="s6badges" class="abs" style="left:0;right:0;top:860px;display:flex;justify-content:center;gap:22px">
+			<div class="badge"><span style="background:#fafafa"></span>Next.js</div>
+			<div class="badge"><span style="background:#61dafb"></span>React</div>
+			<div class="badge"><span style="background:#38bdf8"></span>Tailwind CSS</div>
+			<div class="badge"><span style="background:#a1a1aa"></span>shadcn/ui</div>
+			<div class="badge"><span style="background:#3b82f6"></span>Zod schemas</div>
+			<div class="badge"><span style="background:#a78bfa"></span>Cursor &amp; Claude skills</div>
+		</div>
+	</div>
+
+	<!-- S7: outro -->
+	<div id="s7" class="abs" style="inset:0">
+		<div id="s7logo" class="abs logoTile" style="left:876px;top:170px;width:168px;height:168px"><span class="mono">S</span></div>
+		<div id="s7word" class="abs display grad" style="left:0;right:0;top:380px;text-align:center;font-size:132px">SaaSCRM</div>
+		<div id="s7tag" class="abs" style="left:0;right:0;top:545px;text-align:center;font-size:38px;color:#d4d4d8;font-weight:500">Clone it. Brand it. Ship it.</div>
+		<div id="s7star" class="abs" style="left:0;right:0;top:650px;text-align:center"><span class="star"><svg viewBox="0 0 24 24" fill="#09090b"><path d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>Star on GitHub</span></div>
+		<div id="s7url" class="abs url" style="left:0;right:0;top:810px;text-align:center"><strong>github.com/shreyvijayvargiya/crm-saas</strong> &nbsp;·&nbsp; saascrm.site</div>
+	</div>
+
+	<div id="vignette" class="abs"></div>
+	<div id="flash" class="abs"></div>
+</div>
+
+<script>
+// ---------- helpers ----------
+const $ = (id) => document.getElementById(id);
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, k) => a + (b - a) * k;
+// progress of t within [a,b] → 0..1
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const easeOut = (k) => 1 - Math.pow(1 - k, 3);
+const easeIn = (k) => k * k * k;
+const easeInOut = (k) => (k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+const easeOutBack = (k) => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+const expoOut = (k) => (k === 1 ? 1 : 1 - Math.pow(2, -10 * k));
+// fade-in at [a, a+d], fade-out at [b-d2, b]
+const window_ = (t, a, b, d = .5, d2 = .5) => Math.min(easeOut(prog(t, a, a + d)), 1 - easeIn(prog(t, b - d2, b)));
+const set = (el, o) => { for (const k in o) el.style[k] = o[k]; };
+
+// scene timeline (seconds)
+const T = {
+	s1: [0, 4.6], s2: [4.4, 9.4], s3: [9.2, 17.6], s4: [17.4, 22.4],
+	s5: [22.2, 29.0], s6: [28.8, 35.4], s7: [35.2, 42.0],
+};
+const DURATION = 42.0;
+window.DURATION = DURATION;
+
+// ---------- build dynamic DOM ----------
+const SHOTS = [
+	["saas-crm-dashboard.png", "Dashboard", "app.saascrm.site/dashboard"],
+	["saas-crm-leads.png", "Leads", "app.saascrm.site/leads"],
+	["saas-crm-sales.png", "Sales pipeline", "app.saascrm.site/sales"],
+	["saas-crm-analytics.png", "Analytics", "app.saascrm.site/analytics"],
+	["saas-crm-scheduler.png", "Scheduler", "app.saascrm.site/scheduler"],
+];
+const cardsEl = $("s3cards"), capsEl = $("s3caps");
+SHOTS.forEach(([f, label, url], i) => {
+	const c = document.createElement("div");
+	c.className = "abs browser"; c.id = "card" + i;
+	set(c, { width: "1240px", left: "340px", top: "230px", transformStyle: "preserve-3d" });
+	c.innerHTML = `<div class="bar"><i></i><i></i><i></i><div class="url">${url}</div></div><img src="../public/screenshots-marketing-page/${f}" alt="" />`;
+	cardsEl.appendChild(c);
+	const cap = document.createElement("div");
+	cap.className = "abs cap"; cap.id = "cap" + i;
+	set(cap, { left: "0", right: "0", top: "930px", justifyContent: "center" });
+	cap.innerHTML = `<b>${String(i + 1).padStart(2, "0")}</b>${label}`;
+	capsEl.appendChild(cap);
+});
+
+const WALL = [
+	"screenshots-marketing-page/saas-crm-dashboard.png", "screenshots-marketing-page/saas-crm-reports.png", "real-estate-crm.png",
+	"screenshots-marketing-page/saas-crm-activity.png", "templates-page.png", "screenshots-marketing-page/saas-crm-leads.png",
+	"freelance-crm.png", "screenshots-marketing-page/saas-crm-sales.png", "screenshots-marketing-page/saas-crm-analytics.png",
+	"ai-builder-saas-crm.png", "screenshots-marketing-page/saas-crm-scheduler.png", "inkgest-crm.png",
+];
+const wall = $("s4wall");
+WALL.forEach((f, i) => {
+	const r = Math.floor(i / 4), c = i % 4;
+	const d = document.createElement("div");
+	d.className = "abs browser"; d.id = "w" + i;
+	set(d, { width: "700px", left: c * 760 + (r % 2 ? 60 : -60) + "px", top: r * 440 + "px" });
+	d.innerHTML = `<div class="bar"><i></i><i></i><i></i></div><img src="../public/${f}" alt="" />`;
+	wall.appendChild(d);
+});
+const CHIPS = [
+	["Leads", 210, 170], ["Pipeline", 650, 110], ["Deals", 1150, 140], ["Contacts", 1530, 220],
+	["Calendar", 140, 820], ["Finance", 560, 900], ["E-commerce", 1060, 880], ["CMS", 1540, 800],
+	["Email", 300, 360], ["Tasks", 1580, 400], ["Invoices", 1500, 640], ["Marketing", 170, 620],
+];
+const chipsEl = $("s4chips");
+CHIPS.forEach(([n, x, y], i) => {
+	const d = document.createElement("div");
+	d.className = "chip"; d.id = "chip" + i; d.textContent = n;
+	set(d, { left: x + "px", top: y + "px" });
+	chipsEl.appendChild(d);
+});
+
+// particles (seeded)
+let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const P = [];
+for (let i = 0; i < 70; i++) {
+	const el = document.createElement("div"); el.className = "p";
+	$("particles").appendChild(el);
+	P.push({ el, x: rnd() * 1920, y: rnd() * 1080, s: .4 + rnd() * 1.4, v: 8 + rnd() * 26, ph: rnd() * 6.28 });
+}
+
+const PROMPT = "A CRM for a 15-person agency: leads, deals, invoices and a client portal.";
+const GENS = ["✓ 14 pages mapped", "✓ Next.js + Supabase", "✓ Cursor prompts", "✓ 3-week timeline"];
+
+const TERM = [
+	{ cmd: "git clone https://github.com/shreyvijayvargiya/crm-saas.git", out: [["t-dim", "Cloning into 'crm-saas'... done."]] },
+	{ cmd: "cd crm-saas && npm install", out: [["t-ok", "✓ added 412 packages in 9s"]] },
+	{ cmd: "npm run dev", out: [["t-ok", "✓ ready"], ["", " on "], ["t-link", "http://localhost:3002/demo"]] },
+];
+
+// ---------- render(t) ----------
+function render(t) {
+	// backdrop motion
+	set($("glowA"), { left: (-200 + Math.sin(t * .35) * 220) + "px", top: (-300 + Math.cos(t * .28) * 160) + "px" });
+	set($("glowB"), { left: (1150 + Math.cos(t * .3) * 240) + "px", top: (380 + Math.sin(t * .4) * 180) + "px" });
+	set($("glowC"), { left: (700 + Math.sin(t * .22 + 1) * 400) + "px", top: (200 + Math.cos(t * .33) * 260) + "px" });
+	set($("grid"), { transform: `translate(${(t * 12) % 64}px, ${(t * 8) % 64}px)` });
+	P.forEach((p) => {
+		const y = ((p.y - t * p.v) % 1080 + 1080) % 1080;
+		const x = p.x + Math.sin(t * .6 + p.ph) * 20;
+		set(p.el, { transform: `translate(${x}px, ${y}px) scale(${p.s})`, opacity: (.25 + .35 * Math.sin(t * 1.3 + p.ph) ** 2).toFixed(3) });
+	});
+
+	// ---- S1 intro ----
+	{
+		const [a, b] = T.s1, on = t >= a - .1 && t <= b + .1;
+		$("s1").style.display = on ? "" : "none";
+		if (on) {
+			const out = easeIn(prog(t, b - .6, b));
+			const lk = easeOutBack(prog(t, .2, 1.1));
+			const rise = easeInOut(prog(t, 1.2, 2.0));
+			set($("s1logo"), {
+				transform: `translate(-50%, -50%) translateY(${lerp(0, -170, rise)}px) scale(${lerp(.2, 1, lk) * (1 - out * .3)}) rotate(${lerp(-25, 0, lk)}deg)`,
+				opacity: (prog(t, .2, .5) * (1 - out)).toFixed(3),
+			});
+			const wk = expoOut(prog(t, 1.5, 2.5));
+			set($("s1word"), { opacity: (wk * (1 - out)).toFixed(3), transform: `translateY(${lerp(60, 0, wk) - out * 40}px)`, letterSpacing: lerp(.08, -.045, wk) + "em", filter: `blur(${(1 - wk) * 14}px)` });
+			const tk = easeOut(prog(t, 2.2, 3.0));
+			set($("s1tag"), { opacity: (tk * (1 - out)).toFixed(3), transform: `translateY(${lerp(24, 0, tk)}px)` });
+			const pk = easeOut(prog(t, 2.6, 3.3));
+			set($("s1pill"), { opacity: (pk * (1 - out)).toFixed(3), transform: `translateY(${lerp(-20, 0, pk)}px)` });
+		}
+	}
+
+	// ---- S2 kinetic words ----
+	{
+		const [a, b] = T.s2, on = t >= a && t <= b;
+		$("s2").style.display = on ? "" : "none";
+		if (on) {
+			const ek = window_(t, a + .1, b, .5, .4);
+			set($("s2eye"), { opacity: ek.toFixed(3), transform: `translateY(${(1 - ek) * 16}px)` });
+			const seg = (b - a - .4) / 3;
+			for (let i = 0; i < 3; i++) {
+				const s = a + .3 + i * seg, e = s + seg;
+				const ink = expoOut(prog(t, s, s + .55));
+				const outk = easeIn(prog(t, e - .35, e));
+				const vis = t >= s && t <= e;
+				set($("s2w" + i), {
+					display: vis ? "" : "none",
+					opacity: (ink * (1 - outk)).toFixed(3),
+					transform: `translateY(${lerp(80, 0, ink) - outk * 80}px) scale(${lerp(1.15, 1, ink) - outk * .05})`,
+					filter: `blur(${(1 - ink) * 18 + outk * 18}px)`,
+				});
+			}
+		}
+	}
+
+	// ---- S3 screenshot carousel ----
+	{
+		const [a, b] = T.s3, on = t >= a && t <= b;
+		$("s3").style.display = on ? "" : "none";
+		if (on) {
+			const tk = window_(t, a + .1, b, .6, .5);
+			set($("s3title"), { opacity: tk.toFixed(3), transform: `translateY(${(1 - tk) * -30}px)` });
+			// continuous position along the carousel: 0 → N-1
+			const per = (b - a - 1.2) / (SHOTS.length - 1 + .4);
+			let pos = 0;
+			for (let i = 1; i < SHOTS.length; i++) pos += easeInOut(prog(t, a + .6 + i * per - .6, a + .6 + i * per));
+			const enter = easeOut(prog(t, a, a + .9));
+			const exit = easeIn(prog(t, b - .6, b));
+			SHOTS.forEach((_, i) => {
+				const d = i - pos; // 0 = front
+				const ad = Math.abs(d);
+				const x = d * 760;
+				const z = -ad * 520;
+				const ry = -d * 28;
+				const op = clamp(1.25 - ad * .55) * enter * (1 - exit);
+				set($("card" + i), {
+					transform: `translate3d(${x}px, ${(1 - enter) * 200 + exit * -60}px, ${z + (1 - enter) * -600}px) rotateY(${ry}deg) rotateX(${(1 - enter) * 20}deg)`,
+					opacity: op.toFixed(3), zIndex: String(100 - Math.round(ad * 10)),
+				});
+				const ck = clamp(1 - ad * 2.2) * (1 - exit);
+				set($("cap" + i), { opacity: ck.toFixed(3), transform: `translateY(${ad * 30}px)` });
+			});
+		}
+	}
+
+	// ---- S4 module wall ----
+	{
+		const [a, b] = T.s4, on = t >= a && t <= b;
+		$("s4").style.display = on ? "" : "none";
+		if (on) {
+			const k = prog(t, a, b);
+			const enter = easeOut(prog(t, a, a + .8));
+			const exit = easeIn(prog(t, b - .5, b));
+			const sc = lerp(1.35, .62, easeInOut(k));
+			set($("s4wall"), {
+				transform: `translate(-50%, -50%) rotateX(18deg) rotateZ(-8deg) scale(${sc}) translateX(${lerp(120, -120, k)}px)`,
+				opacity: (enter * (1 - exit)).toFixed(3), filter: `brightness(${lerp(.75, .42, easeInOut(prog(t, a + 1, a + 2)))})`,
+			});
+			WALL.forEach((_, i) => {
+				const ik = easeOut(prog(t, a + i * .05, a + .6 + i * .05));
+				set($("w" + i), { opacity: ik.toFixed(3), transform: `translateY(${(1 - ik) * 80}px)` });
+			});
+			CHIPS.forEach((c, i) => {
+				const s = a + 1.0 + i * .12;
+				const ck = easeOutBack(prog(t, s, s + .5));
+				const float = Math.sin(t * 1.6 + i) * 8;
+				set($("chip" + i), { opacity: (clamp(ck) * (1 - exit)).toFixed(3), transform: `translateY(${float + (1 - ck) * 30}px) scale(${lerp(.6, 1, ck)})` });
+			});
+			const hk = expoOut(prog(t, a + .9, a + 1.7));
+			set($("s4title"), { opacity: (hk * (1 - exit)).toFixed(3), transform: `scale(${lerp(.9, 1, hk) + exit * .08})`, filter: `blur(${(1 - hk) * 12}px)` });
+		}
+	}
+
+	// ---- S5 AI ----
+	{
+		const [a, b] = T.s5, on = t >= a && t <= b;
+		$("s5").style.display = on ? "" : "none";
+		if (on) {
+			const exit = easeIn(prog(t, b - .5, b));
+			const hk = easeOut(prog(t, a + .1, a + .8));
+			set($("s5text"), { opacity: (hk * (1 - exit)).toFixed(3), transform: `translateY(${(1 - hk) * 20}px)` });
+			const h2 = expoOut(prog(t, a + .25, a + 1.0));
+			set($("s5head"), { opacity: (h2 * (1 - exit)).toFixed(3), transform: `translateY(${(1 - h2) * 30}px)`, filter: `blur(${(1 - h2) * 10}px)` });
+			const bk = easeOut(prog(t, a + .4, a + 1.4));
+			const drift = prog(t, a, b);
+			set($("s5builder"), { opacity: (bk * (1 - exit) * .9).toFixed(3), transform: `translateY(${lerp(120, 0, bk) + lerp(140, 60, drift)}px) scale(${lerp(.98, 1.02, drift)})` });
+			const pk = easeOutBack(prog(t, a + .8, a + 1.6));
+			set($("s5phone"), { opacity: (clamp(pk) * (1 - exit)).toFixed(3), transform: `translateY(${lerp(200, 0, pk) + Math.sin(t * 1.2) * 8}px) rotate(${lerp(10, 3, pk)}deg) scale(.92)` });
+			const qk = easeOutBack(prog(t, a + 1.4, a + 2.0));
+			set($("s5prompt"), { opacity: (clamp(qk) * (1 - exit)).toFixed(3), transform: `translateY(${(1 - qk) * 60}px) scale(${lerp(.9, 1, qk)})` });
+			const n = Math.floor(PROMPT.length * prog(t, a + 2.0, a + 4.2));
+			const blink = Math.floor(t * 2.5) % 2 === 0;
+			$("s5typed").innerHTML = PROMPT.slice(0, n).replace(/&/g, "&amp;") + (n < PROMPT.length || blink ? '<span class="caret"></span>' : "");
+			$("s5gens").innerHTML = GENS.map((g, i) => {
+				const gk = easeOutBack(prog(t, a + 4.4 + i * .3, a + 4.8 + i * .3));
+				return `<span class="gen" style="opacity:${clamp(gk)};transform:translateY(${(1 - gk) * 14}px) scale(${lerp(.7, 1, gk)})">${g}</span>`;
+			}).join("");
+		}
+	}
+
+	// ---- S6 terminal ----
+	{
+		const [a, b] = T.s6, on = t >= a && t <= b;
+		$("s6").style.display = on ? "" : "none";
+		if (on) {
+			const exit = easeIn(prog(t, b - .5, b));
+			const hk = expoOut(prog(t, a + .1, a + .9));
+			set($("s6head"), { opacity: (hk * (1 - exit)).toFixed(3), transform: `translateY(${(1 - hk) * 30}px)`, filter: `blur(${(1 - hk) * 10}px)` });
+			const tk = easeOut(prog(t, a + .3, a + 1.1));
+			set($("s6term"), { opacity: (tk * (1 - exit)).toFixed(3), transform: `translateY(${(1 - tk) * 80}px) scale(${lerp(.95, 1, tk) - exit * .03})` });
+			// typing timeline
+			let cur = a + 1.1, html = "", typingDone = true;
+			for (const line of TERM) {
+				const dur = line.cmd.length * .022 + .2;
+				if (t < cur) { typingDone = false; break; }
+				const n = Math.floor(line.cmd.length * prog(t, cur, cur + dur));
+				html += `<span class="t-prompt">❯</span> ${line.cmd.slice(0, n)}`;
+				if (n < line.cmd.length) { html += '<span class="caret"></span>'; typingDone = false; break; }
+				html += "\n";
+				cur += dur + .35;
+				if (t < cur) { typingDone = false; break; }
+				html += line.out.map(([c, s]) => (c ? `<span class="${c}">${s}</span>` : s)).join("") + "\n";
+				cur += .3;
+			}
+			if (typingDone || t >= cur) {
+				const blink = Math.floor(t * 2.5) % 2 === 0;
+				if (!html.endsWith('</span>') || html.endsWith("\n")) html += `<span class="t-prompt">❯</span> ${blink ? '<span class="caret"></span>' : ""}`;
+			}
+			$("s6pre").innerHTML = html;
+			[...$("s6badges").children].forEach((el, i) => {
+				const s = a + 3.6 + i * .1;
+				const bk = easeOutBack(prog(t, s, s + .5));
+				set(el, { opacity: (clamp(bk) * (1 - exit)).toFixed(3), transform: `translateY(${(1 - bk) * 40}px)` });
+			});
+		}
+	}
+
+	// ---- S7 outro ----
+	{
+		const [a, b] = T.s7, on = t >= a;
+		$("s7").style.display = on ? "" : "none";
+		if (on) {
+			const fade = 1 - easeIn(prog(t, b - .8, b));
+			const lk = easeOutBack(prog(t, a + .1, a + .9));
+			set($("s7logo"), { opacity: (clamp(lk) * fade).toFixed(3), transform: `scale(${lerp(.3, 1, lk)}) rotate(${lerp(20, 0, lk)}deg) translateY(${Math.sin(t * 1.4) * 6}px)` });
+			const wk = expoOut(prog(t, a + .4, a + 1.3));
+			set($("s7word"), { opacity: (wk * fade).toFixed(3), transform: `translateY(${(1 - wk) * 40}px)`, letterSpacing: lerp(.06, -.045, wk) + "em", filter: `blur(${(1 - wk) * 12}px)` });
+			const gk = easeOut(prog(t, a + .9, a + 1.6));
+			set($("s7tag"), { opacity: (gk * fade).toFixed(3), transform: `translateY(${(1 - gk) * 20}px)` });
+			const sk = easeOutBack(prog(t, a + 1.3, a + 2.0));
+			const pulse = 1 + Math.max(0, Math.sin((t - a - 2.2) * 3)) * .025 * (t > a + 2.2 ? 1 : 0);
+			set($("s7star"), { opacity: (clamp(sk) * fade).toFixed(3), transform: `scale(${lerp(.7, 1, sk) * pulse})` });
+			const uk = easeOut(prog(t, a + 1.8, a + 2.5));
+			set($("s7url"), { opacity: (uk * fade).toFixed(3), transform: `translateY(${(1 - uk) * 16}px)` });
+		}
+	}
+
+	// transition flashes
+	const flashes = [4.5, 9.3, 17.5, 22.3, 28.9, 35.3];
+	let f = 0;
+	for (const x of flashes) f = Math.max(f, (1 - Math.abs(t - x) / .18) * .1);
+	$("flash").style.opacity = clamp(f).toFixed(3);
+	// global fade from/to black
+	$("stage").style.opacity = (Math.min(prog(t, 0, .4), 1 - prog(t, DURATION - .5, DURATION))).toFixed(3);
+}
+window.render = render;
+
+// preview mode: open in a browser to watch it play live
+if (!location.search.includes("capture")) {
+	const t0 = performance.now();
+	const loop = () => { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); };
+	requestAnimationFrame(loop);
+} else { render(0); }
+</script>
+</body>
+</html>

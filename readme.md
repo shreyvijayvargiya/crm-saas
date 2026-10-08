@@ -5,6 +5,10 @@
 
 **SaaSCRM** is a production-grade **CRM, admin dashboard, and CMS** frontend built with **Next.js 12 (Pages Router)**, **React 17**, **Tailwind CSS**, and **shadcn/ui**. It ships **60+ screens**, vertical demos (clinic, agency, indie Stripe, and more), an **agentic AI chatbot**, theme customizer, Zod schemas, and Cursor rules — with **in-memory demo data** until you wire your own backend.
 
+[![Watch the SaaSCRM promo video](public/saascrm-promo-poster.jpg)](public/saascrm-promo.mp4)
+
+> 🎬 **[Watch the 40-second promo](public/saascrm-promo.mp4)** — rendered from code in [`video/`](video/) (HTML + headless Chromium + ffmpeg).
+
 - **Website:** [saascrm.site](https://saascrm.site)
 - **Repository:** [github.com/shreyvijayvargiya/crm-saas](https://github.com/shreyvijayvargiya/crm-saas)
 - **License:** [MIT](LICENSE) — commercial and client use allowed
